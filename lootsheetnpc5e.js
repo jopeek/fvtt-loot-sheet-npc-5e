@@ -136,7 +136,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 //console.log("Loot Sheet | player", player);
                 let actor = game.actors.get(player.data.character);
                 //console.log("Loot Sheet | actor", actor);
-                if (actor !== null) owners.push(actor);
+                if (actor !== null && (player.data.role === 1 || player.data.role === 2)) owners.push(actor);
             }
         }
 
