@@ -551,9 +551,6 @@ Hooks.on('preCreateOwnedItem', (actor, item, data) => {
 
 Hooks.once("init", () => {
 	
-	/**
-	* Register better rolls setting
-	*/
 	game.settings.register("lootsheetnpc5e", "changeScrollIcon", {
 		name: "Change icon for Spell Scrolls?",
 		hint: "Changes the icon for spell scrolls to a scroll icon. If left unchecked, retains the spell's icon.",
