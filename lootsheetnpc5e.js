@@ -421,6 +421,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
                 // get the name of the primary actor for a player
                 const actor = game.actors.get(u.data.character);
+                //console.log("Loot Sheet | Checking actor", actor);
 
                 if (actor) {
 					
@@ -512,6 +513,12 @@ Hooks.on('preCreateOwnedItem', (actor, item, data) => {
         if (item.type === "spell") {
             //console.log("Loot Sheet | dragged spell item", item);
 
+            let changeScrollIcon = game.settings.get("lootsheetnpc5e", "changeScrollIcon");
+
+            if (changeScrollIcon) item.img = "modules/lootsheetnpc5e/icons/Scroll" + item.data.level + ".png";
+
+            //console.log("Loot Sheet | check changeScrollIcon", changeScrollIcon);
+
             item.name = "Scroll of " + item.name;
             item.type = "consumable";
             item.data.price = Math.round(10 * Math.pow(2.6, item.data.level));
@@ -540,4 +547,20 @@ Hooks.on('preCreateOwnedItem', (actor, item, data) => {
         }
     } else return;
 
+});
+
+Hooks.once("init", () => {
+	
+	/**
+	* Register better rolls setting
+	*/
+	game.settings.register("lootsheetnpc5e", "changeScrollIcon", {
+		name: "Change icon for Spell Scrolls?",
+		hint: "Changes the icon for spell scrolls to a scroll icon. If left unchecked, retains the spell's icon.",
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean
+	});
+	
 });
