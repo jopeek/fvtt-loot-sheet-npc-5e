@@ -57,22 +57,106 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      */
     activateListeners(html) {
         super.activateListeners(html);
-        if (!this.options.editable) return;
-        
-        // Toggle Permissions
-        html.find('.permission-proficiency').click(ev => this._onCyclePermissionProficiency(ev));
+        if (this.options.editable) {
+            // Toggle Permissions
+            html.find('.permission-proficiency').click(ev => this._onCyclePermissionProficiency(ev));
 
-        // Split Coins
-        html.find('.split-coins').click(ev => this._distributeCoins(ev));
+            // Split Coins
+            html.find('.split-coins').click(ev => this._distributeCoins(ev));
 
-        // Price Modifier
-        if (this.actor.isToken) {
-            html.find('.price-modifier').remove();
-        } else {
-            html.find('.price-modifier').click(ev => this._priceModifier(ev));
+            // Price Modifier
+            if (this.actor.isToken) {
+                html.find('.price-modifier').remove();
+            } else {
+                html.find('.price-modifier').click(ev => this._priceModifier(ev));
+            }
         }
-        
 
+        // Buy Item
+        html.find('.item-buy').click(ev => this._buyItem(ev));
+
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle buy item
+     * @private
+     */
+    _buyItem(event) {
+        event.preventDefault();
+        console.log("Loot Sheet | Buy Item clicked");
+        //console.log(this.actor);
+
+        if (game.user.actorId) {
+            let currentActor = game.actors.get(game.user.actorId);
+
+            let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+            let newItem = duplicate(this.actor.getEmbeddedEntity("OwnedItem", itemId));
+
+            let applyChanges = false;
+            let d = new Dialog({
+                title: "Quantity",
+                content: `
+                <form>
+                    <div class="form-group">
+                        <label>Quantity:</label>
+                        <input type="text" id="quantity" name="quantity" value="${newItem.data.quantity}">
+                    </div>
+                </form>
+                `,
+                buttons: {
+                    yes: {
+                        icon: "<i class='fas fa-check'></i>",
+                        label: "Apply Changes",
+                        callback: () => applyChanges = true
+                    },
+                    no: {
+                        icon: "<i class='fas fa-times'></i>",
+                        label: "Cancel Changes"
+                    },
+                },
+                default: "yes",
+                close: () => {
+                    if (applyChanges) {
+                        let quantity = document.getElementById('quantity').value;
+
+                        if (isNaN(quantity)) {
+                            console.log("Loot Sheet | Item quantity invalid");
+                            return;
+                        }
+
+                        let itemCost = quantity * newItem.data.price;
+                        let currentActorFunds = duplicate(currentActor.data.data.currency);
+                        let conversionRate = { "pp": 10, "gp": 1, "ep": 0.5, "sp": 0.1, "cp": 0.01 };
+                        let currentActorFundsAsGold = 0;
+
+                        for (let currency in currentActorFunds) {
+                            currentActorFundsAsGold += currentActorFunds[currency] * conversionRate[currency];
+                        }
+
+                        if (itemCost >= currentActorFundsAsGold) {
+                            console.log("Loot Sheet | Not enough funds to purchase item")
+                            return;
+                        }
+
+                        currentActorFundsAsGold -= itemCost;
+
+                        for (let currency in currentActorFunds) {
+                            currentActorFunds[currency] = Math.floor(currentActorFundsAsGold / conversionRate[currency]);
+                            currentActorFundsAsGold -= currentActorFunds[currency] * conversionRate[currency];
+                        }
+
+                        newItem.data.quantity = quantity;
+                        currentActor.update({"data.currency": currentActorFunds});
+                        currentActor.createEmbeddedEntity("OwnedItem", newItem);
+                    }
+                }
+            })
+            d.render(true);
+        } else {
+            console.log("Loot Sheet | No active character for user");
+        }
     }
 
     /* -------------------------------------------- */
