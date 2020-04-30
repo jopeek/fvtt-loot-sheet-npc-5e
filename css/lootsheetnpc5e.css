@@ -80,6 +80,15 @@ section.sheet-content.content {
   font-size: 10px;
 }
 
+.dnd5e.sheet.actor .inventory-list .item-controls {
+  flex: 0 0 66px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  justify-content: flex-end;
+}
+
 .dnd5e.sheet .sheet-header .charbutton {
 flex: 0 0 200px;
 margin: auto;
