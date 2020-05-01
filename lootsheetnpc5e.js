@@ -42,7 +42,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (game.user.isGM) sheetData.isGM = true;
         else sheetData.isGM = false;
         //console.log("sheetData.isGM: ", sheetData.isGM);
-
+        //console.log(this.actor);
+        
+        sheetData.sheetTypeDescription = this._getSheetTypeDescription(sheetData.actor.data.lootsheettype);
+        sheetData.lootsheettype = sheetData.actor.data.lootsheettype;
         // Return data for rendering
         return sheetData;
     }
@@ -66,7 +69,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             // Price Modifier
             if (this.actor.isToken) {
-                html.find('.price-modifier').remove();
+                html.find('.price-modifier').prop('disabled', true);
+                html.find('.price-modifier').prop('title', 'Disabled on Token. Use Actor to modify prices.');
             } else {
                 html.find('.price-modifier').click(ev => this._priceModifier(ev));
             }
@@ -74,7 +78,32 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
+        
+        // Sheet Type
+        html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
 
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle sheet type change
+     * @private
+     */
+    async _changeSheetType(event, html) {
+        event.preventDefault();
+        console.log("Loot Sheet | Sheet Type changed", event);
+
+        let currentActor = this.actor;
+
+        let selectedIndex = event.target.selectedIndex;
+
+        let selectedItem = event.target[selectedIndex].value;
+
+        await currentActor.update({
+            ['data.lootsheettype']: selectedItem
+        });
+        
     }
 
     /* -------------------------------------------- */
@@ -93,6 +122,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
             let newItem = duplicate(this.actor.getEmbeddedEntity("OwnedItem", itemId));
+            let existingItem = this.actor.getEmbeddedEntity("OwnedItem", itemId);
 
             let applyChanges = false;
             let d = new Dialog({
@@ -101,7 +131,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 <form>
                     <div class="form-group">
                         <label>Quantity:</label>
-                        <input type=number min="1" id="quantity" name="quantity" value="${newItem.data.quantity}">
+                        <input type=number min="1" id="quantity" name="quantity" value="1">
                     </div>
                 </form>
                 `,
@@ -147,6 +177,18 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                             currentActorFunds[currency] = Math.floor(currentActorFundsAsGold / conversionRate[currency]);
                             currentActorFundsAsGold -= currentActorFunds[currency] * conversionRate[currency];
                         }
+                        
+                        // const update = {_id: existingItem._id, "data.quantity": existingItem.data.quantity - quantity};
+
+                        // //temporarily elevate privileges in order to update the item quantity
+                        // //let playerId = field[0].name;
+
+                        // console.log("Loot Sheet | Current actor", currentActor);
+                        // console.log("Loot Sheet | Current actor", game.user);
+
+                        // this._updatePermissions(currentActor.data, game.user.playerId, 1, event);
+
+                        //this.actor.updateEmbeddedEntity("OwnedItem", update);
 
                         newItem.data.quantity = quantity;
                         currentActor.update({"data.currency": currentActorFunds});
@@ -348,25 +390,18 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         //console.log("Loot Sheet | Current actor: " + playerId);
 
+        this._updatePermissions(actorData, playerId, newLevel, event);
 
+        this._onSubmit(event);
+    }
+
+    _updatePermissions(actorData, playerId, newLevel, event) {
         // Read player permission on this actor and adjust to new level
         let currentPermissions = duplicate(actorData.permission);
-
-        //console.log("Loot Sheet | currentPermissions ", currentPermissions);
-
-        
         currentPermissions[playerId] = newLevel;
-        
-
-        //console.log("Loot Sheet | updated currentPermissions ", currentPermissions);
-
-        //console.log("Loot Sheet | this.actor.permission after update ", this.actor.data.permission);
-		
         // Save updated player permissions
         const lootPermissions = new PermissionControl(this.actor);
         lootPermissions._updateObject(event, currentPermissions);
-
-        this._onSubmit(event);
     }
 
     /* -------------------------------------------- */
@@ -493,11 +528,25 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      */
     _getPermissionDescription(level) {
         const description = {
-            0: "None (cannot access actor)",
-            2: "Observer (access to actor but cannot access items)",
+            0: "None (cannot access sheet)",
+            2: "Observer (access to sheet but can only purchase items if merchant sheet type)",
             3: "Owner (can access items and share coins)"
         };
         return description[level];
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Get the font-awesome icon used to display the permission level.
+     * @private
+     */
+    _getSheetTypeDescription(type) {
+        const description = {
+            "Loot": `Hides purchase button.`,
+            "Merchant": `Allows purchasing of items by any character with Observer or greater permissions.`
+        };
+        return description[type];
     }
 
     /* -------------------------------------------- */
@@ -651,7 +700,12 @@ Hooks.on('preCreateOwnedItem', (actor, item, data) => {
 });
 
 Hooks.once("init", () => {
-	
+    
+    Handlebars.registerHelper('ifeq', function (a, b, options) {
+        if (a == b) { return options.fn(this); }
+        return options.inverse(this);
+    });
+
 	game.settings.register("lootsheetnpc5e", "changeScrollIcon", {
 		name: "Change icon for Spell Scrolls?",
 		hint: "Changes the icon for spell scrolls to a scroll icon. If left unchecked, retains the spell's icon.",

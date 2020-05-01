@@ -1,131 +1,171 @@
+
+
 .loot-sheet-npc .gm-section {
-  /* height: 48px; */
-  color: #000;
-  /* font-weight: 700; */
-  font-size: 20px;
-  margin-top: 0.5rem;
-  text-align: center;
-  border-top: 1px solid #CCC;
-  border-bottom: 1px solid #CCC;
-  font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
-  font-size: 20px;
-  color: #4b4a44;
-  font-size: 18px;
+	/* height: 48px; */
+	color: #000;
+	/* font-weight: 700; */
+	font-size: 20px;
+	margin-top: 0.5rem;
+	text-align: center;
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
+	font-size: 20px;
+	color: #4b4a44;
+	font-size: 18px;
 }
+
 .loot-sheet-npc .gm-header {
-margin-top: 0.5rem;
+	margin-top: 0.5rem;
 }
-.loot-sheet-npc .gm-settings .permissions-list, 
+
+.loot-sheet-npc .gm-settings .permissions-list,
 .loot-sheet-npc .gm-settings .coin-list {
-margin: 0;
-padding: 0;
-list-style: none;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
+
+.loot-sheet-npc .gm-settings .sheet-types {
+	display: flex;
+	margin-right: 20px;
+}
+
+.loot-sheet-npc .gm-settings .coins-list {
+	padding-left: 24px;
+}
+
+.loot-sheet-npc .gm-settings h4.sheet-name {
+	flex: 1;
+	margin: 0 0 0 24px;
+	line-height: 22px;
+}
+
 .loot-sheet-npc .gm-settings .permission,
 .loot-sheet-npc .gm-settings .denomination {
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-justify-content: flex-start;
-height: 21px;
-line-height: 21px;
-border-bottom: 1px solid #CCC;
-font-size: 13px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	height: 21px;
+	line-height: 21px;
+	border-bottom: 1px solid #CCC;
+	font-size: 13px;
 }
+
+.loot-sheet-npc .gm-settings .sheet-type-info {
+  color: #7a7971;
+  margin: 6px 20px 6px 24px;
+}
+
 .loot-sheet-npc .gm-settings .permission,
-.loot-sheet-npc .gm-settings .denomination > * {
-flex: 1;
+.loot-sheet-npc .gm-settings .denomination>* {
+	flex: 1;
+  flex-wrap: inherit;
+  height: auto;
 }
+
 .loot-sheet-npc .gm-settings .permission .permission-name {
-margin: 0;
+	margin: 0;
 }
+
 .loot-sheet-npc .gm-settings .permission .permission-proficiency {
-text-align: center;
-flex: 0 0 24px;
+	text-align: center;
+	flex: 0 0 24px;
 }
+
 .loot-sheet-npc .gm-settings .permission .permission-proficiency i.fa-circle {
-font-size: 10px;
+	font-size: 10px;
 }
+
 .loot-sheet-npc .gm-settings .split-coins {
-width: 95%;
+	width: 95%;
 }
 
 .loot-sheet-npc.sheet .window-content form {
-overflow: auto !important;
+	overflow: auto !important;
 }
 
 img.sheet-profile {
-border: none;
-max-width: 220px;
-max-height: 220px;
+	border: none;
+	max-width: 220px;
+	max-height: 220px;
 }
 
 section.sheet-sidebar.sidebar {
-flex: 0 0 250px;
-border-bottom: 2px groove #eeede0;
-  border-right: 2px groove #eeede0;
+	flex: 0 0 250px;
+	border-bottom: 2px groove #eeede0;
+	border-right: 2px groove #eeede0;
 }
 
 .sheet-profile-img {
-text-align: center;
+	text-align: center;
 }
 
 section.sheet-content.content {
-  border-bottom: 2px groove #eeede0;
+	border-bottom: 2px groove #eeede0;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-price, .loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity {
-  flex: 0 0 100px;
-  color: #666;
-  font-size: 10px;
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-price,
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity {
+	flex: 0 0 100px;
+	color: #666;
+	font-size: 10px;
 }
 
 .loot-sheet-npc.sheet.actor .inventory-list .item-controls {
-  flex: 0 0 66px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  justify-content: flex-end;
+	flex: 0 0 66px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	justify-content: flex-end;
 }
 
 .loot-sheet-npc.sheet .sheet-header .charbutton {
-flex: 0 0 200px;
-margin: auto;
-text-align: right;
+	flex: 0 0 200px;
+	margin: auto;
+	text-align: right;
 }
 
 button.price-modifier {
-width: auto;
-padding: 1px 10px;
-margin-right: 5px;
+	width: auto;
+	padding: 1px 10px;
+	margin-right: 5px;
 }
 
 .loot-sheet-npc.sheet .sheet-navigation {
-margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 input#price-modifier-percent-display {
-background: none;
-border: 1px solid transparent;
-width: 50px;
+	background: none;
+	border: 1px solid transparent;
+	width: 50px;
 }
 
 input#quantity {
-  background: none;
-  border: 1px solid #111;
+	background: none;
+	border: 1px solid #111;
 }
 
-input#price-modifier-percent-display:hover, input#price-modifier-percent-display:focus,
-input#quantity:hover, input#quantity:focus {
-border: 1px solid #111;
-box-shadow: 0 0 8px red;
+input#price-modifier-percent-display:hover,
+input#price-modifier-percent-display:focus,
+input#quantity:hover,
+input#quantity:focus {
+	border: 1px solid #111;
+	box-shadow: 0 0 8px red;
 }
 
 .loot-sheet-npc .sheet-profile-img {
-  padding: 10px;
+	padding: 10px;
 }
 
 .loot-sheet-npc.sheet.actor .editor {
-height: 600px;
+	height: 600px;
 }
+
+.loot-sheet-npc.sheet .sheet-header h1 input {
+	margin: 0px;
+}
+
