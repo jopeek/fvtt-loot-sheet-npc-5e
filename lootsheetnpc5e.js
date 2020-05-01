@@ -101,19 +101,19 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 <form>
                     <div class="form-group">
                         <label>Quantity:</label>
-                        <input type="text" id="quantity" name="quantity" value="${newItem.data.quantity}">
+                        <input type=number min="1" id="quantity" name="quantity" value="${newItem.data.quantity}">
                     </div>
                 </form>
                 `,
                 buttons: {
                     yes: {
                         icon: "<i class='fas fa-check'></i>",
-                        label: "Apply Changes",
+                        label: "Purchase",
                         callback: () => applyChanges = true
                     },
                     no: {
                         icon: "<i class='fas fa-times'></i>",
-                        label: "Cancel Changes"
+                        label: "Cancel"
                     },
                 },
                 default: "yes",
@@ -123,6 +123,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
                         if (isNaN(quantity)) {
                             console.log("Loot Sheet | Item quantity invalid");
+                            return ui.notifications.error(`Item quantity invalid.`);
                             return;
                         }
 
@@ -137,7 +138,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
                         if (itemCost >= currentActorFundsAsGold) {
                             console.log("Loot Sheet | Not enough funds to purchase item")
-                            return;
+                            return ui.notifications.error(`Not enough funds to purchase item.`);
                         }
 
                         currentActorFundsAsGold -= itemCost;
@@ -150,12 +151,28 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                         newItem.data.quantity = quantity;
                         currentActor.update({"data.currency": currentActorFunds});
                         currentActor.createEmbeddedEntity("OwnedItem", newItem);
+
+                        let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
+
+                        if (buyChat) {
+                            let message = `${currentActor.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.`;
+                            //message += msg.join(",");
+                            ChatMessage.create({
+                                user: game.user._id,
+                                speaker: {
+                                    actor: this.actor,
+                                    alias: this.actor.name
+                                },
+                                content: message
+                            });
+                        }
                     }
                 }
             })
             d.render(true);
         } else {
             console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
         }
     }
 
@@ -638,6 +655,15 @@ Hooks.once("init", () => {
 	game.settings.register("lootsheetnpc5e", "changeScrollIcon", {
 		name: "Change icon for Spell Scrolls?",
 		hint: "Changes the icon for spell scrolls to a scroll icon. If left unchecked, retains the spell's icon.",
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean
+    });
+    
+    game.settings.register("lootsheetnpc5e", "buyChat", {
+		name: "Display chat message for purchases?",
+		hint: "If enabled, a chat message will display purchases of items from the loot sheet.",
 		scope: "world",
 		config: true,
 		default: true,

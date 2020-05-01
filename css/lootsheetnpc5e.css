@@ -1,4 +1,4 @@
-.npc-sheet .gm-section {
+.loot-sheet-npc .gm-section {
   /* height: 48px; */
   color: #000;
   /* font-weight: 700; */
@@ -12,17 +12,17 @@
   color: #4b4a44;
   font-size: 18px;
 }
-.npc-sheet .gm-header {
+.loot-sheet-npc .gm-header {
 margin-top: 0.5rem;
 }
-.npc-sheet .gm-settings .permissions-list, 
-.npc-sheet .gm-settings .coin-list {
+.loot-sheet-npc .gm-settings .permissions-list, 
+.loot-sheet-npc .gm-settings .coin-list {
 margin: 0;
 padding: 0;
 list-style: none;
 }
-.npc-sheet .gm-settings .permission,
-.npc-sheet .gm-settings .denomination {
+.loot-sheet-npc .gm-settings .permission,
+.loot-sheet-npc .gm-settings .denomination {
 display: flex;
 flex-direction: row;
 flex-wrap: wrap;
@@ -32,25 +32,25 @@ line-height: 21px;
 border-bottom: 1px solid #CCC;
 font-size: 13px;
 }
-.npc-sheet .gm-settings .permission,
-.npc-sheet .gm-settings .denomination > * {
+.loot-sheet-npc .gm-settings .permission,
+.loot-sheet-npc .gm-settings .denomination > * {
 flex: 1;
 }
-.npc-sheet .gm-settings .permission .permission-name {
+.loot-sheet-npc .gm-settings .permission .permission-name {
 margin: 0;
 }
-.npc-sheet .gm-settings .permission .permission-proficiency {
+.loot-sheet-npc .gm-settings .permission .permission-proficiency {
 text-align: center;
 flex: 0 0 24px;
 }
-.npc-sheet .gm-settings .permission .permission-proficiency i.fa-circle {
+.loot-sheet-npc .gm-settings .permission .permission-proficiency i.fa-circle {
 font-size: 10px;
 }
-.npc-sheet .gm-settings .split-coins {
+.loot-sheet-npc .gm-settings .split-coins {
 width: 95%;
 }
 
-.dnd5e.sheet .window-content form {
+.loot-sheet-npc.sheet .window-content form {
 overflow: auto !important;
 }
 
@@ -74,13 +74,13 @@ section.sheet-content.content {
   border-bottom: 2px groove #eeede0;
 }
 
-.dnd5e.sheet.actor .inventory-list .item .item-price, .dnd5e.sheet.actor .inventory-list .item .item-quantity {
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-price, .loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity {
   flex: 0 0 100px;
   color: #666;
   font-size: 10px;
 }
 
-.dnd5e.sheet.actor .inventory-list .item-controls {
+.loot-sheet-npc.sheet.actor .inventory-list .item-controls {
   flex: 0 0 66px;
   display: flex;
   flex-direction: row;
@@ -89,7 +89,7 @@ section.sheet-content.content {
   justify-content: flex-end;
 }
 
-.dnd5e.sheet .sheet-header .charbutton {
+.loot-sheet-npc.sheet .sheet-header .charbutton {
 flex: 0 0 200px;
 margin: auto;
 text-align: right;
@@ -101,7 +101,7 @@ padding: 1px 10px;
 margin-right: 5px;
 }
 
-.dnd5e.sheet .sheet-navigation {
+.loot-sheet-npc.sheet .sheet-navigation {
 margin-bottom: 15px;
 }
 
@@ -111,7 +111,13 @@ border: 1px solid transparent;
 width: 50px;
 }
 
-input#price-modifier-percent-display:hover, input#price-modifier-percent-display:focus {
+input#quantity {
+  background: none;
+  border: 1px solid #111;
+}
+
+input#price-modifier-percent-display:hover, input#price-modifier-percent-display:focus,
+input#quantity:hover, input#quantity:focus {
 border: 1px solid #111;
 box-shadow: 0 0 8px red;
 }
