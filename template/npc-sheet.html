@@ -48,6 +48,7 @@
                 <div class="sheet-type-info"><i class="fas fa-info-circle"></i> {{sheetTypeDescription}}</div>
                 
                 <h3 class="gm-header"><i class="fas fa-users"></i> Permissions</h3>
+                <div class="sheet-type-info"><i class="fas fa-info-circle"></i> Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.</div>
                 <ol class="permissions-list">
                     {{#each actor.flags.loot.players as |player p|}}
                         <li class="permission" data-skill="{{p}}">

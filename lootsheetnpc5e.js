@@ -44,6 +44,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //console.log("sheetData.isGM: ", sheetData.isGM);
         //console.log(this.actor);
         
+        if (sheetData.actor.data.lootsheettype === undefined) sheetData.actor.data.lootsheettype = "Loot";
         sheetData.sheetTypeDescription = this._getSheetTypeDescription(sheetData.actor.data.lootsheettype);
         sheetData.lootsheettype = sheetData.actor.data.lootsheettype;
         // Return data for rendering
