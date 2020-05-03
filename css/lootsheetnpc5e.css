@@ -56,7 +56,13 @@
 .loot-sheet-npc .gm-settings .sheet-type-info,
 .loot-sheet-npc .gm-settings .permission-info  {
   color: #7a7971;
-  margin: 6px 0 6px 24px;
+  margin: 6px 6px 6px 24px;
+  display: none;
+}
+
+.loot-sheet-npc .gm-settings .help {
+	color: #7a7971;
+	font-size: 13px;
 }
 
 .loot-sheet-npc .gm-settings .permission,
@@ -115,7 +121,7 @@ section.sheet-content.content {
 }
 
 .loot-sheet-npc.sheet.actor .inventory-list .item-controls {
-	flex: 0 0 66px;
+	flex: 0 0 100px !important;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
