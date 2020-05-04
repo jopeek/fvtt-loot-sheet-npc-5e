@@ -198,8 +198,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                         let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
 
                         if (buyChat) {
-                            let message = `${currentActor.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.`;
-                            //message += msg.join(",");
+                            let message = `
+                            <img src="${newItem.img}" height="30">
+                            <p>
+                                ${currentActor.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.
+                            </p>
+                            `;
+                            
                             ChatMessage.create({
                                 user: game.user._id,
                                 speaker: {
