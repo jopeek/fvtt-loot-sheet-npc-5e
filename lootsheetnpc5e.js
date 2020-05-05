@@ -75,6 +75,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             } else {
                 html.find('.price-modifier').click(ev => this._priceModifier(ev));
             }
+
+            html.find('.merchant-settings').change(ev => this._merchantSettingChange(ev));
+            html.find('.update-inventory').click(ev => this._merchantInventoryUpdate(ev));
         }
 
         // Buy Item
@@ -83,6 +86,80 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         // Sheet Type
         html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
 
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle merchant settings change
+     * @private
+     */
+    async _merchantSettingChange(event, html) {
+        event.preventDefault();
+        console.log("Loot Sheet | Merchant settings changed");
+
+        const moduleNamespace = "lootsheetnpc5e";
+        const expectedKeys = ["rolltable", "shopQty", "itemQty"];
+
+        let targetKey = event.target.name.split('.')[3];
+
+        if (expectedKeys.indexOf(targetKey) === -1) {
+            console.log(`Loot Sheet | Error changing stettings for "${targetKey}".`);
+            return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
+        }
+
+        if (event.target.value) {
+            await this.actor.setFlag(moduleNamespace, targetKey, event.target.value);
+        } else {
+            await this.actor.unsetFlag(moduleNamespace, targetKey, event.target.value);
+        }
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle merchant inventory update
+     * @private
+     */
+    async _merchantInventoryUpdate(event, html) {
+        event.preventDefault();
+        console.log("Loot Sheet | Merchant inventory update");
+
+        const moduleNamespace = "lootsheetnpc5e";
+        const rolltableName = this.actor.getFlag(moduleNamespace, "rolltable");
+        const shopQtyFormula = this.actor.getFlag(moduleNamespace, "shopQty") || "1";
+        const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
+
+        let rolltable = game.tables.getName(rolltableName);
+        if (!rolltable) {
+            console.log(`Loot Sheet | No RollTable found with name "${rolltableName}".`);
+            return ui.notifications.error(`No RollTable found with name "${rolltableName}".`);
+        }
+
+        let currentItems = this.actor.data.items.map(i => i._id);
+        await this.actor.deleteEmbeddedEntity("OwnedItem", currentItems);
+        
+        let shopQtyRoll = new Roll(shopQtyFormula);
+
+        shopQtyRoll.roll();
+        console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
+
+        for (let i = 0; i < shopQtyRoll.result; i++) {
+            const rollResult = rolltable.roll();
+
+            let newItem = game.items.get(rollResult[1].resultId);
+            if (!newItem) {
+                console.log(`Loot Sheet | No item found "${rollResult[1].resultId}".`);
+                ui.notifications.error(`No RollTable found with name "${rolltableName}".`);
+            }
+
+            let itemQtyRoll = new Roll(itemQtyFormula);
+            itemQtyRoll.roll();
+            console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
+            newItem.data.data.quantity = itemQtyRoll.result;
+
+            await this.actor.createEmbeddedEntity("OwnedItem", newItem);
+        }
     }
 
     /* -------------------------------------------- */
@@ -198,8 +275,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                         let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
 
                         if (buyChat) {
-                            let message = `${currentActor.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.`;
-                            //message += msg.join(",");
+                            let message = `
+                            <img src="${newItem.img}" height="30">
+                            <p>
+                                ${currentActor.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.
+                            </p>
+                            `;
+                            
                             ChatMessage.create({
                                 user: game.user._id,
                                 speaker: {
