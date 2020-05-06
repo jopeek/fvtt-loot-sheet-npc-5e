@@ -119,6 +119,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         event.preventDefault();
         console.log("Loot Sheet | Buy Item clicked");
 
+        let gmActive = false;
+        game.users.forEach((u) => { if (u.isGM) { gmActive = u.active; } });
+
+        if (!gmActive) {
+            return ui.notifications.error("The GM appears to be offline, they must be online to purchase an item.");
+        }
+
         if (this.token === null) {
             return ui.notifications.error(`You must purchase items from a token.`);
         }
