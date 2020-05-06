@@ -38,13 +38,17 @@
                 <h3 class="gm-header"><i class="fas fa-id-card"></i> Type <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
                 <div class="sheet-type-info">{{sheetTypeDescription}}</div>
                 <div class="sheet-types">
-                    <h4 class="sheet-name">Type of sheet: </h4>
-                    <select class="sheet-type" name="data.lootsheettype">
-                        {{#select data.lootsheettype}}
-                            <option value="Loot">Loot</option>
-                            <option value="Merchant">Merchant</option>
-                        {{/select}}
-                    </select>
+                    <div class="flexrow">
+                        <div class="flexcol"><h4 class="sheet-name">Type of sheet: </h4></div>
+                        <div class="flexcol">
+                            <select class="sheet-type" name="data.lootsheettype">
+                                {{#select data.lootsheettype}}
+                                    <option value="Loot">Loot</option>
+                                    <option value="Merchant">Merchant</option>
+                                {{/select}}
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 
                 <h3 class="gm-header"><i class="fas fa-users"></i> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
@@ -58,16 +62,39 @@
                         </li>
                     {{/each}}
                 </ol>
-                <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
-                <ol class="coins-list">
-                    {{#each actor.flags.loot.currency as |c i|}}
-                        <li class="denomination {{i}}">
-                            <label>{{ lookup ../config.currencies i }}:</label>
-                            <h4 class="denomination-value">{{c.value}} each</h4>
-                        </li>
-                    {{/each}}
-                </ol>
-                <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.ownerCount}} Ways</button>
+
+                {{#ifeq lootsheettype "Loot"}}
+                    <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
+                    <ol class="coins-list">
+                        {{#each actor.flags.loot.currency as |c i|}}
+                            <li class="denomination {{i}}">
+                                <label>{{ lookup ../config.currencies i }}:</label>
+                                <h4 class="denomination-value">{{c.value}} each</h4>
+                            </li>
+                        {{/each}}
+                    </ol>
+                    <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.ownerCount}} Ways</button>
+                {{/ifeq}}
+
+                {{#ifeq lootsheettype "Merchant"}}
+                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
+                    <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a RollTable. Specify the RollTable, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>
+                    <div class="merchant-settings">
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>Inventory Table: </h4></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.rolltable" type="text" data-dtype="String" placeholder="e.g. MyRollTable" value="{{data.flags.lootsheetnpc5e.rolltable}}"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>Shop Qty Formula: </h4></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{data.flags.lootsheetnpc5e.shopQty}}"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>Item Qty Formula: </h4></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{data.flags.lootsheetnpc5e.itemQty}}"/></div>
+                        </div>
+                    </div>
+                    <button class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
+                {{/ifeq}}
             </div>
 
             {{/if}}

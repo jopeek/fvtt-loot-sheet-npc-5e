@@ -26,9 +26,22 @@
 	list-style: none;
 }
 
-.loot-sheet-npc .gm-settings .sheet-types {
-	display: flex;
-	margin-right: 20px;
+.loot-sheet-npc .gm-settings .sheet-types,
+.loot-sheet-npc .gm-settings .merchant-settings {
+	margin-right: 10px;
+}
+
+.loot-sheet-npc .gm-settings .merchant-settings .flexrow {
+	border-bottom: 1px solid #CCC;
+	margin-bottom: 5px;
+}
+
+.loot-sheet-npc .gm-settings .merchant-settings .flexrow h4 {
+	margin: 2px 0 0 0;
+}
+
+.loot-sheet-npc .gm-settings .merchant-settings {
+	margin-left: 24px;
 }
 
 .loot-sheet-npc .gm-settings .coins-list {
@@ -54,7 +67,8 @@
 }
 
 .loot-sheet-npc .gm-settings .sheet-type-info,
-.loot-sheet-npc .gm-settings .permission-info  {
+.loot-sheet-npc .gm-settings .permission-info,
+.loot-sheet-npc .gm-settings .merchant-settings-info  {
   color: #7a7971;
   margin: 6px 6px 6px 24px;
   display: none;
