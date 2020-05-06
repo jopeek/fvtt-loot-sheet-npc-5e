@@ -233,7 +233,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                             console.log("Loot Sheet | Item quantity invalid");
                             return ui.notifications.error(`Item quantity invalid.`);
                         }
-
+                        console.log("Loot Sheet | Initiate socket");
                         game.socket.emit(LootSheet5eNPC.SOCKET, {
                             type: "buy",
                             buyerId: game.user.actorId,
@@ -812,7 +812,18 @@ Hooks.once("init", () => {
         let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
 
         if (buyChat) {
-            let message = `${buyer.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.`;
+            let message =   `
+                            <div class="dnd5e chat-card item-card" data-actor-id="${buyer._id}" data-item-id="${newItem._id}">
+                                <header class="card-header flexrow">
+                                    <img src="${newItem.img}" title="${newItem.name}" width="36" height="36">
+                                    <h3 class="item-name">${newItem.name}</h3>
+                                </header>
+
+                                <div class="card-content">
+                                    <p>${buyer.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.</p>
+                                </div>
+                            </div>
+                            `;
             ChatMessage.create({
                 user: game.user._id,
                 speaker: {
