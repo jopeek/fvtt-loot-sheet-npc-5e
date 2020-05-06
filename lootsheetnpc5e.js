@@ -4,6 +4,8 @@ import {
 
 class LootSheet5eNPC extends ActorSheet5eNPC {
 
+    static SOCKET = "module.lootsheetnpc5e";
+
     get template() {
         // adding the #equals and #unequals handlebars helper
         Handlebars.registerHelper('equals', function(arg1, arg2, options) {
@@ -116,14 +118,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     _buyItem(event) {
         event.preventDefault();
         console.log("Loot Sheet | Buy Item clicked");
-        //console.log(this.actor);
 
+        if (this.token === null) {
+            return ui.notifications.error(`You must purchase items from a token.`);
+        }
         if (game.user.actorId) {
-            let currentActor = game.actors.get(game.user.actorId);
-
             let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-            let newItem = duplicate(this.actor.getEmbeddedEntity("OwnedItem", itemId));
-            let existingItem = this.actor.getEmbeddedEntity("OwnedItem", itemId);
 
             let applyChanges = false;
             let d = new Dialog({
@@ -155,63 +155,18 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                         if (isNaN(quantity)) {
                             console.log("Loot Sheet | Item quantity invalid");
                             return ui.notifications.error(`Item quantity invalid.`);
-                            return;
                         }
 
-                        let itemCost = quantity * newItem.data.price;
-                        let currentActorFunds = duplicate(currentActor.data.data.currency);
-                        let conversionRate = { "pp": 10, "gp": 1, "ep": 0.5, "sp": 0.1, "cp": 0.01 };
-                        let currentActorFundsAsGold = 0;
-
-                        for (let currency in currentActorFunds) {
-                            currentActorFundsAsGold += currentActorFunds[currency] * conversionRate[currency];
-                        }
-
-                        if (itemCost >= currentActorFundsAsGold) {
-                            console.log("Loot Sheet | Not enough funds to purchase item")
-                            return ui.notifications.error(`Not enough funds to purchase item.`);
-                        }
-
-                        currentActorFundsAsGold -= itemCost;
-
-                        for (let currency in currentActorFunds) {
-                            currentActorFunds[currency] = Math.floor(currentActorFundsAsGold / conversionRate[currency]);
-                            currentActorFundsAsGold -= currentActorFunds[currency] * conversionRate[currency];
-                        }
-                        
-                        // const update = {_id: existingItem._id, "data.quantity": existingItem.data.quantity - quantity};
-
-                        // //temporarily elevate privileges in order to update the item quantity
-                        // //let playerId = field[0].name;
-
-                        // console.log("Loot Sheet | Current actor", currentActor);
-                        // console.log("Loot Sheet | Current actor", game.user);
-
-                        // this._updatePermissions(currentActor.data, game.user.playerId, 1, event);
-
-                        //this.actor.updateEmbeddedEntity("OwnedItem", update);
-
-                        newItem.data.quantity = quantity;
-                        currentActor.update({"data.currency": currentActorFunds});
-                        currentActor.createEmbeddedEntity("OwnedItem", newItem);
-
-                        let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
-
-                        if (buyChat) {
-                            let message = `${currentActor.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.`;
-                            //message += msg.join(",");
-                            ChatMessage.create({
-                                user: game.user._id,
-                                speaker: {
-                                    actor: this.actor,
-                                    alias: this.actor.name
-                                },
-                                content: message
-                            });
-                        }
+                        game.socket.emit(LootSheet5eNPC.SOCKET, {
+                            type: "buy",
+                            buyerId: game.user.actorId,
+                            tokenId: this.token.id,
+                            itemId: itemId,
+                            quantity: quantity
+                        });
                     }
                 }
-            })
+            });
             d.render(true);
         } else {
             console.log("Loot Sheet | No active character for user");
@@ -725,4 +680,91 @@ Hooks.once("init", () => {
 		type: Boolean
 	});
 	
+    function errorMessageToActor(target, message) {
+        game.socket.emit(LootSheet5eNPC.SOCKET, {
+            type: "error",
+            targetId: target.id,
+            message: message
+        });
+    }
+
+    function transaction(seller, buyer, itemId, quantity) {
+        let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
+
+        // If the buyer attempts to buy more then what's in stock, buy all the stock.
+        if (sellItem.data.quantity < quantity) {
+            quantity = sellItem.data.quantity;
+        }
+
+        let itemCost = quantity * sellItem.data.price;
+        let buyerFunds = duplicate(buyer.data.data.currency);
+        const conversionRate = { "pp": 10, "gp": 1, "ep": 0.5, "sp": 0.1, "cp": 0.01 };
+        let buyerFundsAsGold = 0;
+
+        for (let currency in buyerFunds) {
+            buyerFundsAsGold += buyerFunds[currency] * conversionRate[currency];
+        }
+
+        if (itemCost >= buyerFundsAsGold) {
+            errorMessageToActor(buyer, `Not enough funds to purchase item.`);
+            return;
+        }
+
+        buyerFundsAsGold -= itemCost;
+
+        for (let currency in buyerFunds) {
+            buyerFunds[currency] = Math.floor(buyerFundsAsGold / conversionRate[currency]);
+            buyerFundsAsGold -= buyerFunds[currency] * conversionRate[currency];
+        }
+
+        let newItem = duplicate(sellItem);
+        const update = {_id: itemId, "data.quantity": sellItem.data.quantity - quantity};
+
+        if (update["data.quantity"] === 0) {
+            seller.deleteEmbeddedEntity("OwnedItem", itemId);
+        }
+        else {
+            seller.updateEmbeddedEntity("OwnedItem", update);
+        }
+
+        newItem.data.quantity = quantity;
+        buyer.update({"data.currency": buyerFunds});
+        buyer.createEmbeddedEntity("OwnedItem", newItem);
+
+        let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
+
+        if (buyChat) {
+            let message = `${buyer.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.`;
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: {
+                    actor: seller,
+                    alias: seller.name
+                },
+                content: message
+            });
+        }
+    }
+
+    game.socket.on(LootSheet5eNPC.SOCKET, data => {
+        console.log("Loot Sheet | Socket Message: ", data);
+        if (game.user.isGM) {
+            if (data.type === "buy") {
+                let buyer = game.actors.get(data.buyerId);
+                let seller = canvas.tokens.get(data.tokenId);
+
+                if (buyer && seller && seller.actor) {
+                    transaction(seller.actor, buyer, data.itemId, data.quantity);
+                }
+                else if (!seller) {
+                    errorMessageToActor(buyer, "GM not available, the GM must on the same scene to purchase an item.")
+                    ui.notifications.error("Player attempted to purchase an item on a different scene.");
+                }
+            }
+        }
+        if (data.type === "error" && data.targetId === game.user.actorId) {
+            console.log("Loot Sheet | Transaction Error: ", data.message);
+            return ui.notifications.error(data.message);
+        }
+    });
 });
