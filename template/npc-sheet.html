@@ -78,10 +78,10 @@
 
                 {{#ifeq lootsheettype "Merchant"}}
                     <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
-                    <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a RollTable. Specify the RollTable, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>
+                    <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a Rollable Table. Specify the Rollable Table's name, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>
                     <div class="merchant-settings">
                         <div class="flexrow">
-                            <div class="flexcol"><h4>Inventory Table: </h4></div>
+                            <div class="flexcol"><h4>Rollable Table: </h4></div>
                             <div class="flexcol"><input name="data.flags.lootsheetnpc5e.rolltable" type="text" data-dtype="String" placeholder="e.g. MyRollTable" value="{{data.flags.lootsheetnpc5e.rolltable}}"/></div>
                         </div>
                         <div class="flexrow">

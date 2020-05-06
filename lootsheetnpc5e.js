@@ -134,8 +134,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
-            console.log(`Loot Sheet | No RollTable found with name "${rolltableName}".`);
-            return ui.notifications.error(`No RollTable found with name "${rolltableName}".`);
+            console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
+            return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
         }
 
         let currentItems = this.actor.data.items.map(i => i._id);
@@ -152,7 +152,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             let newItem = game.items.get(rollResult[1].resultId);
             if (!newItem) {
                 console.log(`Loot Sheet | No item found "${rollResult[1].resultId}".`);
-                ui.notifications.error(`No RollTable found with name "${rolltableName}".`);
+                ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
             }
 
             let itemQtyRoll = new Roll(itemQtyFormula);
