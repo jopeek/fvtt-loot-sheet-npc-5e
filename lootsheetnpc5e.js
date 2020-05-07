@@ -810,8 +810,33 @@ Hooks.once("init", () => {
 		config: true,
 		default: true,
 		type: Boolean
-	});
-	
+    });
+    
+    function chatMessage (speaker, owner, message, item) {
+        if (game.settings.get("lootsheetnpc5e", "buyChat")) {
+            message =   `
+            <div class="dnd5e chat-card item-card" data-actor-id="${owner._id}" data-item-id="${item._id}">
+                <header class="card-header flexrow">
+                    <img src="${item.img}" title="${item.name}" width="36" height="36">
+                    <h3 class="item-name">${item.name}</h3>
+                </header>
+
+                <div class="card-content">
+                    <p>` + message + `</p>
+                </div>
+            </div>
+            `;
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: {
+                    actor: speaker,
+                    alias: speaker.name
+                },
+                content: message
+            });
+        }
+    }
+
     function errorMessageToActor(target, message) {
         game.socket.emit(LootSheet5eNPC.SOCKET, {
             type: "error",
@@ -851,17 +876,10 @@ Hooks.once("init", () => {
     function lootItem(container, looter, itemId, quantity) {
         let moved = moveItem(container, looter, itemId, quantity);
 
-        if (game.settings.get("lootsheetnpc5e", "buyChat")) {
-            let message = `${looter.name} looted ${moved.quantity} x ${moved.item.name}.`;
-            ChatMessage.create({
-                user: game.user._id,
-                speaker: {
-                    actor: looter,
-                    alias: looter.name
-                },
-                content: message
-            });
-        }
+        chatMessage(
+            container, looter,
+            `${looter.name} looted ${moved.quantity} x ${moved.item.name}.`,
+            moved.item);
 
     }
 
@@ -898,30 +916,10 @@ Hooks.once("init", () => {
         buyer.update({"data.currency": buyerFunds});
         let moved = moveItem(seller, buyer, itemId, quantity);
 
-        let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
-
-        if (buyChat) {
-            let message =   `
-                            <div class="dnd5e chat-card item-card" data-actor-id="${buyer._id}" data-item-id="${moved.item._id}">
-                                <header class="card-header flexrow">
-                                    <img src="${moved.item.img}" title="${moved.item.name}" width="36" height="36">
-                                    <h3 class="item-name">${moved.item.name}</h3>
-                                </header>
-
-                                <div class="card-content">
-                                    <p>${buyer.name} purchases ${moved.quantity} x ${moved.item.name} for ${itemCost}gp.</p>
-                                </div>
-                            </div>
-                            `;
-            ChatMessage.create({
-                user: game.user._id,
-                speaker: {
-                    actor: seller,
-                    alias: seller.name
-                },
-                content: message
-            });
-        }
+        chatMessage(
+            seller, buyer,
+            `${buyer.name} purchases ${quantity} x ${moved.item.name} for ${itemCost}gp.`,
+            moved.item);
     }
 
     game.socket.on(LootSheet5eNPC.SOCKET, data => {
