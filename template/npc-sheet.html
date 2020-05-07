@@ -40,13 +40,13 @@
             <!-- GM SETTINGS -->
             <div class="gm-settings" data-group="sidebar" data-tab="gm-settings">
                 <h3 class="gm-header"><i class="fas fa-id-card"></i> Type <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
-                <div class="sheet-type-info">{{sheetTypeDescription}}</div>
+                <div class="sheet-type-info">Loot: allows for distribution of coins across players<br>Merchant: allows players to purchase items directly from the sheet.</div>
                 <div class="sheet-types">
                     <div class="flexrow">
                         <div class="flexcol"><h4 class="sheet-name">Type of sheet: </h4></div>
                         <div class="flexcol">
-                            <select class="sheet-type" name="data.lootsheettype">
-                                {{#select data.lootsheettype}}
+                            <select class="sheet-type" name="data.flags.lootsheetnpc5e.lootsheettype">
+                                {{#select data.flags.lootsheetnpc5e.lootsheettype}}
                                     <option value="Loot">Loot</option>
                                     <option value="Merchant">Merchant</option>
                                 {{/select}}
@@ -86,7 +86,16 @@
                     <div class="merchant-settings">
                         <div class="flexrow">
                             <div class="flexcol"><h4>Rollable Table: </h4></div>
-                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.rolltable" type="text" data-dtype="String" placeholder="e.g. MyRollTable" value="{{data.flags.lootsheetnpc5e.rolltable}}"/></div>
+                            <div class="flexcol">
+                                <!-- <input name="data.flags.lootsheetnpc5e.rolltable" type="text" data-dtype="String" placeholder="e.g. MyRollTable" value="{{data.flags.lootsheetnpc5e.rolltable}}"/> -->
+                                <select class="sheet-rolltable" name="data.flags.lootsheetnpc5e.rolltable">
+                                    {{#select data.flags.lootsheetnpc5e.rolltable}}
+                                        {{#each rolltables as |table i|}}
+                                            <option value="{{table.name}}">{{table.name}}</option>
+                                        {{/each}}
+                                    {{/select}}
+                                </select>
+                            </div>
                         </div>
                         <div class="flexrow">
                             <div class="flexcol"><h4>Shop Qty Formula: </h4></div>
@@ -94,7 +103,7 @@
                         </div>
                         <div class="flexrow">
                             <div class="flexcol"><h4>Item Qty Formula: </h4></div>
-                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{data.flags.lootsheetnpc5e.itemQty}}"/></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{data.flags.lootsheetnpc5e.itemQty}}"/></div>
                         </div>
                     </div>
                     <button class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
