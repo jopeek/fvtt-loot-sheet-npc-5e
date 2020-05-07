@@ -2,6 +2,51 @@ import {
     ActorSheet5eNPC
 } from "../../systems/dnd5e/module/actor/sheets/npc.js";
 
+class QuantityDialog extends Dialog {
+    constructor(callback, options) {
+        if (typeof (options) !== "object") {
+            options = { };
+        }
+
+        let applyChanges = false;
+        super({
+            title: "Quantity",
+            content: `
+            <form>
+                <div class="form-group">
+                    <label>Quantity:</label>
+                    <input type=number min="1" id="quantity" name="quantity" value="1">
+                </div>
+            </form>`,
+            buttons: {
+                yes: {
+                    icon: "<i class='fas fa-check'></i>",
+                    label: options.acceptLabel ? options.acceptLabel : "Accept",
+                    callback: () => applyChanges = true
+                },
+                no: {
+                    icon: "<i class='fas fa-times'></i>",
+                    label: "Cancel"
+                },
+            },
+            default: "yes",
+            close: () => {
+                if (applyChanges) {
+                    var quantity = document.getElementById('quantity').value
+
+                    if (isNaN(quantity)) {
+                        console.log("Loot Sheet | Item quantity invalid");
+                        return ui.notifications.error(`Item quantity invalid.`);
+                    }
+
+                    callback(quantity);
+
+                }
+            }
+        });
+    }
+}
+
 class LootSheet5eNPC extends ActorSheet5eNPC {
 
     static SOCKET = "module.lootsheetnpc5e";
@@ -202,49 +247,19 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (game.user.actorId) {
             let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
 
-            let applyChanges = false;
-            let d = new Dialog({
-                title: "Quantity",
-                content: `
-                <form>
-                    <div class="form-group">
-                        <label>Quantity:</label>
-                        <input type=number min="1" id="quantity" name="quantity" value="1">
-                    </div>
-                </form>
-                `,
-                buttons: {
-                    yes: {
-                        icon: "<i class='fas fa-check'></i>",
-                        label: "Purchase",
-                        callback: () => applyChanges = true
-                    },
-                    no: {
-                        icon: "<i class='fas fa-times'></i>",
-                        label: "Cancel"
-                    },
+            let d = new QuantityDialog((quantity) => {
+                    game.socket.emit(LootSheet5eNPC.SOCKET, {
+                        type: "buy",
+                        buyerId: game.user.actorId,
+                        tokenId: this.token.id,
+                        itemId: itemId,
+                        quantity: quantity
+                    });
                 },
-                default: "yes",
-                close: () => {
-                    if (applyChanges) {
-                        let quantity = document.getElementById('quantity').value;
-
-                        if (isNaN(quantity)) {
-                            console.log("Loot Sheet | Item quantity invalid");
-                            return ui.notifications.error(`Item quantity invalid.`);
-                        }
-                        console.log("Loot Sheet | Initiate socket");
-                        game.socket.emit(LootSheet5eNPC.SOCKET, {
-                            type: "buy",
-                            buyerId: game.user.actorId,
-                            tokenId: this.token.id,
-                            itemId: itemId,
-                            quantity: quantity
-                        });
-
-                    }
+                {
+                    acceptLabel: "Purchase"
                 }
-            });
+            );
             d.render(true);
         } else {
             console.log("Loot Sheet | No active character for user");
