@@ -182,7 +182,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         event.preventDefault();
 
 
-        //return this.CreateRollTable();
+        //return this._createRollTable();
 
 
         
@@ -230,7 +230,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
     }
 
-    CreateRollTable() {
+    _createRollTable() {
 
         let type = "weapon";
 
