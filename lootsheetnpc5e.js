@@ -2,6 +2,51 @@ import {
     ActorSheet5eNPC
 } from "../../systems/dnd5e/module/actor/sheets/npc.js";
 
+class QuantityDialog extends Dialog {
+    constructor(callback, options) {
+        if (typeof (options) !== "object") {
+            options = { };
+        }
+
+        let applyChanges = false;
+        super({
+            title: "Quantity",
+            content: `
+            <form>
+                <div class="form-group">
+                    <label>Quantity:</label>
+                    <input type=number min="1" id="quantity" name="quantity" value="1">
+                </div>
+            </form>`,
+            buttons: {
+                yes: {
+                    icon: "<i class='fas fa-check'></i>",
+                    label: options.acceptLabel ? options.acceptLabel : "Accept",
+                    callback: () => applyChanges = true
+                },
+                no: {
+                    icon: "<i class='fas fa-times'></i>",
+                    label: "Cancel"
+                },
+            },
+            default: "yes",
+            close: () => {
+                if (applyChanges) {
+                    var quantity = document.getElementById('quantity').value
+
+                    if (isNaN(quantity)) {
+                        console.log("Loot Sheet | Item quantity invalid");
+                        return ui.notifications.error(`Item quantity invalid.`);
+                    }
+
+                    callback(quantity);
+
+                }
+            }
+        });
+    }
+}
+
 class LootSheet5eNPC extends ActorSheet5eNPC {
 
     static SOCKET = "module.lootsheetnpc5e";
@@ -88,7 +133,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
-        
+
+        // Loot Item
+        html.find('.item-loot').click(ev => this._lootItem(ev));
+
         // Sheet Type
         html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
 
@@ -260,55 +308,75 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         event.preventDefault();
         console.log("Loot Sheet | Buy Item clicked");
 
+        let gmActive = false;
+        game.users.forEach((u) => { if (u.isGM) { gmActive = u.active; } });
+
+        if (!gmActive) {
+            return ui.notifications.error("The GM appears to be offline, they must be online to purchase an item.");
+        }
+
         if (this.token === null) {
             return ui.notifications.error(`You must purchase items from a token.`);
         }
         if (game.user.actorId) {
             let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
 
-            let applyChanges = false;
-            let d = new Dialog({
-                title: "Quantity",
-                content: `
-                <form>
-                    <div class="form-group">
-                        <label>Quantity:</label>
-                        <input type=number min="1" id="quantity" name="quantity" value="1">
-                    </div>
-                </form>
-                `,
-                buttons: {
-                    yes: {
-                        icon: "<i class='fas fa-check'></i>",
-                        label: "Purchase",
-                        callback: () => applyChanges = true
-                    },
-                    no: {
-                        icon: "<i class='fas fa-times'></i>",
-                        label: "Cancel"
-                    },
+            let d = new QuantityDialog((quantity) => {
+                    game.socket.emit(LootSheet5eNPC.SOCKET, {
+                        type: "buy",
+                        buyerId: game.user.actorId,
+                        tokenId: this.token.id,
+                        itemId: itemId,
+                        quantity: quantity
+                    });
                 },
-                default: "yes",
-                close: () => {
-                    if (applyChanges) {
-                        let quantity = document.getElementById('quantity').value;
-
-                        if (isNaN(quantity)) {
-                            console.log("Loot Sheet | Item quantity invalid");
-                            return ui.notifications.error(`Item quantity invalid.`);
-                        }
-                        console.log("Loot Sheet | Initiate socket");
-                        game.socket.emit(LootSheet5eNPC.SOCKET, {
-                            type: "buy",
-                            buyerId: game.user.actorId,
-                            tokenId: this.token.id,
-                            itemId: itemId,
-                            quantity: quantity
-                        });
-
-                    }
+                {
+                    acceptLabel: "Purchase"
                 }
-            });
+            );
+            d.render(true);
+        } else {
+            console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
+        }
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle Loot item
+     * @private
+     */
+    _lootItem(event) {
+        event.preventDefault();
+        console.log("Loot Sheet | Loot Item clicked");
+
+        let gmActive = false;
+        game.users.forEach((u) => { if (u.isGM) { gmActive = u.active; } });
+
+        if (!gmActive) {
+            return ui.notifications.error("The GM appears to be offline, they must be online to purchase an item.");
+        }
+
+        if (this.token === null) {
+            return ui.notifications.error(`You must loot items from a token.`);
+        }
+        if (game.user.actorId) {
+            let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+
+            let d = new QuantityDialog((quantity) => {
+                    game.socket.emit(LootSheet5eNPC.SOCKET, {
+                        type: "loot",
+                        looterId: game.user.actorId,
+                        tokenId: this.token.id,
+                        itemId: itemId,
+                        quantity: quantity
+                    });
+                },
+                {
+                    acceptLabel: "Loot"
+                }
+            );
             d.render(true);
         } else {
             console.log("Loot Sheet | No active character for user");
@@ -798,25 +866,51 @@ Hooks.once("init", () => {
 		config: true,
 		default: true,
 		type: Boolean
-    });
+  });
     
-    game.settings.register("lootsheetnpc5e", "buyChat", {
+  game.settings.register("lootsheetnpc5e", "buyChat", {
 		name: "Display chat message for purchases?",
 		hint: "If enabled, a chat message will display purchases of items from the loot sheet.",
 		scope: "world",
 		config: true,
 		default: true,
 		type: Boolean
+  });
+    
+    function chatMessage (speaker, owner, message, item) {
+        if (game.settings.get("lootsheetnpc5e", "buyChat")) {
+            message =   `
+            <div class="dnd5e chat-card item-card" data-actor-id="${owner._id}" data-item-id="${item._id}">
+                <header class="card-header flexrow">
+                    <img src="${item.img}" title="${item.name}" width="36" height="36">
+                    <h3 class="item-name">${item.name}</h3>
+                </header>
+
+                <div class="card-content">
+                    <p>` + message + `</p>
+                </div>
+            </div>
+            `;
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: {
+                    actor: speaker,
+                    alias: speaker.name
+                },
+                content: message
+            });
+        }
+    }
 	});
     
     game.settings.register("lootsheetnpc5e", "clearInventory", {
-		name: "Clear inventory when generating new items from rollable table for Merchant type sheet?",
-		hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
-		scope: "world",
-		config: true,
-		default: false,
-		type: Boolean
-	});
+		  name: "Clear inventory when generating new items from rollable table for Merchant type sheet?",
+      hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
+      scope: "world",
+      config: true,
+      default: false,
+      type: Boolean
+    });
 	
     function errorMessageToActor(target, message) {
         game.socket.emit(LootSheet5eNPC.SOCKET, {
@@ -824,6 +918,44 @@ Hooks.once("init", () => {
             targetId: target.id,
             message: message
         });
+    }
+
+    function moveItem(source, destination, itemId, quantity) {
+        let item = source.getEmbeddedEntity("OwnedItem", itemId);
+
+        // Move all items if we select more than the quantity.
+        if (item.data.quantity < quantity) {
+            quantity = item.data.quantity;
+        }
+
+        let newItem = duplicate(item);
+        const update = {_id: itemId, "data.quantity": item.data.quantity - quantity};
+
+        if (update["data.quantity"] === 0) {
+            source.deleteEmbeddedEntity("OwnedItem", itemId);
+        }
+        else {
+            source.updateEmbeddedEntity("OwnedItem", update);
+        }
+
+        newItem.data.quantity = quantity;
+        destination.createEmbeddedEntity("OwnedItem", newItem);
+
+        return {
+            item: newItem,
+            quantity: quantity
+        };
+
+    }
+
+    function lootItem(container, looter, itemId, quantity) {
+        let moved = moveItem(container, looter, itemId, quantity);
+
+        chatMessage(
+            container, looter,
+            `${looter.name} looted ${moved.quantity} x ${moved.item.name}.`,
+            moved.item);
+
     }
 
     function transaction(seller, buyer, itemId, quantity) {
@@ -855,44 +987,14 @@ Hooks.once("init", () => {
             buyerFundsAsGold -= buyerFunds[currency] * conversionRate[currency];
         }
 
-        let newItem = duplicate(sellItem);
-        const update = {_id: itemId, "data.quantity": sellItem.data.quantity - quantity};
-
-        if (update["data.quantity"] === 0) {
-            seller.deleteEmbeddedEntity("OwnedItem", itemId);
-        }
-        else {
-            seller.updateEmbeddedEntity("OwnedItem", update);
-        }
-
-        newItem.data.quantity = quantity;
+        // Update buyer's gold from the buyer.
         buyer.update({"data.currency": buyerFunds});
-        buyer.createEmbeddedEntity("OwnedItem", newItem);
+        let moved = moveItem(seller, buyer, itemId, quantity);
 
-        let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
-
-        if (buyChat) {
-            let message =   `
-                            <div class="dnd5e chat-card item-card" data-actor-id="${buyer._id}" data-item-id="${newItem._id}">
-                                <header class="card-header flexrow">
-                                    <img src="${newItem.img}" title="${newItem.name}" width="36" height="36">
-                                    <h3 class="item-name">${newItem.name}</h3>
-                                </header>
-
-                                <div class="card-content">
-                                    <p>${buyer.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.</p>
-                                </div>
-                            </div>
-                            `;
-            ChatMessage.create({
-                user: game.user._id,
-                speaker: {
-                    actor: seller,
-                    alias: seller.name
-                },
-                content: message
-            });
-        }
+        chatMessage(
+            seller, buyer,
+            `${buyer.name} purchases ${quantity} x ${moved.item.name} for ${itemCost}gp.`,
+            moved.item);
     }
 
     game.socket.on(LootSheet5eNPC.SOCKET, data => {
@@ -908,6 +1010,19 @@ Hooks.once("init", () => {
                 else if (!seller) {
                     errorMessageToActor(buyer, "GM not available, the GM must on the same scene to purchase an item.")
                     ui.notifications.error("Player attempted to purchase an item on a different scene.");
+                }
+            }
+
+            if (data.type === "loot") {
+                let looter = game.actors.get(data.looterId);
+                let container = canvas.tokens.get(data.tokenId);
+
+                if (looter && container && container.actor) {
+                    lootItem(container.actor, looter, data.itemId, data.quantity);
+                }
+                else if (!container) {
+                    errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot an item.")
+                    ui.notifications.error("Player attempted to loot an item on a different scene.");
                 }
             }
         }

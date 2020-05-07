@@ -16,6 +16,10 @@
             {{/if}}
         </header>
 
+        {{#ifeq lootsheettype "Loot"}}
+            <style>.item-loot { display: block !important; }</style>
+        {{/ifeq}}
+
         {{#ifeq lootsheettype "Merchant"}}
             <style>.item-buy { display: block !important; }</style>
         {{/ifeq}}
@@ -168,6 +172,7 @@
                                     
                                     <div class="item-controls">
                                         <a class="item-control item-buy" title="Buy Item" style="display: none;"><i class="fas fa-dollar-sign"></i></a>
+                                        <a class="item-control item-loot" title="Loot Item" style="display: none;"><i class="fas fa-gem"></i></a>
                                         {{#if ../../owner}}
                                             <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
