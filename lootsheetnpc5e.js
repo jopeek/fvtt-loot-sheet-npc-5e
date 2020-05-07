@@ -129,7 +129,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
-        
+
+        // Loot Item
+        html.find('.item-loot').click(ev => this._lootItem(ev));
+
         // Sheet Type
         html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
 
@@ -258,6 +261,42 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 },
                 {
                     acceptLabel: "Purchase"
+                }
+            );
+            d.render(true);
+        } else {
+            console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
+        }
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle Loot item
+     * @private
+     */
+    _lootItem(event) {
+        event.preventDefault();
+        console.log("Loot Sheet | Loot Item clicked");
+
+        if (this.token === null) {
+            return ui.notifications.error(`You must loot items from a token.`);
+        }
+        if (game.user.actorId) {
+            let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+
+            let d = new QuantityDialog((quantity) => {
+                    game.socket.emit(LootSheet5eNPC.SOCKET, {
+                        type: "loot",
+                        looterId: game.user.actorId,
+                        tokenId: this.token.id,
+                        itemId: itemId,
+                        quantity: quantity
+                    });
+                },
+                {
+                    acceptLabel: "Loot"
                 }
             );
             d.render(true);
@@ -781,6 +820,51 @@ Hooks.once("init", () => {
         });
     }
 
+    function moveItem(source, destination, itemId, quantity) {
+        let item = source.getEmbeddedEntity("OwnedItem", itemId);
+
+        // Move all items if we select more than the quantity.
+        if (item.data.quantity < quantity) {
+            quantity = item.data.quantity;
+        }
+
+        let newItem = duplicate(item);
+        const update = {_id: itemId, "data.quantity": item.data.quantity - quantity};
+
+        if (update["data.quantity"] === 0) {
+            source.deleteEmbeddedEntity("OwnedItem", itemId);
+        }
+        else {
+            source.updateEmbeddedEntity("OwnedItem", update);
+        }
+
+        newItem.data.quantity = quantity;
+        destination.createEmbeddedEntity("OwnedItem", newItem);
+
+        return {
+            item: newItem,
+            quantity: quantity
+        };
+
+    }
+
+    function lootItem(container, looter, itemId, quantity) {
+        let moved = moveItem(container, looter, itemId, quantity);
+
+        if (game.settings.get("lootsheetnpc5e", "buyChat")) {
+            let message = `${looter.name} looted ${moved.quantity} x ${moved.item.name}.`;
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: {
+                    actor: looter,
+                    alias: looter.name
+                },
+                content: message
+            });
+        }
+
+    }
+
     function transaction(seller, buyer, itemId, quantity) {
         let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
 
@@ -810,32 +894,22 @@ Hooks.once("init", () => {
             buyerFundsAsGold -= buyerFunds[currency] * conversionRate[currency];
         }
 
-        let newItem = duplicate(sellItem);
-        const update = {_id: itemId, "data.quantity": sellItem.data.quantity - quantity};
-
-        if (update["data.quantity"] === 0) {
-            seller.deleteEmbeddedEntity("OwnedItem", itemId);
-        }
-        else {
-            seller.updateEmbeddedEntity("OwnedItem", update);
-        }
-
-        newItem.data.quantity = quantity;
+        // Update buyer's gold from the buyer.
         buyer.update({"data.currency": buyerFunds});
-        buyer.createEmbeddedEntity("OwnedItem", newItem);
+        let moved = moveItem(seller, buyer, itemId, quantity);
 
         let buyChat = game.settings.get("lootsheetnpc5e", "buyChat");
 
         if (buyChat) {
             let message =   `
-                            <div class="dnd5e chat-card item-card" data-actor-id="${buyer._id}" data-item-id="${newItem._id}">
+                            <div class="dnd5e chat-card item-card" data-actor-id="${buyer._id}" data-item-id="${moved.item._id}">
                                 <header class="card-header flexrow">
-                                    <img src="${newItem.img}" title="${newItem.name}" width="36" height="36">
-                                    <h3 class="item-name">${newItem.name}</h3>
+                                    <img src="${moved.item.img}" title="${moved.item.name}" width="36" height="36">
+                                    <h3 class="item-name">${moved.item.name}</h3>
                                 </header>
 
                                 <div class="card-content">
-                                    <p>${buyer.name} purchases ${quantity} x ${newItem.name} for ${itemCost}gp.</p>
+                                    <p>${buyer.name} purchases ${moved.quantity} x ${moved.item.name} for ${itemCost}gp.</p>
                                 </div>
                             </div>
                             `;
@@ -863,6 +937,19 @@ Hooks.once("init", () => {
                 else if (!seller) {
                     errorMessageToActor(buyer, "GM not available, the GM must on the same scene to purchase an item.")
                     ui.notifications.error("Player attempted to purchase an item on a different scene.");
+                }
+            }
+
+            if (data.type === "loot") {
+                let looter = game.actors.get(data.looterId);
+                let container = canvas.tokens.get(data.tokenId);
+
+                if (looter && container && container.actor) {
+                    lootItem(container.actor, looter, data.itemId, data.quantity);
+                }
+                else if (!container) {
+                    errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot an item.")
+                    ui.notifications.error("Player attempted to loot an item on a different scene.");
                 }
             }
         }
