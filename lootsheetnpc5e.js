@@ -866,17 +866,27 @@ Hooks.once("init", () => {
 		config: true,
 		default: true,
 		type: Boolean
-  });
+    });
     
-  game.settings.register("lootsheetnpc5e", "buyChat", {
-		name: "Display chat message for purchases?",
-		hint: "If enabled, a chat message will display purchases of items from the loot sheet.",
-		scope: "world",
-		config: true,
-		default: true,
-		type: Boolean
-  });
+    game.settings.register("lootsheetnpc5e", "buyChat", {
+            name: "Display chat message for purchases?",
+            hint: "If enabled, a chat message will display purchases of items from the loot sheet.",
+            scope: "world",
+            config: true,
+            default: true,
+            type: Boolean
+    });
     
+    game.settings.register("lootsheetnpc5e", "clearInventory", {
+		  name: "Clear inventory when generating new items from rollable table for Merchant type sheet?",
+      hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
+      scope: "world",
+      config: true,
+      default: false,
+      type: Boolean
+    });
+
+
     function chatMessage (speaker, owner, message, item) {
         if (game.settings.get("lootsheetnpc5e", "buyChat")) {
             message =   `
@@ -901,16 +911,7 @@ Hooks.once("init", () => {
             });
         }
     }
-	});
-    
-    game.settings.register("lootsheetnpc5e", "clearInventory", {
-		  name: "Clear inventory when generating new items from rollable table for Merchant type sheet?",
-      hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
-      scope: "world",
-      config: true,
-      default: false,
-      type: Boolean
-    });
+
 	
     function errorMessageToActor(target, message) {
         game.socket.emit(LootSheet5eNPC.SOCKET, {
@@ -1031,4 +1032,7 @@ Hooks.once("init", () => {
             return ui.notifications.error(data.message);
         }
     });
+
+
 });
+
