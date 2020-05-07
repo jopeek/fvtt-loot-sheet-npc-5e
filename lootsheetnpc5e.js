@@ -32,7 +32,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         return options;
     }
 
-    getData() {
+    async getData() {
         const sheetData = super.getData();
 
         // Prepare GM Settings
@@ -46,9 +46,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //console.log("sheetData.isGM: ", sheetData.isGM);
         //console.log(this.actor);
         
-        if (sheetData.actor.data.lootsheettype === undefined) sheetData.actor.data.lootsheettype = "Loot";
-        sheetData.sheetTypeDescription = this._getSheetTypeDescription(sheetData.actor.data.lootsheettype);
-        sheetData.lootsheettype = sheetData.actor.data.lootsheettype;
+        let lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
+        if (!lootsheettype) await this.actor.setFlag("lootsheetnpc5e", "lootsheettype", "Loot");
+        lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
+        
+        sheetData.lootsheettype = lootsheettype;
+        sheetData.rolltables = game.tables.entities;
+
         // Return data for rendering
         return sheetData;
     }
@@ -88,6 +92,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         // Sheet Type
         html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
 
+        // Roll Table
+        //html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
+
     }
 
     /* -------------------------------------------- */
@@ -125,8 +132,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      */
     async _merchantInventoryUpdate(event, html) {
         event.preventDefault();
-        console.log("Loot Sheet | Merchant inventory update");
 
+
+        //return this.CreateRollTable();
+
+
+        
         const moduleNamespace = "lootsheetnpc5e";
         const rolltableName = this.actor.getFlag(moduleNamespace, "rolltable");
         const shopQtyFormula = this.actor.getFlag(moduleNamespace, "shopQty") || "1";
@@ -138,9 +149,15 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
         }
 
-        let currentItems = this.actor.data.items.map(i => i._id);
-        await this.actor.deleteEmbeddedEntity("OwnedItem", currentItems);
-        
+        let clearInventory = game.settings.get("lootsheetnpc5e", "clearInventory");
+
+        if (clearInventory) {
+            
+            let currentItems = this.actor.data.items.map(i => i._id);
+            await this.actor.deleteEmbeddedEntity("OwnedItem", currentItems);
+            console.log(currentItems);
+        }
+        //return;
         let shopQtyRoll = new Roll(shopQtyFormula);
 
         shopQtyRoll.roll();
@@ -148,11 +165,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         for (let i = 0; i < shopQtyRoll.result; i++) {
             const rollResult = rolltable.roll();
-
+            //console.log(rollResult);
             let newItem = game.items.get(rollResult[1].resultId);
-            if (!newItem) {
+            //console.log(newItem);
+            if (!newItem || newItem === null) {
                 console.log(`Loot Sheet | No item found "${rollResult[1].resultId}".`);
-                ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
+                return ui.notifications.error(`No item found "${rollResult[1].resultId}".`);
             }
 
             let itemQtyRoll = new Roll(itemQtyFormula);
@@ -162,6 +180,54 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             await this.actor.createEmbeddedEntity("OwnedItem", newItem);
         }
+    }
+
+    CreateRollTable() {
+
+        let type = "weapon";
+
+        game.packs.map(p => p.collection);
+
+        const pack = game.packs.find(p => p.collection === "dnd5e.items");
+
+        let i = 0;
+
+        let output = [];
+
+        pack.getIndex().then(index => index.forEach(function (arrayItem) {
+            var x = arrayItem._id;
+            //console.log(arrayItem);
+            i++;
+            pack.getEntity(arrayItem._id).then(packItem => {
+                
+                if (packItem.type === type) {
+
+                    //console.log(packItem);
+
+                    let newItem = {
+                        "_id": packItem._id,
+                        "flags": {},
+                        "type": 1,
+                        "text": packItem.name,
+                        "img": packItem.img,
+                        "collection": "Item",
+                        "resultId": packItem._id,
+                        "weight": 1,
+                        "range": [
+                            i,
+                            i
+                          ],
+                          "drawn": false
+                    };
+
+                    output.push(newItem);
+
+                }
+            });
+        }));
+
+        console.log(output);
+        return;
     }
 
     /* -------------------------------------------- */
@@ -180,9 +246,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let selectedItem = event.target[selectedIndex].value;
 
-        await currentActor.update({
-            ['data.lootsheettype']: selectedItem
-        });
+        await currentActor.setFlag("lootsheetnpc5e", "lootsheettype", selectedItem);
         
     }
 
@@ -569,19 +633,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         return description[level];
     }
 
-    /* -------------------------------------------- */
-
-    /**
-     * Get the font-awesome icon used to display the permission level.
-     * @private
-     */
-    _getSheetTypeDescription(type) {
-        const description = {
-            "Loot": `Hides purchase button.`,
-            "Merchant": `Allows purchasing of items by any character with Observer or greater permissions.`
-        };
-        return description[type];
-    }
 
     /* -------------------------------------------- */
 
@@ -755,6 +806,15 @@ Hooks.once("init", () => {
 		scope: "world",
 		config: true,
 		default: true,
+		type: Boolean
+	});
+    
+    game.settings.register("lootsheetnpc5e", "clearInventory", {
+		name: "Clear inventory when generating new items from rollable table for Merchant type sheet?",
+		hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
+		scope: "world",
+		config: true,
+		default: false,
 		type: Boolean
 	});
 	
