@@ -976,7 +976,7 @@ Hooks.once("init", () => {
             buyerFundsAsGold += buyerFunds[currency] * conversionRate[currency];
         }
 
-        if (itemCost >= buyerFundsAsGold) {
+        if (itemCost > buyerFundsAsGold) {
             errorMessageToActor(buyer, `Not enough funds to purchase item.`);
             return;
         }
