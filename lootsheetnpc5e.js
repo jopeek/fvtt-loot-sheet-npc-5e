@@ -1,6 +1,4 @@
-import {
-    ActorSheet5eNPC
-} from "../../systems/dnd5e/module/actor/sheets/npc.js";
+import ActorSheet5eNPC from "../../systems/dnd5e/module/actor/sheets/npc.js";
 
 class LootSheet5eNPC extends ActorSheet5eNPC {
 
