@@ -16,6 +16,10 @@
             {{/if}}
         </header>
 
+        {{#ifeq lootsheettype "Loot"}}
+            <style>.item-loot { display: block !important; }</style>
+        {{/ifeq}}
+
         {{#ifeq lootsheettype "Merchant"}}
             <style>.item-buy { display: block !important; }</style>
         {{/ifeq}}
@@ -36,15 +40,19 @@
             <!-- GM SETTINGS -->
             <div class="gm-settings" data-group="sidebar" data-tab="gm-settings">
                 <h3 class="gm-header"><i class="fas fa-id-card"></i> Type <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
-                <div class="sheet-type-info">{{sheetTypeDescription}}</div>
+                <div class="sheet-type-info">Loot: allows for distribution of coins across players<br>Merchant: allows players to purchase items directly from the sheet.</div>
                 <div class="sheet-types">
-                    <h4 class="sheet-name">Type of sheet: </h4>
-                    <select class="sheet-type" name="data.lootsheettype">
-                        {{#select data.lootsheettype}}
-                            <option value="Loot">Loot</option>
-                            <option value="Merchant">Merchant</option>
-                        {{/select}}
-                    </select>
+                    <div class="flexrow">
+                        <div class="flexcol"><h4 class="sheet-name">Type of sheet: </h4></div>
+                        <div class="flexcol">
+                            <select class="sheet-type" name="data.flags.lootsheetnpc5e.lootsheettype">
+                                {{#select data.flags.lootsheetnpc5e.lootsheettype}}
+                                    <option value="Loot">Loot</option>
+                                    <option value="Merchant">Merchant</option>
+                                {{/select}}
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 
                 <h3 class="gm-header"><i class="fas fa-users"></i> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
@@ -58,16 +66,48 @@
                         </li>
                     {{/each}}
                 </ol>
-                <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
-                <ol class="coins-list">
-                    {{#each actor.flags.loot.currency as |c i|}}
-                        <li class="denomination {{i}}">
-                            <label>{{ lookup ../config.currencies i }}:</label>
-                            <h4 class="denomination-value">{{c.value}} each</h4>
-                        </li>
-                    {{/each}}
-                </ol>
-                <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.ownerCount}} Ways</button>
+
+                {{#ifeq lootsheettype "Loot"}}
+                    <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
+                    <ol class="coins-list">
+                        {{#each actor.flags.loot.currency as |c i|}}
+                            <li class="denomination {{i}}">
+                                <label>{{ lookup ../config.currencies i }}:</label>
+                                <h4 class="denomination-value">{{c.value}} each</h4>
+                            </li>
+                        {{/each}}
+                    </ol>
+                    <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.ownerCount}} Ways</button>
+                {{/ifeq}}
+
+                {{#ifeq lootsheettype "Merchant"}}
+                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
+                    <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a Rollable Table. Specify the Rollable Table's name, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>
+                    <div class="merchant-settings">
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>Rollable Table: </h4></div>
+                            <div class="flexcol">
+                                <!-- <input name="data.flags.lootsheetnpc5e.rolltable" type="text" data-dtype="String" placeholder="e.g. MyRollTable" value="{{data.flags.lootsheetnpc5e.rolltable}}"/> -->
+                                <select class="sheet-rolltable" name="data.flags.lootsheetnpc5e.rolltable">
+                                    {{#select data.flags.lootsheetnpc5e.rolltable}}
+                                        {{#each rolltables as |table i|}}
+                                            <option value="{{table.name}}">{{table.name}}</option>
+                                        {{/each}}
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>Shop Qty Formula: </h4></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{data.flags.lootsheetnpc5e.shopQty}}"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>Item Qty Formula: </h4></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{data.flags.lootsheetnpc5e.itemQty}}"/></div>
+                        </div>
+                    </div>
+                    <button class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
+                {{/ifeq}}
             </div>
 
             {{/if}}
@@ -102,7 +142,7 @@
                         </div>
     
                         <div class="header-details flexrow">
-                            <ul class="inventory-list directory-list">
+                            <ul class="inventory-list">
                             {{#each actor.features as |section sid|}}
                                 <li class="item flexrow inventory-header">
                                     <h3 class="item-name">{{section.label}}</h3>
@@ -116,28 +156,31 @@
                                 </li>
     
                                 {{#each section.items as |item iid|}}
-                                <li class="item flexrow" data-item-id="{{item._id}}">
-                                    <div class="item-name flexrow rollable">
-                                        <div class="item-image" style="background-image: url({{item.img}})"></div>
-                                        <h4>
-                                            {{item.name}}
-                                        </h4>
-                                    </div>
-                                    <div class="item-quantity">
-                                        <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
-                                    </div>
-                                    <div class="item-price">
-                                        <i class="fas fa-coins" title="Price (in gp)"></i> {{item.data.price}}
-                                    </div>
-                                    
-                                    <div class="item-controls">
-                                        <a class="item-control item-buy" title="Buy Item" style="display: none;"><i class="fas fa-dollar-sign"></i></a>
-                                        {{#if ../../owner}}
-                                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                                        {{/if}}
-                                    </div>
-                                </li>
+                                <ol class="item-list"> 
+                                    <li class="item flexrow" data-item-id="{{item._id}}">
+                                        <div class="item-name flexrow rollable">
+                                            <div class="item-image" style="background-image: url({{item.img}})"></div>
+                                            <h4>
+                                                {{item.name}}
+                                            </h4>
+                                        </div>
+                                        <div class="item-quantity">
+                                            <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
+                                        </div>
+                                        <div class="item-price">
+                                            <i class="fas fa-coins" title="Price (in gp)"></i> {{item.data.price}}
+                                        </div>
+                                        
+                                        <div class="item-controls">
+                                            <a class="item-control item-buy" title="Buy Item" style="display: none;"><i class="fas fa-dollar-sign"></i></a>
+                                            <a class="item-control item-loot" title="Loot Item" style="display: none;"><i class="fas fa-gem"></i></a>
+                                            {{#if ../../owner}}
+                                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                                            {{/if}}
+                                        </div>
+                                    </li>
+                                </ol>
                                 {{/each}}
                             {{/each}}
                             </ul>
