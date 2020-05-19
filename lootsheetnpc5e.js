@@ -211,12 +211,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         for (let i = 0; i < shopQtyRoll.result; i++) {
             const rollResult = rolltable.roll();
-            //console.log(rollResult);
-            let newItem = game.items.get(rollResult[1].resultId);
+            console.log(rollResult);
+            let newItem = game.items.get(rollResult.results[0].resultId);
             //console.log(newItem);
             if (!newItem || newItem === null) {
-                console.log(`Loot Sheet | No item found "${rollResult[1].resultId}".`);
-                return ui.notifications.error(`No item found "${rollResult[1].resultId}".`);
+                console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
+                return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
             }
 
             let itemQtyRoll = new Roll(itemQtyFormula);
@@ -876,7 +876,7 @@ Hooks.once("init", () => {
     });
     
     game.settings.register("lootsheetnpc5e", "clearInventory", {
-		  name: "Clear inventory when generating new items from rollable table for Merchant type sheet?",
+		  name: "Clear inventory?",
       hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
       scope: "world",
       config: true,
