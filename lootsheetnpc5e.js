@@ -131,12 +131,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             html.find('.split-coins').click(ev => this._distributeCoins(ev));
 
             // Price Modifier
-            /* Do we really want to disable this on tokens?
-            if (this.actor.isToken) {
-                html.find('.price-modifier').prop('disabled', true);
-                html.find('.price-modifier').prop('title', 'Disabled on Token. Use Actor to modify prices.');
-            }*/
-
             html.find('.price-modifier').click(ev => this._priceModifier(ev));
 
             html.find('.merchant-settings').change(ev => this._merchantSettingChange(ev));
