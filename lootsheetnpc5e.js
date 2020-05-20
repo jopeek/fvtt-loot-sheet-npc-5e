@@ -306,11 +306,15 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         event.preventDefault();
         console.log("Loot Sheet | Buy Item clicked");
 
-        let gmActive = false;
-        game.users.forEach((u) => { if (u.isGM) { gmActive = u.active; } });
+        let targetGm = null;
+        game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u;
+            }
+        });
 
-        if (!gmActive) {
-            return ui.notifications.error("The GM appears to be offline, they must be online to purchase an item.");
+        if (!targetGm) {
+            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to purchase an item.");
         }
 
         if (this.token === null) {
@@ -320,13 +324,16 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
 
             let d = new QuantityDialog((quantity) => {
-                    game.socket.emit(LootSheet5eNPC.SOCKET, {
+                    const packet = {
                         type: "buy",
                         buyerId: game.user.actorId,
                         tokenId: this.token.id,
                         itemId: itemId,
-                        quantity: quantity
-                    });
+                        quantity: quantity,
+                        processorId: targetGm.id
+                    };
+                    console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
+                    game.socket.emit(LootSheet5eNPC.SOCKET, packet);
                 },
                 {
                     acceptLabel: "Purchase"
@@ -349,11 +356,15 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         event.preventDefault();
         console.log("Loot Sheet | Loot Item clicked");
 
-        let gmActive = false;
-        game.users.forEach((u) => { if (u.isGM) { gmActive = u.active; } });
+        let targetGm = null;
+        game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u;
+            }
+        });
 
-        if (!gmActive) {
-            return ui.notifications.error("The GM appears to be offline, they must be online to purchase an item.");
+        if (!targetGm) {
+            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to purchase an item.");
         }
 
         if (this.token === null) {
@@ -363,13 +374,16 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
 
             let d = new QuantityDialog((quantity) => {
-                    game.socket.emit(LootSheet5eNPC.SOCKET, {
+                    const packet = {
                         type: "loot",
                         looterId: game.user.actorId,
                         tokenId: this.token.id,
                         itemId: itemId,
-                        quantity: quantity
-                    });
+                        quantity: quantity,
+                        processorId: targetGm.id
+                    };
+                    console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+                    game.socket.emit(LootSheet5eNPC.SOCKET, packet);
                 },
                 {
                     acceptLabel: "Loot"
@@ -998,7 +1012,7 @@ Hooks.once("init", () => {
 
     game.socket.on(LootSheet5eNPC.SOCKET, data => {
         console.log("Loot Sheet | Socket Message: ", data);
-        if (game.user.isGM) {
+        if (game.user.isGM && data.processorId === game.user.id) {
             if (data.type === "buy") {
                 let buyer = game.actors.get(data.buyerId);
                 let seller = canvas.tokens.get(data.tokenId);
