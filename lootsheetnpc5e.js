@@ -59,6 +59,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
         });
 
+        Handlebars.registerHelper('lootsheetprice', function (basePrice, modifier) {
+            return Math.round(basePrice * modifier * 100) / 100;
+        });
+
         const path = "systems/dnd5e/templates/actors/";
         if (!game.user.isGM && this.actor.limited) return path + "limited-sheet.html";
         return "modules/lootsheetnpc5e/template/npc-sheet.html";
@@ -92,8 +96,17 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
         if (!lootsheettype) await this.actor.setFlag("lootsheetnpc5e", "lootsheettype", "Loot");
         lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
+
         
+        let priceModifier = 1.0;
+        if (lootsheettype === "Merchant") {
+            priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
+            if (!priceModifier) await this.actor.setFlag("lootsheetnpc5e", "priceModifier", 1.0);
+            priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
+        }
+
         sheetData.lootsheettype = lootsheettype;
+        sheetData.priceModifier = priceModifier;
         sheetData.rolltables = game.tables.entities;
 
         // Return data for rendering
@@ -118,12 +131,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             html.find('.split-coins').click(ev => this._distributeCoins(ev));
 
             // Price Modifier
-            if (this.actor.isToken) {
-                html.find('.price-modifier').prop('disabled', true);
-                html.find('.price-modifier').prop('title', 'Disabled on Token. Use Actor to modify prices.');
-            } else {
-                html.find('.price-modifier').click(ev => this._priceModifier(ev));
-            }
+            html.find('.price-modifier').click(ev => this._priceModifier(ev));
 
             html.find('.merchant-settings').change(ev => this._merchantSettingChange(ev));
             html.find('.update-inventory').click(ev => this._merchantInventoryUpdate(ev));
@@ -402,17 +410,19 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * Handle price modifier
      * @private
      */
-    _priceModifier(event) {
+    async _priceModifier(event) {
         event.preventDefault();
         //console.log("Loot Sheet | Price Modifier clicked");
         //console.log(this.actor.isToken);
 
+        let priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
+        if (!priceModifier) priceModifier = 1.0;
+
+        priceModifier = Math.round(priceModifier * 100);
+
         var html = "<p>Use this slider to increase or decrease the price of all items in this inventory. <i class='fa fa-question-circle' title='This uses a percentage factor where 100% is the current price, 0% is 0, and 200% is double the price.'></i></p>";
-
-        html += '<p><input name="price-modifier-percent" id="price-modifier-percent" type="range" min="0" max="200" value="100" class="slider"></p>';
-
-        html += '<p><label>Percentage:</label> <input type=number min="0" max="200" value="100" id="price-modifier-percent-display"></p>';
-
+        html += '<p><input name="price-modifier-percent" id="price-modifier-percent" type="range" min="0" max="200" value="'+priceModifier+'" class="slider"></p>';
+        html += '<p><label>Percentage:</label> <input type=number min="0" max="200" value="'+priceModifier+'" id="price-modifier-percent-display"></p>';
         html += '<script>var pmSlider = document.getElementById("price-modifier-percent"); var pmDisplay = document.getElementById("price-modifier-percent-display"); pmDisplay.value = pmSlider.value; pmSlider.oninput = function() { pmDisplay.value = this.value; }; pmDisplay.oninput = function() { pmSlider.value = this.value; };</script>';
 
         let d = new Dialog({
@@ -422,7 +432,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
              one: {
               icon: '<i class="fas fa-check"></i>',
               label: "Update",
-              callback: () => this._updatePrices(document.getElementById("price-modifier-percent").value)
+              callback: () => this.actor.setFlag("lootsheetnpc5e", "priceModifier", document.getElementById("price-modifier-percent").value / 100)
              },
              two: {
               icon: '<i class="fas fa-times"></i>',
@@ -432,8 +442,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             },
             default: "two",
             close: () => console.log("Loot Sheet | Price Modifier Closed")
-           });
-           d.render(true);
+        });
+        d.render(true);
     }
 
     /* -------------------------------------------- */
@@ -580,40 +590,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         // Save updated player permissions
         const lootPermissions = new PermissionControl(this.actor);
         lootPermissions._updateObject(event, currentPermissions);
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Organize and classify Items for Loot NPC sheets
-     * @private
-     */
-    _updatePrices(pm) {
-        //console.log("Loot Sheet | Price Modifier Updating prices...", pm);
-
-        let actorData = duplicate(this.actor.data);
-
-        if (pm === undefined || pm === "100") return;
-
-        for (let i of actorData.items) {
-            
-            //console.log("Loot Sheet | item", i);
-                        
-            var currentPrice = i.data.price;
-
-            //accomodate small prices so they don't get rounded to 0
-            if (currentPrice < 1) {
-                var newPrice = pm === 0 ? 0 : (currentPrice * (pm / 100)).toFixed(2);
-            } else {
-                var newPrice = pm === 0 ? 0 : Math.round(currentPrice * (pm / 100));
-            }
-
-            //console.log(newPrice);
-            i.data.price = newPrice;
-            
-            this.actor.updateOwnedItem(i);
-        }
-
     }
 
     /* -------------------------------------------- */
@@ -979,7 +955,11 @@ Hooks.once("init", () => {
             quantity = sellItem.data.quantity;
         }
 
-        let itemCost = quantity * sellItem.data.price;
+        let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
+        if (!sellerModifier) sellerModifier = 1.0;
+
+        let itemCost = Math.round(sellItem.data.price * sellerModifier * 100)  / 100;
+        itemCost *= quantity;
         let buyerFunds = duplicate(buyer.data.data.currency);
         const conversionRate = { "pp": 10, "gp": 1, "ep": 0.5, "sp": 0.1, "cp": 0.01 };
         let buyerFundsAsGold = 0;
