@@ -223,8 +223,16 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             let newItem = game.items.get(rollResult.results[0].resultId);
             //console.log(newItem);
             if (!newItem || newItem === null) {
-                console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
-                return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
+                //Item doesn't exist in game, let's see if we can import it from the dnd5e compendium
+                const dnd5eitems = game.packs.get("dnd5e.items");
+                //dnd5eitems.getIndex().then(index => console.log(index));
+                //let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
+                dnd5eitems.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
+                newItem = await dnd5eitems.getEntity(rollResult.results[0].resultId);
+                if (!newItem || newItem === null) {
+                    console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
+                    return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
+                }
             }
 
             let itemQtyRoll = new Roll(itemQtyFormula);
