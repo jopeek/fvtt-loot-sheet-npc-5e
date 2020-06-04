@@ -1,0 +1,139 @@
+{
+  "name": "Magical Theme",
+  "sort": 800000,
+  "flags": {
+    "exportSource": {
+      "world": "olakino",
+      "system": "dnd5e",
+      "coreVersion": "0.6.1",
+      "systemVersion": 0.92
+    }
+  },
+  "results": [
+    {
+      "_id": "i3C8JeoFOmodNmrf",
+      "flags": {},
+      "type": 2,
+      "text": "Crystal",
+      "img": "systems/dnd5e/icons/items/weapons/crystal.png",
+      "collection": "dnd5e.items",
+      "resultId": "uXOT4fYbgPY8DGdd",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "EDDOYRHC8hZ0nMKI",
+      "flags": {},
+      "type": 2,
+      "text": "Orb",
+      "img": "systems/dnd5e/icons/items/inventory/pearl.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "tH5Rn0JVRG1zdmPa",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "6JlsMOnrUSJlzdoN",
+      "flags": {},
+      "type": 2,
+      "text": "Rod",
+      "img": "systems/dnd5e/icons/items/weapons/rod.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "OojyyGfh91iViuMF",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "vSN16dUblNRahl1N",
+      "flags": {},
+      "type": 2,
+      "text": "Staff",
+      "img": "systems/dnd5e/icons/items/weapons/staff-blue.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "BeKIrNIvNHRPQ4t5",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "7FH7Qwpt4NX8RzNM",
+      "flags": {},
+      "type": 2,
+      "text": "Wand",
+      "img": "systems/dnd5e/icons/items/weapons/staff-green.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "KA2P6I48iOWlnboO",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "XWjpQ6asb0FdRQFr",
+      "flags": {},
+      "type": 2,
+      "text": "Component Pouch",
+      "img": "systems/dnd5e/icons/items/inventory/satchel-leather.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "eZGmdOhaTWMicXPW",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "ovUQIWEVmhqovl0C",
+      "flags": {},
+      "type": 2,
+      "text": "Potion of Healing",
+      "img": "systems/dnd5e/icons/items/potions/minor-red.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "ytlsBjYsZ7OBSEBs",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "GmXQpYccO2x56mb3",
+      "flags": {},
+      "type": 2,
+      "text": "Spellbook",
+      "img": "systems/dnd5e/icons/items/inventory/book-purple.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "LBajgahniRJbAgDr",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "_id": "pDEu3jWCVFyFNzPP",
+  "description": "For a General Store of Adventuring Supplies",
+  "formula": "1d8"
+}

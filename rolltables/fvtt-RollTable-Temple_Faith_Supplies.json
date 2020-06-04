@@ -1,0 +1,514 @@
+{
+  "name": "Temple/Faith Supplies",
+  "sort": 100001,
+  "flags": {
+    "exportSource": {
+      "world": "olakino",
+      "system": "dnd5e",
+      "coreVersion": "0.6.1",
+      "systemVersion": 0.92
+    }
+  },
+  "results": [
+    {
+      "_id": "GQAyAW7cCMgyZxmM",
+      "flags": {},
+      "type": 2,
+      "text": "Alms Box",
+      "img": "systems/dnd5e/icons/items/inventory/piggybank.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "g8fQZ1WyTz2bTtvA",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "uFVdQs7odPWMtyXK",
+      "flags": {},
+      "type": 2,
+      "text": "Bell",
+      "img": "systems/dnd5e/icons/items/inventory/bell_brass.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "F6GwSqjErX1u35Re",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "pISXx7rjXeVLN5ks",
+      "flags": {},
+      "type": 2,
+      "text": "Blanket",
+      "img": "systems/dnd5e/icons/items/inventory/cloth-green.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "419eNv7xp2p7Xlo5",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "i6W0ybv6VcaNqrGY",
+      "flags": {},
+      "type": 2,
+      "text": "Prayer Book",
+      "img": "systems/dnd5e/icons/items/inventory/book-red.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "odV5cq2HSLSCH69k",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "KiHQjBAdQrSiCB5L",
+      "flags": {},
+      "type": 2,
+      "text": "Candle",
+      "img": "systems/dnd5e/icons/items/inventory/candle.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "0NoBBP3MMkvJlwZY",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "Cre14RzE5HGALgDc",
+      "flags": {},
+      "type": 2,
+      "text": "Map or Scroll Case",
+      "img": "systems/dnd5e/icons/items/inventory/briefcase.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "5mIeX824uMklU3xq",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "NivfhHVG2WXRm0Ro",
+      "flags": {},
+      "type": 2,
+      "text": "Censor",
+      "img": "systems/dnd5e/icons/items/inventory/chalice-cracked.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "7ztvHyYJCcOOAWmR",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "PPlQMdNu7OKOTYnB",
+      "flags": {},
+      "type": 2,
+      "text": "Chalk",
+      "img": "systems/dnd5e/icons/items/inventory/monster-bones.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "5fJn3LQ2eQG7luEO",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "o3QAAQiWQ1PTRbjq",
+      "flags": {},
+      "type": 2,
+      "text": "Flask",
+      "img": "systems/dnd5e/icons/items/inventory/flask-dark.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "lHS63sC6bypENNlR",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "5eNZQAG1jhEpe7Yo",
+      "flags": {},
+      "type": 2,
+      "text": "Healer's Kit",
+      "img": "systems/dnd5e/icons/items/inventory/herb-bag.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "6rocoBx5jdzG1QQH",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "3OXWHG4CwYEWxxjZ",
+      "flags": {},
+      "type": 2,
+      "text": "Amulet",
+      "img": "systems/dnd5e/icons/items/jewelry/amulet-blue.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "paqlMjggWkBIAeCe",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "Cfg91M1KP4J8nTAC",
+      "flags": {},
+      "type": 2,
+      "text": "Emblem",
+      "img": "systems/dnd5e/icons/items/inventory/badge-sun.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "laVqttkGMW4B9654",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "zXwyWfmGmjZm8Xif",
+      "flags": {},
+      "type": 2,
+      "text": "Reliquary",
+      "img": "systems/dnd5e/icons/items/inventory/chest-red.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "gP1URGq3kVIIFHJ7",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "HbRqo2NUwLw01Upd",
+      "flags": {},
+      "type": 2,
+      "text": "Flask of Holy Water",
+      "img": "systems/dnd5e/icons/items/potions/minor-empty.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "WPWszFTGzmdIuDRJ",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "s1FgkoHtz348OZX3",
+      "flags": {},
+      "type": 2,
+      "text": "Block of Incense",
+      "img": "systems/dnd5e/icons/items/inventory/coral-white.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "eJY20LOs3pOkRDPl",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "dyEJQAQ8uAoxtOtv",
+      "flags": {},
+      "type": 2,
+      "text": "Ink Bottle",
+      "img": "systems/dnd5e/icons/items/inventory/bottle-empty.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "dP7jMKyHTTgVb3ii",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "B6vyCXiHPesjNS4n",
+      "flags": {},
+      "type": 2,
+      "text": "Ink Pen",
+      "img": "systems/dnd5e/icons/items/inventory/feather-red.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "uVm7MiB71QblfnoY",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "EKNBYHo4pWsTMxT7",
+      "flags": {},
+      "type": 2,
+      "text": "Lamp",
+      "img": "systems/dnd5e/icons/items/inventory/lamp.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "qMzHmlmha8qMDnEF",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "HQB9FrdwdbWC438j",
+      "flags": {},
+      "type": 2,
+      "text": "Hooded Lantern",
+      "img": "systems/dnd5e/icons/items/inventory/lantern.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "trmWAdUoR6Y2B7rA",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "JkSzHhSI9TbFKb0r",
+      "flags": {},
+      "type": 2,
+      "text": "Oil Flask",
+      "img": "systems/dnd5e/icons/items/inventory/bottle-empty.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "psoZaItkOScMVaHL",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "DpARE2NNUB6uLi9Q",
+      "flags": {},
+      "type": 2,
+      "text": "Paper",
+      "img": "systems/dnd5e/icons/items/inventory/paper.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "fNMkFCOvMiW2Rh3t",
+      "weight": 1,
+      "range": [
+        21,
+        21
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "6vAXqQP9aUc5DLio",
+      "flags": {},
+      "type": 2,
+      "text": "Parchment",
+      "img": "systems/dnd5e/icons/items/inventory/parchment.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "WFQS2vT8ddrFjTJg",
+      "weight": 1,
+      "range": [
+        22,
+        22
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "DfF1Tlficd8JEdKk",
+      "flags": {},
+      "type": 2,
+      "text": "Perfume",
+      "img": "systems/dnd5e/icons/items/potions/unique-2.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "uuh4UH3Jx5CsFjdA",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "6dzjSsPn086mcjMl",
+      "flags": {},
+      "type": 2,
+      "text": "Potion of Healing",
+      "img": "systems/dnd5e/icons/items/potions/minor-red.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "ytlsBjYsZ7OBSEBs",
+      "weight": 1,
+      "range": [
+        24,
+        24
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "pw3QCsucULFEqFr4",
+      "flags": {},
+      "type": 2,
+      "text": "Rations",
+      "img": "systems/dnd5e/icons/items/inventory/meat.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "f4w4GxBi0nYXmhX4",
+      "weight": 1,
+      "range": [
+        25,
+        25
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "3YnJmmLSGlnhmiCA",
+      "flags": {},
+      "type": 2,
+      "text": "Torch",
+      "img": "systems/dnd5e/icons/items/inventory/torch.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "BnOCLuNWhVvzHLjl",
+      "weight": 1,
+      "range": [
+        26,
+        26
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "doucPDfeYsno8UHh",
+      "flags": {},
+      "type": 2,
+      "text": "Vial",
+      "img": "systems/dnd5e/icons/items/inventory/bottle-empty.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "meJEfX3gZgtMX4x2",
+      "weight": 1,
+      "range": [
+        27,
+        27
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "UmJgN4PneBJ24ZtN",
+      "flags": {},
+      "type": 2,
+      "text": "Waterskin",
+      "img": "systems/dnd5e/icons/items/inventory/waterskin.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "Uv0ilmzbWvqmlCVH",
+      "weight": 1,
+      "range": [
+        28,
+        28
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "e8luIGvmgk4eN1cS",
+      "flags": {},
+      "type": 2,
+      "text": "Calligrapher's Supplies",
+      "img": "systems/dnd5e/icons/items/inventory/note-letter.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "jhjo20QoiD5exf09",
+      "weight": 1,
+      "range": [
+        29,
+        29
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "IDOwm67NDfTc8jUG",
+      "flags": {},
+      "type": 2,
+      "text": "Herbalism Kit",
+      "img": "systems/dnd5e/icons/items/inventory/herbalism-kit.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "i89okN7GFTWHsvPy",
+      "weight": 1,
+      "range": [
+        30,
+        30
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "pyPo2Ss4kgj7jith",
+      "flags": {},
+      "type": 2,
+      "text": "Musical Instrument: Flute",
+      "img": "systems/dnd5e/icons/items/inventory/flute.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "eJOrPcAz9EcquyRQ",
+      "weight": 1,
+      "range": [
+        31,
+        31
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "nBPUdLjSC2M2PCh0",
+      "flags": {},
+      "type": 2,
+      "text": "Musical Instrument: Lyre",
+      "img": "systems/dnd5e/icons/items/inventory/lute.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "EwG1EtmbgR3bM68U",
+      "weight": 1,
+      "range": [
+        32,
+        32
+      ],
+      "drawn": false
+    },
+    {
+      "_id": "n6qEPiKQ57IeDn0k",
+      "flags": {},
+      "type": 2,
+      "text": "Musical Instrument: Horn",
+      "img": "systems/dnd5e/icons/items/inventory/horn.jpg",
+      "collection": "dnd5e.items",
+      "resultId": "aa9KuBy4dst7WIW9",
+      "weight": 1,
+      "range": [
+        33,
+        33
+      ],
+      "drawn": false
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "_id": "QTLNj5E9oZCwmZiL",
+  "description": "Things a temple or faith supplier would sell",
+  "formula": "1d39"
+}
