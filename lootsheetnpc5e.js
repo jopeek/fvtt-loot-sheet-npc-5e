@@ -187,11 +187,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     async _merchantInventoryUpdate(event, html) {
         event.preventDefault();
 
-
-        //return this._createRollTable();
-
-
-        
         const moduleNamespace = "lootsheetnpc5e";
         const rolltableName = this.actor.getFlag(moduleNamespace, "rolltable");
         const shopQtyFormula = this.actor.getFlag(moduleNamespace, "shopQty") || "1";
@@ -199,9 +194,11 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
-            console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
+            //console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
             return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
         }
+
+        //console.log(rolltable);
 
         let clearInventory = game.settings.get("lootsheetnpc5e", "clearInventory");
 
@@ -209,35 +206,38 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             
             let currentItems = this.actor.data.items.map(i => i._id);
             await this.actor.deleteEmbeddedEntity("OwnedItem", currentItems);
-            console.log(currentItems);
+            //console.log(currentItems);
         }
-        //return;
+
         let shopQtyRoll = new Roll(shopQtyFormula);
 
         shopQtyRoll.roll();
-        console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
+        //console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
 
         for (let i = 0; i < shopQtyRoll.result; i++) {
             const rollResult = rolltable.roll();
-            console.log(rollResult);
-            let newItem = game.items.get(rollResult.results[0].resultId);
-            //console.log(newItem);
-            if (!newItem || newItem === null) {
-                //Item doesn't exist in game, let's see if we can import it from the dnd5e compendium
-                const dnd5eitems = game.packs.get("dnd5e.items");
+            //console.log(rollResult);
+            let newItem = null;
+            
+            if (rollResult.results[0].collection === "Item") {
+                newItem = game.items.get(rollResult.results[0].resultId);
+            }
+            else {
+                //Try to find it in the compendium
+                const items = game.packs.get(rollResult.results[0].collection);
                 //dnd5eitems.getIndex().then(index => console.log(index));
                 //let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
-                dnd5eitems.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
-                newItem = await dnd5eitems.getEntity(rollResult.results[0].resultId);
-                if (!newItem || newItem === null) {
-                    console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
-                    return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
-                }
+                items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
+                newItem = await items.getEntity(rollResult.results[0].resultId);
+            }
+            if (!newItem || newItem === null) {
+                //console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
+                return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
             }
 
             let itemQtyRoll = new Roll(itemQtyFormula);
             itemQtyRoll.roll();
-            console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
+            //console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
             newItem.data.data.quantity = itemQtyRoll.result;
 
             await this.actor.createEmbeddedEntity("OwnedItem", newItem);
