@@ -484,7 +484,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Calculate split of currency
         let currencySplit = duplicate(actorData.data.currency);
-        console.log("Loot Sheet | Currency data", currencySplit);
+        //console.log("Loot Sheet | Currency data", currencySplit);
         
         // keep track of the remainder
         let currencyRemainder = {};
