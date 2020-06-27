@@ -485,11 +485,19 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         // Calculate split of currency
         let currencySplit = duplicate(actorData.data.currency);
         //console.log("Loot Sheet | Currency data", currencySplit);
+        
+        // keep track of the remainder
+        let currencyRemainder = {};
+
         for (let c in currencySplit) {
-            if (owners.length)
+            if (owners.length) {                
+                // calculate remainder
+                currencyRemainder[c] = (currencySplit[c].value % owners.length);
+                //console.log("Remainder: " + currencyRemainder[c]);
+
                 currencySplit[c].value = Math.floor(currencySplit[c].value / owners.length);
-            else
-                currencySplit[c].value = 0
+            }
+            else currencySplit[c].value = 0;
         }
 
         // add currency to actors existing coins
@@ -528,7 +536,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 zeroCurrency[c] = {
                     'type': currencySplit[c].type,
                     'label': currencySplit[c].type,
-                    'value': 0
+                    'value': currencyRemainder[c]
                 }
                 this.actor.update({
                     "data.currency": zeroCurrency
