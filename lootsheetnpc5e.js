@@ -862,6 +862,15 @@ Hooks.once("init", () => {
         if (a == b) { return options.fn(this); }
         return options.inverse(this);
     });
+	
+	game.settings.register("lootsheetnpc5e", "convertCurrency", {
+		name: "Convert currency after purchases?",
+		hint: "If enabled, all currency will be converted to the highest denomination possible after a purchase. If disabled, currency will subtracted simply.", 
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean
+	});
 
 	game.settings.register("lootsheetnpc5e", "changeScrollIcon", {
 		name: "Change icon for Spell Scrolls?",
@@ -988,13 +997,26 @@ Hooks.once("init", () => {
             errorMessageToActor(buyer, `Not enough funds to purchase item.`);
             return;
         }
-
-        buyerFundsAsGold -= itemCost;
-
-        for (let currency in buyerFunds) {
-            buyerFunds[currency] = Math.floor(buyerFundsAsGold / conversionRate[currency]);
-            buyerFundsAsGold -= buyerFunds[currency] * conversionRate[currency];
-        }
+		
+		let convertCurrency = game.settings.get("lootsheetnpc5e", "convertCurrency");
+		
+		if (convertCurrency) {
+			buyerFundsAsGold -= itemCost;
+			
+			for (let currency in buyerFunds) {
+				buyerFunds[currency] = Math.floor(buyerFundsAsGold / conversionRate[currency]);
+				buyerFundsAsGold -= buyerFunds[currency] * conversionRate[currency];
+			}
+		} else {
+			let itemCostSubtracted = itemCost;
+			
+			for (let currency in buyerFunds) {
+				while (itemCostSubtracted >= conversionRate[currency] && buyerFunds[currency] > 0) {
+					buyerFunds[currency] -= 1;
+					itemCostSubtracted -= conversionRate[currency];
+				}
+			}
+		}
 
         // Update buyer's gold from the buyer.
         buyer.update({"data.currency": buyerFunds});
