@@ -1009,11 +1009,27 @@ Hooks.once("init", () => {
 			}
 		} else {
 			let itemCostSubtracted = itemCost;
+			let giveChange = false;
 			
 			for (let currency in buyerFunds) {
 				while (itemCostSubtracted >= conversionRate[currency] && buyerFunds[currency] > 0) {
 					buyerFunds[currency] -= 1;
 					itemCostSubtracted -= conversionRate[currency];
+				}
+				
+				if (giveChange) {
+					buyerFunds[currency] -= Math.round(itemCostSubtracted * 100) / 100;
+					itemCostSubtracted -= itemCostSubtracted;
+				}
+				
+				if (currency != "cp") {
+					let nextKey = Object.keys(conversionRate)[Object.keys(conversionRate).indexOf(currency) +1];
+					
+					if (itemCostSubtracted % conversionRate[currency] != 0 && conversionRate[nextKey] < itemCostSubtracted && buyerFunds[nextKey] < itemCostSubtracted) {
+						buyerFunds[currency] -= 1;
+						itemCostSubtracted -= conversionRate[currency];
+						giveChange = true;
+					}
 				}
 			}
 		}
