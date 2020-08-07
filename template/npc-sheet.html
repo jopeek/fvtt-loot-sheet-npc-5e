@@ -10,9 +10,11 @@
                 <input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/>
             </h1>
             {{#if isGM}}
-            <div class="charbutton">
-                <button class="price-modifier" type="price-modifier" name="price-modifier" value=""><i class="fa fa-balance-scale"></i> Price Modifier</button>
-            </div>
+                {{#ifeq lootsheettype "Merchant"}}
+                    <div class="charbutton">
+                        <button class="price-modifier" type="price-modifier" name="price-modifier" value=""><i class="fa fa-balance-scale"></i> Price Modifier</button>
+                    </div>
+                {{/ifeq}}
             {{/if}}
         </header>
 
@@ -109,7 +111,9 @@
         <section class="sheet-content content">
             <nav class="sheet-navigation tabs" data-group="primary">
                 <a class="item active" data-tab="inventory">Inventory</a>
-                <a class="item" data-tab="biography">Biography</a>
+                {{#ifeq lootsheettype "Merchant"}}
+                    <a class="item" data-tab="biography">Biography</a>
+                {{/ifeq}}
             </nav>
 
             <section class="sheet-body">
