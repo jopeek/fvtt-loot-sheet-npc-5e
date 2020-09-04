@@ -60,19 +60,6 @@
                     {{/each}}
                 </ol>
 
-                {{#ifeq lootsheettype "Loot"}}
-                    <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
-                    <ol class="coins-list">
-                        {{#each actor.flags.loot.currency as |c i|}}
-                            <li class="denomination {{i}}">
-                                <label>{{ lookup ../config.currencies i }}:</label>
-                                <h4 class="denomination-value">{{c.value}} each</h4>
-                            </li>
-                        {{/each}}
-                    </ol>
-                    <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.ownerCount}} Ways</button>
-                {{/ifeq}}
-
                 {{#ifeq lootsheettype "Merchant"}}
                     <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
                     <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a Rollable Table. Specify the Rollable Table's name, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>
@@ -104,7 +91,20 @@
             </div>
 
             {{/if}}
-            
+
+            {{#ifeq lootsheettype "Loot"}}
+                <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
+                <ol class="coins-list">
+                    {{#each actor.flags.loot.currency as |c i|}}
+                        <li class="denomination {{i}}">
+                            <label>{{ lookup ../config.currencies i }}:</label>
+                            <h4 class="denomination-value">{{c.value}} each</h4>
+                        </li>
+                    {{/each}}
+                </ol>
+                <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.observerCount}} Ways</button>
+            {{/ifeq}}
+
         </section>
 		
         <!-- BODY -->
