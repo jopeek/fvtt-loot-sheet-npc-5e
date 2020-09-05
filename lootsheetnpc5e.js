@@ -127,6 +127,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (this.options.editable) {
             // Toggle Permissions
             html.find('.permission-proficiency').click(ev => this._onCyclePermissionProficiency(ev));
+            html.find('.permission-proficiency-bulk').click(ev => this._onCyclePermissionProficiencyBulk(ev));
 
             // Price Modifier
             html.find('.price-modifier').click(ev => this._priceModifier(ev));
@@ -575,6 +576,40 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         this._onSubmit(event);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Handle cycling bulk permissions
+     * @private
+     */
+    _onCyclePermissionProficiencyBulk(event) {
+        event.preventDefault();
+
+        let actorData = this.actor.data;
+
+        let field = $(event.currentTarget).parent().siblings('input[type="hidden"]');
+        let level = parseFloat(field.val());
+        if (typeof level === undefined || level === 999) level = 0;
+
+        const levels = [0, 3, 2]; //const levels = [0, 2, 3];
+
+        let idx = levels.indexOf(level),
+            newLevel = levels[(idx === levels.length - 1) ? 0 : idx + 1];
+
+        let users = game.users.entities;
+
+        let currentPermissions = duplicate(actorData.permission);
+        for (let u of users) {
+            if (u.data.role === 1 || u.data.role === 2) {
+                currentPermissions[u._id] = newLevel;
+            }
+        }
+        const lootPermissions = new PermissionControl(this.actor);
+        lootPermissions._updateObject(event, currentPermissions)
+
+        this._onSubmit(event);
+    }
+
     _updatePermissions(actorData, playerId, newLevel, event) {
         // Read player permission on this actor and adjust to new level
         let currentPermissions = duplicate(actorData.permission);
@@ -661,7 +696,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const icons = {
             0: '<i class="far fa-circle"></i>',
             2: '<i class="fas fa-eye"></i>',
-            3: '<i class="fas fa-check"></i>'
+            3: '<i class="fas fa-check"></i>',
+            999: '<i class="fas fa-users"></i>'
         };
         return icons[level];
     }
@@ -676,7 +712,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const description = {
             0: "None (cannot access sheet)",
             2: "Observer (access to sheet but can only purchase items if merchant sheet type)",
-            3: "Owner (can access items and share coins)"
+            3: "Owner (can access items and share coins)",
+            999: "Change all permissions"
         };
         return description[level];
     }
@@ -693,6 +730,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const players = [],
             observers = [];
         let users = game.users.entities;
+        let commonPlayersPermission = -1;
 
         //console.log("Loot Sheet _prepareGMSettings | actorData.permission", actorData.permission);
 
@@ -743,7 +781,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     }
 
 					//Set icons and permission texts for html
-					//console.log("Loot Sheet | lootPermission", u.lootPermission);
+                    //console.log("Loot Sheet | lootPermission", u.lootPermission);
+                    if (commonPlayersPermission < 0) {
+                        commonPlayersPermission = u.lootPermission;
+                    } else if (commonPlayersPermission !== u.lootPermission) {
+                        commonPlayersPermission = 999;
+                    }
                     u.icon = this._getPermissionIcon(u.lootPermission);
                     u.lootPermissionDescription = this._getPermissionDescription(u.lootPermission);
                     players.push(u);
@@ -764,6 +807,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         loot.players = players;
         loot.observerCount = observers.length;
         loot.currency = currencySplit;
+        loot.playersPermission = commonPlayersPermission;
+        loot.playersPermissionIcon = this._getPermissionIcon(commonPlayersPermission);
+        loot.playersPermissionDescription = this._getPermissionDescription(commonPlayersPermission);
         actorData.flags.loot = loot;
     }
 
