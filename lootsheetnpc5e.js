@@ -73,7 +73,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         mergeObject(options, {
             classes: ["dnd5e sheet actor npc npc-sheet loot-sheet-npc"],
-            width: 850,
+            width: 890,
             height: 750
         });
         return options;
@@ -108,6 +108,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         sheetData.lootsheettype = lootsheettype;
         sheetData.priceModifier = priceModifier;
         sheetData.rolltables = game.tables.entities;
+        sheetData.lootCurrency = game.settings.get("lootsheetnpc5e", "lootCurrency");
 
         // Return data for rendering
         return sheetData;
@@ -142,6 +143,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Loot Item
         html.find('.item-loot').click(ev => this._lootItem(ev));
+
+        // Loot Currency
+        html.find('.currency-loot').click(ev => this._lootCoins(ev));
 
         // Sheet Type
         html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
@@ -410,6 +414,45 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             console.log("Loot Sheet | No active character for user");
             return ui.notifications.error(`No active character for user.`);
         }
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle Loot coins
+     * @private
+     */
+    _lootCoins(event) {
+        event.preventDefault();
+        console.log("Loot Sheet | Loot Coins clicked");
+
+        let targetGm = null;
+        game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u;
+            }
+        });
+
+        if (!targetGm) {
+            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
+        }
+
+        if (this.token === null) {
+            return ui.notifications.error(`You must loot coins from a token.`);
+        }
+        if (!game.user.actorId) {
+            console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
+        }
+
+        const packet = {
+            type: "lootCoins",
+            looterId: game.user.actorId,
+            tokenId: this.token.id,
+            processorId: targetGm.id
+        };
+        console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+        game.socket.emit(LootSheet5eNPC.SOCKET, packet);
     }
 
     /* -------------------------------------------- */
@@ -823,6 +866,15 @@ Hooks.once("init", () => {
       type: Boolean
     });
 
+    game.settings.register("lootsheetnpc5e", "lootCurrency", {
+		  name: "Loot currency?",
+      hint: "If enabled, players will have the option to loot all currency to their character, in addition to splitting the currency between players.",
+      scope: "world",
+      config: true,
+      default: true,
+      type: Boolean
+    });
+
     function chatMessage (speaker, owner, message, item) {
         if (game.settings.get("lootsheetnpc5e", "buyChat")) {
             message =   `
@@ -995,7 +1047,7 @@ Hooks.once("init", () => {
                 }
 
                 // Add currency to permitted actor
-                newCurrency[c] = currency[c] + currencySplit[c].value;
+                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c].value;
 
                 //console.log("Loot Sheet | New Currency", newCurrency);
                 u.update({
@@ -1031,6 +1083,65 @@ Hooks.once("init", () => {
                     content: message
                 });
             }
+        }
+    }
+
+    function lootCoins(containerActor, looter) {
+        let actorData = containerActor.data
+
+        let sheetCurrency = actorData.data.currency;
+        //console.log("Loot Sheet | Currency data", currency);
+
+        // add currency to actors existing coins
+        let msg = [];
+        let currency = looter.data.data.currency,
+            newCurrency = duplicate(looter.data.data.currency);
+
+        //console.log("Loot Sheet | Current Currency", currency);
+
+        for (let c in currency) {
+            // add msg for chat description
+            if (sheetCurrency[c].value) {
+                //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
+                msg.push(` ${sheetCurrency[c].value} ${c} coins`)
+            }
+
+            // Add currency to permitted actor
+            newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c].value);
+
+            //console.log("Loot Sheet | New Currency", newCurrency);
+            looter.update({
+                'data.currency': newCurrency
+            });
+        }
+
+        // Remove currency from loot actor.
+        let lootCurrency = containerActor.data.data.currency,
+            zeroCurrency = {};
+
+        for (let c in lootCurrency) {
+            zeroCurrency[c] = {
+                'type': sheetCurrency[c].type,
+                'label': sheetCurrency[c].type,
+                'value': 0
+            }
+            containerActor.update({
+                "data.currency": zeroCurrency
+            });
+        }
+
+        // Create chat message for coins received
+        if (msg.length != 0) {
+            let message = `${looter.data.name} receives: `;
+            message += msg.join(",");
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: {
+                    actor: containerActor,
+                    alias: containerActor.name
+                },
+                content: message
+            });
         }
     }
 
@@ -1070,6 +1181,16 @@ Hooks.once("init", () => {
                     return ui.notifications.error("Player attempted to distribute coins on a different scene.");
                 }
                 distributeCoins(container.actor);
+            }
+
+            if (data.type === "lootCoins") {
+                let looter = game.actors.get(data.looterId);
+                let container = canvas.tokens.get(data.tokenId);
+                if (!container || !container.actor || !looter) {
+                    errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot coins.")
+                    return ui.notifications.error("Player attempted to loot coins on a different scene.");
+                }
+                lootCoins(container.actor, looter);
             }
         }
         if (data.type === "error" && data.targetId === game.user.actorId) {

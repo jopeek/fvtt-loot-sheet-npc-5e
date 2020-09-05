@@ -131,6 +131,13 @@
                                     <label class="denomination {{i}}">{{ lookup ../config.currencies i }}</label>
                                     <input type="text" name="data.currency.{{i}}.value" value="{{c.value}}" data-dtype="{{c.type}}"/>
                                 {{/each}}
+                                {{#ifeq lootsheettype "Loot"}}
+                                    {{#if lootCurrency}}
+                                        <div class="item-controls">
+                                            <a class="currency-loot" title="Loot Coins"><i class="fas fa-gem"></i></a>
+                                        </div>
+                                    {{/if}}
+                                {{/ifeq}}
                             </ol>
                         </div>
     
