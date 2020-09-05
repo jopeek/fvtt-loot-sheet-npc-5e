@@ -341,30 +341,43 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (this.token === null) {
             return ui.notifications.error(`You must purchase items from a token.`);
         }
-        if (game.user.actorId) {
-            let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-
-            let d = new QuantityDialog((quantity) => {
-                    const packet = {
-                        type: "buy",
-                        buyerId: game.user.actorId,
-                        tokenId: this.token.id,
-                        itemId: itemId,
-                        quantity: quantity,
-                        processorId: targetGm.id
-                    };
-                    console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
-                    game.socket.emit(LootSheet5eNPC.SOCKET, packet);
-                },
-                {
-                    acceptLabel: "Purchase"
-                }
-            );
-            d.render(true);
-        } else {
+        if (!game.user.actorId) {
             console.log("Loot Sheet | No active character for user");
             return ui.notifications.error(`No active character for user.`);
         }
+
+        let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+        const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+
+        const packet = {
+            type: "buy",
+            buyerId: game.user.actorId,
+            tokenId: this.token.id,
+            itemId: itemId,
+            quantity: 1,
+            processorId: targetGm.id
+        };
+
+        if (event.shiftKey) {
+            packet.quantity = item.data.quantity;
+        }
+
+        if (item.data.quantity === packet.quantity) {
+            console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
+            game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            return;
+        }
+
+        let d = new QuantityDialog((quantity) => {
+                packet.quantity = quantity;
+                console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
+                game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            },
+            {
+                acceptLabel: "Purchase"
+            }
+        );
+        d.render(true);
     }
 
     /* -------------------------------------------- */
@@ -391,30 +404,43 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (this.token === null) {
             return ui.notifications.error(`You must loot items from a token.`);
         }
-        if (game.user.actorId) {
-            let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-
-            let d = new QuantityDialog((quantity) => {
-                    const packet = {
-                        type: "loot",
-                        looterId: game.user.actorId,
-                        tokenId: this.token.id,
-                        itemId: itemId,
-                        quantity: quantity,
-                        processorId: targetGm.id
-                    };
-                    console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
-                    game.socket.emit(LootSheet5eNPC.SOCKET, packet);
-                },
-                {
-                    acceptLabel: "Loot"
-                }
-            );
-            d.render(true);
-        } else {
+        if (!game.user.actorId) {
             console.log("Loot Sheet | No active character for user");
             return ui.notifications.error(`No active character for user.`);
         }
+
+        const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+        const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+
+        const packet = {
+            type: "loot",
+            looterId: game.user.actorId,
+            tokenId: this.token.id,
+            itemId: itemId,
+            quantity: 1,
+            processorId: targetGm.id
+        };
+
+        if (event.shiftKey) {
+            packet.quantity = item.data.quantity;
+        }
+
+        if (item.data.quantity === packet.quantity) {
+            console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+            game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            return;
+        }
+
+        const d = new QuantityDialog((quantity) => {
+                packet.quantity = quantity;
+                console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+                game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            },
+            {
+                acceptLabel: "Loot"
+            }
+        );
+        d.render(true);
     }
 
     /* -------------------------------------------- */
