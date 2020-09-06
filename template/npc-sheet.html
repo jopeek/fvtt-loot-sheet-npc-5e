@@ -9,6 +9,13 @@
             <h1 class="charname">
                 <input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/>
             </h1>
+            {{#ifeq lootsheettype "Loot"}}
+                {{#if lootAll}}
+                    <div class="charbutton">
+                        <button class="loot-all" name="loot-all" value="1"><i class="fas fa-gem"></i> Loot All</button>
+                    </div>
+                {{/if}}
+            {{/ifeq}}
             {{#if isGM}}
                 {{#ifeq lootsheettype "Merchant"}}
                     <div class="charbutton">

@@ -109,6 +109,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         sheetData.priceModifier = priceModifier;
         sheetData.rolltables = game.tables.entities;
         sheetData.lootCurrency = game.settings.get("lootsheetnpc5e", "lootCurrency");
+        sheetData.lootAll = game.settings.get("lootsheetnpc5e", "lootAll");
 
         // Return data for rendering
         return sheetData;
@@ -147,6 +148,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Loot Currency
         html.find('.currency-loot').click(ev => this._lootCoins(ev));
+
+        // Loot All
+        html.find('.loot-all').removeAttr('disabled').click(ev => this._lootAll(ev, html));
 
         // Sheet Type
         html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
@@ -410,29 +414,29 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-        const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+        const targetItem = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+
+        const item = {itemId: itemId, quantity: 1};
+        if (event.shiftKey) {
+            item.quantity = targetItem.data.quantity;
+        }
 
         const packet = {
             type: "loot",
             looterId: game.user.actorId,
             tokenId: this.token.id,
-            itemId: itemId,
-            quantity: 1,
+            items: [item],
             processorId: targetGm.id
         };
 
-        if (event.shiftKey) {
-            packet.quantity = item.data.quantity;
-        }
-
-        if (item.data.quantity === packet.quantity) {
+        if (targetItem.data.quantity === item.quantity) {
             console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
             game.socket.emit(LootSheet5eNPC.SOCKET, packet);
             return;
         }
 
         const d = new QuantityDialog((quantity) => {
-                packet.quantity = quantity;
+                packet.items[0]['quantity'] = quantity;
                 console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
                 game.socket.emit(LootSheet5eNPC.SOCKET, packet);
             },
@@ -451,6 +455,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      */
     _lootCoins(event) {
         event.preventDefault();
+        if (!game.settings.get("lootsheetnpc5e", "lootCurrency")) {
+            return;
+        }
         console.log("Loot Sheet | Loot Coins clicked");
 
         let targetGm = null;
@@ -478,6 +485,63 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             tokenId: this.token.id,
             processorId: targetGm.id
         };
+        console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+        game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle Loot all
+     * @private
+     */
+    _lootAll(event, html) {
+        event.preventDefault();
+        console.log("Loot Sheet | Loot All clicked");
+        this._lootCoins(event);
+
+        let targetGm = null;
+        game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u;
+            }
+        });
+
+        if (!targetGm) {
+            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to purchase an item.");
+        }
+
+        if (this.token === null) {
+            return ui.notifications.error(`You must loot items from a token.`);
+        }
+        if (!game.user.actorId) {
+            console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
+        }
+
+        const itemTargets = html.find('.item[data-item-id]');
+        if (!itemTargets) {
+            return;
+        }
+
+        const items = [];
+        for (let i of itemTargets) {
+            const itemId = i.getAttribute("data-item-id");
+            const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+            items.push({itemId: itemId, quantity: item.data.quantity});
+        }
+        if (items.length === 0) {
+            return;
+        }
+
+        const packet = {
+            type: "loot",
+            looterId: game.user.actorId,
+            tokenId: this.token.id,
+            items: items,
+            processorId: targetGm.id
+        };
+
         console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
         game.socket.emit(LootSheet5eNPC.SOCKET, packet);
     }
@@ -947,6 +1011,15 @@ Hooks.once("init", () => {
       type: Boolean
     });
 
+    game.settings.register("lootsheetnpc5e", "lootAll", {
+		  name: "Loot all?",
+      hint: "If enabled, players will have the option to loot all items to their character, currency will follow the 'Loot Currency?' setting upon Loot All.",
+      scope: "world",
+      config: true,
+      default: true,
+      type: Boolean
+    });
+
     function chatMessage (speaker, owner, message, item) {
         if (game.settings.get("lootsheetnpc5e", "buyChat")) {
             message =   `
@@ -981,45 +1054,66 @@ Hooks.once("init", () => {
         });
     }
 
-    function moveItem(source, destination, itemId, quantity) {
-        let item = source.getEmbeddedEntity("OwnedItem", itemId);
+    async function moveItems(source, destination, items) {
+        const updates = [];
+        const deletes = [];
+        const additions = [];
+        const results = [];
+        for (let i of items) {
+            let itemId = i.itemId;
+            let quantity = i.quantity;
+            let item = source.getEmbeddedEntity("OwnedItem", itemId);
 
-        // Move all items if we select more than the quantity.
-        if (item.data.quantity < quantity) {
-            quantity = item.data.quantity;
+            // Move all items if we select more than the quantity.
+            if (item.data.quantity < quantity) {
+                quantity = item.data.quantity;
+            }
+
+            let newItem = duplicate(item);
+            const update = {_id: itemId, "data.quantity": item.data.quantity - quantity};
+
+            if (update["data.quantity"] === 0) {
+                deletes.push(itemId);
+            }
+            else {
+                updates.push(update);
+            }
+
+            newItem.data.quantity = quantity;
+            additions.push(newItem);
+            results.push({
+                item: newItem,
+                quantity: quantity
+            });
         }
 
-        let newItem = duplicate(item);
-        const update = {_id: itemId, "data.quantity": item.data.quantity - quantity};
-
-        if (update["data.quantity"] === 0) {
-            source.deleteEmbeddedEntity("OwnedItem", itemId);
-        }
-        else {
-            source.updateEmbeddedEntity("OwnedItem", update);
+        if (deletes.length > 0) {
+            await source.deleteEmbeddedEntity("OwnedItem", deletes);
         }
 
-        newItem.data.quantity = quantity;
-        destination.createEmbeddedEntity("OwnedItem", newItem);
+        if (updates.length > 0) {
+            await source.updateEmbeddedEntity("OwnedItem", updates);
+        }
 
-        return {
-            item: newItem,
-            quantity: quantity
-        };
+        if (additions.length > 0) {
+            await destination.createEmbeddedEntity("OwnedItem", additions);
+        }
 
+        return results;
     }
 
-    function lootItem(container, looter, itemId, quantity) {
-        let moved = moveItem(container, looter, itemId, quantity);
+    async function lootItems(container, looter, items) {
+        let moved = await moveItems(container, looter, items);
 
-        chatMessage(
-            container, looter,
-            `${looter.name} looted ${moved.quantity} x ${moved.item.name}.`,
-            moved.item);
-
+        for (let m of moved) {
+            chatMessage(
+                container, looter,
+                `${looter.name} looted ${m.quantity} x ${m.item.name}.`,
+                m.item);
+        }
     }
 
-    function transaction(seller, buyer, itemId, quantity) {
+    async function transaction(seller, buyer, itemId, quantity) {
         let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
 
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
@@ -1054,12 +1148,14 @@ Hooks.once("init", () => {
 
         // Update buyer's gold from the buyer.
         buyer.update({"data.currency": buyerFunds});
-        let moved = moveItem(seller, buyer, itemId, quantity);
+        let moved = await moveItems(seller, buyer, [{itemId, quantity}]);
 
-        chatMessage(
-            seller, buyer,
-            `${buyer.name} purchases ${quantity} x ${moved.item.name} for ${itemCost}gp.`,
-            moved.item);
+        for (let m of moved) {
+            chatMessage(
+                seller, buyer,
+                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCost}gp.`,
+                m.item);
+        }
     }
 
     function distributeCoins(containerActor) {
@@ -1238,7 +1334,7 @@ Hooks.once("init", () => {
                 let container = canvas.tokens.get(data.tokenId);
 
                 if (looter && container && container.actor) {
-                    lootItem(container.actor, looter, data.itemId, data.quantity);
+                    lootItems(container.actor, looter, data.items);
                 }
                 else if (!container) {
                     errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot an item.")
