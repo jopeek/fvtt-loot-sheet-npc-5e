@@ -9,6 +9,13 @@
             <h1 class="charname">
                 <input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/>
             </h1>
+            {{#ifeq lootsheettype "Loot"}}
+                {{#if lootAll}}
+                    <div class="charbutton">
+                        <button class="loot-all" name="loot-all" value="1"><i class="fas fa-gem"></i> Loot All</button>
+                    </div>
+                {{/if}}
+            {{/ifeq}}
             {{#if isGM}}
                 {{#ifeq lootsheettype "Merchant"}}
                     <div class="charbutton">
@@ -48,7 +55,8 @@
                     </div>
                 </div>
                 
-                <h3 class="gm-header"><i class="fas fa-users"></i> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
+                <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
+                <input type="hidden" name="actor.flags.loot.playersPermission" value="{{actor.flags.loot.playersPermission}}" data-dtype="Number"/>
                 <div class="permission-info">Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.</div>
                 <ol class="permissions-list">
                     {{#each actor.flags.loot.players as |player p|}}
@@ -59,19 +67,6 @@
                         </li>
                     {{/each}}
                 </ol>
-
-                {{#ifeq lootsheettype "Loot"}}
-                    <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
-                    <ol class="coins-list">
-                        {{#each actor.flags.loot.currency as |c i|}}
-                            <li class="denomination {{i}}">
-                                <label>{{ lookup ../config.currencies i }}:</label>
-                                <h4 class="denomination-value">{{c.value}} each</h4>
-                            </li>
-                        {{/each}}
-                    </ol>
-                    <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.ownerCount}} Ways</button>
-                {{/ifeq}}
 
                 {{#ifeq lootsheettype "Merchant"}}
                     <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
@@ -104,7 +99,20 @@
             </div>
 
             {{/if}}
-            
+
+            {{#ifeq lootsheettype "Loot"}}
+                <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
+                <ol class="coins-list">
+                    {{#each actor.flags.loot.currency as |c i|}}
+                        <li class="denomination {{i}}">
+                            <label>{{ lookup ../config.currencies i }}:</label>
+                            <h4 class="denomination-value">{{c.value}} each</h4>
+                        </li>
+                    {{/each}}
+                </ol>
+                <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.observerCount}} Ways</button>
+            {{/ifeq}}
+
         </section>
 		
         <!-- BODY -->
@@ -131,6 +139,13 @@
                                     <label class="denomination {{i}}">{{ lookup ../config.currencies i }}</label>
                                     <input type="text" name="data.currency.{{i}}.value" value="{{c.value}}" data-dtype="{{c.type}}"/>
                                 {{/each}}
+                                {{#ifeq lootsheettype "Loot"}}
+                                    {{#if lootCurrency}}
+                                        <div class="item-controls">
+                                            <a class="currency-loot" title="Loot Coins"><i class="fas fa-gem"></i></a>
+                                        </div>
+                                    {{/if}}
+                                {{/ifeq}}
                             </ol>
                         </div>
     

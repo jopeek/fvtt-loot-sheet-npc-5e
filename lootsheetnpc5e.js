@@ -73,7 +73,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         mergeObject(options, {
             classes: ["dnd5e sheet actor npc npc-sheet loot-sheet-npc"],
-            width: 850,
+            width: 890,
             height: 750
         });
         return options;
@@ -108,6 +108,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         sheetData.lootsheettype = lootsheettype;
         sheetData.priceModifier = priceModifier;
         sheetData.rolltables = game.tables.entities;
+        sheetData.lootCurrency = game.settings.get("lootsheetnpc5e", "lootCurrency");
+        sheetData.lootAll = game.settings.get("lootsheetnpc5e", "lootAll");
 
         // Return data for rendering
         return sheetData;
@@ -126,9 +128,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (this.options.editable) {
             // Toggle Permissions
             html.find('.permission-proficiency').click(ev => this._onCyclePermissionProficiency(ev));
-
-            // Split Coins
-            html.find('.split-coins').click(ev => this._distributeCoins(ev));
+            html.find('.permission-proficiency-bulk').click(ev => this._onCyclePermissionProficiencyBulk(ev));
 
             // Price Modifier
             html.find('.price-modifier').click(ev => this._priceModifier(ev));
@@ -137,11 +137,20 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             html.find('.update-inventory').click(ev => this._merchantInventoryUpdate(ev));
         }
 
+        // Split Coins
+        html.find('.split-coins').removeAttr('disabled').click(ev => this._distributeCoins(ev));
+
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
 
         // Loot Item
         html.find('.item-loot').click(ev => this._lootItem(ev));
+
+        // Loot Currency
+        html.find('.currency-loot').click(ev => this._lootCoins(ev));
+
+        // Loot All
+        html.find('.loot-all').removeAttr('disabled').click(ev => this._lootAll(ev, html));
 
         // Sheet Type
         html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
@@ -336,30 +345,43 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (this.token === null) {
             return ui.notifications.error(`You must purchase items from a token.`);
         }
-        if (game.user.actorId) {
-            let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-
-            let d = new QuantityDialog((quantity) => {
-                    const packet = {
-                        type: "buy",
-                        buyerId: game.user.actorId,
-                        tokenId: this.token.id,
-                        itemId: itemId,
-                        quantity: quantity,
-                        processorId: targetGm.id
-                    };
-                    console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
-                    game.socket.emit(LootSheet5eNPC.SOCKET, packet);
-                },
-                {
-                    acceptLabel: "Purchase"
-                }
-            );
-            d.render(true);
-        } else {
+        if (!game.user.actorId) {
             console.log("Loot Sheet | No active character for user");
             return ui.notifications.error(`No active character for user.`);
         }
+
+        let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+        const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+
+        const packet = {
+            type: "buy",
+            buyerId: game.user.actorId,
+            tokenId: this.token.id,
+            itemId: itemId,
+            quantity: 1,
+            processorId: targetGm.id
+        };
+
+        if (event.shiftKey) {
+            packet.quantity = item.data.quantity;
+        }
+
+        if (item.data.quantity === packet.quantity) {
+            console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
+            game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            return;
+        }
+
+        let d = new QuantityDialog((quantity) => {
+                packet.quantity = quantity;
+                console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
+                game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            },
+            {
+                acceptLabel: "Purchase"
+            }
+        );
+        d.render(true);
     }
 
     /* -------------------------------------------- */
@@ -386,30 +408,142 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (this.token === null) {
             return ui.notifications.error(`You must loot items from a token.`);
         }
-        if (game.user.actorId) {
-            let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-
-            let d = new QuantityDialog((quantity) => {
-                    const packet = {
-                        type: "loot",
-                        looterId: game.user.actorId,
-                        tokenId: this.token.id,
-                        itemId: itemId,
-                        quantity: quantity,
-                        processorId: targetGm.id
-                    };
-                    console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
-                    game.socket.emit(LootSheet5eNPC.SOCKET, packet);
-                },
-                {
-                    acceptLabel: "Loot"
-                }
-            );
-            d.render(true);
-        } else {
+        if (!game.user.actorId) {
             console.log("Loot Sheet | No active character for user");
             return ui.notifications.error(`No active character for user.`);
         }
+
+        const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+        const targetItem = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+
+        const item = {itemId: itemId, quantity: 1};
+        if (event.shiftKey) {
+            item.quantity = targetItem.data.quantity;
+        }
+
+        const packet = {
+            type: "loot",
+            looterId: game.user.actorId,
+            tokenId: this.token.id,
+            items: [item],
+            processorId: targetGm.id
+        };
+
+        if (targetItem.data.quantity === item.quantity) {
+            console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+            game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            return;
+        }
+
+        const d = new QuantityDialog((quantity) => {
+                packet.items[0]['quantity'] = quantity;
+                console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+                game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+            },
+            {
+                acceptLabel: "Loot"
+            }
+        );
+        d.render(true);
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle Loot coins
+     * @private
+     */
+    _lootCoins(event) {
+        event.preventDefault();
+        if (!game.settings.get("lootsheetnpc5e", "lootCurrency")) {
+            return;
+        }
+        console.log("Loot Sheet | Loot Coins clicked");
+
+        let targetGm = null;
+        game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u;
+            }
+        });
+
+        if (!targetGm) {
+            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
+        }
+
+        if (this.token === null) {
+            return ui.notifications.error(`You must loot coins from a token.`);
+        }
+        if (!game.user.actorId) {
+            console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
+        }
+
+        const packet = {
+            type: "lootCoins",
+            looterId: game.user.actorId,
+            tokenId: this.token.id,
+            processorId: targetGm.id
+        };
+        console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+        game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle Loot all
+     * @private
+     */
+    _lootAll(event, html) {
+        event.preventDefault();
+        console.log("Loot Sheet | Loot All clicked");
+        this._lootCoins(event);
+
+        let targetGm = null;
+        game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u;
+            }
+        });
+
+        if (!targetGm) {
+            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to purchase an item.");
+        }
+
+        if (this.token === null) {
+            return ui.notifications.error(`You must loot items from a token.`);
+        }
+        if (!game.user.actorId) {
+            console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
+        }
+
+        const itemTargets = html.find('.item[data-item-id]');
+        if (!itemTargets) {
+            return;
+        }
+
+        const items = [];
+        for (let i of itemTargets) {
+            const itemId = i.getAttribute("data-item-id");
+            const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+            items.push({itemId: itemId, quantity: item.data.quantity});
+        }
+        if (items.length === 0) {
+            return;
+        }
+
+        const packet = {
+            type: "loot",
+            looterId: game.user.actorId,
+            tokenId: this.token.id,
+            items: items,
+            processorId: targetGm.id
+        };
+
+        console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
+        game.socket.emit(LootSheet5eNPC.SOCKET, packet);
     }
 
     /* -------------------------------------------- */
@@ -464,100 +598,33 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         event.preventDefault();
         //console.log("Loot Sheet | Split Coins clicked");
 
-        let actorData = this.actor.data
-        let owners = [];
-        //console.log("Loot Sheet | actorData", actorData);
-        // Calculate owners
-        for (let u in actorData.permission) {
-            if (u != "default" && actorData.permission[u] == 3) {
-                //console.log("Loot Sheet | u in actorData.permission", u);
-                let player = game.users.get(u);
-                //console.log("Loot Sheet | player", player);
-                let actor = game.actors.get(player.data.character);
-                //console.log("Loot Sheet | actor", actor);
-                if (actor !== null && (player.data.role === 1 || player.data.role === 2)) owners.push(actor);
+        let targetGm = null;
+        game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u;
             }
+        });
+
+        if (!targetGm) {
+            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to purchase an item.");
         }
 
-        //console.log("Loot Sheet | owners", owners);
-        if (owners.length === 0) return;
-
-        // Calculate split of currency
-        let currencySplit = duplicate(actorData.data.currency);
-        //console.log("Loot Sheet | Currency data", currencySplit);
-        
-        // keep track of the remainder
-        let currencyRemainder = {};
-
-        for (let c in currencySplit) {
-            if (owners.length) {                
-                // calculate remainder
-                currencyRemainder[c] = (currencySplit[c].value % owners.length);
-                //console.log("Remainder: " + currencyRemainder[c]);
-
-                currencySplit[c].value = Math.floor(currencySplit[c].value / owners.length);
-            }
-            else currencySplit[c].value = 0;
+        if (this.token === null) {
+            return ui.notifications.error(`You must loot items from a token.`);
+        }
+        if (!game.user.actorId) {
+            console.log("Loot Sheet | No active character for user");
+            return ui.notifications.error(`No active character for user.`);
         }
 
-        // add currency to actors existing coins
-        let msg = [];
-        for (let u of owners) {
-            //console.log("Loot Sheet | u of owners", u);
-            if (u === null) continue;
-
-            msg = [];
-            let currency = u.data.data.currency,
-                newCurrency = duplicate(u.data.data.currency);
-
-            //console.log("Loot Sheet | Current Currency", currency);
-
-            for (let c in currency) {
-                // add msg for chat description
-                if (currencySplit[c].value) {
-                    //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
-                    msg.push(` ${currencySplit[c].value} ${c} coins`)
-                }
-
-                // Add currency to permitted actor
-                newCurrency[c] = currency[c] + currencySplit[c].value;
-
-                //console.log("Loot Sheet | New Currency", newCurrency);
-                u.update({
-                    'data.currency': newCurrency
-                });
-            }
-
-            // Remove currency from loot actor.
-            let lootCurrency = this.actor.data.data.currency,
-                zeroCurrency = {};
-
-            for (let c in lootCurrency) {
-                zeroCurrency[c] = {
-                    'type': currencySplit[c].type,
-                    'label': currencySplit[c].type,
-                    'value': currencyRemainder[c]
-                }
-                this.actor.update({
-                    "data.currency": zeroCurrency
-                });
-            }
-
-
-            // Create chat message for coins received
-            if (msg.length != 0) {
-                let message = `${u.data.name} receives: `;
-                message += msg.join(",");
-                ChatMessage.create({
-                    user: game.user._id,
-                    speaker: {
-                        actor: this.actor,
-                        alias: this.actor.name
-                    },
-                    content: message
-                });
-            }
-        }
+        const packet = {
+            type: "distributeCoins",
+            looterId: game.user.actorId,
+            tokenId: this.token.id,
+            processorId: targetGm.id
+        };
+        console.log("LootSheet5e", "Sending distribute coins request to " + targetGm.name, packet);
+        game.socket.emit(LootSheet5eNPC.SOCKET, packet);
     }
 
     /* -------------------------------------------- */
@@ -595,6 +662,40 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //console.log("Loot Sheet | Current actor: " + playerId);
 
         this._updatePermissions(actorData, playerId, newLevel, event);
+
+        this._onSubmit(event);
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle cycling bulk permissions
+     * @private
+     */
+    _onCyclePermissionProficiencyBulk(event) {
+        event.preventDefault();
+
+        let actorData = this.actor.data;
+
+        let field = $(event.currentTarget).parent().siblings('input[type="hidden"]');
+        let level = parseFloat(field.val());
+        if (typeof level === undefined || level === 999) level = 0;
+
+        const levels = [0, 3, 2]; //const levels = [0, 2, 3];
+
+        let idx = levels.indexOf(level),
+            newLevel = levels[(idx === levels.length - 1) ? 0 : idx + 1];
+
+        let users = game.users.entities;
+
+        let currentPermissions = duplicate(actorData.permission);
+        for (let u of users) {
+            if (u.data.role === 1 || u.data.role === 2) {
+                currentPermissions[u._id] = newLevel;
+            }
+        }
+        const lootPermissions = new PermissionControl(this.actor);
+        lootPermissions._updateObject(event, currentPermissions)
 
         this._onSubmit(event);
     }
@@ -685,7 +786,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const icons = {
             0: '<i class="far fa-circle"></i>',
             2: '<i class="fas fa-eye"></i>',
-            3: '<i class="fas fa-check"></i>'
+            3: '<i class="fas fa-check"></i>',
+            999: '<i class="fas fa-users"></i>'
         };
         return icons[level];
     }
@@ -700,7 +802,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const description = {
             0: "None (cannot access sheet)",
             2: "Observer (access to sheet but can only purchase items if merchant sheet type)",
-            3: "Owner (can access items and share coins)"
+            3: "Owner (can access items and share coins)",
+            999: "Change all permissions"
         };
         return description[level];
     }
@@ -715,8 +818,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     _prepareGMSettings(actorData) {
 
         const players = [],
-            owners = [];
+            observers = [];
         let users = game.users.entities;
+        let commonPlayersPermission = -1;
 
         //console.log("Loot Sheet _prepareGMSettings | actorData.permission", actorData.permission);
 
@@ -743,9 +847,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
                         u.lootPermission = actorData.permission.default;
 
-                        if (actorData.permission.default === 3 && !owners.includes(actor.data._id)) {
+                        if (actorData.permission.default >= 2 && !observers.includes(actor.data._id)) {
 
-                            owners.push(actor.data._id);
+                            observers.push(actor.data._id);
                         }
 						
                     } else {
@@ -755,19 +859,24 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     }
 
                     //if the player has some form of permission to the object update the actorData
-                    if (u.data._id in actorData.permission && !owners.includes(actor.data._id)) {
+                    if (u.data._id in actorData.permission && !observers.includes(actor.data._id)) {
                         //console.log("Loot Sheet | Found individual actor permission");
 
                         u.lootPermission = actorData.permission[u.data._id];
                         //console.log("Loot Sheet | assigning " + actorData.permission[u.data._id] + " permission to hidden field");
 
-                        if (actorData.permission[u.data._id] === 3) {
-                            owners.push(actor.data._id);
+                        if (actorData.permission[u.data._id] >= 2) {
+                            observers.push(actor.data._id);
                         }
                     }
 
 					//Set icons and permission texts for html
-					//console.log("Loot Sheet | lootPermission", u.lootPermission);
+                    //console.log("Loot Sheet | lootPermission", u.lootPermission);
+                    if (commonPlayersPermission < 0) {
+                        commonPlayersPermission = u.lootPermission;
+                    } else if (commonPlayersPermission !== u.lootPermission) {
+                        commonPlayersPermission = 999;
+                    }
                     u.icon = this._getPermissionIcon(u.lootPermission);
                     u.lootPermissionDescription = this._getPermissionDescription(u.lootPermission);
                     players.push(u);
@@ -775,19 +884,22 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             }
         }
 
-        // calculate the split of coins between all owners of the sheet.
+        // calculate the split of coins between all observers of the sheet.
         let currencySplit = duplicate(actorData.data.currency);
         for (let c in currencySplit) {
-            if (owners.length)
-                currencySplit[c].value = Math.floor(currencySplit[c].value / owners.length);
+            if (observers.length)
+                currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
             else
                 currencySplit[c] = 0
         }
 
         let loot = {}
         loot.players = players;
-        loot.ownerCount = owners.length;
+        loot.observerCount = observers.length;
         loot.currency = currencySplit;
+        loot.playersPermission = commonPlayersPermission;
+        loot.playersPermissionIcon = this._getPermissionIcon(commonPlayersPermission);
+        loot.playersPermissionDescription = this._getPermissionDescription(commonPlayersPermission);
         actorData.flags.loot = loot;
     }
 
@@ -889,7 +1001,7 @@ Hooks.once("init", () => {
             default: true,
             type: Boolean
     });
-    
+
     game.settings.register("lootsheetnpc5e", "clearInventory", {
 		  name: "Clear inventory?",
       hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
@@ -899,6 +1011,23 @@ Hooks.once("init", () => {
       type: Boolean
     });
 
+    game.settings.register("lootsheetnpc5e", "lootCurrency", {
+		  name: "Loot currency?",
+      hint: "If enabled, players will have the option to loot all currency to their character, in addition to splitting the currency between players.",
+      scope: "world",
+      config: true,
+      default: true,
+      type: Boolean
+    });
+
+    game.settings.register("lootsheetnpc5e", "lootAll", {
+		  name: "Loot all?",
+      hint: "If enabled, players will have the option to loot all items to their character, currency will follow the 'Loot Currency?' setting upon Loot All.",
+      scope: "world",
+      config: true,
+      default: true,
+      type: Boolean
+    });
 
     function chatMessage (speaker, owner, message, item) {
         if (game.settings.get("lootsheetnpc5e", "buyChat")) {
@@ -934,45 +1063,66 @@ Hooks.once("init", () => {
         });
     }
 
-    function moveItem(source, destination, itemId, quantity) {
-        let item = source.getEmbeddedEntity("OwnedItem", itemId);
+    async function moveItems(source, destination, items) {
+        const updates = [];
+        const deletes = [];
+        const additions = [];
+        const results = [];
+        for (let i of items) {
+            let itemId = i.itemId;
+            let quantity = i.quantity;
+            let item = source.getEmbeddedEntity("OwnedItem", itemId);
 
-        // Move all items if we select more than the quantity.
-        if (item.data.quantity < quantity) {
-            quantity = item.data.quantity;
+            // Move all items if we select more than the quantity.
+            if (item.data.quantity < quantity) {
+                quantity = item.data.quantity;
+            }
+
+            let newItem = duplicate(item);
+            const update = {_id: itemId, "data.quantity": item.data.quantity - quantity};
+
+            if (update["data.quantity"] === 0) {
+                deletes.push(itemId);
+            }
+            else {
+                updates.push(update);
+            }
+
+            newItem.data.quantity = quantity;
+            additions.push(newItem);
+            results.push({
+                item: newItem,
+                quantity: quantity
+            });
         }
 
-        let newItem = duplicate(item);
-        const update = {_id: itemId, "data.quantity": item.data.quantity - quantity};
-
-        if (update["data.quantity"] === 0) {
-            source.deleteEmbeddedEntity("OwnedItem", itemId);
-        }
-        else {
-            source.updateEmbeddedEntity("OwnedItem", update);
+        if (deletes.length > 0) {
+            await source.deleteEmbeddedEntity("OwnedItem", deletes);
         }
 
-        newItem.data.quantity = quantity;
-        destination.createEmbeddedEntity("OwnedItem", newItem);
+        if (updates.length > 0) {
+            await source.updateEmbeddedEntity("OwnedItem", updates);
+        }
 
-        return {
-            item: newItem,
-            quantity: quantity
-        };
+        if (additions.length > 0) {
+            await destination.createEmbeddedEntity("OwnedItem", additions);
+        }
 
+        return results;
     }
 
-    function lootItem(container, looter, itemId, quantity) {
-        let moved = moveItem(container, looter, itemId, quantity);
+    async function lootItems(container, looter, items) {
+        let moved = await moveItems(container, looter, items);
 
-        chatMessage(
-            container, looter,
-            `${looter.name} looted ${moved.quantity} x ${moved.item.name}.`,
-            moved.item);
-
+        for (let m of moved) {
+            chatMessage(
+                container, looter,
+                `${looter.name} looted ${m.quantity} x ${m.item.name}.`,
+                m.item);
+        }
     }
 
-    function transaction(seller, buyer, itemId, quantity) {
+    async function transaction(seller, buyer, itemId, quantity) {
         let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
 
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
@@ -1036,12 +1186,169 @@ Hooks.once("init", () => {
 
         // Update buyer's gold from the buyer.
         buyer.update({"data.currency": buyerFunds});
-        let moved = moveItem(seller, buyer, itemId, quantity);
+        let moved = await moveItems(seller, buyer, [{itemId, quantity}]);
 
-        chatMessage(
-            seller, buyer,
-            `${buyer.name} purchases ${quantity} x ${moved.item.name} for ${itemCost}gp.`,
-            moved.item);
+        for (let m of moved) {
+            chatMessage(
+                seller, buyer,
+                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCost}gp.`,
+                m.item);
+        }
+    }
+
+    function distributeCoins(containerActor) {
+        let actorData = containerActor.data
+        let observers = [];
+        //console.log("Loot Sheet | actorData", actorData);
+        // Calculate observers
+        for (let u in actorData.permission) {
+            if (u != "default" && actorData.permission[u] >= 2) {
+                //console.log("Loot Sheet | u in actorData.permission", u);
+                let player = game.users.get(u);
+                //console.log("Loot Sheet | player", player);
+                let actor = game.actors.get(player.data.character);
+                //console.log("Loot Sheet | actor", actor);
+                if (actor !== null && (player.data.role === 1 || player.data.role === 2)) observers.push(actor);
+            }
+        }
+
+        //console.log("Loot Sheet | observers", observers);
+        if (observers.length === 0) return;
+
+        // Calculate split of currency
+        let currencySplit = duplicate(actorData.data.currency);
+        //console.log("Loot Sheet | Currency data", currencySplit);
+        
+        // keep track of the remainder
+        let currencyRemainder = {};
+
+        for (let c in currencySplit) {
+            if (observers.length) {                
+                // calculate remainder
+                currencyRemainder[c] = (currencySplit[c].value % observers.length);
+                //console.log("Remainder: " + currencyRemainder[c]);
+
+                currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
+            }
+            else currencySplit[c].value = 0;
+        }
+
+        // add currency to actors existing coins
+        let msg = [];
+        for (let u of observers) {
+            //console.log("Loot Sheet | u of observers", u);
+            if (u === null) continue;
+
+            msg = [];
+            let currency = u.data.data.currency,
+                newCurrency = duplicate(u.data.data.currency);
+
+            //console.log("Loot Sheet | Current Currency", currency);
+
+            for (let c in currency) {
+                // add msg for chat description
+                if (currencySplit[c].value) {
+                    //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
+                    msg.push(` ${currencySplit[c].value} ${c} coins`)
+                }
+
+                // Add currency to permitted actor
+                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c].value;
+
+                //console.log("Loot Sheet | New Currency", newCurrency);
+                u.update({
+                    'data.currency': newCurrency
+                });
+            }
+
+            // Remove currency from loot actor.
+            let lootCurrency = containerActor.data.data.currency,
+                zeroCurrency = {};
+
+            for (let c in lootCurrency) {
+                zeroCurrency[c] = {
+                    'type': currencySplit[c].type,
+                    'label': currencySplit[c].type,
+                    'value': currencyRemainder[c]
+                }
+                containerActor.update({
+                    "data.currency": zeroCurrency
+                });
+            }
+
+            // Create chat message for coins received
+            if (msg.length != 0) {
+                let message = `${u.data.name} receives: `;
+                message += msg.join(",");
+                ChatMessage.create({
+                    user: game.user._id,
+                    speaker: {
+                        actor: containerActor,
+                        alias: containerActor.name
+                    },
+                    content: message
+                });
+            }
+        }
+    }
+
+    function lootCoins(containerActor, looter) {
+        let actorData = containerActor.data
+
+        let sheetCurrency = actorData.data.currency;
+        //console.log("Loot Sheet | Currency data", currency);
+
+        // add currency to actors existing coins
+        let msg = [];
+        let currency = looter.data.data.currency,
+            newCurrency = duplicate(looter.data.data.currency);
+
+        //console.log("Loot Sheet | Current Currency", currency);
+
+        for (let c in currency) {
+            // add msg for chat description
+            if (sheetCurrency[c].value) {
+                //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
+                msg.push(` ${sheetCurrency[c].value} ${c} coins`)
+            }
+
+            // Add currency to permitted actor
+            newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c].value);
+
+            //console.log("Loot Sheet | New Currency", newCurrency);
+            looter.update({
+                'data.currency': newCurrency
+            });
+        }
+
+        // Remove currency from loot actor.
+        let lootCurrency = containerActor.data.data.currency,
+            zeroCurrency = {};
+
+        for (let c in lootCurrency) {
+            zeroCurrency[c] = {
+                'type': sheetCurrency[c].type,
+                'label': sheetCurrency[c].type,
+                'value': 0
+            }
+            containerActor.update({
+                "data.currency": zeroCurrency
+            });
+        }
+
+        // Create chat message for coins received
+        if (msg.length != 0) {
+            let message = `${looter.data.name} receives: `;
+            message += msg.join(",");
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: {
+                    actor: containerActor,
+                    alias: containerActor.name
+                },
+                content: message
+            });
+        }
     }
 
     game.socket.on(LootSheet5eNPC.SOCKET, data => {
@@ -1065,12 +1372,31 @@ Hooks.once("init", () => {
                 let container = canvas.tokens.get(data.tokenId);
 
                 if (looter && container && container.actor) {
-                    lootItem(container.actor, looter, data.itemId, data.quantity);
+                    lootItems(container.actor, looter, data.items);
                 }
                 else if (!container) {
                     errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot an item.")
                     ui.notifications.error("Player attempted to loot an item on a different scene.");
                 }
+            }
+
+            if (data.type === "distributeCoins") {
+                let container = canvas.tokens.get(data.tokenId);
+                if (!container || !container.actor) {
+                    errorMessageToActor(looter, "GM not available, the GM must on the same scene to distribute coins.")
+                    return ui.notifications.error("Player attempted to distribute coins on a different scene.");
+                }
+                distributeCoins(container.actor);
+            }
+
+            if (data.type === "lootCoins") {
+                let looter = game.actors.get(data.looterId);
+                let container = canvas.tokens.get(data.tokenId);
+                if (!container || !container.actor || !looter) {
+                    errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot coins.")
+                    return ui.notifications.error("Player attempted to loot coins on a different scene.");
+                }
+                lootCoins(container.actor, looter);
             }
         }
         if (data.type === "error" && data.targetId === game.user.actorId) {
