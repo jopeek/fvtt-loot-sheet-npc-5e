@@ -106,7 +106,7 @@
                     {{#each actor.flags.loot.currency as |c i|}}
                         <li class="denomination {{i}}">
                             <label>{{ lookup ../config.currencies i }}:</label>
-                            <h4 class="denomination-value">{{c.value}} each</h4>
+                            <span class="denomination-value">{{c.value}} each</span>
                         </li>
                     {{/each}}
                 </ol>
