@@ -19,6 +19,22 @@
 	margin-top: 0.5rem;
 }
 
+.loot-sheet-npc .inventory-filters .item-controls {
+	flex: 0 0 40px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    justify-content: flex-end;
+}
+
+.loot-sheet-npc .inventory-filters .item-controls a {
+	flex: 0 0 22px;
+    font-size: 12px;
+    text-align: center;
+    color: #7a7971;
+}
+
 .loot-sheet-npc .gm-settings .permissions-list,
 .loot-sheet-npc .gm-settings .coin-list {
 	margin: 0;
