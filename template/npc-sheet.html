@@ -75,9 +75,10 @@
                         <div class="flexrow">
                             <div class="flexcol"><h4>Rollable Table: </h4></div>
                             <div class="flexcol">
-                                <!-- <input name="data.flags.lootsheetnpc5e.rolltable" type="text" data-dtype="String" placeholder="e.g. MyRollTable" value="{{data.flags.lootsheetnpc5e.rolltable}}"/> -->
                                 <select class="sheet-rolltable" name="data.flags.lootsheetnpc5e.rolltable">
+                                    
                                     {{#select data.flags.lootsheetnpc5e.rolltable}}
+                                    <option value=""></option>
                                         {{#each rolltables as |table i|}}
                                             <option value="{{table.name}}">{{table.name}}</option>
                                         {{/each}}

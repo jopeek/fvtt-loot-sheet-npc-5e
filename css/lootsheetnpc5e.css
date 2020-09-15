@@ -120,7 +120,7 @@
 }
 
 .loot-sheet-npc.sheet .window-content form {
-	overflow: auto !important;
+	overflow-y: auto !important;
 }
 
 img.sheet-profile {
