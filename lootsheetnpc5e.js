@@ -612,11 +612,14 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (this.token === null) {
             return ui.notifications.error(`You must loot items from a token.`);
         }
-        if (!game.user.actorId) {
-            console.log("Loot Sheet | No active character for user");
-            return ui.notifications.error(`No active character for user.`);
-        }
 
+        if (game.user.isGM) {
+            //don't use socket
+            let container = canvas.tokens.get(this.token.id);
+            this._hackydistributeCoins(container.actor);
+            return;
+        }
+        
         const packet = {
             type: "distributeCoins",
             looterId: game.user.actorId,
@@ -625,6 +628,104 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         };
         console.log("LootSheet5e", "Sending distribute coins request to " + targetGm.name, packet);
         game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+    }
+
+    _hackydistributeCoins(containerActor) {
+        //This is identical as the distributeCoins function defined in the init hook which for some reason can't be called from the above _distributeCoins method of the LootSheetNPC5E class. I couldn't be bothered to figure out why a socket can't be called as the GM... so this is a hack but it works.
+        
+        let actorData = containerActor.data
+        let observers = [];
+        //console.log("Loot Sheet | actorData", actorData);
+        // Calculate observers
+        for (let u in actorData.permission) {
+            if (u != "default" && actorData.permission[u] >= 2) {
+                //console.log("Loot Sheet | u in actorData.permission", u);
+                let player = game.users.get(u);
+                //console.log("Loot Sheet | player", player);
+                let actor = game.actors.get(player.data.character);
+                //console.log("Loot Sheet | actor", actor);
+                if (actor !== null && (player.data.role === 1 || player.data.role === 2)) observers.push(actor);
+            }
+        }
+
+        //console.log("Loot Sheet | observers", observers);
+        if (observers.length === 0) return;
+
+        // Calculate split of currency
+        let currencySplit = duplicate(actorData.data.currency);
+        //console.log("Loot Sheet | Currency data", currencySplit);
+        
+        // keep track of the remainder
+        let currencyRemainder = {};
+
+        for (let c in currencySplit) {
+            if (observers.length) {                
+                // calculate remainder
+                currencyRemainder[c] = (currencySplit[c].value % observers.length);
+                //console.log("Remainder: " + currencyRemainder[c]);
+
+                currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
+            }
+            else currencySplit[c].value = 0;
+        }
+
+        // add currency to actors existing coins
+        let msg = [];
+        for (let u of observers) {
+            //console.log("Loot Sheet | u of observers", u);
+            if (u === null) continue;
+
+            msg = [];
+            let currency = u.data.data.currency,
+                newCurrency = duplicate(u.data.data.currency);
+
+            //console.log("Loot Sheet | Current Currency", currency);
+
+            for (let c in currency) {
+                // add msg for chat description
+                if (currencySplit[c].value) {
+                    //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
+                    msg.push(` ${currencySplit[c].value} ${c} coins`)
+                }
+
+                // Add currency to permitted actor
+                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c].value;
+
+                //console.log("Loot Sheet | New Currency", newCurrency);
+                u.update({
+                    'data.currency': newCurrency
+                });
+            }
+
+            // Remove currency from loot actor.
+            let lootCurrency = containerActor.data.data.currency,
+                zeroCurrency = {};
+
+            for (let c in lootCurrency) {
+                zeroCurrency[c] = {
+                    'type': currencySplit[c].type,
+                    'label': currencySplit[c].type,
+                    'value': currencyRemainder[c]
+                }
+                containerActor.update({
+                    "data.currency": zeroCurrency
+                });
+            }
+
+            // Create chat message for coins received
+            if (msg.length != 0) {
+                let message = `${u.data.name} receives: `;
+                message += msg.join(",");
+                ChatMessage.create({
+                    user: game.user._id,
+                    speaker: {
+                        actor: containerActor,
+                        alias: containerActor.name
+                    },
+                    content: message
+                });
+            }
+        }
     }
 
     /* -------------------------------------------- */
