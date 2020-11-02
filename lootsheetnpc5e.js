@@ -1130,6 +1130,20 @@ Hooks.once("init", () => {
       type: Boolean
     });
 
+    game.settings.register("lootsheetnpc5e", "maxPriceModifier", {
+        name: "Max price modifier percentage",
+        hint: "Increasing this will allow a higher price modifier to be used for merchant sheets",
+        scope: "world",
+        config: true,
+        type: Number,
+        range: {
+            min: 200,
+            max: 10000,
+            step: 100
+        },
+        default: 200
+    });
+
     function chatMessage (speaker, owner, message, item) {
         if (game.settings.get("lootsheetnpc5e", "buyChat")) {
             message =   `
