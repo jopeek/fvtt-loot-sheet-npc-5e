@@ -567,6 +567,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         var html = "<p>Use this slider to increase or decrease the price of all items in this inventory. <i class='fa fa-question-circle' title='This uses a percentage factor where 100% is the current price, 0% is 0, and 200% is double the price.'></i></p>";
         html += '<p><input name="price-modifier-percent" id="price-modifier-percent" type="range" min="0" max="' + maxPriceModifier + '" value="' + priceModifier + '" class="slider"></p>';
         html += '<p><label>Percentage:</label> <input type=number min="0" max="' + maxPriceModifier + '" value="' + priceModifier + '" id="price-modifier-percent-display"></p>';
+        html += '<script>var pmSlider = document.getElementById("price-modifier-percent"); var pmDisplay = document.getElementById("price-modifier-percent-display"); pmDisplay.value = pmSlider.value; pmSlider.onchange = function() { pmDisplay.value = this.value; }; pmDisplay.oninput = function() { pmSlider.value = this.value; };</script>';
 
         let d = new Dialog({
             title: "Price Modifier",
