@@ -28,7 +28,7 @@
     justify-content: flex-end;
 }
 
-.loot-sheet-npc .inventory-filters .item-controls a {
+.loot-sheet-npc .inventory-filters .item-controls a, .loot-sheet-npc.sheet .items-list .item-controls a {
 	flex: 0 0 22px;
     font-size: 12px;
     text-align: center;
@@ -206,3 +206,10 @@ input#quantity:focus {
 	margin: 0px;
 }
 
+.loot-sheet-npc.sheet.actor .inventory-list .inventory-header .item-controls a.item-create {
+    flex: initial;
+}
+
+.loot-sheet-npc li.item.flexrow.inventory-header {
+    padding: 8px 8px 0 0;
+}
