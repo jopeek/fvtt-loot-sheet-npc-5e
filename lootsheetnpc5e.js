@@ -687,14 +687,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
                     msg.push(` ${currencySplit[c].value} ${c} coins`)
                 }
-
-                // Add currency to permitted actor
-                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c].value;
-
-                //console.log("Loot Sheet | New Currency", newCurrency);
-                u.update({
-                    'data.currency': newCurrency
-                });
+                if (currencySplit[c].value != null) {
+                    // Add currency to permitted actor
+                    newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c].value;
+                    u.update({
+                        'data.currency': newCurrency
+                    });
+                }
             }
 
             // Remove currency from loot actor.
@@ -1412,14 +1411,13 @@ Hooks.once("init", () => {
                 //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
                 msg.push(` ${sheetCurrency[c].value} ${c} coins`)
             }
-
-            // Add currency to permitted actor
-            newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c].value);
-
-            //console.log("Loot Sheet | New Currency", newCurrency);
-            looter.update({
-                'data.currency': newCurrency
-            });
+            if (sheetCurrency[c].value != null) {
+                // Add currency to permitted actor
+                newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c].value);
+                looter.update({
+                    'data.currency': newCurrency
+                });
+            }
         }
 
         // Remove currency from loot actor.
