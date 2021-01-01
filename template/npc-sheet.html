@@ -94,6 +94,14 @@
                             <div class="flexcol"><h4>Item Qty Formula: </h4></div>
                             <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{data.flags.lootsheetnpc5e.itemQty}}"/></div>
                         </div>
+						<div class="flexrow">
+                            <div class="flexcol"><h4>Limit Qty: </h4></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10" value="{{data.flags.lootsheetnpc5e.itemQtyLimit}}"/></div>
+                        </div>
+						<div class="flexrow">
+                            <div class="flexcol"><h4>Prevent Duplicates: </h4></div>
+                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.allowDups" type="checkbox" data-dtype="boolean" {{#if data.flags.lootsheetnpc5e.allowDups}}checked{{/if}}/></div>
+                        </div>
                     </div>
                     <button class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
                 {{/ifeq}}
