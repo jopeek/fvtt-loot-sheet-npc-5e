@@ -171,18 +171,26 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         console.log("Loot Sheet | Merchant settings changed");
 
         const moduleNamespace = "lootsheetnpc5e";
-        const expectedKeys = ["rolltable", "shopQty", "itemQty"];
+        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "allowDups"];
 
         let targetKey = event.target.name.split('.')[3];
+		
 
         if (expectedKeys.indexOf(targetKey) === -1) {
             console.log(`Loot Sheet | Error changing stettings for "${targetKey}".`);
             return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
         }
-
-        if (event.target.value) {
+		
+		if (targetKey == "allowDups") {
+			console.log(targetKey + " set to " + event.target.checked);
+			await this.actor.setFlag(moduleNamespace, targetKey, event.target.checked);
+		} else if (event.target.value) {
+			console.log(targetKey + " set to " + event.target.value);
+			console.log("A");
             await this.actor.setFlag(moduleNamespace, targetKey, event.target.value);
         } else {
+			console.log(targetKey + " set to " + event.target.value);
+			console.log("B");
             await this.actor.unsetFlag(moduleNamespace, targetKey, event.target.value);
         }
     }
@@ -200,6 +208,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const rolltableName = this.actor.getFlag(moduleNamespace, "rolltable");
         const shopQtyFormula = this.actor.getFlag(moduleNamespace, "shopQty") || "1";
         const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
+		const allowDups = this.actor.getFlag(moduleNamespace, "allowDups");
+		const itemQtyLimit = this.actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
@@ -246,10 +256,45 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             let itemQtyRoll = new Roll(itemQtyFormula);
             itemQtyRoll.roll();
-            //console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
-            newItem.data.data.quantity = itemQtyRoll.result;
-
-            await this.actor.createEmbeddedEntity("OwnedItem", newItem);
+            console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
+			
+            //newItem.data.quantity = itemQtyRoll.result;
+			
+			let existingItem = this.actor.items.find(item => item.data.name == newItem.name );
+			
+			
+			if (existingItem===null) {
+				if (itemQtyLimit && Number(itemQtyLimit) < Number(itemQtyRoll.result)) {
+					//console.log(itemQtyRoll.result + " exceeds new quantity " + itemQtyLimit + ", limiting");
+					await newItem.update({"data.quantity":itemQtyLimit });
+				} else {
+					await newItem.update({"data.quantity":itemQtyRoll.result });
+				}
+				
+				
+				await this.actor.createEmbeddedEntity("OwnedItem", newItem);
+			}
+			else if (allowDups)
+			{
+				if (Number(existingItem.data.data.quantity)===Number(itemQtyRoll.result)) {
+					i--;
+				} else
+				{
+						
+					let newQty = Number(existingItem.data.data.quantity)+Number(itemQtyRoll.result)
+					if (itemQtyLimit && Number(itemQtyLimit) < Number(newQty)) {
+						//console.log("Exceeds existing quantity, limiting");
+						await existingItem.update({"data.quantity":itemQtyLimit });
+					} else {
+						await existingItem.update({"data.quantity":newQty });
+					}
+				}
+			}
+			else
+			{
+				i--;
+			}
+            
         }
     }
 
