@@ -246,20 +246,18 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             let itemQtyRoll = new Roll(itemQtyFormula);
             itemQtyRoll.roll();
-            console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
+            //console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
 			
-            //newItem.data.quantity = itemQtyRoll.result;
-			
-			let existingItem = this.actor.items.find(item => item.data.name == newItem.name )
-			
-			if (existingItem===null) {
-				await newItem.update({"data.quantity":itemQtyRoll.result })
-				await this.actor.createEmbeddedEntity("OwnedItem", newItem);
-			}
-			else
-			{
-				await existingItem.update({"data.quantity":(Number(existingItem.data.data.quantity)+Number(itemQtyRoll.result)) })
-			}
+	    let existingItem = this.actor.items.find(item => item.data.name == newItem.name )
+
+	    if (existingItem===null) {
+	    	await newItem.update({"data.quantity":itemQtyRoll.result })
+	    	await this.actor.createEmbeddedEntity("OwnedItem", newItem);
+	    }
+	    else
+	    {
+	    	await existingItem.update({"data.quantity":(Number(existingItem.data.data.quantity)+Number(itemQtyRoll.result)) })
+	    }
             
         }
     }
