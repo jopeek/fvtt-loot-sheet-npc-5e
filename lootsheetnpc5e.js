@@ -142,9 +142,11 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
+        html.find('.item-buyall').click(ev => this._buyItem(ev, 1));
 
         // Loot Item
         html.find('.item-loot').click(ev => this._lootItem(ev));
+		html.find('.item-lootall').click(ev => this._lootItem(ev, 1));
 
         // Loot Currency
         html.find('.currency-loot').click(ev => this._lootCoins(ev));
@@ -371,7 +373,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * Handle buy item
      * @private
      */
-    _buyItem(event) {
+    _buyItem(event, all=0) {
         event.preventDefault();
         console.log("Loot Sheet | Buy Item clicked");
 
@@ -406,7 +408,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             processorId: targetGm.id
         };
 
-        if (event.shiftKey) {
+        if (all || event.shiftKey) {
             packet.quantity = item.data.quantity;
         }
 
@@ -434,7 +436,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * Handle Loot item
      * @private
      */
-    _lootItem(event) {
+    _lootItem(event, all=0) {
         event.preventDefault();
         console.log("Loot Sheet | Loot Item clicked");
 
@@ -461,7 +463,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const targetItem = this.actor.getEmbeddedEntity("OwnedItem", itemId);
 
         const item = {itemId: itemId, quantity: 1};
-        if (event.shiftKey) {
+        if (all || event.shiftKey) {
             item.quantity = targetItem.data.quantity;
         }
 
@@ -1177,7 +1179,7 @@ Hooks.once("init", () => {
                     <h3 class="item-name">${item.name}</h3>
                 </header>
 
-                <div class="card-content">
+                <div class="message-content">
                     <p>` + message + `</p>
                 </div>
             </div>
