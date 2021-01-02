@@ -234,7 +234,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         shopQtyRoll.roll();
         //console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
 
-        for (let i = 0; i < shopQtyRoll.result; i++) {
+        for (let i = 0; i < shopQtyRoll.total; i++) {
             const rollResult = rolltable.roll();
             //console.log(rollResult);
             let newItem = null;
@@ -257,7 +257,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             let itemQtyRoll = new Roll(itemQtyFormula);
             itemQtyRoll.roll();
-            console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
+            console.log(`Loot Sheet | Adding ${itemQtyRoll.total} x ${newItem.name}`)
 			
             //newItem.data.quantity = itemQtyRoll.result;
 			
@@ -265,11 +265,11 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 			
 			
 			if (existingItem===null) {
-				if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.result)) {
+				if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
 					//console.log(itemQtyRoll.result + " exceeds new quantity " + itemQtyLimit + ", limiting");
 					await newItem.update({"data.quantity":itemQtyLimit });
 				} else {
-					await newItem.update({"data.quantity":itemQtyRoll.result });
+					await newItem.update({"data.quantity":itemQtyRoll.total });
 				}
 				
 				
@@ -277,12 +277,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 			}
 			else if (!preventDups)
 			{
-				if (Number(existingItem.data.data.quantity)===Number(itemQtyRoll.result)) {
+				if (Number(existingItem.data.data.quantity)===Number(itemQtyRoll.total)) {
 					i--;
 				} else
 				{
 						
-					let newQty = Number(existingItem.data.data.quantity)+Number(itemQtyRoll.result)
+					let newQty = Number(existingItem.data.data.quantity)+Number(itemQtyRoll.total)
 					if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
 						//console.log("Exceeds existing quantity, limiting");
 						await existingItem.update({"data.quantity":itemQtyLimit });
