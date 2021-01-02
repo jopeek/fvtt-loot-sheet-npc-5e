@@ -171,7 +171,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         console.log("Loot Sheet | Merchant settings changed");
 
         const moduleNamespace = "lootsheetnpc5e";
-        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "preventDups"];
+        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "preventDups","clearInventory"];
 
         let targetKey = event.target.name.split('.')[3];
 		
@@ -181,7 +181,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
         }
 		
-		if (targetKey == "preventDups") {
+		if (targetKey == "preventDups" || targetKey == "clearInventory") {
 			console.log(targetKey + " set to " + event.target.checked);
 			await this.actor.setFlag(moduleNamespace, targetKey, event.target.checked);
 		} else if (event.target.value) {
@@ -210,6 +210,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
 		const preventDups = this.actor.getFlag(moduleNamespace, "preventDups");
 		const itemQtyLimit = this.actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
+		const clearInventory = this.actor.getFlag(moduleNamespace, "clearInventory");
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
@@ -218,8 +219,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         //console.log(rolltable);
-
-        let clearInventory = game.settings.get("lootsheetnpc5e", "clearInventory");
 
         if (clearInventory) {
             
@@ -1149,15 +1148,6 @@ Hooks.once("init", () => {
             config: true,
             default: true,
             type: Boolean
-    });
-
-    game.settings.register("lootsheetnpc5e", "clearInventory", {
-		  name: "Clear inventory?",
-      hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
-      scope: "world",
-      config: true,
-      default: false,
-      type: Boolean
     });
 
     game.settings.register("lootsheetnpc5e", "lootCurrency", {
