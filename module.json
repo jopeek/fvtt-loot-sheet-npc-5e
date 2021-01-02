@@ -2,7 +2,7 @@
 	"name": "lootsheetnpc5e",
 	"title": "Loot Sheet NPC 5e",
 	"description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
-	"version": "2.2.2.NSP",
+	"version": "2.2.4.NSP",
 	"minimumCoreVersion": "0.7.6",
 	"compatibleCoreVersion": "0.7.8",
 	"author": "Jan Ole Peek (ChalkOne), Charles Miller (Kage), NonstickPanda",
