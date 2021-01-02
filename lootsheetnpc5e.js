@@ -171,7 +171,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         console.log("Loot Sheet | Merchant settings changed");
 
         const moduleNamespace = "lootsheetnpc5e";
-        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "allowDups"];
+        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "preventDups"];
 
         let targetKey = event.target.name.split('.')[3];
 		
@@ -181,7 +181,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
         }
 		
-		if (targetKey == "allowDups") {
+		if (targetKey == "preventDups") {
 			console.log(targetKey + " set to " + event.target.checked);
 			await this.actor.setFlag(moduleNamespace, targetKey, event.target.checked);
 		} else if (event.target.value) {
@@ -208,7 +208,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const rolltableName = this.actor.getFlag(moduleNamespace, "rolltable");
         const shopQtyFormula = this.actor.getFlag(moduleNamespace, "shopQty") || "1";
         const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
-		const allowDups = this.actor.getFlag(moduleNamespace, "allowDups");
+		const preventDups = this.actor.getFlag(moduleNamespace, "preventDups");
 		const itemQtyLimit = this.actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
 
         let rolltable = game.tables.getName(rolltableName);
@@ -264,7 +264,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 			
 			
 			if (existingItem===null) {
-				if (itemQtyLimit && Number(itemQtyLimit) < Number(itemQtyRoll.result)) {
+				if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.result)) {
 					//console.log(itemQtyRoll.result + " exceeds new quantity " + itemQtyLimit + ", limiting");
 					await newItem.update({"data.quantity":itemQtyLimit });
 				} else {
@@ -274,7 +274,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 				
 				await this.actor.createEmbeddedEntity("OwnedItem", newItem);
 			}
-			else if (allowDups)
+			else if (!preventDups)
 			{
 				if (Number(existingItem.data.data.quantity)===Number(itemQtyRoll.result)) {
 					i--;
@@ -282,7 +282,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 				{
 						
 					let newQty = Number(existingItem.data.data.quantity)+Number(itemQtyRoll.result)
-					if (itemQtyLimit && Number(itemQtyLimit) < Number(newQty)) {
+					if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
 						//console.log("Exceeds existing quantity, limiting");
 						await existingItem.update({"data.quantity":itemQtyLimit });
 					} else {
@@ -1215,7 +1215,8 @@ Hooks.once("init", () => {
     async function moveItems(source, destination, items) {
         const updates = [];
         const deletes = [];
-        const additions = [];
+		const additions = [];
+		const destUpdates = [];
         const results = [];
         for (let i of items) {
             let itemId = i.itemId;
@@ -1238,11 +1239,19 @@ Hooks.once("init", () => {
             }
 
             newItem.data.quantity = quantity;
-            additions.push(newItem);
             results.push({
                 item: newItem,
                 quantity: quantity
             });
+			let destItem = destination.data.items.find(i => i.name == newItem.name );
+			if (destItem===undefined)
+			{
+				additions.push(newItem);
+			} else {
+				//console.log("Existing Item");
+				destItem.data.quantity = Number(destItem.data.quantity)+Number(newItem.data.quantity);
+				destUpdates.push(destItem);
+			}
         }
 
         if (deletes.length > 0) {
@@ -1252,9 +1261,13 @@ Hooks.once("init", () => {
         if (updates.length > 0) {
             await source.updateEmbeddedEntity("OwnedItem", updates);
         }
-
-        if (additions.length > 0) {
+		
+		if (additions.length > 0) {
             await destination.createEmbeddedEntity("OwnedItem", additions);
+        }
+		
+		if (destUpdates.length > 0) {
+            await destination.updateEmbeddedEntity("OwnedItem", destUpdates);
         }
 
         return results;
