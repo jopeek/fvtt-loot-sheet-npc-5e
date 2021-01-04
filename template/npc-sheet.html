@@ -159,7 +159,7 @@
                         </div>
     
                         <div class="header-details flexrow">
-                            <ul class="inventory-list">
+                            <ul class="items-list inventory-list">
                             {{#each actor.features as |section sid|}}
                                 <li class="item flexrow inventory-header">
                                     <h3 class="item-name">{{section.label}}</h3>
@@ -173,7 +173,7 @@
                                 </li>
     
                                 {{#each section.items as |item iid|}}
-                                <ol class="items-list"> 
+                                <ol class="item-list"> 
                                     <li class="item flexrow" data-item-id="{{item._id}}">
                                         <div class="item-name flexrow rollable">
                                             <div class="item-image" style="background-image: url({{item.img}})"></div>
