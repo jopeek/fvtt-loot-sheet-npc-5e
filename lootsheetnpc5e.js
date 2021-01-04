@@ -142,9 +142,11 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
+        html.find('.item-buyall').click(ev => this._buyItem(ev, 1));
 
         // Loot Item
         html.find('.item-loot').click(ev => this._lootItem(ev));
+		html.find('.item-lootall').click(ev => this._lootItem(ev, 1));
 
         // Loot Currency
         html.find('.currency-loot').click(ev => this._lootCoins(ev));
@@ -171,7 +173,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         console.log("Loot Sheet | Merchant settings changed");
 
         const moduleNamespace = "lootsheetnpc5e";
-        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "allowDups"];
+        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "preventDups","clearInventory"];
 
         let targetKey = event.target.name.split('.')[3];
 		
@@ -181,7 +183,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
         }
 		
-		if (targetKey == "allowDups") {
+		if (targetKey == "preventDups" || targetKey == "clearInventory") {
 			console.log(targetKey + " set to " + event.target.checked);
 			await this.actor.setFlag(moduleNamespace, targetKey, event.target.checked);
 		} else if (event.target.value) {
@@ -208,8 +210,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const rolltableName = this.actor.getFlag(moduleNamespace, "rolltable");
         const shopQtyFormula = this.actor.getFlag(moduleNamespace, "shopQty") || "1";
         const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
-		const allowDups = this.actor.getFlag(moduleNamespace, "allowDups");
+		const preventDups = this.actor.getFlag(moduleNamespace, "preventDups");
 		const itemQtyLimit = this.actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
+		const clearInventory = this.actor.getFlag(moduleNamespace, "clearInventory");
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
@@ -218,8 +221,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         //console.log(rolltable);
-
-        let clearInventory = game.settings.get("lootsheetnpc5e", "clearInventory");
 
         if (clearInventory) {
             
@@ -233,7 +234,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         shopQtyRoll.roll();
         //console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
 
-        for (let i = 0; i < shopQtyRoll.result; i++) {
+        for (let i = 0; i < shopQtyRoll.total; i++) {
             const rollResult = rolltable.roll();
             //console.log(rollResult);
             let newItem = null;
@@ -256,7 +257,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             let itemQtyRoll = new Roll(itemQtyFormula);
             itemQtyRoll.roll();
-            console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
+            console.log(`Loot Sheet | Adding ${itemQtyRoll.total} x ${newItem.name}`)
 			
             //newItem.data.quantity = itemQtyRoll.result;
 			
@@ -264,25 +265,25 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 			
 			
 			if (existingItem===null) {
-				if (itemQtyLimit && Number(itemQtyLimit) < Number(itemQtyRoll.result)) {
+				if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
 					//console.log(itemQtyRoll.result + " exceeds new quantity " + itemQtyLimit + ", limiting");
 					await newItem.update({"data.quantity":itemQtyLimit });
 				} else {
-					await newItem.update({"data.quantity":itemQtyRoll.result });
+					await newItem.update({"data.quantity":itemQtyRoll.total });
 				}
 				
 				
 				await this.actor.createEmbeddedEntity("OwnedItem", newItem);
 			}
-			else if (allowDups)
+			else if (!preventDups)
 			{
-				if (Number(existingItem.data.data.quantity)===Number(itemQtyRoll.result)) {
+				if (Number(existingItem.data.data.quantity)===Number(itemQtyRoll.total)) {
 					i--;
 				} else
 				{
 						
-					let newQty = Number(existingItem.data.data.quantity)+Number(itemQtyRoll.result)
-					if (itemQtyLimit && Number(itemQtyLimit) < Number(newQty)) {
+					let newQty = Number(existingItem.data.data.quantity)+Number(itemQtyRoll.total)
+					if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
 						//console.log("Exceeds existing quantity, limiting");
 						await existingItem.update({"data.quantity":itemQtyLimit });
 					} else {
@@ -372,7 +373,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * Handle buy item
      * @private
      */
-    _buyItem(event) {
+    _buyItem(event, all=0) {
         event.preventDefault();
         console.log("Loot Sheet | Buy Item clicked");
 
@@ -407,7 +408,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             processorId: targetGm.id
         };
 
-        if (event.shiftKey) {
+        if (all || event.shiftKey) {
             packet.quantity = item.data.quantity;
         }
 
@@ -435,7 +436,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * Handle Loot item
      * @private
      */
-    _lootItem(event) {
+    _lootItem(event, all=0) {
         event.preventDefault();
         console.log("Loot Sheet | Loot Item clicked");
 
@@ -462,7 +463,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const targetItem = this.actor.getEmbeddedEntity("OwnedItem", itemId);
 
         const item = {itemId: itemId, quantity: 1};
-        if (event.shiftKey) {
+        if (all || event.shiftKey) {
             item.quantity = targetItem.data.quantity;
         }
 
@@ -1151,15 +1152,6 @@ Hooks.once("init", () => {
             type: Boolean
     });
 
-    game.settings.register("lootsheetnpc5e", "clearInventory", {
-		  name: "Clear inventory?",
-      hint: "If enabled, all existing items will be removed from the Loot Sheet before adding new items from the rollable table. If disabled, existing items will remain.",
-      scope: "world",
-      config: true,
-      default: false,
-      type: Boolean
-    });
-
     game.settings.register("lootsheetnpc5e", "lootCurrency", {
 		  name: "Loot currency?",
       hint: "If enabled, players will have the option to loot all currency to their character, in addition to splitting the currency between players.",
@@ -1187,7 +1179,7 @@ Hooks.once("init", () => {
                     <h3 class="item-name">${item.name}</h3>
                 </header>
 
-                <div class="card-content">
+                <div class="message-content">
                     <p>` + message + `</p>
                 </div>
             </div>
@@ -1215,7 +1207,8 @@ Hooks.once("init", () => {
     async function moveItems(source, destination, items) {
         const updates = [];
         const deletes = [];
-        const additions = [];
+		const additions = [];
+		const destUpdates = [];
         const results = [];
         for (let i of items) {
             let itemId = i.itemId;
@@ -1238,11 +1231,19 @@ Hooks.once("init", () => {
             }
 
             newItem.data.quantity = quantity;
-            additions.push(newItem);
             results.push({
                 item: newItem,
                 quantity: quantity
             });
+			let destItem = destination.data.items.find(i => i.name == newItem.name );
+			if (destItem===undefined)
+			{
+				additions.push(newItem);
+			} else {
+				//console.log("Existing Item");
+				destItem.data.quantity = Number(destItem.data.quantity)+Number(newItem.data.quantity);
+				destUpdates.push(destItem);
+			}
         }
 
         if (deletes.length > 0) {
@@ -1252,9 +1253,13 @@ Hooks.once("init", () => {
         if (updates.length > 0) {
             await source.updateEmbeddedEntity("OwnedItem", updates);
         }
-
-        if (additions.length > 0) {
+		
+		if (additions.length > 0) {
             await destination.createEmbeddedEntity("OwnedItem", additions);
+        }
+		
+		if (destUpdates.length > 0) {
+            await destination.updateEmbeddedEntity("OwnedItem", destUpdates);
         }
 
         return results;
