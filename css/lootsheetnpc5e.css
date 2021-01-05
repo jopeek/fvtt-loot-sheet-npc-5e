@@ -130,16 +130,16 @@ img.sheet-profile {
 }
 
 .loot-sheet-npc.sheet.actor .inventory-filters .currency span {
-	flex: 0 0 110px;
+	flex: 0 0 105px;
 	white-space: nowrap;
 }
 
 .loot-sheet-npc.sheet.actor .inventory-filters .currency input[type="text"] {
-	width: 45px;
+	width: 40px;
 }
 
 .currency.inventory span span {
-	width: 45px;
+	width: 40px;
   text-align: center;
 	margin-left: 8px;
 	white-space: nowrap;

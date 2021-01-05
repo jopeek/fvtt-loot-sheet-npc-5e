@@ -106,13 +106,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         let totalWeight = 0;
-        this.actor.data.items.forEach((item)=>totalWeight += Number((item.data.quantity * item.data.weight).toFixed(2)));
+        this.actor.data.items.forEach((item)=>totalWeight += Math.round((item.data.quantity * item.data.weight * 100) / 100));
 
         let totalPrice = 0;
-        this.actor.data.items.forEach((item)=>totalPrice += Number((item.data.quantity * item.data.price * priceModifier).toFixed(2)));
+        this.actor.data.items.forEach((item)=>totalPrice += Math.round((item.data.quantity * item.data.price * priceModifier * 100) / 100));
 
         let totalQuantity = 0;
-        this.actor.data.items.forEach((item)=>totalQuantity += Number((item.data.quantity).toFixed(2)));
+        this.actor.data.items.forEach((item)=>totalQuantity += Math.round((item.data.quantity * 100) / 100));
 
         sheetData.lootsheettype = lootsheettype;
         sheetData.totalItems = this.actor.data.items.length;
