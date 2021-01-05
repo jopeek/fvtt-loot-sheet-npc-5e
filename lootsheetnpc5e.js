@@ -60,7 +60,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         });
 
         Handlebars.registerHelper('lootsheetprice', function (basePrice, modifier) {
-            return Math.round(basePrice * modifier * 100) / 100;
+            return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en') + " gp";
         });
 
         const path = "systems/dnd5e/templates/actors/";
@@ -91,7 +91,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (game.user.isGM) sheetData.isGM = true;
         else sheetData.isGM = false;
         //console.log("sheetData.isGM: ", sheetData.isGM);
-        //console.log(this.actor);
+        console.log(this.actor);
 
         let lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
         if (!lootsheettype) await this.actor.setFlag("lootsheetnpc5e", "lootsheettype", "Loot");
@@ -105,7 +105,20 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
         }
 
+        let totalWeight = 0;
+        this.actor.data.items.forEach((item)=>totalWeight += Number((item.data.quantity * item.data.weight).toFixed(2)));
+
+        let totalPrice = 0;
+        this.actor.data.items.forEach((item)=>totalPrice += Number((item.data.quantity * item.data.price * priceModifier).toFixed(2)));
+
+        let totalQuantity = 0;
+        this.actor.data.items.forEach((item)=>totalQuantity += Number((item.data.quantity).toFixed(2)));
+
         sheetData.lootsheettype = lootsheettype;
+        sheetData.totalItems = this.actor.data.items.length;
+        sheetData.totalWeight = totalWeight.toLocaleString('en');
+        sheetData.totalPrice = totalPrice.toLocaleString('en') + " gp";
+        sheetData.totalQuantity = totalQuantity;
         sheetData.priceModifier = priceModifier;
         sheetData.rolltables = game.tables.entities;
         sheetData.lootCurrency = game.settings.get("lootsheetnpc5e", "lootCurrency");

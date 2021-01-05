@@ -129,6 +129,26 @@ img.sheet-profile {
 	max-height: 220px;
 }
 
+.loot-sheet-npc.sheet.actor .inventory-filters .currency span {
+	flex: 0 0 110px;
+	white-space: nowrap;
+}
+
+.loot-sheet-npc.sheet.actor .inventory-filters .currency input[type="text"] {
+	width: 45px;
+}
+
+.currency.inventory span span {
+	width: 45px;
+  text-align: center;
+	margin-left: 8px;
+	white-space: nowrap;
+}
+
+.loot-sheet-npc.sheet.actor .inventory-filters .currency label {
+	white-space: nowrap;
+}
+
 section.sheet-sidebar.sidebar {
 	flex: 0 0 250px;
 	border-bottom: 2px groove #eeede0;
@@ -144,13 +164,14 @@ section.sheet-content.content {
 }
 
 .loot-sheet-npc.sheet.actor .inventory-list .item .item-price,
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity {
-	flex: 0 0 100px;
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity,
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-weight {
+	flex: 0 0 75px;
 	color: #666;
 	font-size: 10px;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-list .item-controls {
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-controls {
 	flex: 0 0 100px !important;
 	display: flex;
 	flex-direction: row;

@@ -141,12 +141,14 @@
                     <div class="features" data-group="primary" data-tab="features">
                         <div class="inventory-filters">
                             <ol class="currency flexrow">
-                                <h3>
+                                <span style="flex: 0 0 60px;"><h3>
                                     Currency
-                                </h3>
+                                </h3></span>
                                 {{#each data.currency as |c i|}}
+                                <span>
                                     <label class="denomination {{i}}">{{ lookup ../config.currencies i }}</label>
                                     <input type="text" name="data.currency.{{i}}.value" value="{{c.value}}" data-dtype="{{c.type}}"/>
+                                </span>
                                 {{/each}}
                                 {{#ifeq lootsheettype "Loot"}}
                                     {{#if lootCurrency}}
@@ -156,13 +158,22 @@
                                     {{/if}}
                                 {{/ifeq}}
                             </ol>
+                            <ol class="currency inventory flexrow">
+                                <span style="flex: 0 0 60px;"><h3>Totals</h3></span>
+                                <span><label>Items</label> <span>{{totalItems}}</span></span>
+                                <span><label>Quantity</label> <span>{{totalQuantity}}</span></span>
+                                <span><label>Weight</label> <span>{{totalWeight}}</span></span>
+                                <span><label>Value</label> <span>{{totalPrice}}</span></span>
+                            </ol>
                         </div>
+
+                        
     
                         <div class="header-details flexrow">
                             <ul class="items-list inventory-list">
                             {{#each actor.features as |section sid|}}
                                 {{#if section.items}}
-                                    <li class="item flexrow inventory-header">
+                                    <li class="items-header flexrow inventory-header">
                                         <h3 class="item-name">{{section.label}}</h3>
                                         {{#if ../owner}}
                                             <div class="item-controls">
@@ -172,10 +183,11 @@
                                             </div>
                                         {{/if}}
                                     </li>
+                                    <ol class="item-list"> 
                                 {{/if}}
     
                                 {{#each section.items as |item iid|}}
-                                <ol class="item-list"> 
+
                                     <li class="item flexrow" data-item-id="{{item._id}}">
                                         <div class="item-name flexrow rollable">
                                             <div class="item-image" style="background-image: url({{item.img}})"></div>
@@ -185,6 +197,9 @@
                                         </div>
                                         <div class="item-quantity">
                                             <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
+                                        </div>
+                                        <div class="item-weight">
+                                            <i class="fas fa-weight-hanging" title="Weight"></i> {{item.data.weight}}
                                         </div>
                                         <div class="item-price">
                                             <i class="fas fa-coins" title="Price (in gp)"></i> {{ lootsheetprice item.data.price ../../priceModifier }}
@@ -207,8 +222,9 @@
                                             {{/if}}
                                         </div>
                                     </li>
-                                </ol>
+                                
                                 {{/each}}
+                            </ol>
                             {{/each}}
                             </ul>
                         </div>
