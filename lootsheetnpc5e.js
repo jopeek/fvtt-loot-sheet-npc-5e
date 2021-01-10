@@ -1302,7 +1302,13 @@ Hooks.once("init", () => {
         let itemCost = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
         itemCost *= quantity;
         let buyerFunds = duplicate(buyer.data.data.currency);
-        const conversionRate = { "pp": 10, "gp": 1, "ep": 0.5, "sp": 0.1, "cp": 0.01 };
+        const conversionRate = { 
+            "pp": CONFIG.DND5E.currencyConversion.gp.each,
+            "gp": 1, 
+            "ep": 1 / CONFIG.DND5E.currencyConversion.ep.each,
+            "sp": 1 / CONFIG.DND5E.currencyConversion.ep.each / CONFIG.DND5E.currencyConversion.sp.each,
+            "cp": 1 / CONFIG.DND5E.currencyConversion.ep.each / CONFIG.DND5E.currencyConversion.sp.each / CONFIG.DND5E.currencyConversion.cp.each
+        };
         let buyerFundsAsGold = 0;
 
         for (let currency in buyerFunds) {
