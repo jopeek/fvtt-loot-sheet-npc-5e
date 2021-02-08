@@ -1066,7 +1066,47 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         actorData.flags.loot = loot;
     }
 
-
+    _onDrop(event) {
+        event.preventDefault();
+        
+        // Try to extract the data
+        let data;
+        let extraData = {};
+        try {
+          data = JSON.parse(event.dataTransfer.getData('text/plain'));
+          if (data.type !== "Item") return;
+        } catch (err) {
+          return false;
+        }
+    
+        // Item is from compendium
+        if(!data.data) {
+          if (game.user.isGM) { super._onDrop(event) }
+          else {
+            ui.notifications.error(game.i18n.localize("ERROR.lsInvalidDrop"));
+          }
+        }
+        // users don't have the rights for the transaction => ask GM to do it
+        else {
+          let targetGm = null;
+          game.users.forEach((u) => {
+            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+              targetGm = u;
+            }
+          });
+          
+          if(targetGm && data.actorId && data.data && data.data._id) {
+            const packet = {
+              type: "sell",
+              buyerId: data.actorId,
+              itemId: data.data._id,
+              tokenId: this.token ? this.token.id : undefined,
+              processorId: targetGm.id
+            }
+            game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+          }
+        }
+    }
 }
 
 //Register the loot sheet
@@ -1284,6 +1324,47 @@ Hooks.once("init", () => {
             chatMessage(
                 container, looter,
                 `${looter.name} looted ${m.quantity} x ${m.item.name}.`,
+                m.item);
+        }
+    }
+
+    async function sellTransaction(seller, buyer, itemId, quantity) {
+        let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
+
+        // If the buyer attempts to buy more then what's in stock, buy all the stock.
+        if (sellItem.data.quantity < quantity || !quantity) {
+            quantity = sellItem.data.quantity;
+        }
+
+        let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
+        if (!sellerModifier) sellerModifier = 0.5;
+
+        let itemCost = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
+        itemCost *= quantity;
+
+        let sellerFunds = duplicate(seller.data.data.currency);
+
+        const conversionRate = { 
+            "pp": CONFIG.DND5E.currencyConversion.gp.each,
+            "gp": 1, 
+            "ep": 1 / CONFIG.DND5E.currencyConversion.ep.each,
+            "sp": 1 / CONFIG.DND5E.currencyConversion.ep.each / CONFIG.DND5E.currencyConversion.sp.each,
+            "cp": 1 / CONFIG.DND5E.currencyConversion.ep.each / CONFIG.DND5E.currencyConversion.sp.each / CONFIG.DND5E.currencyConversion.cp.each
+        };
+
+        for (let currency in sellerFunds) {
+            let addedCurrency = Math.floor(itemCost / conversionRate[currency])
+            sellerFunds[currency] += addedCurrency;
+            itemCost -= addedCurrency * conversionRate[currency];
+        }
+
+        seller.update({ "data.currency": sellerFunds });
+        let moved = await moveItems(seller, buyer, [{ itemId, quantity }]);
+
+        for (let m of moved) {
+            chatMessage(
+                seller, buyer,
+                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCost}gp.`,
                 m.item);
         }
     }
@@ -1568,6 +1649,19 @@ Hooks.once("init", () => {
                     return ui.notifications.error("Player attempted to loot coins on a different scene.");
                 }
                 lootCoins(container.actor, looter);
+            }
+
+            if (data.type === "sell") {
+                let seller = game.actors.get(data.buyerId);
+                let buyer = canvas.tokens.get(data.tokenId);
+
+                if (buyer && seller && buyer.actor) {
+                    sellTransaction(seller, buyer.actor, data.itemId, data.quantity);
+                }
+                else if (!buyer) {
+                    errorMessageToActor(buyer, "GM not available, the GM must on the same scene to sell an item.")
+                    ui.notifications.error("Player attempted to sell an item on a different scene.");
+                }
             }
         }
         if (data.type === "error" && data.targetId === game.user.actorId) {
