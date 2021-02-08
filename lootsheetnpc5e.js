@@ -1329,6 +1329,10 @@ Hooks.once("init", () => {
     }
 
     async function sellTransaction(seller, buyer, itemId, quantity) {
+        const lootsheet = buyer.getFlag("lootsheetnpc5e", "lootsheettype");
+        if(lootsheet !== "Merchant"){
+            return;
+        }
         let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
 
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
@@ -1341,6 +1345,7 @@ Hooks.once("init", () => {
 
         let itemCost = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
         itemCost *= quantity;
+        const originalCost = itemCost;
 
         let sellerFunds = duplicate(seller.data.data.currency);
 
@@ -1364,7 +1369,7 @@ Hooks.once("init", () => {
         for (let m of moved) {
             chatMessage(
                 seller, buyer,
-                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCost}gp.`,
+                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${originalCost}gp.`,
                 m.item);
         }
     }
