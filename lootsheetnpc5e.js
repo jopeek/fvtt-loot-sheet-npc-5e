@@ -64,7 +64,14 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         });
 
         Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
-            return (weight * qty).toLocaleString('en');
+            let showStackWeight = game.settings.get("lootsheetnpc5e", "showStackWeight");
+            if (showStackWeight) {
+                return `/${(weight * qty).toLocaleString('en')}`;
+            }
+            else {
+                return ""
+            }
+            
         });
 
         const path = "systems/dnd5e/templates/actors/";
@@ -1184,6 +1191,15 @@ Hooks.once("init", () => {
         scope: "world",
         config: true,
         default: true,
+        type: Boolean
+    });
+
+    game.settings.register("lootsheetnpc5e", "showStackWeight", {
+        name: "Show Stack Weight?",
+        hint: "If enabled, shows the weight of the entire stack next to the item weight",
+        scope: "world",
+        config: true,
+        default: false,
         type: Boolean
     });
 

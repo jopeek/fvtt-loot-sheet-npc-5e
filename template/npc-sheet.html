@@ -199,7 +199,7 @@
                                             <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
                                         </div>
                                         <div class="item-weight">
-                                            <i class="fas fa-weight-hanging" title="Weight"></i> {{item.data.weight}} | {{lootsheetstackweight item.data.weight item.data.quantity}}
+                                            <i class="fas fa-weight-hanging" title="Weight"></i> {{item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}
                                         </div>
                                         <div class="item-price">
                                             <i class="fas fa-coins" title="Price (in gp)"></i> {{ lootsheetprice item.data.price ../../priceModifier }}
