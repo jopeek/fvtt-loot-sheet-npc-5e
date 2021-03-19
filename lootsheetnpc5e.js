@@ -63,6 +63,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en') + " gp";
         });
 
+        Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
+            return (weight * qty).toLocaleString('en');
+        });
+
         const path = "systems/dnd5e/templates/actors/";
         if (!game.user.isGM && this.actor.limited) return path + "limited-sheet.html";
         return "modules/lootsheetnpc5e/template/npc-sheet.html";
