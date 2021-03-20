@@ -181,12 +181,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * Handle merchant settings change
      * @private
      */
-    async _merchantSettingChange(event, html) {
+     async _merchantSettingChange(event, html) {
         event.preventDefault();
         console.log("Loot Sheet | Merchant settings changed");
 
         const moduleNamespace = "lootsheetnpc5e";
-        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "clearInventory"];
+        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "clearInventory", "itemOnlyOnce"];
 
         let targetKey = event.target.name.split('.')[3];
 
@@ -196,7 +196,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
         }
 
-        if (targetKey == "clearInventory") {
+        if (targetKey == "clearInventory" || targetKey == "itemOnlyOnce") {
             console.log(targetKey + " set to " + event.target.checked);
             await this.actor.setFlag(moduleNamespace, targetKey, event.target.checked);
         } else if (event.target.value) {
@@ -216,7 +216,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * Handle merchant inventory update
      * @private
      */
-    async _merchantInventoryUpdate(event, html) {
+     async _merchantInventoryUpdate(event, html) {
         event.preventDefault();
 
         const moduleNamespace = "lootsheetnpc5e";
@@ -225,13 +225,22 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
         const itemQtyLimit = this.actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
         const clearInventory = this.actor.getFlag(moduleNamespace, "clearInventory");
-        
+        const itemOnlyOnce = this.actor.getFlag(moduleNamespace, "itemOnlyOnce");
         const reducedVerbosity = game.settings.get("lootsheetnpc5e", "reduceUpdateVerbosity");
+
+        let shopQtyRoll = new Roll(shopQtyFormula);
+        shopQtyRoll.roll();
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
             //console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
             return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
+        }
+
+        if (itemOnlyOnce) {
+            if (rolltable.results.length < shopQtyRoll.total)  {
+                return ui.notifications.error(`Cannot create a merchant with ${shopQtyRoll.total} unqiue entries if the rolltable only contains ${rolltable.results.length} items`);
+            }
         }
 
         //console.log(rolltable);
@@ -243,45 +252,115 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             //console.log(currentItems);
         }
 
-        let shopQtyRoll = new Roll(shopQtyFormula);
-
-        shopQtyRoll.roll();
         console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
-
-        for (let i = 0; i < shopQtyRoll.total; i++) {
-            const rollResult = rolltable.roll();
-            //console.log(rollResult);
-            let newItem = null;
-
-            if (rollResult.results[0].collection === "Item") {
-                newItem = game.items.get(rollResult.results[0].resultId);
+        
+        if (!itemOnlyOnce) {
+            for (let i = 0; i < shopQtyRoll.total; i++) {
+                const rollResult = rolltable.roll();
+                //console.log(rollResult);
+                let newItem = null;
+    
+                if (rollResult.results[0].collection === "Item") {
+                    newItem = game.items.get(rollResult.results[0].resultId);
+                }
+                else {
+                    //Try to find it in the compendium
+                    const items = game.packs.get(rollResult.results[0].collection);
+                    //console.log(items);
+                    //dnd5eitems.getIndex().then(index => console.log(index));
+                    //let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
+                    //items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
+                    newItem = await items.getEntity(rollResult.results[0].resultId);
+                }
+                if (!newItem || newItem === null) {
+                    //console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
+                    return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
+                }
+    
+                let itemQtyRoll = new Roll(itemQtyFormula);
+                itemQtyRoll.roll();
+                console.log(`Loot Sheet | Adding ${itemQtyRoll.total} x ${newItem.name}`)
+    
+                //newItem.data.quantity = itemQtyRoll.result;
+    
+                let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
+    
+                if (existingItem === null) {
+                    await this.actor.createEmbeddedEntity("OwnedItem", newItem);
+                    console.log(`Loot Sheet | ${newItem.name} does not exist.`);
+                    existingItem = this.actor.items.find(item => item.data.name == newItem.name);
+    
+                    if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
+                        await existingItem.update({ "data.quantity": itemQtyLimit });
+                        if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyLimit} x ${newItem.name}.`);
+                    } else {
+                        await existingItem.update({ "data.quantity": itemQtyRoll.total });
+                        if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyRoll.total} x ${newItem.name}.`);
+                    }
+                }
+                else {
+                        console.log(`Loot Sheet | Item ${newItem.name} exists.`);
+                    
+                        let newQty = Number(existingItem.data.data.quantity) + Number(itemQtyRoll.total);
+        
+                        if (itemQtyLimit > 0 && Number(itemQtyLimit) === Number(existingItem.data.data.quantity)) {
+                            if (!reducedVerbosity) ui.notifications.info(`${newItem.name} already at maximum quantity (${itemQtyLimit}).`);
+                        }
+                        else if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
+                            //console.log("Exceeds existing quantity, limiting");
+                            await existingItem.update({ "data.quantity": itemQtyLimit });
+                            if (!reducedVerbosity) ui.notifications.info(`Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`);
+                        } else {
+                            await existingItem.update({ "data.quantity": newQty });
+                            if (!reducedVerbosity) ui.notifications.info(`Added additional ${itemQtyRoll.total} quantity to ${newItem.name}.`);
+                        }
+                }
             }
-            else {
-                //Try to find it in the compendium
-                const items = game.packs.get(rollResult.results[0].collection);
-                //console.log(items);
-                //dnd5eitems.getIndex().then(index => console.log(index));
-                //let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
-                //items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
-                newItem = await items.getEntity(rollResult.results[0].resultId);
+        }
+        else {
+            // Get a list which contains indexes of all possible results
+            const rolltableIndexes = [...Array(rolltable.results.length).keys()]
+            
+            // Shuffle the list of indexes
+            var currentIndex = rolltableIndexes.length, temporaryValue, randomIndex;
+      
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+        
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+            
+                // And swap it with the current element.
+                temporaryValue = rolltableIndexes[currentIndex];
+                rolltableIndexes[currentIndex] = rolltableIndexes[randomIndex];
+                rolltableIndexes[randomIndex] = temporaryValue;
             }
-            if (!newItem || newItem === null) {
-                //console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
-                return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
-            }
 
-            let itemQtyRoll = new Roll(itemQtyFormula);
-            itemQtyRoll.roll();
-            console.log(`Loot Sheet | Adding ${itemQtyRoll.total} x ${newItem.name}`)
+            // Get the first N entries from our shuffled list. Those are the indexes of the items in the roll table we want to add
+            const indexesToUse = rolltableIndexes.slice(0, shopQtyRoll.total)
+            
+            for (const index of indexesToUse)
+            {
+                let itemQtyRoll = new Roll(itemQtyFormula);
+                itemQtyRoll.roll();
 
-            //newItem.data.quantity = itemQtyRoll.result;
+                let newItem = null
 
-            let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
+                if (rolltable.results[index].collection === "Item") {
+                    newItem = game.items.get(rolltable.results[index].resultId);
+                }
+                else {
+                    //Try to find it in the compendium
+                    const items = game.packs.get(rolltable.results[index].collection);
+                    newItem = await items.getEntity(rolltable.results[index].resultId);
+                }
+                if (!newItem || newItem === null) {
+                    return ui.notifications.error(`No item found "${rolltable.results[index].resultId}".`);
+                }
 
-            if (existingItem === null) {
                 await this.actor.createEmbeddedEntity("OwnedItem", newItem);
-                console.log(`Loot Sheet | ${newItem.name} does not exist.`);
-                existingItem = this.actor.items.find(item => item.data.name == newItem.name);
+                let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
 
                 if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
                     await existingItem.update({ "data.quantity": itemQtyLimit });
@@ -291,26 +370,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyRoll.total} x ${newItem.name}.`);
                 }
             }
-            else  {
-                console.log(`Loot Sheet | Item ${newItem.name} exists.`);
-                
-                let newQty = Number(existingItem.data.data.quantity) + Number(itemQtyRoll.total);
-
-                if (itemQtyLimit > 0 && Number(itemQtyLimit) === Number(existingItem.data.data.quantity)) {
-                    ui.notifications.info(`${newItem.name} already at maximum quantity (${itemQtyLimit}).`);
-                }
-                else if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
-                    //console.log("Exceeds existing quantity, limiting");
-                    await existingItem.update({ "data.quantity": itemQtyLimit });
-                    if (!reducedVerbosity) ui.notifications.info(`Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`);
-                } else {
-                    await existingItem.update({ "data.quantity": newQty });
-                    if (!reducedVerbosity) ui.notifications.info(`Added additional ${itemQtyRoll.total} quantity to ${newItem.name}.`);
-                }
-                
-            }
-            
-
         }
     }
 
