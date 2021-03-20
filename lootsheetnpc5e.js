@@ -1143,7 +1143,7 @@ Hooks.once("init", () => {
         hint: "If enabled, all currency will be converted to the highest denomination possible after a purchase. If disabled, currency will subtracted simply.",
         scope: "world",
         config: true,
-        default: true,
+        default: false,
         type: Boolean
     });
 
