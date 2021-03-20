@@ -63,6 +63,17 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en') + " gp";
         });
 
+        Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
+            let showStackWeight = game.settings.get("lootsheetnpc5e", "showStackWeight");
+            if (showStackWeight) {
+                return `/${(weight * qty).toLocaleString('en')}`;
+            }
+            else {
+                return ""
+            }
+            
+        });
+
         const path = "systems/dnd5e/templates/actors/";
         if (!game.user.isGM && this.actor.limited) return path + "limited-sheet.html";
         return "modules/lootsheetnpc5e/template/npc-sheet.html";
@@ -1243,6 +1254,13 @@ Hooks.once("init", () => {
         default: true,
         type: Boolean
     });
+
+    game.settings.register("lootsheetnpc5e", "showStackWeight", {
+        name: "Show Stack Weight?",
+        hint: "If enabled, shows the weight of the entire stack next to the item weight",
+        scope: "world",
+        config: true,
+        default: false,
 
     game.settings.register("lootsheetnpc5e", "reduceUpdateVerbosity", {
         name: "Reduce Update Shop Verbosity",
