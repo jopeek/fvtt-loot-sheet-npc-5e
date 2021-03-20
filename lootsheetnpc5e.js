@@ -319,7 +319,16 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
         else {
             // Get a list which contains indexes of all possible results
-            const rolltableIndexes = [...Array(rolltable.results.length).keys()]
+
+            const rolltableIndexes = []
+
+            // Add one entry for each weight an item has
+            for (let index in [...Array(rolltable.results.length).keys()]) {
+                let numberOfEntries = rolltable.data.results[index].weight
+                for (let i = 0; i < numberOfEntries; i++) {
+                    rolltableIndexes.push(index);
+                }     
+            }
             
             // Shuffle the list of indexes
             var currentIndex = rolltableIndexes.length, temporaryValue, randomIndex;
@@ -337,9 +346,29 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 rolltableIndexes[randomIndex] = temporaryValue;
             }
 
+            console.log(`Rollables: ${rolltableIndexes}`)
+
+            let indexesToUse = [];
+            let numberOfAdditionalItems = 0;
             // Get the first N entries from our shuffled list. Those are the indexes of the items in the roll table we want to add
-            const indexesToUse = rolltableIndexes.slice(0, shopQtyRoll.total)
-            
+            // But because we added multiple entries per index to account for weighting, we need to increase our list length until we got enough unique items
+            while (true)
+            {
+                let usedEntries = rolltableIndexes.slice(0, shopQtyRoll.total + numberOfAdditionalItems);
+                console.log(`Distinct: ${usedEntries}`);
+                let distinctEntris = [...new Set(usedEntries)];
+                
+                if (distinctEntris.length < shopQtyRoll.total) {
+                    numberOfAdditionalItems++;
+                    console.log(`numberOfAdditionalItems: ${numberOfAdditionalItems}`);
+                    continue;
+                }
+
+                indexesToUse = distinctEntris
+                console.log(`indexesToUse: ${indexesToUse}`)
+                break;
+            }
+      
             for (const index of indexesToUse)
             {
                 let itemQtyRoll = new Roll(itemQtyFormula);
