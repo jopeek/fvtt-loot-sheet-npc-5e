@@ -346,7 +346,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 rolltableIndexes[randomIndex] = temporaryValue;
             }
 
-            console.log(`Rollables: ${rolltableIndexes}`)
+            // console.log(`Rollables: ${rolltableIndexes}`)
 
             let indexesToUse = [];
             let numberOfAdditionalItems = 0;
@@ -355,17 +355,17 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             while (true)
             {
                 let usedEntries = rolltableIndexes.slice(0, shopQtyRoll.total + numberOfAdditionalItems);
-                console.log(`Distinct: ${usedEntries}`);
+                // console.log(`Distinct: ${usedEntries}`);
                 let distinctEntris = [...new Set(usedEntries)];
                 
                 if (distinctEntris.length < shopQtyRoll.total) {
                     numberOfAdditionalItems++;
-                    console.log(`numberOfAdditionalItems: ${numberOfAdditionalItems}`);
+                    // console.log(`numberOfAdditionalItems: ${numberOfAdditionalItems}`);
                     continue;
                 }
 
                 indexesToUse = distinctEntris
-                console.log(`indexesToUse: ${indexesToUse}`)
+                // console.log(`indexesToUse: ${indexesToUse}`)
                 break;
             }
       
