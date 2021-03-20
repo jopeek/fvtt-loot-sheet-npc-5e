@@ -1305,6 +1305,8 @@ Hooks.once("init", () => {
         // console.log(`ItemCost: ${itemCostInGold}`)
         let buyerFunds = duplicate(buyer.data.data.currency);
 
+        console.log(`Funds before purchase: ${buyerFunds}`);
+
         const conversionRates = { 
             "pp": 1,
             "gp": CONFIG.DND5E.currencyConversion.gp.each, 
@@ -1401,6 +1403,9 @@ Hooks.once("init", () => {
 
         // Update buyer's funds
         buyer.update({ "data.currency": buyerFunds });
+
+        console.log(`Funds after purchase: ${buyerFunds}`);
+
         let moved = await moveItems(seller, buyer, [{ itemId, quantity }]);
 
         for (let m of moved) {
