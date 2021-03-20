@@ -1296,6 +1296,17 @@ Hooks.once("init", () => {
             quantity = sellItem.data.quantity;
         }
 
+        // On negative quantity we show an error
+        if (quantity < 0) {
+            errorMessageToActor(buyer, `Can not buy negative amounts of items.`);
+            return;
+        }
+
+        // On 0 quantity skip everything to avoid error down the line
+        if (quantity == 0) {
+            return;
+        }
+
         let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
         if (!sellerModifier) sellerModifier = 1.0;
 
