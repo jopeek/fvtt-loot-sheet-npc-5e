@@ -31,7 +31,7 @@ class QuantityDialog extends Dialog {
             default: "yes",
             close: () => {
                 if (applyChanges) {
-                    var quantity = document.getElementById('quantity')
+                    var quantity = document.getElementById('quantity').value
 
                     if (isNaN(quantity)) {
                         console.log("Loot Sheet | Item quantity invalid");
