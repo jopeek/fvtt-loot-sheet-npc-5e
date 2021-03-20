@@ -225,6 +225,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const itemQtyFormula = this.actor.getFlag(moduleNamespace, "itemQty") || "1";
         const itemQtyLimit = this.actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
         const clearInventory = this.actor.getFlag(moduleNamespace, "clearInventory");
+        
+        const reducedVerbosity = game.settings.get("lootsheetnpc5e", "reduceUpdateVerbosity");
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
@@ -283,10 +285,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
                 if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
                     await existingItem.update({ "data.quantity": itemQtyLimit });
-                    ui.notifications.info(`Added new ${itemQtyLimit} x ${newItem.name}.`);
+                    if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyLimit} x ${newItem.name}.`);
                 } else {
                     await existingItem.update({ "data.quantity": itemQtyRoll.total });
-                    ui.notifications.info(`Added new ${itemQtyRoll.total} x ${newItem.name}.`);
+                    if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyRoll.total} x ${newItem.name}.`);
                 }
             }
             else  {
@@ -300,10 +302,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 else if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
                     //console.log("Exceeds existing quantity, limiting");
                     await existingItem.update({ "data.quantity": itemQtyLimit });
-                    ui.notifications.info(`Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`);
+                    if (!reducedVerbosity) ui.notifications.info(`Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`);
                 } else {
                     await existingItem.update({ "data.quantity": newQty });
-                    ui.notifications.info(`Added additional ${itemQtyRoll.total} quantity to ${newItem.name}.`);
+                    if (!reducedVerbosity) ui.notifications.info(`Added additional ${itemQtyRoll.total} quantity to ${newItem.name}.`);
                 }
                 
             }
@@ -1177,6 +1179,15 @@ Hooks.once("init", () => {
     game.settings.register("lootsheetnpc5e", "lootAll", {
         name: "Loot all?",
         hint: "If enabled, players will have the option to loot all items to their character, currency will follow the 'Loot Currency?' setting upon Loot All.",
+        scope: "world",
+        config: true,
+        default: true,
+        type: Boolean
+    });
+
+    game.settings.register("lootsheetnpc5e", "reduceUpdateVerbosity", {
+        name: "Reduce Update Shop Verbosity",
+        hint: "If enabled, no notifications will be created every time an item is added to the shop.",
         scope: "world",
         config: true,
         default: true,
