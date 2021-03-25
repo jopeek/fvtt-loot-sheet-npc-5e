@@ -151,7 +151,7 @@
                                 {{#each data.currency as |c i|}}
                                 <span>
                                     <label class="denomination {{i}}">{{ lookup ../config.currencies i }}</label>
-                                    <input type="text" name="data.currency.{{i}}" value="{{c}}" data-dtype="{{c.type}}"/>
+                                    <input type="text" name="data.currency.{{i}}" value="{{c}}" data-dtype="Number"/>
                                 </span>
                                 {{/each}}
                                 {{#ifeq lootsheettype "Loot"}}

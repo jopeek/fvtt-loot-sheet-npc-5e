@@ -1465,24 +1465,60 @@ Hooks.once("init", () => {
         let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
         if (!sellerModifier) sellerModifier = 0.5;
 
-        let itemCost = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
-        itemCost *= quantity;
-        const originalCost = itemCost;
+        let itemCostInGold = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
+        itemCostInGold *= quantity;
+        const originalCost = itemCostInGold;
 
         let sellerFunds = duplicate(seller.data.data.currency);
 
-        const conversionRate = { 
-            "pp": CONFIG.DND5E.currencyConversion.gp.each,
-            "gp": 1, 
-            "ep": 1 / CONFIG.DND5E.currencyConversion.ep.each,
-            "sp": 1 / CONFIG.DND5E.currencyConversion.ep.each / CONFIG.DND5E.currencyConversion.sp.each,
-            "cp": 1 / CONFIG.DND5E.currencyConversion.ep.each / CONFIG.DND5E.currencyConversion.sp.each / CONFIG.DND5E.currencyConversion.cp.each
+        const conversionRates = { 
+            "pp": 1,
+            "gp": CONFIG.DND5E.currencyConversion.gp.each, 
+            "ep": CONFIG.DND5E.currencyConversion.ep.each,
+            "sp": CONFIG.DND5E.currencyConversion.sp.each,
+            "cp": CONFIG.DND5E.currencyConversion.cp.each
         };
 
+        const compensationCurrency = {"pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp"};
+       
+        let itemCostInPlatinum = itemCostInGold / conversionRates["gp"]
+
+        let sellerFundsAsPlatinum = sellerFunds["pp"];
+        sellerFundsAsPlatinum += sellerFunds["gp"] / conversionRates["gp"];
+        sellerFundsAsPlatinum += sellerFunds["ep"] / conversionRates["gp"] / conversionRates["ep"];
+        sellerFundsAsPlatinum += sellerFunds["sp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"];
+        sellerFundsAsPlatinum += sellerFunds["cp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"] / conversionRates["cp"];
+
+        sellerFundsAsPlatinum += itemCostInPlatinum;
+        // Remove every coin we have
         for (let currency in sellerFunds) {
-            let addedCurrency = Math.floor(itemCost / conversionRate[currency])
-            sellerFunds[currency] += addedCurrency;
-            itemCost -= addedCurrency * conversionRate[currency];
+            sellerFunds[currency] = 0
+        }
+
+        // Give us fractions of platinum coins, which will be smoothed out below
+        sellerFunds["pp"] = sellerFundsAsPlatinum
+
+        for (let currency in sellerFunds) {
+            let amount = sellerFunds[currency]
+
+            // console.log(`${currency} : ${amount}: ${conversionRates[currency]}`);
+
+            // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
+            // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
+            // If we would floor 15.99999999999918 everything explodes
+            let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
+            sellerFunds[currency] = newFund;
+
+            // console.log(`New Buyer funds ${currency}: ${sellerFunds[currency]}`);
+            let compCurrency = compensationCurrency[currency]
+
+            // We dont care about fractions of CP
+            if (currency != "cp") {
+                // We calculate the amount of lower currency we get for the fraction of higher currency we have
+                let toAdd = Math.round((amount - newFund) * 1e5) / 1e5 * conversionRates[compCurrency]
+                sellerFunds[compCurrency] += toAdd
+                // console.log(`Added ${toAdd} to ${compCurrency} it is now ${sellerFunds[compCurrency]}`);
+            }    
         }
 
         seller.update({ "data.currency": sellerFunds });
