@@ -1,4 +1,5 @@
 import ActorSheet5eNPC from "../../systems/dnd5e/module/actor/sheets/npc.js";
+import Item5e from "../../systems/dnd5e/module/item/entity.js";
 
 class LootSheet5eNPCHelper
 {
@@ -276,23 +277,23 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
-            //console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
+            // console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
             return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
         }
-
+        
         if (itemOnlyOnce) {
             if (rolltable.results.length < shopQtyRoll.total)  {
                 return ui.notifications.error(`Cannot create a merchant with ${shopQtyRoll.total} unqiue entries if the rolltable only contains ${rolltable.results.length} items`);
             }
         }
 
-        //console.log(rolltable);
+        // console.log(rolltable);
 
         if (clearInventory) {
 
             let currentItems = this.actor.data.items.map(i => i._id);
             await this.actor.deleteEmbeddedEntity("OwnedItem", currentItems);
-            //console.log(currentItems);
+            // console.log(currentItems);
         }
 
         console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
@@ -307,24 +308,28 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     newItem = game.items.get(rollResult.results[0].resultId);
                 }
                 else {
-                    //Try to find it in the compendium
+                    // Try to find it in the compendium
                     const items = game.packs.get(rollResult.results[0].collection);
-                    //console.log(items);
-                    //dnd5eitems.getIndex().then(index => console.log(index));
-                    //let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
-                    //items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
+                    // console.log(items);
+                    // dnd5eitems.getIndex().then(index => console.log(index));
+                    // let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
+                    // items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
                     newItem = await items.getEntity(rollResult.results[0].resultId);
                 }
                 if (!newItem || newItem === null) {
-                    //console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
+                    // console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
                     return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
                 }
-    
+                
+                if (newItem.type === "spell") {
+                    newItem = await Item5e.createScrollFromSpell(newItem)
+                }
+
                 let itemQtyRoll = new Roll(itemQtyFormula);
                 itemQtyRoll.roll();
                 console.log(`Loot Sheet | Adding ${itemQtyRoll.total} x ${newItem.name}`)
     
-                //newItem.data.quantity = itemQtyRoll.result;
+                // newItem.data.quantity = itemQtyRoll.result;
     
                 let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
     
@@ -332,7 +337,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     await this.actor.createEmbeddedEntity("OwnedItem", newItem);
                     console.log(`Loot Sheet | ${newItem.name} does not exist.`);
                     existingItem = this.actor.items.find(item => item.data.name == newItem.name);
-    
+
                     if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
                         await existingItem.update({ "data.quantity": itemQtyLimit });
                         if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyLimit} x ${newItem.name}.`);
@@ -429,6 +434,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 }
                 if (!newItem || newItem === null) {
                     return ui.notifications.error(`No item found "${rolltable.results[index].resultId}".`);
+                }
+
+                if (newItem.type === "spell") {
+                    newItem = await Item5e.createScrollFromSpell(newItem)
                 }
 
                 await this.actor.createEmbeddedEntity("OwnedItem", newItem);
@@ -1182,61 +1191,6 @@ Actors.registerSheet("dnd5e", LootSheet5eNPC, {
 });
 
 
-/**
- * Register a hook to convert any spell created on an actor with the LootSheet5eNPC sheet to a consumable scroll.
- */
-Hooks.on('preCreateOwnedItem', (actor, item, data) => {
-
-    // console.log("Loot Sheet | actor", actor);
-    // console.log("Loot Sheet | item", item);
-    // console.log("Loot Sheet | data", data);
-
-    if (!actor) throw new Error(`Parent Actor ${actor._id} not found`);
-
-    // Check if Actor is an NPC
-    if (actor.data.type === "character") return;
-
-    // If the actor is using the LootSheet5eNPC then check in the item is a spell and if so update the name.
-    if ((actor.data.flags.core || {}).sheetClass === "dnd5e.LootSheet5eNPC") {
-        if (item.type === "spell") {
-            //console.log("Loot Sheet | dragged spell item", item);
-
-            let changeScrollIcon = game.settings.get("lootsheetnpc5e", "changeScrollIcon");
-
-            if (changeScrollIcon) item.img = "modules/lootsheetnpc5e/icons/Scroll" + item.data.level + ".png";
-
-            //console.log("Loot Sheet | check changeScrollIcon", changeScrollIcon);
-
-            item.name = "Scroll of " + item.name;
-            item.type = "consumable";
-            item.data.price = Math.round(10 * Math.pow(2.6, item.data.level));
-            //console.log("Loot Sheet | price of scroll", item.data.price);
-            item.data.autoDestroy = {
-                label: "Destroy on Empty",
-                type: "Boolean",
-                value: true
-            }
-            item.data.autoUse = {
-                label: "Consume on Use",
-                type: "Boolean",
-                value: true
-            }
-            item.data.charges = {
-                label: "Charges",
-                max: 1,
-                type: "Number",
-                value: 1
-            }
-            item.data.consumableType = {
-                label: "Consumable Type",
-                type: "String",
-                value: "scroll"
-            }
-        }
-    } else return;
-
-});
-
 Hooks.once("init", () => {
 
     Handlebars.registerHelper('ifeq', function (a, b, options) {
@@ -1250,15 +1204,6 @@ Hooks.once("init", () => {
         scope: "world",
         config: true,
         default: false,
-        type: Boolean
-    });
-
-    game.settings.register("lootsheetnpc5e", "changeScrollIcon", {
-        name: "Change icon for Spell Scrolls?",
-        hint: "Changes the icon for spell scrolls to a scroll icon. If left unchecked, retains the spell's icon.",
-        scope: "world",
-        config: true,
-        default: true,
         type: Boolean
     });
 
