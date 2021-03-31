@@ -5,7 +5,7 @@
 	"version": "3.0.2",
 	"minimumCoreVersion": "0.7.9",
 	"compatibleCoreVersion": "0.7.9",
-	"author": "Jan Ole Peek (ChalkOne), Charles Miller (Kage), NonstickPanda, Streyder",
+	"author": "Jan Ole Peek (ChalkOne), Charles Miller (Kage), NonstickPanda, Kevin Brammer (Striky)",
 	"systems": ["dnd5e"],
     "esmodules": ["/lootsheetnpc5e.js"],
 	"styles": ["/css/lootsheetnpc5e.css"],
