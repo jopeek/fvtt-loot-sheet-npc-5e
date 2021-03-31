@@ -41,12 +41,7 @@ Dragging of spells into the sheet will automatically turn them into scrolls.
 ![demo_scrolls](https://thumbs.gfycat.com/LividAccurateFluke-size_restricted.gif)
 
 ### Compatibility:
-- Tested with FVTT v0.5.3.
-
-### Known Issues:
-- Dragging an item out of the sheet does not actually remove it from the sheet's inventory.
-- Price Modifier currently doesn't save owned item prices properly on Tokens, so the button will not appear on tokens. Believe this to be related to a FoundryVTT issue. 
-- Currently can't get back to original prices, especially if percentage is set to 0.
+- Tested with FVTT v0.7.9 and the DND5E system only.
 
 ### Installation Instructions
 
