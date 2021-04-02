@@ -11,5 +11,5 @@
 	"socket": true,
 	"url": "https://github.com/whelan/fvtt-merchant-sheet-npc",
 	"manifest": "https://raw.githubusercontent.com/whelan/fvtt-merchant-sheet-npc/master/module.json",
-	"download": "https://github.com/whelan/fvtt-merchant-sheet-npc/archive/master.zip"
+ 	"download": "https://github.com/whelan/fvtt-merchant-sheet-npc/archive/master.zip"
 }
