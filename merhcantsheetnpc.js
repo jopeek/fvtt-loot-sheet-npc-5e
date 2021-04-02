@@ -1,5 +1,5 @@
-import ActorSheet5eNPC from "../../systems/dnd5e/module/actor/sheets/npc.js";
-import Item5e from "../../systems/dnd5e/module/item/entity.js";
+import ActorSheet5eNPC from "module/actor/sheets/npc.js";
+import Item5e from "module/item/entity.js";
 
 class LootSheet5eNPCHelper
 {
