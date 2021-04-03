@@ -1,6 +1,6 @@
 
 
-.loot-sheet-npc .gm-section {
+.merchant-sheet-npc .gm-section {
 	/* height: 48px; */
 	color: #000;
 	/* font-weight: 700; */
@@ -15,11 +15,11 @@
 	font-size: 18px;
 }
 
-.loot-sheet-npc .gm-header {
+.merchant-sheet-npc .gm-header {
 	margin-top: 0.5rem;
 }
 
-.loot-sheet-npc .inventory-filters .item-controls {
+.merchant-sheet-npc .inventory-filters .item-controls {
 	flex: 0 0 40px;
     display: flex;
     flex-direction: row;
@@ -28,50 +28,50 @@
     justify-content: flex-end;
 }
 
-.loot-sheet-npc .inventory-filters .item-controls a, .loot-sheet-npc.sheet .items-list .item-controls a {
+.merchant-sheet-npc .inventory-filters .item-controls a, .merchant-sheet-npc.sheet .items-list .item-controls a {
 	flex: 0 0 22px;
     font-size: 12px;
     text-align: center;
     color: #7a7971;
 }
 
-.loot-sheet-npc .gm-settings .permissions-list,
-.loot-sheet-npc .gm-settings .coin-list {
+.merchant-sheet-npc .gm-settings .permissions-list,
+.merchant-sheet-npc .gm-settings .coin-list {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.loot-sheet-npc .gm-settings .sheet-types,
-.loot-sheet-npc .gm-settings .merchant-settings {
+.merchant-sheet-npc .gm-settings .sheet-types,
+.merchant-sheet-npc .gm-settings .merchant-settings {
 	margin-right: 10px;
 }
 
-.loot-sheet-npc .gm-settings .merchant-settings .flexrow {
+.merchant-sheet-npc .gm-settings .merchant-settings .flexrow {
 	border-bottom: 1px solid #CCC;
 	margin-bottom: 5px;
 }
 
-.loot-sheet-npc .gm-settings .merchant-settings .flexrow h4 {
+.merchant-sheet-npc .gm-settings .merchant-settings .flexrow h4 {
 	margin: 2px 0 0 0;
 }
 
-.loot-sheet-npc .gm-settings .merchant-settings {
+.merchant-sheet-npc .gm-settings .merchant-settings {
 	margin-left: 24px;
 }
 
-.loot-sheet-npc .gm-settings .coins-list {
+.merchant-sheet-npc .gm-settings .coins-list {
 	padding-left: 24px;
 }
 
-.loot-sheet-npc .gm-settings h4.sheet-name {
+.merchant-sheet-npc .gm-settings h4.sheet-name {
 	flex: 1;
 	margin: 0 0 0 24px;
 	line-height: 22px;
 }
 
-.loot-sheet-npc .gm-settings .permission,
-.loot-sheet-npc .gm-settings .denomination {
+.merchant-sheet-npc .gm-settings .permission,
+.merchant-sheet-npc .gm-settings .denomination {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -82,45 +82,45 @@
 	font-size: 13px;
 }
 
-.loot-sheet-npc .gm-settings .sheet-type-info,
-.loot-sheet-npc .gm-settings .permission-info,
-.loot-sheet-npc .gm-settings .merchant-settings-info,
+.merchant-sheet-npc .gm-settings .sheet-type-info,
+.merchant-sheet-npc .gm-settings .permission-info,
+.merchant-sheet-npc .gm-settings .merchant-settings-info,
 .itemsonce-info  {
   color: #7a7971;
   margin: 6px 6px 6px 24px;
   display: none;
 }
 
-.loot-sheet-npc .gm-settings .help {
+.merchant-sheet-npc .gm-settings .help {
 	color: #7a7971;
 	font-size: 13px;
 }
 
-.loot-sheet-npc .gm-settings .permission,
-.loot-sheet-npc .gm-settings .denomination>* {
+.merchant-sheet-npc .gm-settings .permission,
+.merchant-sheet-npc .gm-settings .denomination>* {
 	flex: 1;
   flex-wrap: inherit;
   height: auto;
 }
 
-.loot-sheet-npc .gm-settings .permission .permission-name {
+.merchant-sheet-npc .gm-settings .permission .permission-name {
 	margin: 0;
 }
 
-.loot-sheet-npc .gm-settings .permission .permission-proficiency {
+.merchant-sheet-npc .gm-settings .permission .permission-proficiency {
 	text-align: center;
 	flex: 0 0 24px;
 }
 
-.loot-sheet-npc .gm-settings .permission .permission-proficiency i.fa-circle {
+.merchant-sheet-npc .gm-settings .permission .permission-proficiency i.fa-circle {
 	font-size: 10px;
 }
 
-.loot-sheet-npc .gm-settings .split-coins {
+.merchant-sheet-npc .gm-settings .split-coins {
 	width: 95%;
 }
 
-.loot-sheet-npc.sheet .window-content form {
+.merchant-sheet-npc.sheet .window-content form {
 	overflow-y: auto !important;
 }
 
@@ -130,12 +130,12 @@ img.sheet-profile {
 	max-height: 220px;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-filters .currency span {
+.merchant-sheet-npc.sheet.actor .inventory-filters .currency span {
 	flex: 0 0 105px;
 	white-space: nowrap;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-filters .currency input[type="text"] {
+.merchant-sheet-npc.sheet.actor .inventory-filters .currency input[type="text"] {
 	width: 40px;
 }
 
@@ -146,7 +146,7 @@ img.sheet-profile {
 	white-space: nowrap;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-filters .currency label {
+.merchant-sheet-npc.sheet.actor .inventory-filters .currency label {
 	white-space: nowrap;
 }
 
@@ -164,15 +164,15 @@ section.sheet-content.content {
 	border-bottom: 2px groove #eeede0;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-price,
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity,
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-weight {
+.merchant-sheet-npc.sheet.actor .inventory-list .item .item-price,
+.merchant-sheet-npc.sheet.actor .inventory-list .item .item-quantity,
+.merchant-sheet-npc.sheet.actor .inventory-list .item .item-weight {
 	flex: 0 0 75px;
 	color: #666;
 	font-size: 10px;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-controls {
+.merchant-sheet-npc.sheet.actor .inventory-list .item .item-controls {
 	flex: 0 0 100px !important;
 	display: flex;
 	flex-direction: row;
@@ -181,7 +181,7 @@ section.sheet-content.content {
 	justify-content: flex-end;
 }
 
-.loot-sheet-npc.sheet .sheet-header .charbutton {
+.merchant-sheet-npc.sheet .sheet-header .charbutton {
 	flex: 0 0 200px;
 	margin: auto;
 	text-align: right;
@@ -193,7 +193,7 @@ button.price-modifier {
 	margin-right: 5px;
 }
 
-.loot-sheet-npc.sheet .sheet-navigation {
+.merchant-sheet-npc.sheet .sheet-navigation {
 	margin-bottom: 15px;
 }
 
@@ -216,22 +216,22 @@ input#quantity:focus {
 	box-shadow: 0 0 8px red;
 }
 
-.loot-sheet-npc .sheet-profile-img {
+.merchant-sheet-npc .sheet-profile-img {
 	padding: 10px;
 }
 
-.loot-sheet-npc.sheet.actor .editor {
+.merchant-sheet-npc.sheet.actor .editor {
 	height: 600px;
 }
 
-.loot-sheet-npc.sheet .sheet-header h1 input {
+.merchant-sheet-npc.sheet .sheet-header h1 input {
 	margin: 0px;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-list .inventory-header .item-controls a.item-create {
+.merchant-sheet-npc.sheet.actor .inventory-list .inventory-header .item-controls a.item-create {
     flex: initial;
 }
 
-.loot-sheet-npc li.item.flexrow.inventory-header {
+.merchant-sheet-npc li.item.flexrow.inventory-header {
     padding: 8px 8px 0 0;
 }
