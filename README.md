@@ -34,7 +34,7 @@ Can be used to create an inventory of a shopkeeper to allow players to buy from 
 To install a module, follow these instructions:
 
 1. Start FVTT and browse to the Game Modules tab in the Configuration and Setup menu
-2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/whelan/fvtt-merchant-sheet-npc-5e/master/module.json
+2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/whelan/fvtt-merchant-sheet-npc/master/module.json
 3. Click Install and wait for installation to complete 
 
 ### Feedback
