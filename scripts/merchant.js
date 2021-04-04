@@ -1222,10 +1222,10 @@ Hooks.once("init", () => {
         //
         // // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
         //
-        // if (itemCostInPlatinum > buyerFundsAsPlatinum) {
-        //     errorMessageToActor(buyer, `Not enough funds to purchase item.`);
-        //     return;
-        // }
+        if (itemCostInGold > buyerFunds) {
+            errorMessageToActor(buyer, `Not enough funds to purchase item.`);
+            return;
+        }
         //
         // let convertCurrency = game.settings.get("merchantsheetnpc", "convertCurrency");
         //
