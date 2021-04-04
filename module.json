@@ -10,5 +10,8 @@
 	"scripts": [
 		"./scripts/merchant.js"
 	],
-	"socket": true
+	"socket": true,
+	"url": "https://github.com/whelan/fvtt-merhcant-sheet-npc-5e",
+	"manifest": "https://raw.githubusercontent.com/whelan/fvtt-merchant-sheet-npc-5e/master/module.json",
+	"download": "https://github.com/whelan/fvtt-merchant-sheet-npc-5e/archive/master.zip"
 }
