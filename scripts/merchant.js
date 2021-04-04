@@ -90,7 +90,7 @@ class MerchantSheetNPC extends ActorSheet {
             return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
         });
 
-        Handlebars.registerHelper('lootsheetprice', function (basePrice, modifier) {
+        Handlebars.registerHelper('merchantsheetprice', function (basePrice, modifier) {
             console.log ("Merchant sheet | basePrice: "+ basePrice + " modifier: " + modifier)
             return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en');
         });
@@ -536,14 +536,14 @@ class MerchantSheetNPC extends ActorSheet {
         }
 
         if (item.data.quantity === packet.quantity) {
-            console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
+            console.log("MerchantSheet", "Sending buy request to " + targetGm.name, packet);
             game.socket.emit(MerchantSheetNPC.SOCKET, packet);
             return;
         }
 
         let d = new QuantityDialog((quantity) => {
                 packet.quantity = quantity;
-                console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
+                console.log("MerchantSheet", "Sending buy request to " + targetGm.name, packet);
                 game.socket.emit(MerchantSheetNPC.SOCKET, packet);
             },
             {
@@ -1163,6 +1163,8 @@ Hooks.once("init", () => {
     }
 
     async function transaction(seller, buyer, itemId, quantity) {
+        console.log(`Buying item: ${seller}, ${buyer}, ${itemId}, ${quantity}`);
+
         let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
 
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
@@ -1187,107 +1189,112 @@ Hooks.once("init", () => {
         let itemCostInGold = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
 
         itemCostInGold *= quantity;
-        // console.log(`ItemCost: ${itemCostInGold}`)
-        let buyerFunds = duplicate(buyer.data.data.currency);
+        console.log(`ItemCost: ${itemCostInGold}`)
+        // let currency = buyer.data.data.currency;
+        // if (currency === 'Undefined') {
+            let currency = buyer.data.data.details.currency
+        // }
+        let buyerFunds = duplicate(currency);
 
         console.log(`Funds before purchase: ${buyerFunds}`);
 
-        const conversionRates = {
-            "pp": 1,
-            "gp": CONFIG.DND5E.currencyConversion.gp.each,
-            "ep": CONFIG.DND5E.currencyConversion.ep.each,
-            "sp": CONFIG.DND5E.currencyConversion.sp.each,
-            "cp": CONFIG.DND5E.currencyConversion.cp.each
-        };
-
-        const compensationCurrency = {"pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp"};
-
-        let itemCostInPlatinum = itemCostInGold / conversionRates["gp"]
+        // const conversionRates = {
+        //     "pp": 1,
+        //     "gp": CONFIG.DND5E.currencyConversion.gp.each,
+        //     "ep": CONFIG.DND5E.currencyConversion.ep.each,
+        //     "sp": CONFIG.DND5E.currencyConversion.sp.each,
+        //     "cp": CONFIG.DND5E.currencyConversion.cp.each
+        // };
+        //
+        // const compensationCurrency = {"pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp"};
+        //
+        // let itemCostInPlatinum = itemCostInGold / conversionRates["gp"]
         // console.log(`itemCostInGold : ${itemCostInGold}`);
         // console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
         // console.log(`conversionRates["gp"] : ${conversionRates["gp"]}`);
         // console.log(`conversionRates["ep"] : ${conversionRates["ep"]}`);
-
-        let buyerFundsAsPlatinum = buyerFunds["pp"];
-        buyerFundsAsPlatinum += buyerFunds["gp"] / conversionRates["gp"];
-        buyerFundsAsPlatinum += buyerFunds["ep"] / conversionRates["gp"] / conversionRates["ep"];
-        buyerFundsAsPlatinum += buyerFunds["sp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"];
-        buyerFundsAsPlatinum += buyerFunds["cp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"] / conversionRates["cp"];
-
-        // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
-
-        if (itemCostInPlatinum > buyerFundsAsPlatinum) {
-            errorMessageToActor(buyer, `Not enough funds to purchase item.`);
-            return;
-        }
-
-        let convertCurrency = game.settings.get("merchantsheetnpc", "convertCurrency");
-
-        if (convertCurrency) {
-            buyerFundsAsPlatinum -= itemCostInPlatinum;
-
-            // Remove every coin we have
-            for (let currency in buyerFunds) {
-                buyerFunds[currency] = 0
-            }
-
-            // Give us fractions of platinum coins, which will be smoothed out below
-            buyerFunds["pp"] = buyerFundsAsPlatinum
-
-        } else {
-            // We just pay in partial platinum.
-            // We dont care if we get partial coins or negative once because we compensate later
-            buyerFunds["pp"] -= itemCostInPlatinum
-
-            // Now we exchange all negative funds with coins of lower value
-            // We dont need to care about running out of money because we checked that earlier
-            for (let currency in buyerFunds) {
-                let amount = buyerFunds[currency]
-                // console.log(`${currency} : ${amount}`);
-                if (amount >= 0) continue;
-
-                // If we have ever so slightly negative cp, it is likely due to floating point error
-                // We dont care and just give it to the player
-                if (currency == "cp") {
-                    buyerFunds["cp"] = 0;
-                    continue;
-                }
-
-                let compCurrency = compensationCurrency[currency]
-
-                buyerFunds[currency] = 0;
-                buyerFunds[compCurrency] += amount * conversionRates[compCurrency]; // amount is a negative value so we add it
-                // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
-            }
-        }
-
+        //
+        // let buyerFundsAsPlatinum = buyerFunds["pp"];
+        // buyerFundsAsPlatinum += buyerFunds["gp"] / conversionRates["gp"];
+        // buyerFundsAsPlatinum += buyerFunds["ep"] / conversionRates["gp"] / conversionRates["ep"];
+        // buyerFundsAsPlatinum += buyerFunds["sp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"];
+        // buyerFundsAsPlatinum += buyerFunds["cp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"] / conversionRates["cp"];
+        //
+        // // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
+        //
+        // if (itemCostInPlatinum > buyerFundsAsPlatinum) {
+        //     errorMessageToActor(buyer, `Not enough funds to purchase item.`);
+        //     return;
+        // }
+        //
+        // let convertCurrency = game.settings.get("merchantsheetnpc", "convertCurrency");
+        //
+        // if (convertCurrency) {
+        //     buyerFundsAsPlatinum -= itemCostInPlatinum;
+        //
+        //     // Remove every coin we have
+        //     for (let currency in buyerFunds) {
+        //         buyerFunds[currency] = 0
+        //     }
+        //
+        //     // Give us fractions of platinum coins, which will be smoothed out below
+        //     buyerFunds["pp"] = buyerFundsAsPlatinum
+        //
+        // } else {
+        //     // We just pay in partial platinum.
+        //     // We dont care if we get partial coins or negative once because we compensate later
+        //     buyerFunds["pp"] -= itemCostInPlatinum
+        //
+        //     // Now we exchange all negative funds with coins of lower value
+        //     // We dont need to care about running out of money because we checked that earlier
+        //     for (let currency in buyerFunds) {
+        //         let amount = buyerFunds[currency]
+        //         // console.log(`${currency} : ${amount}`);
+        //         if (amount >= 0) continue;
+        //
+        //         // If we have ever so slightly negative cp, it is likely due to floating point error
+        //         // We dont care and just give it to the player
+        //         if (currency == "cp") {
+        //             buyerFunds["cp"] = 0;
+        //             continue;
+        //         }
+        //
+        //         let compCurrency = compensationCurrency[currency]
+        //
+        //         buyerFunds[currency] = 0;
+        //         buyerFunds[compCurrency] += amount * conversionRates[compCurrency]; // amount is a negative value so we add it
+        //         // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
+        //     }
+        // }
+        buyerFunds = buyerFunds - itemCostInGold;
         // console.log(`Smoothing out`);
         // Finally we exchange partial coins with as little change as possible
-        for (let currency in buyerFunds) {
-            let amount = buyerFunds[currency]
-
-            // console.log(`${currency} : ${amount}: ${conversionRates[currency]}`);
-
-            // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
-            // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
-            // If we would floor 15.99999999999918 everything explodes
-            let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
-            buyerFunds[currency] = newFund;
-
-            // console.log(`New Buyer funds ${currency}: ${buyerFunds[currency]}`);
-            let compCurrency = compensationCurrency[currency]
-
-            // We dont care about fractions of CP
-            if (currency != "cp") {
-                // We calculate the amount of lower currency we get for the fraction of higher currency we have
-                let toAdd = Math.round((amount - newFund) * 1e5) / 1e5 * conversionRates[compCurrency]
-                buyerFunds[compCurrency] += toAdd
-                // console.log(`Added ${toAdd} to ${compCurrency} it is now ${buyerFunds[compCurrency]}`);
-            }
-        }
+        // for (let currency in buyerFunds) {
+        //     let amount = buyerFunds[currency]
+        //
+        //     // console.log(`${currency} : ${amount}: ${conversionRates[currency]}`);
+        //
+        //     // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
+        //     // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
+        //     // If we would floor 15.99999999999918 everything explodes
+        //     let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
+        //     buyerFunds[currency] = newFund;
+        //
+        //     // console.log(`New Buyer funds ${currency}: ${buyerFunds[currency]}`);
+        //     let compCurrency = compensationCurrency[currency]
+        //
+        //     // We dont care about fractions of CP
+        //     if (currency != "cp") {
+        //         // We calculate the amount of lower currency we get for the fraction of higher currency we have
+        //         let toAdd = Math.round((amount - newFund) * 1e5) / 1e5 * conversionRates[compCurrency]
+        //         buyerFunds[compCurrency] += toAdd
+        //         // console.log(`Added ${toAdd} to ${compCurrency} it is now ${buyerFunds[compCurrency]}`);
+        //     }
+        // }
 
         // Update buyer's funds
         buyer.update({ "data.currency": buyerFunds });
+        buyer.update({ "data.details.currency": buyerFunds });
 
         console.log(`Funds after purchase: ${buyerFunds}`);
 
@@ -1461,6 +1468,7 @@ Hooks.once("init", () => {
         if (game.user.isGM && data.processorId === game.user.id) {
             if (data.type === "buy") {
                 let buyer = game.actors.get(data.buyerId);
+                console.log(buyer)
                 let seller = canvas.tokens.get(data.tokenId);
 
                 if (buyer && seller && seller.actor) {
