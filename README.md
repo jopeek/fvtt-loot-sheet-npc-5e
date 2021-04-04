@@ -14,26 +14,27 @@ More features detailed below.
 ##### Shopkeeper Sheet
 Can be used to create an inventory of a shopkeeper to allow players to buy from their inventory. Prices are listed next to each item.
 
-![demo_inventory](https://raw.githubusercontent.com/jopeek/fvtt-Merchant-sheet-npc-5e/master/images/demo_inventory.jpg)
+[comment]: <> (![demo_inventory]&#40;https://raw.githubusercontent.com/jopeek/fvtt-Merchant-sheet-npc-5e/master/images/demo_inventory.jpg&#41;)
 
-##### Price Modifier
-Prices can be adjusted by percentage for all owned items.
+[comment]: <> (##### Price Modifier)
 
-![price_modifier](https://thumbs.gfycat.com/WelloffFortunateInganue-size_restricted.gif)
+[comment]: <> (Prices can be adjusted by percentage for all owned items.)
 
-A Biography tab is also available.
+[comment]: <> (![price_modifier]&#40;https://thumbs.gfycat.com/WelloffFortunateInganue-size_restricted.gif&#41;)
 
-![demo_biography](https://raw.githubusercontent.com/jopeek/fvtt-Merchant-sheet-npc-5e/master/images/demo_biography.jpg)
+[comment]: <> (A Biography tab is also available.)
+
+[comment]: <> (![demo_biography]&#40;https://raw.githubusercontent.com/jopeek/fvtt-Merchant-sheet-npc-5e/master/images/demo_biography.jpg&#41;)
 
 ### Compatibility:
-- Tested with FVTT v0.7.9 and DND5E and swade system only.
+- Tested with FVTT v0.7.9 and swade system only.
 
 ### Installation Instructions
 
 To install a module, follow these instructions:
 
 1. Start FVTT and browse to the Game Modules tab in the Configuration and Setup menu
-2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/jopeek/fvtt-merchant-sheet-npc-5e/master/module.json
+2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/whelan/fvtt-merchant-sheet-npc-5e/master/module.json
 3. Click Install and wait for installation to complete 
 
 ### Feedback
