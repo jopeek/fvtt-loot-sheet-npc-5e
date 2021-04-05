@@ -43,46 +43,46 @@
                     {{/each}}
                 </ol>
 
-                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
-                    <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a Rollable Table. Specify the Rollable Table's name, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>
-                    <div class="merchant-settings">
-                        <div class="flexrow">
-                            <div class="flexcol"><h4>Rollable Table: </h4></div>
-                            <div class="flexcol">
-                                <select class="sheet-rolltable" name="data.flags.merchantsheetnpc.rolltable">
-                                    
-                                    {{#select data.flags.merchantsheetnpc.rolltable}}
-                                    <option value=""></option>
-                                        {{#each rolltables as |table i|}}
-                                            <option value="{{table.name}}">{{table.name}}</option>
-                                        {{/each}}
-                                    {{/select}}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="flexrow">
-                            <div class="flexcol"><h4>Shop Qty Formula: </h4></div>
-                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{data.flags.merchantsheetnpc.shopQty}}"/></div>
-                        </div>
-                        <div class="flexrow">
-                            <div class="flexcol"><h4>Item Qty Formula: </h4></div>
-                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{data.flags.merchantsheetnpc.itemQty}}"/></div>
-                        </div>
-						<div class="flexrow">
-                            <div class="flexcol"><h4>Limit Qty: </h4></div>
-                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10" value="{{data.flags.merchantsheetnpc.itemQtyLimit}}"/></div>
-                        </div>
-						<div class="flexrow">
-                            <div class="flexcol"><h4>Clear Inventory: </h4></div>
-                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.clearInventory" type="checkbox" data-dtype="boolean" {{#if data.flags.merchantsheetnpc.clearInventory}}checked{{/if}}/></div>
-                        </div>
-                        <div class="flexrow">
-                            <div class="flexcol"><h4>Items Only Once:</h4></div>
-                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.itemOnlyOnce" type="checkbox" data-dtype="boolean" {{#if data.flags.merchantsheetnpc.itemOnlyOnce}}checked{{/if}}/></div>
-                        </div>
-                    </div>
-                    <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
-            </div>
+<!--                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>-->
+<!--                    <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a Rollable Table. Specify the Rollable Table's name, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>-->
+<!--                    <div class="merchant-settings">-->
+<!--                        <div class="flexrow">-->
+<!--                            <div class="flexcol"><h4>Rollable Table: </h4></div>-->
+<!--                            <div class="flexcol">-->
+<!--                                <select class="sheet-rolltable" name="data.flags.merchantsheetnpc.rolltable">-->
+<!--                                    -->
+<!--                                    {{#select data.flags.merchantsheetnpc.rolltable}}-->
+<!--                                    <option value=""></option>-->
+<!--                                        {{#each rolltables as |table i|}}-->
+<!--                                            <option value="{{table.name}}">{{table.name}}</option>-->
+<!--                                        {{/each}}-->
+<!--                                    {{/select}}-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="flexrow">-->
+<!--                            <div class="flexcol"><h4>Shop Qty Formula: </h4></div>-->
+<!--                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{data.flags.merchantsheetnpc.shopQty}}"/></div>-->
+<!--                        </div>-->
+<!--                        <div class="flexrow">-->
+<!--                            <div class="flexcol"><h4>Item Qty Formula: </h4></div>-->
+<!--                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{data.flags.merchantsheetnpc.itemQty}}"/></div>-->
+<!--                        </div>-->
+<!--						<div class="flexrow">-->
+<!--                            <div class="flexcol"><h4>Limit Qty: </h4></div>-->
+<!--                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10" value="{{data.flags.merchantsheetnpc.itemQtyLimit}}"/></div>-->
+<!--                        </div>-->
+<!--						<div class="flexrow">-->
+<!--                            <div class="flexcol"><h4>Clear Inventory: </h4></div>-->
+<!--                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.clearInventory" type="checkbox" data-dtype="boolean" {{#if data.flags.merchantsheetnpc.clearInventory}}checked{{/if}}/></div>-->
+<!--                        </div>-->
+<!--                        <div class="flexrow">-->
+<!--                            <div class="flexcol"><h4>Items Only Once:</h4></div>-->
+<!--                            <div class="flexcol"><input name="data.flags.merchantsheetnpc.itemOnlyOnce" type="checkbox" data-dtype="boolean" {{#if data.flags.merchantsheetnpc.itemOnlyOnce}}checked{{/if}}/></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>-->
+<!--            </div>-->
 
             {{/if}}
 
