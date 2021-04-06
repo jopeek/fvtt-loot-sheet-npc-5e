@@ -1,4 +1,3 @@
-console.log("Hello World! This code runs immediately when the file is loaded.");
 // import Item5e from "module/item/entity.js";
 
 
@@ -95,7 +94,7 @@ class MerchantSheetNPC extends ActorSheet {
             return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en');
         });
 
-        Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
+        Handlebars.registerHelper('merchantsheetstackweight', function (weight, qty) {
             let showStackWeight = game.settings.get("merchantsheetnpc", "showStackWeight");
             if (showStackWeight) {
                 return `/${(weight * qty).toLocaleString('en')}`;
@@ -106,7 +105,7 @@ class MerchantSheetNPC extends ActorSheet {
 
         });
 
-        Handlebars.registerHelper('lootsheetweight', function (weight) {
+        Handlebars.registerHelper('merchantsheetweight', function (weight) {
             return (Math.round(weight * 1e5) / 1e5).toString();
         });
 
@@ -146,6 +145,11 @@ class MerchantSheetNPC extends ActorSheet {
         if (!priceModifier) await this.actor.setFlag("merchantsheetnpc", "priceModifier", 1.0);
         priceModifier = await this.actor.getFlag("merchantsheetnpc", "priceModifier");
 
+        let stackModifier = 20;
+        stackModifier = await this.actor.getFlag("merchantsheetnpc", "stackModifier");
+        if (!stackModifier) await this.actor.setFlag("merchantsheetnpc", "stackModifier", 20);
+        stackModifier = await this.actor.getFlag("merchantsheetnpc", "stackModifier");
+
         let totalWeight = 0;
         this.actor.data.items.forEach((item)=>totalWeight += Math.round((item.data.quantity * item.data.weight * 100) / 100));
 
@@ -160,12 +164,9 @@ class MerchantSheetNPC extends ActorSheet {
         sheetData.totalPrice = totalPrice.toLocaleString('en') + " gp";
         sheetData.totalQuantity = totalQuantity;
         sheetData.priceModifier = priceModifier;
+        sheetData.stackModifier = stackModifier;
         sheetData.rolltables = game.tables.entities;
-        sheetData.lootCurrency = game.settings.get("merchantsheetnpc", "lootCurrency");
-        sheetData.lootAll = game.settings.get("merchantsheetnpc", "lootAll");
-        console.log(this.actor.data.items);
         sheetData.items = this.actor.data.items;
-        console.log(sheetData);
 
         // Return data for rendering
         return sheetData;
@@ -187,6 +188,7 @@ class MerchantSheetNPC extends ActorSheet {
 
         // Price Modifier
         html.find('.price-modifier').click(ev => this._priceModifier(ev));
+        html.find('.stack-modifier').click(ev => this._stackModifier(ev));
 
         html.find('.merchant-settings').change(ev => this._merchantSettingChange(ev));
         html.find('.update-inventory').click(ev => this._merchantInventoryUpdate(ev));
@@ -196,7 +198,7 @@ class MerchantSheetNPC extends ActorSheet {
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
-        html.find('.item-buyall').click(ev => this._buyItem(ev, 1));
+        html.find('.item-buystack').click(ev => this._buyItem(ev, 1));
 
 
         // Roll Table
@@ -439,53 +441,6 @@ class MerchantSheetNPC extends ActorSheet {
         }
     }
 
-    _createRollTable() {
-
-        let type = "weapon";
-
-        game.packs.map(p => p.collection);
-
-        const pack = game.packs.find(p => p.collection === "dnd5e.items");
-
-        let i = 0;
-
-        let output = [];
-
-        pack.getIndex().then(index => index.forEach(function (arrayItem) {
-            var x = arrayItem._id;
-            //console.log(arrayItem);
-            i++;
-            pack.getEntity(arrayItem._id).then(packItem => {
-
-                if (packItem.type === type) {
-
-                    //console.log(packItem);
-
-                    let newItem = {
-                        "_id": packItem._id,
-                        "flags": {},
-                        "type": 1,
-                        "text": packItem.name,
-                        "img": packItem.img,
-                        "collection": "Item",
-                        "resultId": packItem._id,
-                        "weight": 1,
-                        "range": [
-                            i,
-                            i
-                        ],
-                        "drawn": false
-                    };
-
-                    output.push(newItem);
-
-                }
-            });
-        }));
-
-        console.log(output);
-        return;
-    }
 
     /* -------------------------------------------- */
 
@@ -496,7 +451,7 @@ class MerchantSheetNPC extends ActorSheet {
      * Handle buy item
      * @private
      */
-    _buyItem(event, all = 0) {
+    _buyItem(event, stack = 0) {
         event.preventDefault();
         console.log("Merchant sheet | Buy Item clicked");
 
@@ -520,6 +475,7 @@ class MerchantSheetNPC extends ActorSheet {
         }
 
         let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+        let stackModifier = $(event.currentTarget).parents(".item").attr("data-item-stack");
         const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
 
         const packet = {
@@ -531,8 +487,15 @@ class MerchantSheetNPC extends ActorSheet {
             processorId: targetGm.id
         };
 
-        if (all || event.shiftKey) {
-            packet.quantity = item.data.quantity;
+        if (stack || event.shiftKey) {
+            if (item.data.quantity < stackModifier) {
+                packet.quantity = item.data.quantity;
+            } else {
+                packet.quantity = stackModifier;
+            }
+            console.log("MerchantSheet", "Sending buy request to " + targetGm.name, packet);
+            game.socket.emit(MerchantSheetNPC.SOCKET, packet);
+            return;
         }
 
         if (item.data.quantity === packet.quantity) {
@@ -553,16 +516,6 @@ class MerchantSheetNPC extends ActorSheet {
         d.render(true);
     }
 
-    /* -------------------------------------------- */
-
-
-    /* -------------------------------------------- */
-
-
-    /* -------------------------------------------- */
-
-
-    /* -------------------------------------------- */
 
     /**
      * Handle price modifier
@@ -600,6 +553,44 @@ class MerchantSheetNPC extends ActorSheet {
             },
             default: "two",
             close: () => console.log("Merchant sheet | Price Modifier Closed")
+        });
+        d.render(true);
+    }
+
+    /**
+     * Handle stack modifier
+     * @private
+     */
+    async _stackModifier(event) {
+        event.preventDefault();
+        //console.log("Merchant sheet | Price Modifier clicked");
+        //console.log(this.actor.isToken);
+
+        let stackModifier = await this.actor.getFlag("merchantsheetnpc", "stackModifier");
+        if (!stackModifier) stackModifier = 20;
+
+        var html = "<p>Use this slider to increase or decrease the price of all items in this inventory. <i class='fa fa-question-circle' title='This defines how much a stack buy is, where 20 means 20 times the item, 1 is one item, and 100 is 100 times the item.'></i></p>";
+        html += '<p><input name="stack-modifier" id="stack-modifier" type="range" min="1" max="100" value="' + stackModifier + '" class="slider"></p>';
+        html += '<p><label>Stack amount:</label> <input type=number min="1" max="100" value="' + stackModifier + '" id="stack-modifier-display"></p>';
+        html += '<script>var pmSlider = document.getElementById("stack-modifier"); var pmDisplay = document.getElementById("stack-modifier-display"); pmDisplay.value = pmSlider.value; pmSlider.oninput = function() { pmDisplay.value = this.value; }; pmDisplay.oninput = function() { pmSlider.value = this.value; };</script>';
+
+        let d = new Dialog({
+            title: "Stack Modifier",
+            content: html,
+            buttons: {
+                one: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: "Update",
+                    callback: () => this.actor.setFlag("merchantsheetnpc", "stackModifier",  document.getElementById("stack-modifier").value / 1)
+                },
+                two: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => console.log("Merchant sheet | Stack Modifier Cancelled")
+                }
+            },
+            default: "two",
+            close: () => console.log("Merchant sheet | Stack Modifier Closed")
         });
         d.render(true);
     }
@@ -810,8 +801,8 @@ class MerchantSheetNPC extends ActorSheet {
                 currentPermissions[u._id] = newLevel;
             }
         }
-        const lootPermissions = new PermissionControl(this.actor);
-        lootPermissions._updateObject(event, currentPermissions)
+        const merchantPermissions = new PermissionControl(this.actor);
+        merchantPermissions._updateObject(event, currentPermissions)
 
         this._onSubmit(event);
     }
@@ -821,8 +812,8 @@ class MerchantSheetNPC extends ActorSheet {
         let currentPermissions = duplicate(actorData.permission);
         currentPermissions[playerId] = newLevel;
         // Save updated player permissions
-        const lootPermissions = new PermissionControl(this.actor);
-        lootPermissions._updateObject(event, currentPermissions);
+        const merchantPermissions = new PermissionControl(this.actor);
+        merchantPermissions._updateObject(event, currentPermissions);
     }
 
     /* -------------------------------------------- */
@@ -957,23 +948,23 @@ class MerchantSheetNPC extends ActorSheet {
                 player.actorId = actor.data._id;
                 player.playerId = player.data._id;
 
-                player.lootPermission = MerchantSheetNPCHelper.getLootPermissionForPlayer(actorData, player);
+                player.merchantPermission = MerchantSheetNPCHelper.getLootPermissionForPlayer(actorData, player);
 
-                if (player.lootPermission >= 2 && !observers.includes(actor.data._id))
+                if (player.merchantPermission >= 2 && !observers.includes(actor.data._id))
                 {
                     observers.push(actor.data._id);
                 }
 
                 //Set icons and permission texts for html
-                //console.log("Merchant sheet | lootPermission", player.lootPermission);
+                //console.log("Merchant sheet | merchantPermission", player.merchantPermission);
                 if (commonPlayersPermission < 0) {
-                    commonPlayersPermission = player.lootPermission;
-                } else if (commonPlayersPermission !== player.lootPermission) {
+                    commonPlayersPermission = player.merchantPermission;
+                } else if (commonPlayersPermission !== player.merchantPermission) {
                     commonPlayersPermission = 999;
                 }
 
-                player.icon = this._getPermissionIcon(player.lootPermission);
-                player.lootPermissionDescription = this._getPermissionDescription(player.lootPermission);
+                player.icon = this._getPermissionIcon(player.merchantPermission);
+                player.merchantPermissionDescription = this._getPermissionDescription(player.merchantPermission);
                 playerData.push(player);
             }
         }
@@ -1015,24 +1006,6 @@ Hooks.once("init", () => {
     game.settings.register("merchantsheetnpc", "buyChat", {
         name: "Display chat message for purchases?",
         hint: "If enabled, a chat message will display purchases of items from the Merchant sheet.",
-        scope: "world",
-        config: true,
-        default: true,
-        type: Boolean
-    });
-
-    game.settings.register("merchantsheetnpc", "lootCurrency", {
-        name: "Loot currency?",
-        hint: "If enabled, players will have the option to loot all currency to their character, in addition to splitting the currency between players.",
-        scope: "world",
-        config: true,
-        default: true,
-        type: Boolean
-    });
-
-    game.settings.register("merchantsheetnpc", "lootAll", {
-        name: "Loot all?",
-        hint: "If enabled, players will have the option to loot all items to their character, currency will follow the 'Loot Currency?' setting upon Loot All.",
         scope: "world",
         config: true,
         default: true,
@@ -1151,17 +1124,6 @@ Hooks.once("init", () => {
         return results;
     }
 
-    async function lootItems(container, looter, items) {
-        let moved = await moveItems(container, looter, items);
-
-        for (let m of moved) {
-            chatMessage(
-                container, looter,
-                `${looter.name} looted ${m.quantity} x ${m.item.name}.`,
-                m.item);
-        }
-    }
-
     async function transaction(seller, buyer, itemId, quantity) {
         console.log(`Buying item: ${seller}, ${buyer}, ${itemId}, ${quantity}`);
 
@@ -1184,7 +1146,9 @@ Hooks.once("init", () => {
         }
 
         let sellerModifier = seller.getFlag("merchantsheetnpc", "priceModifier");
+        let sellerStack = seller.getFlag("merchantsheetnpc", "stackModifier");
         if (!sellerModifier) sellerModifier = 1.0;
+        if (!sellerStack && quantity > sellerStack) quantity = sellerStack;
 
         let itemCostInGold = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
 
@@ -1303,7 +1267,7 @@ Hooks.once("init", () => {
         for (let m of moved) {
             chatMessage(
                 seller, buyer,
-                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCostInGold}gp.`,
+                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCostInGold}.`,
                 m.item);
         }
     }
@@ -1404,65 +1368,6 @@ Hooks.once("init", () => {
             }
         }
     }
-
-    function lootCoins(containerActor, looter) {
-        let actorData = containerActor.data
-
-        let sheetCurrency = actorData.data.currency;
-        //console.log("Merchant sheet | Currency data", currency);
-
-        // add currency to actors existing coins
-        let msg = [];
-        let currency = looter.data.data.currency,
-            newCurrency = duplicate(looter.data.data.currency);
-
-        //console.log("Merchant sheet | Current Currency", currency);
-
-        for (let c in currency) {
-            // add msg for chat description
-            if (sheetCurrency[c].value) {
-                //console.log("Merchant sheet | New currency for " + c, currencySplit[c]);
-                msg.push(` ${sheetCurrency[c].value} ${c} coins`)
-            }
-            if (sheetCurrency[c].value != null) {
-                // Add currency to permitted actor
-                newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c].value);
-                looter.update({
-                    'data.currency': newCurrency
-                });
-            }
-        }
-
-        // Remove currency from loot actor.
-        let lootCurrency = containerActor.data.data.currency,
-            zeroCurrency = {};
-
-        for (let c in lootCurrency) {
-            zeroCurrency[c] = {
-                'type': sheetCurrency[c].type,
-                'label': sheetCurrency[c].type,
-                'value': 0
-            }
-            containerActor.update({
-                "data.currency": zeroCurrency
-            });
-        }
-
-        // Create chat message for coins received
-        if (msg.length != 0) {
-            let message = `${looter.data.name} receives: `;
-            message += msg.join(",");
-            ChatMessage.create({
-                user: game.user._id,
-                speaker: {
-                    actor: containerActor,
-                    alias: containerActor.name
-                },
-                content: message
-            });
-        }
-    }
-
     game.socket.on(MerchantSheetNPC.SOCKET, data => {
         console.log("Merchant sheet | Socket Message: ", data);
         if (game.user.isGM && data.processorId === game.user.id) {
@@ -1480,19 +1385,6 @@ Hooks.once("init", () => {
                 }
             }
 
-            if (data.type === "loot") {
-                let looter = game.actors.get(data.looterId);
-                let container = canvas.tokens.get(data.tokenId);
-
-                if (looter && container && container.actor) {
-                    lootItems(container.actor, looter, data.items);
-                }
-                else if (!container) {
-                    errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot an item.")
-                    ui.notifications.error("Player attempted to loot an item on a different scene.");
-                }
-            }
-
             if (data.type === "distributeCoins") {
                 let container = canvas.tokens.get(data.tokenId);
                 if (!container || !container.actor) {
@@ -1502,15 +1394,6 @@ Hooks.once("init", () => {
                 distributeCoins(container.actor);
             }
 
-            if (data.type === "lootCoins") {
-                let looter = game.actors.get(data.looterId);
-                let container = canvas.tokens.get(data.tokenId);
-                if (!container || !container.actor || !looter) {
-                    errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot coins.")
-                    return ui.notifications.error("Player attempted to loot coins on a different scene.");
-                }
-                lootCoins(container.actor, looter);
-            }
         }
         if (data.type === "error" && data.targetId === game.user.actorId) {
             console.log("Merchant sheet | Transaction Error: ", data.message);

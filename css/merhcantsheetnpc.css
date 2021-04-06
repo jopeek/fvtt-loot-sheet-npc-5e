@@ -192,12 +192,22 @@ button.price-modifier {
 	padding: 1px 10px;
 	margin-right: 5px;
 }
+button.stack-modifier {
+	width: auto;
+	padding: 1px 10px;
+	margin-right: 5px;
+}
 
 .merchant-sheet-npc.sheet .sheet-navigation {
 	margin-bottom: 15px;
 }
 
 input#price-modifier-percent-display {
+	background: none;
+	border: 1px solid transparent;
+	width: 50px;
+}
+input#stack-modifier-percent-display {
 	background: none;
 	border: 1px solid transparent;
 	width: 50px;
@@ -210,6 +220,8 @@ input#quantity {
 
 input#price-modifier-percent-display:hover,
 input#price-modifier-percent-display:focus,
+input#stack-modifier-percent-display:hover,
+input#stack-modifier-percent-display:focus,
 input#quantity:hover,
 input#quantity:focus {
 	border: 1px solid #111;
