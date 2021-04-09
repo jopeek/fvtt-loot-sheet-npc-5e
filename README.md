@@ -1,4 +1,4 @@
-[![Github All Releases](https://img.shields.io/github/downloads/jopeek/fvtt-merchant-sheet-npc-5e/total.svg)]() [![Donate](https://img.shields.io/badge/Donate-BuyMeACoffee-green.svg)](https://www.buymeacoffee.com/whelan)
+[![Github All Releases](https://img.shields.io/github/downloads/whelan/fvtt-merchant-sheet/total.svg)]() [![Donate](https://img.shields.io/badge/Donate-BuyMeACoffee-green.svg)](https://www.buymeacoffee.com/whelan)
 # Merchant Sheet NPC
 
 This module adds an additional NPC sheet which can be used for Merchant NPCs. 
