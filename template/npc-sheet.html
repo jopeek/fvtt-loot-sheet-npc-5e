@@ -54,17 +54,13 @@
 
         <section class="sheet-content content">
 
-            <ul class="items-list inventory-list">
+            <ol class="items-list inventory-list">
             {{#each items as |item iid| }}
-            <li class="item flexrow" data-item-id="{{item._id}}" data-item-stack="{{../stackModifier}}">
-                <div class="item-name flexrow rollable">
-                    <div class="item-image" style="background-image: url({{item.img}})"></div>
-                    <h4>
-                        {{item.name}}
-                    </h4>
-                </div>
+            <li class="merchant-item flexrow" data-item-id="{{item._id}}" data-item-stack="{{../stackModifier}}">
+                <div class="merchant-item-image" style="background-image: url({{item.img}})"></div>
+                <div class="item-quantity">{{item.name}}</div>
                 <div class="item-quantity">
-                    <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
+                    <a class="item-control item-quantity" title="Buy Stack"><i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}</a>
                 </div>
                 <div class="item-weight">
                     <i class="fas fa-weight-hanging" title="Weight"></i> {{merchantsheetweight item.data.weight}}{{merchantsheetstackweight item.data.weight item.data.quantity}}
@@ -79,7 +75,7 @@
                 </div>
             </li>
             {{/each}}
-            </ul>
+            </ol>
         </section>
 
         

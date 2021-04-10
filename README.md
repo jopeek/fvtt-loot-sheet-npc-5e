@@ -3,7 +3,8 @@
 
 This module adds an additional NPC sheet which can be used for Merchant NPCs. 
 
-This version was forked from ChalkOne's module which ended compatibility with Foundry VTT version 0.7.9 (https://github.com/jopeek/fvtt-loot-sheet-npc-5e). This fork should be updated by me to keep it current with Foundry VTT.
+This version was originally forked from ChalkOne's loot-sheet module. 
+The development for the merchant sheet will be intended for only making it easy for the GM to setup merchants dialog 
 
 ### Features
 
@@ -14,17 +15,6 @@ More features detailed below.
 ##### Shopkeeper Sheet
 Can be used to create an inventory of a shopkeeper to allow players to buy from their inventory. Prices are listed next to each item.
 
-[comment]: <> (![demo_inventory]&#40;https://raw.githubusercontent.com/jopeek/fvtt-Merchant-sheet-npc-5e/master/images/demo_inventory.jpg&#41;)
-
-[comment]: <> (##### Price Modifier)
-
-[comment]: <> (Prices can be adjusted by percentage for all owned items.)
-
-[comment]: <> (![price_modifier]&#40;https://thumbs.gfycat.com/WelloffFortunateInganue-size_restricted.gif&#41;)
-
-[comment]: <> (A Biography tab is also available.)
-
-[comment]: <> (![demo_biography]&#40;https://raw.githubusercontent.com/jopeek/fvtt-Merchant-sheet-npc-5e/master/images/demo_biography.jpg&#41;)
 
 ### Compatibility:
 - Tested with FVTT v0.7.9 and swade system only.

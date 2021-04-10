@@ -1,3 +1,7 @@
+## Version 0.0.3
+
+* Fixed Css for both Swade and dnd5e. Images and text is now alligned. 
+
 ## Version 0.0.2
 
 * Added stack modifier. This sets how many a player can buy with the stack button.

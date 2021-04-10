@@ -118,7 +118,7 @@ class MerchantSheetNPC extends ActorSheet {
         const options = super.defaultOptions;
 
         mergeObject(options, {
-            classes: ["dnd5e sheet actor npc npc-sheet loot-sheet-npc"],
+            classes: ["sheet actor npc npc-sheet merchant-sheet-npc"],
             width: 890,
             height: 750
         });
