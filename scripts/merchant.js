@@ -994,7 +994,6 @@ Hooks.once("init", () => {
         // console.log("Swade");
         currencyCalculator = new SwadeCurrencyCalculator
     }
-    currencyCalculator.price();
 
     Handlebars.registerHelper('ifeq', function (a, b, options) {
         if (a == b) { return options.fn(this); }
@@ -1161,10 +1160,8 @@ Hooks.once("init", () => {
 
         itemCostInGold *= quantity;
         console.log(`ItemCost: ${itemCostInGold}`)
-        // let currency = buyer.data.data.currency;
-        // if (currency === 'Undefined') {
-            let currency = buyer.data.data.details.currency
-        // }
+        let currency = currencyCalculator.actorCurrency(buyer);
+
         let buyerFunds = duplicate(currency);
 
         console.log(`Funds before purchase: ${buyerFunds}`);

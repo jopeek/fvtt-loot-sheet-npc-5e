@@ -5,6 +5,10 @@ export default class CurrencyCalculator {
      *
      */
 
+    actorCurrency(actor) {
+        return actor.data.data.currency;
+    }
+
     price() {
         console.log("Base");
     }
