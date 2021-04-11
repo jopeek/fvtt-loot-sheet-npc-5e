@@ -7,9 +7,7 @@
 	"compatibleCoreVersion": "0.7.9",
 	"author": "Lars Nørregaard (Whelan)",
 	"styles": ["styles/merchant.css"],
-	"scripts": [
-		"./scripts/merchant.js"
-	],
+	"esmodules": ["./scripts/merchant.js"],
 	"socket": true,
 	"url": "https://github.com/whelan/fvtt-merchant-sheet-npc",
 	"manifest": "https://raw.githubusercontent.com/whelan/fvtt-merchant-sheet-npc/master/module.json",

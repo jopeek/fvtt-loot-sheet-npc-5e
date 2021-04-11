@@ -1,5 +1,5 @@
-// import Item5e from "module/item/entity.js";
-
+import SwadeCurrencyCalculator from "./systems/SwadeCurrencyCalculator.js";
+import CurrencyCalculator from "./systems/CurrencyCalculator.js";
 
 
 class MerchantSheetNPCHelper
@@ -10,7 +10,7 @@ class MerchantSheetNPCHelper
      * It first tries to get an entry from the actor's permissions, if none is found it uses default, otherwise returns 0.
      *
      */
-    static getLootPermissionForPlayer(actorData, player) {
+    static getMerchantPermissionForPlayer(actorData, player) {
         let defaultPermission = actorData.permission.default;
         if (player.data._id in actorData.permission)
         {
@@ -646,7 +646,7 @@ class MerchantSheetNPC extends ActorSheet {
         //console.log("Merchant sheet | actorData", actorData);
         // Calculate observers
         for (let player of players) {
-            let playerPermission = MerchantSheetNPCHelper.getLootPermissionForPlayer(actorData, player);
+            let playerPermission = MerchantSheetNPCHelper.getMerchantPermissionForPlayer(actorData, player);
             if (player != "default" && playerPermission >= 2) {
                 //console.log("Merchant sheet | player", player);
                 let actor = game.actors.get(player.data.character);
@@ -948,7 +948,7 @@ class MerchantSheetNPC extends ActorSheet {
                 player.actorId = actor.data._id;
                 player.playerId = player.data._id;
 
-                player.merchantPermission = MerchantSheetNPCHelper.getLootPermissionForPlayer(actorData, player);
+                player.merchantPermission = MerchantSheetNPCHelper.getMerchantPermissionForPlayer(actorData, player);
 
                 if (player.merchantPermission >= 2 && !observers.includes(actor.data._id))
                 {
@@ -986,8 +986,15 @@ Actors.registerSheet("core", MerchantSheetNPC, {
     makeDefault: false
 });
 
+var currencyCalculator = new CurrencyCalculator();
+
 
 Hooks.once("init", () => {
+    if (game.system.id === "swade") {
+        // console.log("Swade");
+        currencyCalculator = new SwadeCurrencyCalculator
+    }
+    currencyCalculator.price();
 
     Handlebars.registerHelper('ifeq', function (a, b, options) {
         if (a == b) { return options.fn(this); }
@@ -1033,7 +1040,7 @@ Hooks.once("init", () => {
     function chatMessage(speaker, owner, message, item) {
         if (game.settings.get("merchantsheetnpc", "buyChat")) {
             message = `
-            <div class="dnd5e chat-card item-card" data-actor-id="${owner._id}" data-item-id="${item._id}">
+            <div class="chat-card item-card" data-actor-id="${owner._id}" data-item-id="${item._id}">
                 <header class="card-header flexrow">
                     <img src="${item.img}" title="${item.name}" width="36" height="36">
                     <h3 class="item-name">${item.name}</h3>
@@ -1280,7 +1287,7 @@ Hooks.once("init", () => {
         //console.log("Merchant sheet | actorData", actorData);
         // Calculate observers
         for (let player of players) {
-            let playerPermission = MerchantSheetNPCHelper.getLootPermissionForPlayer(actorData, player);
+            let playerPermission = MerchantSheetNPCHelper.getMerchantPermissionForPlayer(actorData, player);
             if (player != "default" && playerPermission >= 2) {
                 //console.log("Merchant sheet | player", player);
                 let actor = game.actors.get(player.data.character);
