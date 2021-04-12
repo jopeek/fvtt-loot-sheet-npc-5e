@@ -3,10 +3,10 @@ import CurrencyCalculator from "./CurrencyCalculator.js";
 export default class SwadeCurrencyCalculator extends CurrencyCalculator {
 
     actorCurrency(actor) {
-        return buyer.data.data.details.currency;
+        return actor.data.data.details.currency;
     }
 
-    price() {
-        console.log("swade");
+    updateActorWithNewFunds(buyer, buyerFunds) {
+        buyer.update({ "data.details.currency": buyerFunds });
     }
 }

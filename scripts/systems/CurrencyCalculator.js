@@ -9,7 +9,21 @@ export default class CurrencyCalculator {
         return actor.data.data.currency;
     }
 
-    price() {
-        console.log("Base");
+    buyerHaveNotEnoughFunds(itemCostInGold, buyerFunds) {
+        return itemCostInGold > buyerFunds;
+    }
+
+    subtractAmountFromActor(buyer, buyerFunds, itemCostInGold) {
+        buyerFunds = buyerFunds - itemCostInGold;
+        this.updateActorWithNewFunds(buyer,buyerFunds);
+        console.log(`Funds after purchase: ${buyerFunds}`);
+    }
+
+    updateActorWithNewFunds(buyer, buyerFunds) {
+        buyer.update({ "data.currency": buyerFunds });
+    }
+
+    priceInText(itemCostInGold) {
+        return itemCostInGold;
     }
 }

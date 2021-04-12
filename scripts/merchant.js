@@ -474,8 +474,8 @@ class MerchantSheetNPC extends ActorSheet {
             return ui.notifications.error(`No active character for user.`);
         }
 
-        let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-        let stackModifier = $(event.currentTarget).parents(".item").attr("data-item-stack");
+        let itemId = $(event.currentTarget).parents(".merchant-item").attr("data-item-id");
+        let stackModifier = $(event.currentTarget).parents(".merchant-item").attr("data-item-stack");
         const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
 
         const packet = {
@@ -493,12 +493,6 @@ class MerchantSheetNPC extends ActorSheet {
             } else {
                 packet.quantity = stackModifier;
             }
-            console.log("MerchantSheet", "Sending buy request to " + targetGm.name, packet);
-            game.socket.emit(MerchantSheetNPC.SOCKET, packet);
-            return;
-        }
-
-        if (item.data.quantity === packet.quantity) {
             console.log("MerchantSheet", "Sending buy request to " + targetGm.name, packet);
             game.socket.emit(MerchantSheetNPC.SOCKET, packet);
             return;
@@ -1134,7 +1128,6 @@ Hooks.once("init", () => {
         console.log(`Buying item: ${seller}, ${buyer}, ${itemId}, ${quantity}`);
 
         let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
-
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
         if (sellItem.data.quantity < quantity) {
             quantity = sellItem.data.quantity;
@@ -1165,7 +1158,10 @@ Hooks.once("init", () => {
         let buyerFunds = duplicate(currency);
 
         console.log(`Funds before purchase: ${buyerFunds}`);
-
+        if (currencyCalculator.buyerHaveNotEnoughFunds(itemCostInGold,buyerFunds)) {
+            errorMessageToActor(buyer, `Not enough funds to purchase item.`);
+            return;
+        }
         // const conversionRates = {
         //     "pp": 1,
         //     "gp": CONFIG.DND5E.currencyConversion.gp.each,
@@ -1190,10 +1186,6 @@ Hooks.once("init", () => {
         //
         // // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
         //
-        if (itemCostInGold > buyerFunds) {
-            errorMessageToActor(buyer, `Not enough funds to purchase item.`);
-            return;
-        }
         //
         // let convertCurrency = game.settings.get("merchantsheetnpc", "convertCurrency");
         //
@@ -1234,7 +1226,7 @@ Hooks.once("init", () => {
         //         // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
         //     }
         // }
-        buyerFunds = buyerFunds - itemCostInGold;
+        currencyCalculator.subtractAmountFromActor(buyer,buyerFunds,itemCostInGold);
         // console.log(`Smoothing out`);
         // Finally we exchange partial coins with as little change as possible
         // for (let currency in buyerFunds) {
@@ -1261,17 +1253,15 @@ Hooks.once("init", () => {
         // }
 
         // Update buyer's funds
-        buyer.update({ "data.currency": buyerFunds });
-        buyer.update({ "data.details.currency": buyerFunds });
-
-        console.log(`Funds after purchase: ${buyerFunds}`);
 
         let moved = await moveItems(seller, buyer, [{ itemId, quantity }]);
+
+        let chatPrice = currencyCalculator.priceInText(itemCostInGold);
 
         for (let m of moved) {
             chatMessage(
                 seller, buyer,
-                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCostInGold}.`,
+                `${buyer.name} purchases ${quantity} x ${m.item.name} for ${chatPrice}.`,
                 m.item);
         }
     }
