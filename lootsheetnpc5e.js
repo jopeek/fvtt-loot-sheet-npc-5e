@@ -1167,7 +1167,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let currencySplit = duplicate(actorData.data.currency);
         for (let c in currencySplit) {
             if (observers.length)
-                if (currencySplit[c] != null) currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
+                if (currencySplit[c] != null) currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
             else
                 currencySplit[c] = 0
         }
