@@ -145,7 +145,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let priceModifier = 1.0;
         if (lootsheettype === "Merchant") {
             priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
-            if (!priceModifier) await this.actor.setFlag("lootsheetnpc5e", "priceModifier", 1.0);
+            if (typeof priceModifier !== 'number') await this.actor.setFlag("lootsheetnpc5e", "priceModifier", 1.0);
             priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
         }
 
@@ -759,13 +759,15 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //console.log(this.actor.isToken);
 
         let priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
-        if (!priceModifier) priceModifier = 1.0;
+        if (typeof priceModifier !== 'number') priceModifier = 1.0;
 
         priceModifier = Math.round(priceModifier * 100);
 
+        const maxModifier = game.settings.get("lootsheetnpc5e", "maxPriceIncrease");
+
         var html = "<p>Use this slider to increase or decrease the price of all items in this inventory. <i class='fa fa-question-circle' title='This uses a percentage factor where 100% is the current price, 0% is 0, and 200% is double the price.'></i></p>";
-        html += '<p><input name="price-modifier-percent" id="price-modifier-percent" type="range" min="0" max="200" value="' + priceModifier + '" class="slider"></p>';
-        html += '<p><label>Percentage:</label> <input type=number min="0" max="200" value="' + priceModifier + '" id="price-modifier-percent-display"></p>';
+        html += '<p><input name="price-modifier-percent" id="price-modifier-percent" type="range" min="0" max="' + maxModifier + '" value="' + priceModifier + '" class="slider"></p>';
+        html += '<p><label>Percentage:</label> <input type=number min="0" max="' + maxModifier + '" value="' + priceModifier + '" id="price-modifier-percent-display"></p>';
         html += '<script>var pmSlider = document.getElementById("price-modifier-percent"); var pmDisplay = document.getElementById("price-modifier-percent-display"); pmDisplay.value = pmSlider.value; pmSlider.oninput = function() { pmDisplay.value = this.value; }; pmDisplay.oninput = function() { pmSlider.value = this.value; };</script>';
 
         let d = new Dialog({
@@ -1252,6 +1254,15 @@ Hooks.once("init", () => {
         type: Boolean
     });
 
+    game.settings.register("lootsheetnpc5e", "maxPriceIncrease", {
+        name: "Maximum Price Increase",
+        hint: "Change the maximum price increase for a merchant in percent",
+        scope: "world",
+        config: true,
+        default: 200,
+        type: Number
+    });
+
     function chatMessage(speaker, owner, message, item) {
         if (game.settings.get("lootsheetnpc5e", "buyChat")) {
             message = `
@@ -1377,7 +1388,7 @@ Hooks.once("init", () => {
         }
 
         let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
-        if (!sellerModifier) sellerModifier = 1.0;
+        if (typeof sellerModifier !== 'number') sellerModifier = 1.0;
 
         let itemCostInGold = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
         
