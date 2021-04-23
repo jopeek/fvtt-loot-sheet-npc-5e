@@ -145,7 +145,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let priceModifier = 1.0;
         if (lootsheettype === "Merchant") {
             priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
-            if (!priceModifier) await this.actor.setFlag("lootsheetnpc5e", "priceModifier", 1.0);
+            if (typeof priceModifier !== 'number') await this.actor.setFlag("lootsheetnpc5e", "priceModifier", 1.0);
             priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
         }
 
@@ -759,7 +759,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //console.log(this.actor.isToken);
 
         let priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
-        if (!priceModifier) priceModifier = 1.0;
+        if (typeof priceModifier !== 'number') priceModifier = 1.0;
 
         priceModifier = Math.round(priceModifier * 100);
 
@@ -1388,7 +1388,7 @@ Hooks.once("init", () => {
         }
 
         let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
-        if (!sellerModifier) sellerModifier = 1.0;
+        if (typeof sellerModifier !== 'number') sellerModifier = 1.0;
 
         let itemCostInGold = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
         
