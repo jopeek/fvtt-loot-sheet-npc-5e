@@ -3,35 +3,23 @@ import Item5e from "../../../systems/dnd5e/module/item/entity.js";
 
 export default class populateLoot {
 	constructor() {
-		this.initHooks();
 		return this;
-	}
-	
-	initHooks() {
-		Hooks.on('ready', async () => {
-			this._hookCreateToken();
-		});
-	}
-
-	_hookCreateToken() {
-		Hooks.on('createToken', (scene, data, options, userId) => {
-			const actor = game.actors.get(data.actorId);
-      
-			if (!actor || (data.actorLink)) // Don't for linked token
-		                return data;
-
-			this.generateLoot(scene, data);
-		});
 	}
 
 	async generateLoot(scene, data) {
         //instead of the main actor we want/need the actor of the token.
-	      const tokenId = data._id;
+	const tokenId = data._id;
         const token = canvas.tokens.get(tokenId);
         const actor = token.actor;	
     
         const moduleNamespace = "lootsheetnpc5e";
-        const rolltableName = actor.getFlag(moduleNamespace, "rolltable");
+		
+	if(actor.getFlag(moduleNamespace, "rolltable")){
+		const rolltableName = actor.getFlag(moduleNamespace, "rolltable");
+	} else if (game.settings.get("lootsheetnpc5e","fallbackRolltable")){
+		const rolltableName = game.settings.get("lootsheetnpc5e","fallbackRolltable");
+	}
+		
         const shopQtyFormula = actor.getFlag(moduleNamespace, "shopQty") || "1";
         const itemQtyFormula = actor.getFlag(moduleNamespace, "itemQty") || "1";
         const itemQtyLimit = actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
@@ -40,13 +28,13 @@ export default class populateLoot {
         const reducedVerbosity = game.settings.get("lootsheetnpc5e", "reduceUpdateVerbosity");
         let shopQtyRoll = new Roll(shopQtyFormula);
         
-        shopQtyRoll.roll();
-       
-        if (!rolltableName) {
+        shopQtyRoll.roll();	
+		
+        if (!rolltableName) {		
           return;
         }
 
-	      let rolltable = game.tables.getName(rolltableName);
+	let rolltable = game.tables.getName(rolltableName);
     
         if (!rolltable) {
             return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
