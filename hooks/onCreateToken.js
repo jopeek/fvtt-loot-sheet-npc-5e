@@ -1,3 +1,3 @@
-import addLoot from '../scripts/addLoot.js';
+import populateLoot from '../scripts/populateLoot.js';
 
-let customLootHook = new addLoot;
+let populateLootHook = new populateLoot;
