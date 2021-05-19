@@ -1,7 +1,9 @@
 import populateLoot from '../scripts/populateLoot.js';
 
 Hooks.on('ready', async () => {
-    _hookPreTokenCreate();
+    if(game.settings.get("lootsheetnpc5e","autoPopulateTokens") {
+        _hookPreTokenCreate();
+    }
 });
 
 function _hookPreTokenCreate() {
