@@ -7,6 +7,10 @@
 	"compatibleCoreVersion": "0.7.9",
 	"author": "Jan Ole Peek (ChalkOne), Charles Miller (Kage), NonstickPanda, Kevin Brammer (Striky)",
 	"systems": ["dnd5e"],
+	"includes": [
+		"./hooks/**",
+		"./scripts/**"
+	],
     	"esmodules": [
 		"/lootsheetnpc5e.js",
 		"/hooks/onCreateToken.js"
