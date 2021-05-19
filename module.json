@@ -13,7 +13,7 @@
 	],
 	"styles": ["/css/lootsheetnpc5e.css"],
 	"socket": true,
-	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
+	"url": "https://raw.githubusercontent.com/DanielBoettner/fvtt-loot-sheet-npc-5e",
 	"manifest": "https://raw.githubusercontent.com/DanielBoettner/fvtt-loot-sheet-npc-5e/master/module.json",
 	"download": "https://raw.githubusercontent.com/DanielBoettner/fvtt-loot-sheet-npc-5e/archive/master.zip"
 }
