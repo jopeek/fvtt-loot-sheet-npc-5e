@@ -7,7 +7,10 @@
 	"compatibleCoreVersion": "0.7.9",
 	"author": "Jan Ole Peek (ChalkOne), Charles Miller (Kage), NonstickPanda, Kevin Brammer (Striky)",
 	"systems": ["dnd5e"],
-    "esmodules": ["/lootsheetnpc5e.js"],
+    	"esmodules": [
+		"/lootsheetnpc5e.js",
+		"/hooks/onCreateToken.js"
+	],
 	"styles": ["/css/lootsheetnpc5e.css"],
 	"socket": true,
 	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
