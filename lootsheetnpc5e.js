@@ -1262,6 +1262,24 @@ Hooks.once("init", () => {
         default: 200,
         type: Number
     });
+    
+    game.settings.register("lootsheetnpc5e", "autoPopulateTokens", {
+        name: "Auto populate tokens with loot",
+        hint: "If an actor has a rolltable assigned to it, should the token be populated with the Loot?",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean
+    });
+    
+    game.settings.register("lootsheetnpc5e", "fallbackRolltable", {
+        name: "fallbackRolltable",
+        hint: "If auto populate is active, but no table assigned, this is a fallback table",
+        scope: "world",
+        config: true,
+        default: '',
+        type: String
+    });
 
     function chatMessage(speaker, owner, message, item) {
         if (game.settings.get("lootsheetnpc5e", "buyChat")) {
