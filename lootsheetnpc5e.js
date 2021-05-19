@@ -1,5 +1,10 @@
 import ActorSheet5eNPC from "../../systems/dnd5e/module/actor/sheets/npc.js";
 import Item5e from "../../systems/dnd5e/module/item/entity.js";
+import {initHooks} from './hooks/onCreateToken.js';
+
+Hooks.once('init', () => {
+      initHooks();
+});
 
 class LootSheet5eNPCHelper
 {
@@ -1271,7 +1276,7 @@ Hooks.once("init", () => {
         default: false,
         type: Boolean
     });
-    
+
     game.settings.register("lootsheetnpc5e", "fallbackRolltable", {
         name: "fallbackRolltable",
         hint: "If auto populate is active, but no table assigned, this is a fallback table",
