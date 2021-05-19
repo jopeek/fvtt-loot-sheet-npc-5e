@@ -13,7 +13,7 @@ export class populateLoot {
         const actor = token.actor;
 
         const moduleNamespace = "lootsheetnpc5e";
-				const rolltableName = actor.getFlag(moduleNamespace, "rolltable") || game.settings.get("lootsheetnpc5e","fallbackRolltable");
+	const rolltableName = actor.getFlag(moduleNamespace, "rolltable") || game.settings.get("lootsheetnpc5e","fallbackRolltable");
         const shopQtyFormula = actor.getFlag(moduleNamespace, "shopQty") || "1";
         const itemQtyFormula = actor.getFlag(moduleNamespace, "itemQty") || "1";
         const itemQtyLimit = actor.getFlag(moduleNamespace, "itemQtyLimit") || "0";
