@@ -292,7 +292,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (clearInventory) {
 
             let currentItems = this.actor.data.items.map(i => i._id);
-            await this.actor.deleteEmbeddedEntity("OwnedItem", currentItems);
+            await this.actor.deleteEmbeddedDocuments("Item", currentItems);
             // console.log(currentItems);
         }
 
@@ -300,21 +300,21 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         
         if (!itemOnlyOnce) {
             for (let i = 0; i < shopQtyRoll.total; i++) {
-                const rollResult = rolltable.roll();
-                //console.log(rollResult);
+                const rollResult = await rolltable.roll();
+                console.log(rollResult.results[0]);
                 let newItem = null;
     
-                if (rollResult.results[0].collection === "Item") {
-                    newItem = game.items.get(rollResult.results[0].resultId);
+                if (rollResult.results[0].data.collection === "Item") {
+                    newItem = game.items.get(rollResult.results[0].data.resultId);
                 }
                 else {
                     // Try to find it in the compendium
-                    const items = game.packs.get(rollResult.results[0].collection);
+                    const items = game.packs.get(rollResult.results[0].data.collection);
                     // console.log(items);
                     // dnd5eitems.getIndex().then(index => console.log(index));
                     // let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
                     // items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
-                    newItem = await items.getEntity(rollResult.results[0].resultId);
+                    newItem = await items.getEntity(rollResult.results[0].data.resultId);
                 }
                 if (!newItem || newItem === null) {
                     // console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
@@ -332,9 +332,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 // newItem.data.quantity = itemQtyRoll.result;
     
                 let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
-    
-                if (existingItem === null) {
-                    await this.actor.createEmbeddedEntity("OwnedItem", newItem);
+                
+                if (existingItem === undefined) {
+                    await this.actor.createEmbeddedDocuments("Item", [newItem.toObject()]);
                     console.log(`Loot Sheet | ${newItem.name} does not exist.`);
                     existingItem = this.actor.items.find(item => item.data.name == newItem.name);
 
@@ -347,8 +347,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     }
                 }
                 else {
-                        console.log(`Loot Sheet | Item ${newItem.name} exists.`);
-                    
+                        console.log(`Loot Sheet | Item ${newItem.name} exists.`, existingItem);
+                        
                         let newQty = Number(existingItem.data.data.quantity) + Number(itemQtyRoll.total);
         
                         if (itemQtyLimit > 0 && Number(itemQtyLimit) === Number(existingItem.data.data.quantity)) {
