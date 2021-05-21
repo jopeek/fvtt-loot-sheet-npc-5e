@@ -12,7 +12,7 @@
 		"./scripts/**"
 	],
     	"esmodules": [
-		"/lootsheetnpc5e.js",
+		"/lootsheetnpc5e.js"
 	],
 	"styles": ["/css/lootsheetnpc5e.css"],
 	"socket": true,
