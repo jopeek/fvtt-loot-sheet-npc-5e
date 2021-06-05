@@ -4,7 +4,7 @@
 	"description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
 	"version": "3.1.0",
 	"minimumCoreVersion": "0.8.5",
-	"compatibleCoreVersion": "0.8.5",
+	"compatibleCoreVersion": "0.8.6",
 	"author": "Jan Ole Peek (ChalkOne), Charles Miller (Kage), NonstickPanda, Kevin Brammer (Striky)",
 	"systems": ["dnd5e"],
     "esmodules": ["/lootsheetnpc5e.js"],
