@@ -52,6 +52,20 @@
 	margin-bottom: 5px;
 }
 
+.loot-sheet-npc .gm-settings .merchant-settings .flexrow {
+	border-bottom: 1px solid #CCC;
+	margin-bottom: 5px;
+}
+
+.dnd5e input[type="text"], .dnd5e input[type="number"], .dnd5e select {
+    height: calc(100% - 2px);
+    border: 1px solid #7a7971;
+    background: rgba(0, 0, 0, 0.05);
+    color: #000000;
+    width: 200px;
+    text-overflow: ellipsis;
+}
+
 .loot-sheet-npc .gm-settings .merchant-settings .flexrow h4 {
 	margin: 2px 0 0 0;
 }
