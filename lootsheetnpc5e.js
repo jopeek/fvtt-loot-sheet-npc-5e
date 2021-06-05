@@ -442,7 +442,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         //             newItem = await Item5e.createScrollFromSpell(newItem)
         //         }
 
-        //         await this.actor.createEmbeddedEntity("OwnedItem", newItem);
+        //         await this.actor.createEmbeddedEntity("Item", newItem);
         //         let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
 
         //         if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
@@ -554,7 +554,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-        const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+        const item = this.actor.getEmbeddedEntity("Item", itemId);
 
         const packet = {
             type: "buy",
@@ -617,7 +617,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-        const targetItem = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+        const targetItem = this.actor.getEmbeddedEntity("Item", itemId);
 
         const item = { itemId: itemId, quantity: 1 };
         if (all || event.shiftKey) {
@@ -730,7 +730,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const items = [];
         for (let i of itemTargets) {
             const itemId = i.getAttribute("data-item-id");
-            const item = this.actor.getEmbeddedEntity("OwnedItem", itemId);
+            const item = this.actor.getEmbeddedEntity("Item", itemId);
             items.push({ itemId: itemId, quantity: item.data.quantity });
         }
         if (items.length === 0) {
@@ -1300,6 +1300,11 @@ Hooks.once("init", () => {
     }
 
     async function moveItems(source, destination, items) {
+		
+		console.log(source);
+		console.log(destination);
+		console.log(items);
+		
         const updates = [];
         const deletes = [];
         const additions = [];
@@ -1308,15 +1313,25 @@ Hooks.once("init", () => {
         for (let i of items) {
             let itemId = i.itemId;
             let quantity = i.quantity;
-            let item = source.getEmbeddedEntity("OwnedItem", itemId);
+            let item = source.getEmbeddedEntity("Item", itemId);
+			
+			console.log("ITEM: \n"); 
+			console.log(item);
 
             // Move all items if we select more than the quantity.
-            if (item.data.quantity < quantity) {
-                quantity = item.data.quantity;
+            if (item.data.data.quantity < quantity) {
+                quantity = item.data.data.quantity;
             }
 
-            let newItem = duplicate(item);
-            const update = { _id: itemId, "data.quantity": item.data.quantity - quantity };
+            //let newItem = duplicate(item);
+			let newItem = duplicate(item);
+			console.log("NEWITEM: \n"); 
+			console.log(newItem);
+			
+			const update = { _id: itemId, "data.quantity": item.data.data.quantity - quantity };
+			
+			console.log("UPDATE: \n");
+			console.log(update);
 
             if (update["data.quantity"] === 0) {
                 deletes.push(itemId);
@@ -1326,34 +1341,41 @@ Hooks.once("init", () => {
             }
 
             newItem.data.quantity = quantity;
+			console.log("NEWITEM2: \n"); 
+			console.log(newItem);
+			
             results.push({
                 item: newItem,
                 quantity: quantity
             });
-            let destItem = destination.data.items.find(i => i.name == newItem.name);
-            if (destItem === undefined) {
+            /* let destItem = destination.data.items.find(i => i.name == newItem.name);
+			console.log("DESTITEM: \n"); 
+			console.log(destItem); */
+			additions.push(newItem);
+            /* if (destItem === undefined) {
                 additions.push(newItem);
             } else {
-                //console.log("Existing Item");
-                destItem.data.quantity = Number(destItem.data.quantity) + Number(newItem.data.quantity);
-                destUpdates.push(destItem);
-            }
+                console.log("Existing Item");
+				newItem.data.quantity = Number(destItem.data.data.quantity) + Number(newItem.data.quantity);
+				additions.push(newItem);
+				
+            } */
         }
 
         if (deletes.length > 0) {
-            await source.deleteEmbeddedEntity("OwnedItem", deletes);
+            await source.deleteEmbeddedEntity("Item", deletes);
         }
 
         if (updates.length > 0) {
-            await source.updateEmbeddedEntity("OwnedItem", updates);
+            await source.updateEmbeddedEntity("Item", updates);
         }
 
         if (additions.length > 0) {
-            await destination.createEmbeddedEntity("OwnedItem", additions);
+            await destination.createEmbeddedEntity("Item", additions);
         }
 
         if (destUpdates.length > 0) {
-            await destination.updateEmbeddedEntity("OwnedItem", destUpdates);
+            await destination.updateEmbeddedDocuments("Item", destUpdates);
         }
 
         return results;
@@ -1371,11 +1393,13 @@ Hooks.once("init", () => {
     }
 
     async function transaction(seller, buyer, itemId, quantity) {
-        let sellItem = seller.getEmbeddedEntity("OwnedItem", itemId);
+        let sellItem = seller.getEmbeddedEntity("Item", itemId);
+		//console.log(sellItem);
 
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
-        if (sellItem.data.quantity < quantity) {
-            quantity = sellItem.data.quantity;
+		//console.log(sellItem.data.data.quantity);
+        if (sellItem.data.data.quantity < quantity) {
+            quantity = sellItem.data.data.quantity;
         }
 
         // On negative quantity we show an error
@@ -1386,19 +1410,21 @@ Hooks.once("init", () => {
 
         // On 0 quantity skip everything to avoid error down the line
         if (quantity == 0) {
+			errorMessageToActor(buyer, `Not enought items on vendor.`);
             return;
         }
 
         let sellerModifier = seller.getFlag("lootsheetnpc5e", "priceModifier");
         if (typeof sellerModifier !== 'number') sellerModifier = 1.0;
 
-        let itemCostInGold = Math.round(sellItem.data.price * sellerModifier * 100) / 100;
+        let itemCostInGold = Math.round(sellItem.data.data.price * sellerModifier * 100) / 100;
         
         itemCostInGold *= quantity;
-        // console.log(`ItemCost: ${itemCostInGold}`)
+        //console.log(`ItemCost: ${itemCostInGold}`)
         let buyerFunds = duplicate(buyer.data.data.currency);
 
-        console.log(`Funds before purchase: ${buyerFunds}`);
+        //console.log(`Funds before purchase: ${buyerFunds}`);
+		//console.log(buyer.data.data.currency);
 
         const conversionRates = { 
             "pp": 1,
@@ -1474,7 +1500,7 @@ Hooks.once("init", () => {
         for (let currency in buyerFunds) {
             let amount = buyerFunds[currency]
 
-            // console.log(`${currency} : ${amount}: ${conversionRates[currency]}`);
+            //console.log(`${currency} : ${amount}: ${conversionRates[currency]}`);
 
             // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
             // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
@@ -1482,7 +1508,7 @@ Hooks.once("init", () => {
             let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
             buyerFunds[currency] = newFund;
 
-            // console.log(`New Buyer funds ${currency}: ${buyerFunds[currency]}`);
+             //console.log(`New Buyer funds ${currency}: ${buyerFunds[currency]}`);
             let compCurrency = compensationCurrency[currency]
 
             // We dont care about fractions of CP
@@ -1490,14 +1516,17 @@ Hooks.once("init", () => {
                 // We calculate the amount of lower currency we get for the fraction of higher currency we have
                 let toAdd = Math.round((amount - newFund) * 1e5) / 1e5 * conversionRates[compCurrency]
                 buyerFunds[compCurrency] += toAdd
-                // console.log(`Added ${toAdd} to ${compCurrency} it is now ${buyerFunds[compCurrency]}`);
+                 //console.log(`Added ${toAdd} to ${compCurrency} it is now ${buyerFunds[compCurrency]}`);
             }    
         }
+		
+		//console.log(`Funds after purchase1: ${buyerFunds}`);
 
         // Update buyer's funds
         buyer.update({ "data.currency": buyerFunds });
 
-        console.log(`Funds after purchase: ${buyerFunds}`);
+        //console.log(`Funds after purchase2: ${buyerFunds}`);
+		//console.log(buyer.data.data.currency);
 
         let moved = await moveItems(seller, buyer, [{ itemId, quantity }]);
 
