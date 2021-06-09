@@ -20,7 +20,7 @@
 }
 
 .loot-sheet-npc .inventory-filters .item-controls {
-	flex: 0 0 40px;
+	flex: 0 0 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -57,13 +57,16 @@
 	margin-bottom: 5px;
 }
 
-.dnd5e input[type="text"], .dnd5e input[type="number"], .dnd5e select {
+.loot-sheet-npc input[type="text"], .loot-sheet-npc input[type="number"], .loot-sheet-npc select {
     height: calc(100% - 2px);
     border: 1px solid #7a7971;
     background: rgba(0, 0, 0, 0.05);
     color: #000000;
-    width: 200px;
     text-overflow: ellipsis;
+}
+
+.loot-sheet-npc select.sheet-rolltable {
+	max-width: 125px;
 }
 
 .loot-sheet-npc .gm-settings .merchant-settings .flexrow h4 {
@@ -215,11 +218,6 @@ input#price-modifier-percent-display {
 	background: none;
 	border: 1px solid transparent;
 	width: 50px;
-}
-
-input#quantity {
-	background: none;
-	border: 1px solid #111;
 }
 
 input#price-modifier-percent-display:hover,

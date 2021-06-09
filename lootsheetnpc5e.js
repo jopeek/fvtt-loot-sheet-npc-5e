@@ -135,7 +135,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (game.user.isGM) sheetData.isGM = true;
         else sheetData.isGM = false;
         //console.log("sheetData.isGM: ", sheetData.isGM);
-        console.log(this.actor);
+        //console.log(this.actor);
 
         let lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
         if (!lootsheettype) await this.actor.setFlag("lootsheetnpc5e", "lootsheettype", "Loot");
@@ -150,16 +150,16 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         let totalWeight = 0;
-        this.actor.data.items.forEach((item)=>totalWeight += Math.round((item.data.quantity * item.data.weight * 100) / 100));
+        this.actor.data.items.contents.forEach((item)=>totalWeight += Math.round((item.data.data.quantity * item.data.data.weight * 100) / 100));
 
         let totalPrice = 0;
-        this.actor.data.items.forEach((item)=>totalPrice += Math.round((item.data.quantity * item.data.price * priceModifier * 100) / 100));
+        this.actor.data.items.contents.forEach((item)=>totalPrice += Math.round((item.data.data.quantity * item.data.data.price * priceModifier * 100) / 100));
 
         let totalQuantity = 0;
-        this.actor.data.items.forEach((item)=>totalQuantity += Math.round((item.data.quantity * 100) / 100));
+        this.actor.data.items.contents.forEach((item)=>totalQuantity += Math.round((item.data.data.quantity * 100) / 100));
 
         sheetData.lootsheettype = lootsheettype;
-        sheetData.totalItems = this.actor.data.items.length;
+        sheetData.totalItems = this.actor.data.items.contents.length;
         sheetData.totalWeight = totalWeight.toLocaleString('en');
         sheetData.totalPrice = totalPrice.toLocaleString('en') + " gp";
         sheetData.totalQuantity = totalQuantity;
@@ -566,10 +566,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         };
 
         if (all || event.shiftKey) {
-            packet.quantity = item.data.quantity;
+            packet.quantity = item.data.data.quantity;
         }
 
-        if (item.data.quantity === packet.quantity) {
+        if (item.data.data.quantity === packet.quantity) {
             console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
             game.socket.emit(LootSheet5eNPC.SOCKET, packet);
             return;
@@ -621,7 +621,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         const item = { itemId: itemId, quantity: 1 };
         if (all || event.shiftKey) {
-            item.quantity = targetItem.data.quantity;
+            item.quantity = targetItem.data.data.quantity;
         }
 
         const packet = {
@@ -632,7 +632,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             processorId: targetGm.id
         };
 
-        if (targetItem.data.quantity === item.quantity) {
+        if (targetItem.data.data.quantity === item.quantity) {
             console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
             game.socket.emit(LootSheet5eNPC.SOCKET, packet);
             return;
@@ -731,7 +731,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         for (let i of itemTargets) {
             const itemId = i.getAttribute("data-item-id");
             const item = this.actor.getEmbeddedEntity("Item", itemId);
-            items.push({ itemId: itemId, quantity: item.data.quantity });
+            items.push({ itemId: itemId, quantity: item.data.data.quantity });
         }
         if (items.length === 0) {
             return;
