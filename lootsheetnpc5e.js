@@ -151,6 +151,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let totalWeight = 0;
         this.actor.data.items.contents.forEach((item)=>totalWeight += Math.round((item.data.data.quantity * item.data.data.weight * 100) / 100));
+        if (game.settings.get("lootsheetnpc5e", "includeCurrencyWeight"))
+            totalWeight += (Object.values(this.actor.data.data.currency).map(x => parseInt(x.value)).sum() / 50).toNearest(0.01)
 
         let totalPrice = 0;
         this.actor.data.items.contents.forEach((item)=>totalPrice += Math.round((item.data.data.quantity * item.data.data.price * priceModifier * 100) / 100));
@@ -1263,6 +1265,15 @@ Hooks.once("init", () => {
         config: true,
         default: 200,
         type: Number
+    });
+
+    game.settings.register("lootsheetnpc5e", "includeCurrencyWeight", {
+        name: "Include Currency Weight",
+        hint: "Include the weight of the currency in the Total Weight calculation.",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean,
     });
 
     function chatMessage(speaker, owner, message, item) {
