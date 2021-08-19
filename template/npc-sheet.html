@@ -119,7 +119,7 @@
                     {{#each actor.flags.loot.currency as |c i|}}
                         <li class="denomination {{i}}">
                             <label>{{ lookup ../config.currencies i }}:</label>
-                            <span class="denomination-value">{{c.value}} each</span>
+                            <span class="denomination-value">{{c}} each</span>
                         </li>
                     {{/each}}
                 </ol>
@@ -151,7 +151,7 @@
                                 {{#each data.currency as |c i|}}
                                 <span>
                                     <label class="denomination {{i}}">{{ lookup ../config.currencies i }}</label>
-                                    <input type="text" name="data.currency.{{i}}.value" value="{{c.value}}" data-dtype="{{c.type}}"/>
+                                    <input type="text" name="data.currency.{{i}}" value="{{c}}" data-dtype="{{i}}"/>
                                 </span>
                                 {{/each}}
                                 {{#ifeq lootsheettype "Loot"}}
