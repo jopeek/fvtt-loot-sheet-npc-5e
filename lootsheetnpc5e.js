@@ -334,9 +334,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
                 
                 if (existingItem === undefined) {
-                    await this.actor.createEmbeddedDocuments("Item", [newItem.toObject()]);
                     console.log(`Loot Sheet | ${newItem.name} does not exist.`);
-                    existingItem = this.actor.items.find(item => item.data.name == newItem.name);
+
+                    const createdItems = await this.actor.createEmbeddedDocuments("Item", [newItem.toObject()]);
+                    existingItem = createdItems[0];
 
                     if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
                         await existingItem.update({ "data.quantity": itemQtyLimit });
