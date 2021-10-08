@@ -1171,9 +1171,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let currencySplit = duplicate(actorData.data.currency);
         for (let c in currencySplit) {
             if (observers.length)
-                if (currencySplit[c] != null) currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
+                if (currencySplit[c].value != null) currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
             else
-                currencySplit[c] = 0
+                currencySplit[c].value = 0
         }
 
         let loot = {}
@@ -1428,10 +1428,10 @@ Hooks.once("init", () => {
 
         const conversionRates = { 
             "pp": 1,
-            "gp": CONFIG.DND5E.currencyConversion.gp.each, 
-            "ep": CONFIG.DND5E.currencyConversion.ep.each,
-            "sp": CONFIG.DND5E.currencyConversion.sp.each,
-            "cp": CONFIG.DND5E.currencyConversion.cp.each
+            "gp": CONFIG.DND5E.currencies.gp.conversion.each, 
+            "ep": CONFIG.DND5E.currencies.ep.conversion.each,
+            "sp": CONFIG.DND5E.currencies.sp.conversion.each,
+            "cp": CONFIG.DND5E.currencies.cp.conversion.each
         };
 
         const compensationCurrency = {"pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp"};
