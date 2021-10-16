@@ -118,8 +118,8 @@
                 <ol class="coins-list">
                     {{#each actor.flags.loot.currency as |c i|}}
                         <li class="denomination {{i}}">
-                            <label>{{ lookup ../config.currencies i }}:</label>
-                            <span class="denomination-value">{{c}} each</span>
+                            <label>{{lookup (lookup ../config.currencies i) "label"}}:</label>
+                            <span class="denomination-value">{{c.value}} each</span>
                         </li>
                     {{/each}}
                 </ol>
@@ -150,8 +150,8 @@
                                 </h3></span>
                                 {{#each data.currency as |c i|}}
                                 <span>
-                                    <label class="denomination {{i}}">{{ lookup ../config.currencies i }}</label>
-                                    <input type="text" name="data.currency.{{i}}" value="{{c}}" data-dtype="{{i}}"/>
+                                    <label class="denomination {{i}}">{{lookup (lookup ../config.currencies i) "label"}}</label>
+                                    <input type="text" name="data.currency.{{i}}.value" value="{{c.value}}" data-dtype="{{c.type}}"/>
                                 </span>
                                 {{/each}}
                                 {{#ifeq lootsheettype "Loot"}}
