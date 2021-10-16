@@ -27,6 +27,17 @@ class LootSheet5eNPCHelper
             return 0;
         }
     }
+
+   /**
+	* Handles Currency from currency.TYPE.value to currency.TYPE for backwords support
+    * @param {string} folderPath - The directory to loop through
+    */
+    static convertCurrencyFromObject(currency) {
+        Object.entries(currency).map(([key, value]) => {
+            currency[key] = value.value ?? value; 
+        });
+        return currency;
+    }
 }
 
 class QuantityDialog extends Dialog {
@@ -857,7 +868,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         if (observers.length === 0) return;
 
         // Calculate split of currency
-        let currencySplit = duplicate(actorData.data.currency);
+        let currencySplit = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency));
         //console.log("Loot Sheet | Currency data", currencySplit);
 
         // keep track of the remainder
@@ -866,12 +877,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         for (let c in currencySplit) {
             if (observers.length) {
                 // calculate remainder
-                currencyRemainder[c] = (currencySplit[c].value % observers.length);
+                currencyRemainder[c] = (currencySplit[c] % observers.length);
                 //console.log("Remainder: " + currencyRemainder[c]);
 
-                currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
+                currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
             }
-            else currencySplit[c].value = 0;
+            else currencySplit[c] = 0;
         }
 
         // add currency to actors existing coins
@@ -881,20 +892,20 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             if (u === null) continue;
 
             msg = [];
-            let currency = u.data.data.currency,
-                newCurrency = duplicate(u.data.data.currency);
+            let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency),
+                newCurrency = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency));
 
             //console.log("Loot Sheet | Current Currency", currency);
 
             for (let c in currency) {
                 // add msg for chat description
-                if (currencySplit[c].value) {
+                if (currencySplit[c]) {
                     //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
-                    msg.push(` ${currencySplit[c].value} ${c} coins`)
+                    msg.push(` ${currencySplit[c]} ${c} coins`)
                 }
-                if (currencySplit[c].value != null) {
+                if (currencySplit[c] != null) {
                     // Add currency to permitted actor
-                    newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c].value;
+                    newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c];
                     u.update({
                         'data.currency': newCurrency
                     });
@@ -902,7 +913,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             }
 
             // Remove currency from loot actor.
-            let lootCurrency = containerActor.data.data.currency,
+            let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(containerActor.data.data.currency),
                 zeroCurrency = {};
 
             for (let c in lootCurrency) {
@@ -1168,7 +1179,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         // calculate the split of coins between all observers of the sheet.
-        let currencySplit = duplicate(actorData.data.currency);
+        let currencySplit = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency));
         for (let c in currencySplit) {
             if (observers.length)
                 if (currencySplit[c].value != null) currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
@@ -1421,7 +1432,7 @@ Hooks.once("init", () => {
         
         itemCostInGold *= quantity;
         //console.log(`ItemCost: ${itemCostInGold}`)
-        let buyerFunds = duplicate(buyer.data.data.currency);
+        let buyerFunds = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(buyer.data.data.currency));
 
         //console.log(`Funds before purchase: ${buyerFunds}`);
 		//console.log(buyer.data.data.currency);
@@ -1559,7 +1570,7 @@ Hooks.once("init", () => {
         if (observers.length === 0) return;
 
         // Calculate split of currency
-        let currencySplit = duplicate(actorData.data.currency);
+        let currencySplit = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency));
         //console.log("Loot Sheet | Currency data", currencySplit);
 
         // keep track of the remainder
@@ -1568,12 +1579,12 @@ Hooks.once("init", () => {
         for (let c in currencySplit) {
             if (observers.length) {
                 // calculate remainder
-                currencyRemainder[c] = (currencySplit[c].value % observers.length);
+                currencyRemainder[c] = (currencySplit[c] % observers.length);
                 //console.log("Remainder: " + currencyRemainder[c]);
 
-                currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
+                currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
             }
-            else currencySplit[c].value = 0;
+            else currencySplit[c] = 0;
         }
 
         // add currency to actors existing coins
@@ -1583,20 +1594,20 @@ Hooks.once("init", () => {
             if (u === null) continue;
 
             msg = [];
-            let currency = u.data.data.currency,
-                newCurrency = duplicate(u.data.data.currency);
+            let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency),
+                newCurrency = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency));
 
             //console.log("Loot Sheet | Current Currency", currency);
 
             for (let c in currency) {
                 // add msg for chat description
-                if (currencySplit[c].value) {
+                if (currencySplit[c]) {
                     //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
-                    msg.push(` ${currencySplit[c].value} ${c} coins`)
+                    msg.push(` ${currencySplit[c]} ${c} coins`)
                 }
 
                 // Add currency to permitted actor
-                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c].value;
+                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c];
 
                 //console.log("Loot Sheet | New Currency", newCurrency);
                 u.update({
@@ -1605,7 +1616,7 @@ Hooks.once("init", () => {
             }
 
             // Remove currency from loot actor.
-            let lootCurrency = containerActor.data.data.currency,
+            let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(containerActor.data.data.currency),
                 zeroCurrency = {};
 
             for (let c in lootCurrency) {
@@ -1638,25 +1649,25 @@ Hooks.once("init", () => {
     function lootCoins(containerActor, looter) {
         let actorData = containerActor.data
 
-        let sheetCurrency = actorData.data.currency;
+        let sheetCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency);
         //console.log("Loot Sheet | Currency data", currency);
 
         // add currency to actors existing coins
         let msg = [];
-        let currency = looter.data.data.currency,
-            newCurrency = duplicate(looter.data.data.currency);
+        let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(looter.data.data.currency),
+            newCurrency = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(looter.data.data.currency));
 
         //console.log("Loot Sheet | Current Currency", currency);
 
         for (let c in currency) {
             // add msg for chat description
-            if (sheetCurrency[c].value) {
+            if (sheetCurrency[c]) {
                 //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
-                msg.push(` ${sheetCurrency[c].value} ${c} coins`)
+                msg.push(` ${sheetCurrency[c]} ${c} coins`)
             }
-            if (sheetCurrency[c].value != null) {
+            if (sheetCurrency[c] != null) {
                 // Add currency to permitted actor
-                newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c].value);
+                newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c]);
                 looter.update({
                     'data.currency': newCurrency
                 });
@@ -1664,7 +1675,7 @@ Hooks.once("init", () => {
         }
 
         // Remove currency from loot actor.
-        let lootCurrency = containerActor.data.data.currency,
+        let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(containerActor.data.data.currency),
             zeroCurrency = {};
 
         for (let c in lootCurrency) {
