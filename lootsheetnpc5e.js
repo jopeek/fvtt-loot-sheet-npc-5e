@@ -178,6 +178,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         sheetData.rolltables = game.tables.entities;
         sheetData.lootCurrency = game.settings.get("lootsheetnpc5e", "lootCurrency");
         sheetData.lootAll = game.settings.get("lootsheetnpc5e", "lootAll");
+        sheetData.data.currency = LootSheet5eNPCHelper.convertCurrencyFromObject(sheetData.data.currency);
 
         // Return data for rendering
         return sheetData;
@@ -1183,9 +1184,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let currencySplit = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency));
         for (let c in currencySplit) {
             if (observers.length)
-                if (currencySplit[c].value != null) currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
+                if (currencySplit[c] != null) currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
             else
-                currencySplit[c].value = 0
+                currencySplit[c] = 0
         }
 
         let loot = {}
