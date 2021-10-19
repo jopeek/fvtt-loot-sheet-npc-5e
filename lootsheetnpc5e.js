@@ -162,6 +162,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let totalWeight = 0;
         this.actor.data.items.contents.forEach((item)=>totalWeight += Math.round((item.data.data.quantity * item.data.data.weight * 100) / 100));
+        if (game.settings.get("lootsheetnpc5e", "includeCurrencyWeight"))
+            totalWeight += (Object.values(this.actor.data.data.currency).map(x => parseInt(x)).sum() / 50).toNearest(0.01)
 
         let totalPrice = 0;
         this.actor.data.items.contents.forEach((item)=>totalPrice += Math.round((item.data.data.quantity * item.data.data.price * priceModifier * 100) / 100));
@@ -178,6 +180,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         sheetData.rolltables = game.tables.entities;
         sheetData.lootCurrency = game.settings.get("lootsheetnpc5e", "lootCurrency");
         sheetData.lootAll = game.settings.get("lootsheetnpc5e", "lootAll");
+        sheetData.data.currency = LootSheet5eNPCHelper.convertCurrencyFromObject(sheetData.data.currency);
 
         // Return data for rendering
         return sheetData;
@@ -1183,9 +1186,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let currencySplit = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency));
         for (let c in currencySplit) {
             if (observers.length)
-                if (currencySplit[c].value != null) currencySplit[c].value = Math.floor(currencySplit[c].value / observers.length);
+                if (currencySplit[c] != null) currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
             else
-                currencySplit[c].value = 0
+                currencySplit[c] = 0
         }
 
         let loot = {}
@@ -1275,6 +1278,15 @@ Hooks.once("init", () => {
         config: true,
         default: 200,
         type: Number
+    });
+    
+    game.settings.register("lootsheetnpc5e", "includeCurrencyWeight", {
+        name: "Include Currency Weight",
+        hint: "Include the weight of the currency in the Total Weight calculation.",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean,
     });
 
     function chatMessage(speaker, owner, message, item) {
