@@ -541,7 +541,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
     /* -------------------------------------------- */
 
-    /**
+   /**
      * Handle buy item
      * @private
      */
@@ -568,29 +568,30 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             return ui.notifications.error(`No active character for user.`);
         }
 
-        let itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
-        const item = this.actor.getEmbeddedEntity("Item", itemId);
+	const itemId = $(event.currentTarget).parents(".item").attr("data-item-id");
+	const targetItem = this.actor.getEmbeddedEntity("Item", itemId);
+
+  	const item = { itemId: itemId, quantity: 1 };
+ 	if (all || event.shiftKey) {
+            item.quantity = targetItem.data.data.quantity;
+        }
 
         const packet = {
             type: "buy",
             buyerId: game.user.actorId,
             tokenId: this.token.id,
             itemId: itemId,
-            quantity: 1,
+	    quantity: 1,
             processorId: targetGm.id
         };
 
-        if (all || event.shiftKey) {
-            packet.quantity = item.data.data.quantity;
-        }
-
-        if (item.data.data.quantity === packet.quantity) {
+            if (targetItem.data.data.quantity === item.quantity) {
             console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
             game.socket.emit(LootSheet5eNPC.SOCKET, packet);
             return;
         }
 
-        let d = new QuantityDialog((quantity) => {
+       	const d = new QuantityDialog((quantity) => {
             packet.quantity = quantity;
             console.log("LootSheet5e", "Sending buy request to " + targetGm.name, packet);
             game.socket.emit(LootSheet5eNPC.SOCKET, packet);
@@ -603,7 +604,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     }
 
     /* -------------------------------------------- */
-
     /**
      * Handle Loot item
      * @private
