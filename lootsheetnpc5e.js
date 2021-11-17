@@ -34,7 +34,7 @@ class LootSheet5eNPCHelper
     */
     static convertCurrencyFromObject(currency) {
         Object.entries(currency).map(([key, value]) => {
-            currency[key] = value.value ?? value; 
+            currency[key] = value?.value ?? value ?? 0; 
         });
         return currency;
     }
