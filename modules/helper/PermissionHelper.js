@@ -69,7 +69,7 @@ class PermissionHelper {
      * 
      * @returns {Array<object>}
      */
-    static _getUpdatedUserPermissions(token, lootingUsers = PermissionHelper.getPlayers()) {
+    static _updatedUserPermissions(token, lootingUsers = PermissionHelper.getPlayers()) {
         let permissions = {};
         Object.assign(permissions, token.actor.data.permission);
 

@@ -29,11 +29,18 @@
 	],
 	"packs": [
 		{
-		"name": "Lootsheet Rolltables",
-		"label": "Lootsheet Rolltables",
-		"system": "dnd5e",
-		"path": "./packs/lootsheetnpc5e_rolltables.db",
-		"entity": "RollTable"
+			"name": "LootsheetNPC5e Rolltables",
+			"label": "LootsheetNPC5e Rolltables",
+			"system": "dnd5e",
+			"path": "./packs/lootsheetnpc5e_rolltables.db",
+			"entity": "RollTable"
+		},
+		{
+			"name": "LootsheetNPC5e Macros",
+			"label": "LootsheetNPC5e Macros",
+			"system": "dnd5e",
+			"path": "./packs/lootsheetnpc5e_macros.db",
+			"entity": "Macro"
 		}
 	],
 	"system": ["dnd5e"],

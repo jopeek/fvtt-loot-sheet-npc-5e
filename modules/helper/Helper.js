@@ -59,9 +59,11 @@ class LootSheetNPC5eHelper {
      */
     static _getLootableItems(
         items,
-        chanceOfDamagedItems,
-        damagedItemsMultiplier,
-        removeDamagedItems,
+        {
+            chanceOfDamagedItems,
+            damagedItemsMultiplier,
+            removeDamagedItems,
+        }
     ) {
         return items
             /** .map((item) => {
