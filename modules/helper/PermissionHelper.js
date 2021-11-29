@@ -81,7 +81,8 @@ class PermissionHelper {
     }
 
     /**
-     * 
+     * Return the players current permissions or the sheets default permissions
+     *  
      * @param {Actor5e<data>} actorData 
      * @param {user} player 
      * @returns {number} Permission Enum value

@@ -1,8 +1,8 @@
 import { PermissionHelper } from './helper/PermissionHelper.js';
 import { LootSheetNPC5eHelper } from "./helper/Helper.js";
+import { MODULE } from './config.js';
 
 class API {
-
     /**
        * Converts the provided token to a lootable sheet
        *
@@ -22,13 +22,16 @@ class API {
         chanceOfDamagedItems,
         damagedItemsMultiplier,
         removeDamagedItems,
-    }) {
+        },
+        verbose = false
+    ) {
         chanceOfDamagedItems ??= 0;
         damagedItemsMultiplier ??= 0;
         removeDamagedItems ??= false;
 
-        if (!token) return;
-        
+        if(!token && verbose) API._verbose({code: 403, msg: 'No token selected or supplied'});
+        if(!token) return {code: 403, msg: 'No token selected or supplied'};
+
         const sheet = token.actor.sheet,
             priorState = sheet._state, // -1 for opened before but now closed, // 0 for closed and never opened // 1 for currently open
             lootIcon = 'icons/svg/chest.svg';
@@ -92,6 +95,9 @@ class API {
             // Re-draw the updated sheet if it was open
             token.actor.sheet.render(true);
         }
+
+        if(verbose) API._verbose({code: 403, msg: 'No token selected or supplied'});
+        return {code: 200, msg: 'success'};
     }
 
     /**
@@ -110,23 +116,48 @@ class API {
     /**
      * 
      * @param {Token} tokens A token or null (defaults to all controlled tokens)
-     * @param {Array<User>|null} Optional array with users to update (defaults to all) 
+     * @param {Array<User>|null} players Optional array with users to update (defaults to all) 
      * @returns {Array<object>} Array with user permissions
      */
     static makeObservable (
         tokens = game.canvas.tokens.controlled,
-        users
+        players
     ) {
-        return PermissionHelper._getUpdatedUserPermissions(tokens,users);
+        return PermissionHelper._getUpdatedUserPermissions(tokens,players);
     }
 
     /**
-     * get the proper LootPermissions for a player
+     *  Return the player(s) current permissions or the tokens default permissions
+     * 
+     * @param {token}
+     * @param {Array<User>|null} players Optional array with users to update (defaults to all)
+     * @returns {object} permissions Array of an permission enum values or a single permission
      */
-    static getLootPermissionForPlayer () {
-        PermissionHelper.getLootPermissionForPlayer();
+    static getPermissionForPlayers (
+        token = canvas.tokens.controlled[0],
+        players = PermissionHelper.getPlayers(),
+        verbose = false
+    ) {
+        if(!token && verbose) API._verbose({code: 403, msg: 'No token selected or supplied'});
+        if(!token) return {code: 403, msg: 'No token selected or supplied'};
+        
+
+        let permissions = {};
+        for (let player of players){
+            permissions[player.data._id] = PermissionHelper.getLootPermissionForPlayer(token.actor.data ,player); 
+            if (verbose) API._verbose('Player:' + player.data.name + ' has permission ' + permissions[player.data._id]);  
+        }
+        if (verbose) API._verbose({code: 200, msg: 'success', data: permissions});
+        return {code: 200, msg: 'success', data: permissions};
     }
 
+    /**
+     * 
+     * @param {string} text 
+     */
+    static _verbose(text){
+        console.log(MODULE.ns + ' - API | ', text);
+    }
 }
 
 export { API };
