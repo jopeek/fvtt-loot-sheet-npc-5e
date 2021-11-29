@@ -4,3 +4,6 @@ module-releases_template.txt
 workspace.code-workspace
 git_tags.txt
 template/debug.log
+dist/
+node_modules/
+docs/

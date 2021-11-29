@@ -1,0 +1,270 @@
+.app.loot-sheet-npc.lootsheet-condensed {
+  background: none;
+  box-shadow: none;
+  min-width: 20vw;
+  max-width: 25vw;
+  --iconwidth: 52px;
+  /**
+    * Style all the coins
+    */
+}
+.app.loot-sheet-npc.lootsheet-condensed.actor.npc {
+  min-width: 22vw;
+}
+.app.loot-sheet-npc.lootsheet-condensed .window-header {
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  z-index: 200;
+  height: 48px;
+  width: 100%;
+  border: none;
+  margin-bottom: -1em;
+}
+.app.loot-sheet-npc.lootsheet-condensed .window-header:hover {
+  border-radius: 0.5em;
+  background: var(--header-background);
+}
+.app.loot-sheet-npc.lootsheet-condensed .window-header > * {
+  display: none;
+}
+.app.loot-sheet-npc.lootsheet-condensed .window-header .close {
+  display: block;
+  font-size: 0;
+  border-radius: 50%;
+  background: var(--exhaustion-lvl3);
+}
+.app.loot-sheet-npc.lootsheet-condensed .window-header .close i {
+  font-size: 32px;
+}
+.app.loot-sheet-npc.lootsheet-condensed .window-content {
+  background: url(/ui/parchment.jpg) repeat, rgba(77, 49, 20, 0.85);
+  background-blend-mode: color-burn;
+  border-radius: 0.8em;
+  box-shadow: 3px 3px 4px var(--iconshadow);
+}
+.app.loot-sheet-npc.lootsheet-condensed .window-content form {
+  background: none;
+  padding-top: 3.5em;
+  width: 100%;
+  border: 1em solid var(--header-background);
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header {
+  display: grid;
+  grid-template-columns: 110px;
+  grid-template-rows: 0.8fr 0.2fr;
+  background: none;
+  grid-template-areas: "Portrait" "Name";
+  align-items: center;
+  position: absolute;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -8.5em;
+  width: 100%;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-profile-img {
+  grid-area: Portrait;
+  width: 11em;
+  height: 11em;
+  position: relative;
+  z-index: 220;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-profile-img img {
+  width: 95px;
+  height: 95px;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-buttons {
+  grid-area: Portrait;
+  background-size: cover;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "PTL PTC PTR" "PCL PCC PCR" "PBL PBC PBR";
+  width: 110px;
+  height: 110px;
+  position: relative;
+  z-index: 220;
+  overflow: visible;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-buttons button {
+  width: 20px;
+  height: 20px;
+  background: var(--header-background);
+  border: none;
+  margin: none;
+  padding: none;
+  z-index: 221;
+  border-radius: 25%;
+  cursor: pointer;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-buttons button .fa-stack {
+  font-size: 0.5em;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-buttons button i {
+  vertical-align: unset;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-buttons .split-currency {
+  grid-area: PCR;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-buttons .loot-currency {
+  grid-area: PBR;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .sheet-buttons .loot-all {
+  grid-area: PBL;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .charname {
+  text-align: center;
+  margin-top: -0.6em;
+  z-index: 221;
+}
+.app.loot-sheet-npc.lootsheet-condensed header.sheet-header .charname .name {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.app.loot-sheet-npc.lootsheet-condensed .sheet-navigation {
+  margin-top: 1em;
+}
+.app.loot-sheet-npc.lootsheet-condensed .inventory-filters .currency li {
+  background: none;
+  margin: none;
+  padding: none;
+}
+.app.loot-sheet-npc.lootsheet-condensed .inventory-filters .currency input[type=text] {
+  height: auto;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: inherit;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list {
+  display: grid;
+  gap: 1em 1em;
+  grid-template-columns: repeat(5, var(--iconwidth));
+  grid-auto-rows: var(--iconwidth);
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item {
+  border-radius: 0.5em;
+  color: #fff;
+  cursor: pointer;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item.r_rare .image {
+  box-shadow: inset 0 0 0.8em #0070dd;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item.r_veryRare .image {
+  box-shadow: inset 0 0 0.8em #a335ee;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item.r_legendary .image {
+  box-shadow: inset 0 0 0.8em #a335ee;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item.r_legendary .image {
+  box-shadow: inset 0 0 0.8em #e6cc80;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item.r_heirloom .image {
+  box-shadow: inset 0 0 0.8em #00ccff;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item .quantity {
+  font-family: var(--modesto);
+  font-size: 1.8em;
+  padding: 0.5em;
+  line-height: 0.9em;
+  display: block;
+  margin-top: auto;
+  margin-left: auto;
+  align-self: flex-end;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item .image {
+  display: flex;
+  height: var(--iconwidth);
+  width: var(--iconwidth);
+  background-position: center;
+  background-size: contain;
+  box-shadow: inset 0 0 0.8em rgba(0, 0, 0, 0.8);
+  padding: 0.3em;
+}
+.app.loot-sheet-npc.lootsheet-condensed .items-list .item .image:hover {
+  box-shadow: inset 0 0 0.8em rgba(243, 242, 242, 0.91);
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin input {
+  font-style: italic;
+  position: relative;
+  font-size: 16px;
+  z-index: 221;
+  top: 30%;
+  left: 18%;
+  text-shadow: 2px 2px var(--iconshadow);
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-cp input {
+  color: #dfb667;
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-sp input {
+  color: #a0a0a0;
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-ep input {
+  color: #6c7677;
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-gp input {
+  color: #f2d732;
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-pp input {
+  color: #a0a0a0;
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin {
+  background: none;
+  content: "";
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+  border-radius: 50%;
+  z-index: 220;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin:after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  display: block;
+  top: 4px;
+  left: 4px;
+  position: absolute;
+  border-radius: 50px;
+  z-index: 210;
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-sp:after,
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-ep:after,
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-pp:after {
+  background: linear-gradient(45deg, #dfb667 0%, #f9f3e8 56%, #e7c074 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(209, 156, 53, 0.3);
+  border-right: 1px solid rgba(209, 156, 53, 0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, 0.05);
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-sp:after,
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-ep:after,
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-pp:after {
+  background: linear-gradient(45deg, #b5b5b5 0%, #fcfcfc 56%, #e8e8e8 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(160, 160, 160, 0.3);
+  border-right: 1px solid rgba(160, 160, 160, 0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-cp:after {
+  background: linear-gradient(45deg, #dfb667 0%, #ffffff 56%, #772a0c 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(242, 215, 12, 0.3);
+  border-right: 1px solid rgba(242, 215, 12, 0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
+.app.loot-sheet-npc.lootsheet-condensed .coin.coin-gp:after {
+  background: linear-gradient(45deg, #f2d70c 0%, #ffffff 56%, #dfb667 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(242, 215, 12, 0.3);
+  border-right: 1px solid rgba(242, 215, 12, 0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
