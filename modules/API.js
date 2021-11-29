@@ -98,7 +98,7 @@ class API {
     /**
      * Convert a stack of Tokens to a given type, apply modifiers if given
      * 
-     * @param {Array<Token5e} tokens Array of ActorTokens
+     * @param {Array<Token5e>} tokens Array of ActorTokens
      * @param {string} type Type of sheet (loot|merchant)
      * @param {object} options 
      */

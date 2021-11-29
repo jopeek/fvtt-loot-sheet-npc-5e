@@ -50,7 +50,7 @@ class PermissionHelper {
      * @param {number} newLevel 
      * @param {event} event
      * 
-     * @uses PermissionControl 
+     * uses PermissionControl 
      */
     static _updatePermissions(actorData, playerId, newLevel, event) {
         // Read player permission on this actor and adjust to new level

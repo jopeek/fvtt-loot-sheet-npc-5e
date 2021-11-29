@@ -55,7 +55,8 @@ class LootSheetNPC5eHelper {
      * @param {number} chanceOfDamagedItems 
      * @param {number} damagedItemsMultiplier 
      * @param {number} removeDamagedItems 
-     * @returns 
+     * 
+     * @returns {Array<Items>} items Filtered lootable items
      */
     static _getLootableItems(
         items,

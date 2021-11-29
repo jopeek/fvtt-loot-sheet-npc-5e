@@ -7,3 +7,4 @@ template/debug.log
 dist/
 node_modules/
 docs/
+wiki/

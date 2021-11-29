@@ -399,7 +399,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * @param {event} event 
      * @param {number|null} all 
      * 
-     * @uses PermissionHelper
+     * uses PermissionHelper
      */
     _buyItem(event, all = null) {
         event.preventDefault();

@@ -4,7 +4,8 @@
   "description": "A javascript FoundryVTT module. Adding an additional NPC sheet for Loot/Containers/Merchant",
   "main": "lootsheetnpc5e.js",
   "scripts": {
-    "all": "npm run less && npm run copyfiles && npm run localcopy",
+    "local-all": "npm run less && npm run copyfiles && npm run localcopy && npm run generate-docs",
+    "all": "npm run less && npm run copyfiles ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "copyfiles": "copyfiles ./lootsheetnpc5e.js ./module.json ./modules/**/* ./template/**/* ./packs/**/* ./icons/**/* ./dist",
     "less": "lessc -clean-css ./styles/lootsheetNPC5e.less ./dist/styles/lootsheetNPC5e.css",

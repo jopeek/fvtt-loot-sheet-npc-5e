@@ -19,7 +19,7 @@ class ItemHelper {
      * @param {Actor5e} source 
      * @param {Actor5e} destination 
      * @param {Item} items 
-     * @returns 
+     * @returns {Array<object>} Array with moved item
      */
     static async moveItems(source, destination, items) {
         
@@ -109,7 +109,6 @@ class ItemHelper {
      * @param {Actor} buyer 
      * @param {string} itemId 
      * @param {number} quantity 
-     * @returns 
      */
     static async transaction(seller, buyer, itemId, quantity) {
         let sellItem = seller.getEmbeddedEntity("Item", itemId);
