@@ -60,12 +60,10 @@ class LootSheetNPC5eHelper {
      */
     static _getLootableItems(
         items,
-        {
-            chanceOfDamagedItems,
-            damagedItemsMultiplier,
-            removeDamagedItems,
-        }
+        options = undefined
     ) {
+        options = LootSheetNPC5eHelper._getOptionsDefault(options);
+
         return items
             /** .map((item) => {
                 return item.toObject();
@@ -83,11 +81,11 @@ class LootSheetNPC5eHelper {
                 return !['class', 'spell', 'feat'].includes(item.type);
             })
             .filter((item) => {
-                if (LootSheetNPC5eHelper._isItemDamaged(item, chanceOfDamagedItems)) {
-                    if (removeDamagedItems) return false;
+                if (LootSheetNPC5eHelper._isItemDamaged(item, options.chanceOfDamagedItems)) {
+                    if (options.removeDamagedItems) return false;
 
                     item.name += ' (Damaged)';
-                    item.data.price *= damagedItemsMultiplier;
+                    item.data.price *= options.damagedItemsMultiplier;
                 }
 
                 return true;
@@ -96,6 +94,20 @@ class LootSheetNPC5eHelper {
                 item.data.equipped = false;
                 return item;
             });
+    }
+
+    /**
+     * Take an options object an either keep values or set the default
+     * 
+     * @param {*} options 
+     * @returns {object}
+     */
+    static _getOptionsDefault(options){
+         return {
+            chanceOfDamagedItems: options ? options.chanceOfDamagedItems ??= 0 : 0,
+            damagedItemsMultiplier: options ? options.damagedItemsMultiplier ??= 0 : 0,
+            removeDamagedItems: options ? options.removeDamagedItems ??= false : false
+            };
     }
 
     static _isItemDamaged(item, chanceOfDamagedItems) {

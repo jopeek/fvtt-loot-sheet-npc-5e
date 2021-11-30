@@ -22,16 +22,13 @@ class API {
         options = {},
         verbose = false
     ) {
-        options.chanceOfDamagedItems ??= 0;
-        options.damagedItemsMultiplier ??= 0;
-        options.removeDamagedItems ??= false;
-
         if(!token && verbose) API._verbose({code: 403, msg: 'No token selected or supplied'});
         if(!token) return {code: 403, msg: 'No token selected or supplied'};
 
         const sheet = token.actor.sheet,
-            priorState = sheet._state, // -1 for opened before but now closed, // 0 for closed and never opened // 1 for currently open
-            lootIcon = 'icons/svg/chest.svg';
+            priorState = sheet._state; // -1 for opened before but now closed, // 0 for closed and never opened // 1 for currently open
+            
+        let lootIcon = 'icons/svg/chest.svg';
 
         let newActorData = {
             flags: {
