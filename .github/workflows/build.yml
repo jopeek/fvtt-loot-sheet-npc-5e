@@ -34,6 +34,7 @@ jobs:
            zip -r lootsheetnpc5e dist/*
   release:
       runs-on: ubuntu-latest
+      needs: build
       
       steps:
       - name: release
