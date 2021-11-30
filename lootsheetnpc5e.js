@@ -12,11 +12,8 @@ class LootSheet5eNPCHelper {
     static getLootPermissionForPlayer(actorData, player) {
         let defaultPermission = actorData.permission.default;
         if (player.data._id in actorData.permission) {
-            //console.log("Loot Sheet | Found individual actor permission");
             return actorData.permission[player.data._id];
-            //console.log("Loot Sheet | assigning " + actorData.permission[player.data._id] + " permission to hidden field");
         } else if (typeof defaultPermission !== "undefined") {
-            //console.log("Loot Sheet | default permissions", actorData.permission.default);
             return defaultPermission;
         } else {
             return 0;
@@ -141,14 +138,11 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Prepare isGM attribute in sheet Data
 
-        //console.log("game.user: ", game.user);
         if (game.user.isGM) {
             sheetData.isGM = true;
         } else {
             sheetData.isGM = false;
         }
-        //console.log("sheetData.isGM: ", sheetData.isGM);
-        //console.log(this.actor);
 
         let lootsheettype = await this.actor.getFlag("lootsheetnpc5e", "lootsheettype");
         if (!lootsheettype) {
@@ -315,7 +309,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
-            // console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
             return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
         }
 
@@ -328,17 +321,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             }
         }
 
-        // console.log(rolltable);
-
         if (clearInventory) {
             let currentItems = this.actor.data.items.map(i => i._id);
             await this.actor.deleteEmbeddedDocuments("Item", currentItems);
-            // console.log(currentItems);
         }
 
         console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
 
-        //if (!itemOnlyOnce) {
         for (let i = 0; i < shopQtyRoll.total; i++) {
             const rollResult = await rolltable.roll();
             console.log(rollResult.results[0]);
@@ -350,15 +339,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             } else {
                 // Try to find it in the compendium
                 const items = game.packs.get(rollResult.results[0].data.collection);
-                // console.log(items);
-                // dnd5eitems.getIndex().then(index => console.log(index));
-                // let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
-                // items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
                 newItem = await items.getEntity(rollResult.results[0].data.resultId);
             }
 
             if (!newItem || newItem === null) {
-                // console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
                 return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
             }
 
@@ -369,8 +353,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             let itemQtyRoll = new Roll(itemQtyFormula);
             itemQtyRoll.roll();
             console.log(`Loot Sheet | Adding ${itemQtyRoll.total} x ${newItem.name}`);
-
-            // newItem.data.quantity = itemQtyRoll.result;
 
             let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
 
@@ -402,7 +384,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                         ui.notifications.info(`${newItem.name} already at maximum quantity (${itemQtyLimit}).`);
                     }
                 } else if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
-                    //console.log("Exceeds existing quantity, limiting");
                     await existingItem.update({"data.quantity": itemQtyLimit});
                     if (!reducedVerbosity) {
                         ui.notifications.info(`Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`);
@@ -415,99 +396,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 }
             }
         }
-        // }
-        // else {
-        //     // Get a list which contains indexes of all possible results
-
-        //     const rolltableIndexes = []
-
-        //     // Add one entry for each weight an item has
-        //     for (let index in [...Array(rolltable.results.length).keys()]) {
-
-        //         let numberOfEntries = rolltable.data.results[index].weight
-        //         for (let i = 0; i < numberOfEntries; i++) {
-        //             rolltableIndexes.push(index);
-        //         }     
-        //     }
-
-        //     // Shuffle the list of indexes
-        //     var currentIndex = rolltableIndexes.length, temporaryValue, randomIndex;
-
-        //     // While there remain elements to shuffle...
-        //     while (0 !== currentIndex) {
-
-        //         // Pick a remaining element...
-        //         randomIndex = Math.floor(Math.random() * currentIndex);
-        //         currentIndex -= 1;
-
-        //         // And swap it with the current element.
-        //         temporaryValue = rolltableIndexes[currentIndex];
-        //         rolltableIndexes[currentIndex] = rolltableIndexes[randomIndex];
-        //         rolltableIndexes[randomIndex] = temporaryValue;
-        //     }
-
-        //     // console.log(`Rollables: ${rolltableIndexes}`)
-
-        //     let indexesToUse = [];
-        //     let numberOfAdditionalItems = 0;
-        //     // Get the first N entries from our shuffled list. Those are the indexes of the items in the roll table we want to add
-        //     // But because we added multiple entries per index to account for weighting, we need to increase our list length until we got enough unique items
-        //     while (true)
-        //     {
-        //         let usedEntries = rolltableIndexes.slice(0, shopQtyRoll.total + numberOfAdditionalItems);
-        //         // console.log(`Distinct: ${usedEntries}`);
-        //         let distinctEntris = [...new Set(usedEntries)];
-
-        //         if (distinctEntris.length < shopQtyRoll.total) {
-        //             numberOfAdditionalItems++;
-        //             // console.log(`numberOfAdditionalItems: ${numberOfAdditionalItems}`);
-        //             continue;
-        //         }
-
-        //         indexesToUse = distinctEntris
-        //         // console.log(`indexesToUse: ${indexesToUse}`)
-        //         break;
-        //     }
-
-        //     for (const index of indexesToUse)
-        //     {
-        //         let itemQtyRoll = new Roll(itemQtyFormula);
-        //         itemQtyRoll.roll();
-
-        //         let newItem = null
-
-        //         if (rolltable.results[index].collection === "Item") {
-        //             newItem = game.items.get(rolltable.results[index].resultId);
-        //         }
-        //         else {
-        //             //Try to find it in the compendium
-        //             const items = game.packs.get(rolltable.results[index].collection);
-        //             newItem = await items.getEntity(rolltable.results[index].resultId);
-        //         }
-        //         if (!newItem || newItem === null) {
-        //             return ui.notifications.error(`No item found "${rolltable.results[index].resultId}".`);
-        //         }
-
-        //         if (newItem.type === "spell") {
-        //             newItem = await Item5e.createScrollFromSpell(newItem)
-        //         }
-
-        //         await this.actor.createEmbeddedEntity("Item", newItem);
-        //         let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
-
-        //         if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
-        //             await existingItem.update({ "data.quantity": itemQtyLimit });
-        //             if (!reducedVerbosity) {
-        //                 ui.notifications.info(`Added new ${itemQtyLimit} x ${newItem.name}.`);
-        //             }
-        //         } else {
-        //             await existingItem.update({ "data.quantity": itemQtyRoll.total });
-        //             if (!reducedVerbosity) {
-        //                 ui.notifications.info(`Added new ${itemQtyRoll.total} x ${newItem.name}.`);
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     _createRollTable() {
@@ -523,12 +411,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         pack.getIndex().then(index => index.forEach(function (arrayItem) {
             var x = arrayItem._id;
-            //console.log(arrayItem);
             i++;
             pack.getEntity(arrayItem._id).then(packItem => {
 
                 if (packItem.type === type) {
-                    //console.log(packItem);
 
                     let newItem = {
                         "_id": packItem._id,
@@ -809,8 +695,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      */
     async _priceModifier(event) {
         event.preventDefault();
-        //console.log("Loot Sheet | Price Modifier clicked");
-        //console.log(this.actor.isToken);
 
         let priceModifier = await this.actor.getFlag("lootsheetnpc5e", "priceModifier");
         if (typeof priceModifier !== "number") {
@@ -855,7 +739,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      */
     _distributeCoins(event) {
         event.preventDefault();
-        //console.log("Loot Sheet | Split Coins clicked");
 
         let targetGm = null;
         game.users.forEach((u) => {
@@ -890,33 +773,28 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     }
 
     _hackydistributeCoins(containerActor) {
-        //This is identical as the distributeCoins function defined in the init hook which for some reason can't be called from the above _distributeCoins method of the LootSheetNPC5E class. I couldn't be bothered to figure out why a socket can't be called as the GM... so this is a hack but it works.
+        // This is identical as the distributeCoins function defined in the init hook which for some reason can't be called from the above _distributeCoins method of the LootSheetNPC5E class. I couldn't be bothered to figure out why a socket can't be called as the GM... so this is a hack but it works.
         let actorData = containerActor.data;
         let observers = [];
         let players = game.users.players;
 
-        //console.log("Loot Sheet | actorData", actorData);
         // Calculate observers
         for (let player of players) {
             let playerPermission = LootSheet5eNPCHelper.getLootPermissionForPlayer(actorData, player);
             if (player != "default" && playerPermission >= 2) {
-                //console.log("Loot Sheet | player", player);
                 let actor = game.actors.get(player.data.character);
-                //console.log("Loot Sheet | actor", actor);
                 if (actor != null && (player.data.role === 1 || player.data.role === 2)) {
                     observers.push(actor);
                 }
             }
         }
 
-        //console.log("Loot Sheet | observers", observers);
         if (observers.length === 0) {
             return;
         }
 
         // Calculate split of currency
         let currencySplit = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency));
-        //console.log("Loot Sheet | Currency data", currencySplit);
 
         // Keep track of the remainder
         let currencyRemainder = {};
@@ -925,7 +803,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             if (observers.length) {
                 // Calculate remainder
                 currencyRemainder[c] = (currencySplit[c] % observers.length);
-                //console.log("Remainder: " + currencyRemainder[c]);
                 currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
             } else {
                 currencySplit[c] = 0;
@@ -935,7 +812,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         // Add currency to actors existing coins
         let msg = [];
         for (let u of observers) {
-            //console.log("Loot Sheet | u of observers", u);
             if (u === null) {
                 continue;
             }
@@ -944,12 +820,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency);
             let newCurrency = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency));
 
-            //console.log("Loot Sheet | Current Currency", currency);
-
             for (let c in currency) {
                 // Add msg for chat description
                 if (currencySplit[c]) {
-                    //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
                     msg.push(` ${currencySplit[c]} ${c} coins`);
                 }
                 if (currencySplit[c] != null) {
@@ -1001,8 +874,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     _onCyclePermissionProficiency(event) {
         event.preventDefault();
 
-        //console.log("Loot Sheet | this.actor.data.permission", this.actor.data.permission);
-
         let actorData = this.actor.data;
 
         let field = $(event.currentTarget).siblings(`input[type="hidden"]`);
@@ -1012,18 +883,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             level = 0;
         }
 
-        //console.log("Loot Sheet | current level " + level);
-
-        const levels = [0, 3, 2]; //const levels = [0, 2, 3];
+        const levels = [0, 3, 2];
 
         let idx = levels.indexOf(level);
         let newLevel = levels[(idx === levels.length - 1) ? 0 : idx + 1];
 
-        //console.log("Loot Sheet | new level " + newLevel);
-
         let playerId = field[0].name;
-
-        //console.log("Loot Sheet | Current actor: " + playerId);
 
         this._updatePermissions(actorData, playerId, newLevel, event);
 
@@ -1047,7 +912,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             level = 0;
         }
 
-        const levels = [0, 3, 2]; //const levels = [0, 2, 3];
+        const levels = [0, 3, 2];
 
         let idx = levels.indexOf(level);
         let newLevel = levels[(idx === levels.length - 1) ? 0 : idx + 1];
@@ -1070,6 +935,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         // Read player permission on this actor and adjust to new level
         let currentPermissions = duplicate(actorData.permission);
         currentPermissions[playerId] = newLevel;
+
         // Save updated player permissions
         const lootPermissions = new PermissionControl(this.actor);
         lootPermissions._updateObject(event, currentPermissions);
@@ -1082,7 +948,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * @private
      */
     _prepareItems(actorData) {
-        //console.log("Loot Sheet | Prepare Features");
         // Actions
         const features = {
             weapons: {
@@ -1118,15 +983,14 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         };
 
-        //console.log("Loot Sheet | Prepare Items");
         // Iterate through items, allocating to containers
         let items = actorData.items;
         items = items.sort(function (a, b) {
             return a.name.localeCompare(b.name);
         });
+
         for (let i of items) {
             i.img = i.img || DEFAULT_TOKEN;
-            //console.log("Loot Sheet | item", i);
 
             // Features
             if (i.type === "weapon") {
@@ -1147,9 +1011,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
 
         // Assign and return
-        //actorData.features = features;
         actorData.actor.features = features;
-        //console.log(this.actor);
     }
 
     /* -------------------------------------------- */
@@ -1197,14 +1059,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         let players = game.users.players;
         let commonPlayersPermission = -1;
 
-        //console.log("Loot Sheet _prepareGMSettings | actorData.permission", actorData.permission);
-
         for (let player of players) {
-            //console.log("Loot Sheet | Checking user " + player.data.name, player);
 
             // Get the name of the primary actor for a player
             const actor = game.actors.get(player.data.character);
-            //console.log("Loot Sheet | Checking actor", actor);
 
             if (actor) {
                 player.actor = actor.data.name;
@@ -1217,8 +1075,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                     observers.push(actor.data._id);
                 }
 
-                //Set icons and permission texts for html
-                //console.log("Loot Sheet | lootPermission", player.lootPermission);
+                // Set icons and permission texts for html
                 if (commonPlayersPermission < 0) {
                     commonPlayersPermission = player.lootPermission;
                 } else if (commonPlayersPermission !== player.lootPermission) {
@@ -1256,7 +1113,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 }
 
 
-//Register the loot sheet
+// Register the loot sheet
 Actors.registerSheet("dnd5e", LootSheet5eNPC, {
     types: ["npc"],
     makeDefault: false,
@@ -1399,7 +1256,6 @@ Hooks.once("init", () => {
                 quantity = item.data.data.quantity;
             }
 
-            //let newItem = duplicate(item);
             let newItem = duplicate(item);
             console.log("NEWITEM: \n");
             console.log(newItem);
@@ -1423,18 +1279,7 @@ Hooks.once("init", () => {
                 item: newItem,
                 quantity: quantity,
             });
-            /* let destItem = destination.data.items.find(i => i.name == newItem.name);
-			console.log("DESTITEM: \n"); 
-			console.log(destItem); */
             additions.push(newItem);
-            /* if (destItem === undefined) {
-                additions.push(newItem);
-            } else {
-                console.log("Existing Item");
-				newItem.data.quantity = Number(destItem.data.data.quantity) + Number(newItem.data.quantity);
-				additions.push(newItem);
-				
-            } */
         }
 
         if (deletes.length > 0) {
@@ -1470,10 +1315,8 @@ Hooks.once("init", () => {
 
     async function transaction(seller, buyer, itemId, quantity) {
         let sellItem = seller.getEmbeddedEntity("Item", itemId);
-        //console.log(sellItem);
 
         // If the buyer attempts to buy more then what's in stock, buy all the stock.
-        //console.log(sellItem.data.data.quantity);
         if (sellItem.data.data.quantity < quantity) {
             quantity = sellItem.data.data.quantity;
         }
@@ -1498,11 +1341,7 @@ Hooks.once("init", () => {
         let itemCostInGold = Math.round(sellItem.data.data.price * sellerModifier * 100) / 100;
 
         itemCostInGold *= quantity;
-        //console.log(`ItemCost: ${itemCostInGold}`)
         let buyerFunds = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(buyer.data.data.currency));
-
-        //console.log(`Funds before purchase: ${buyerFunds}`);
-        //console.log(buyer.data.data.currency);
 
         const conversionRates = {
             "pp": 1,
@@ -1515,18 +1354,12 @@ Hooks.once("init", () => {
         const compensationCurrency = {"pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp"};
 
         let itemCostInPlatinum = itemCostInGold / conversionRates["gp"];
-        // console.log(`itemCostInGold : ${itemCostInGold}`);
-        // console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
-        // console.log(`conversionRates["gp"] : ${conversionRates["gp"]}`);
-        // console.log(`conversionRates["ep"] : ${conversionRates["ep"]}`);
 
         let buyerFundsAsPlatinum = buyerFunds["pp"];
         buyerFundsAsPlatinum += buyerFunds["gp"] / conversionRates["gp"];
         buyerFundsAsPlatinum += buyerFunds["ep"] / conversionRates["gp"] / conversionRates["ep"];
         buyerFundsAsPlatinum += buyerFunds["sp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"];
         buyerFundsAsPlatinum += buyerFunds["cp"] / conversionRates["gp"] / conversionRates["ep"] / conversionRates["sp"] / conversionRates["cp"];
-
-        // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
 
         if (itemCostInPlatinum > buyerFundsAsPlatinum) {
             errorMessageToActor(buyer, `Not enough funds to purchase item.`);
@@ -1555,7 +1388,6 @@ Hooks.once("init", () => {
             // We don't need to care about running out of money because we checked that earlier
             for (let currency in buyerFunds) {
                 let amount = buyerFunds[currency];
-                // console.log(`${currency} : ${amount}`);
                 if (amount >= 0) {
                     continue;
                 }
@@ -1571,16 +1403,12 @@ Hooks.once("init", () => {
 
                 buyerFunds[currency] = 0;
                 buyerFunds[compCurrency] += amount * conversionRates[compCurrency]; // Amount is a negative value so we add it
-                // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
             }
         }
 
-        // console.log(`Smoothing out`);
         // Finally we exchange partial coins with as little change as possible
         for (let currency in buyerFunds) {
             let amount = buyerFunds[currency];
-
-            //console.log(`${currency} : ${amount}: ${conversionRates[currency]}`);
 
             // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
             // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
@@ -1588,7 +1416,6 @@ Hooks.once("init", () => {
             let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
             buyerFunds[currency] = newFund;
 
-            //console.log(`New Buyer funds ${currency}: ${buyerFunds[currency]}`);
             let compCurrency = compensationCurrency[currency];
 
             // We don't care about fractions of CP
@@ -1596,17 +1423,11 @@ Hooks.once("init", () => {
                 // We calculate the amount of lower currency we get for the fraction of higher currency we have
                 let toAdd = Math.round((amount - newFund) * 1e5) / 1e5 * conversionRates[compCurrency];
                 buyerFunds[compCurrency] += toAdd;
-                //console.log(`Added ${toAdd} to ${compCurrency} it is now ${buyerFunds[compCurrency]}`);
             }
         }
 
-        //console.log(`Funds after purchase1: ${buyerFunds}`);
-
         // Update buyer's funds
         buyer.update({"data.currency": buyerFunds});
-
-        //console.log(`Funds after purchase2: ${buyerFunds}`);
-        //console.log(buyer.data.data.currency);
 
         let moved = await moveItems(seller, buyer, [{itemId, quantity}]);
 
@@ -1624,28 +1445,23 @@ Hooks.once("init", () => {
         let observers = [];
         let players = game.users.players;
 
-        //console.log("Loot Sheet | actorData", actorData);
         // Calculate observers
         for (let player of players) {
             let playerPermission = LootSheet5eNPCHelper.getLootPermissionForPlayer(actorData, player);
             if (player != "default" && playerPermission >= 2) {
-                //console.log("Loot Sheet | player", player);
                 let actor = game.actors.get(player.data.character);
-                //console.log("Loot Sheet | actor", actor);
                 if (actor != null && (player.data.role === 1 || player.data.role === 2)) {
                     observers.push(actor);
                 }
             }
         }
 
-        //console.log("Loot Sheet | observers", observers);
         if (observers.length === 0) {
             return;
         }
 
         // Calculate split of currency
         let currencySplit = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency));
-        //console.log("Loot Sheet | Currency data", currencySplit);
 
         // Keep track of the remainder
         let currencyRemainder = {};
@@ -1654,7 +1470,6 @@ Hooks.once("init", () => {
             if (observers.length) {
                 // Calculate remainder
                 currencyRemainder[c] = (currencySplit[c] % observers.length);
-                //console.log("Remainder: " + currencyRemainder[c]);
 
                 currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
             } else {
@@ -1665,7 +1480,6 @@ Hooks.once("init", () => {
         // Add currency to actors existing coins
         let msg = [];
         for (let u of observers) {
-            //console.log("Loot Sheet | u of observers", u);
             if (u === null) {
                 continue;
             }
@@ -1674,19 +1488,15 @@ Hooks.once("init", () => {
             let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency);
             let newCurrency = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency));
 
-            //console.log("Loot Sheet | Current Currency", currency);
-
             for (let c in currency) {
                 // Add msg for chat description
                 if (currencySplit[c]) {
-                    //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
                     msg.push(` ${currencySplit[c]} ${c} coins`);
                 }
 
                 // Add currency to permitted actor
                 newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c];
 
-                //console.log("Loot Sheet | New Currency", newCurrency);
                 u.update({
                     "data.currency": newCurrency,
                 });
@@ -1727,19 +1537,15 @@ Hooks.once("init", () => {
         let actorData = containerActor.data;
 
         let sheetCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency);
-        //console.log("Loot Sheet | Currency data", currency);
 
         // Add currency to actors existing coins
         let msg = [];
         let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(looter.data.data.currency);
         let newCurrency = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(looter.data.data.currency));
 
-        //console.log("Loot Sheet | Current Currency", currency);
-
         for (let c in currency) {
             // Add msg for chat description
             if (sheetCurrency[c]) {
-                //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
                 msg.push(` ${sheetCurrency[c]} ${c} coins`);
             }
             if (sheetCurrency[c] != null) {
