@@ -44,7 +44,7 @@ jobs:
       - name: Zip files
         run: |
             cd dist 
-            zip -r lootsheetnpc5e ./*  
+            zip -r ../lootsheetnpc5e ./*  
             cd ..
       - name: Create Release
         id: create_release
