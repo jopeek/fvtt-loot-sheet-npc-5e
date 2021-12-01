@@ -104,9 +104,9 @@ class LootSheetNPC5eHelper {
      */
     static _getOptionsDefault(options){
          return {
-            chanceOfDamagedItems: options ? options.chanceOfDamagedItems ??= 0 : 0,
-            damagedItemsMultiplier: options ? options.damagedItemsMultiplier ??= 0 : 0,
-            removeDamagedItems: options ? options.removeDamagedItems ??= false : false
+            chanceOfDamagedItems: options ? options?.chanceOfDamagedItems | 0 : 0,
+            damagedItemsMultiplier: options ? options?.damagedItemsMultiplier | 0 : 0,
+            removeDamagedItems: options ? options?.removeDamagedItems | false : false
             };
     }
 
