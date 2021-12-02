@@ -40,7 +40,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci && npm run build --if-present
+      - name: Get JSON Version
+        id: version
+        uses: notiz-dev/github-action-json-property@release     
       - name: Gets semantic release info
         id: semantic_release_info
         uses: jossef/action-semantic-release-info@v1
@@ -56,17 +58,18 @@ jobs:
         with:
           files: 'module.json'
         env:
-          version: ${{ steps.semantic_release_info.outputs.git_tag }}
+          version: ${{steps.version.outputs.prop}}
           manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-          download: https://github.com/${{github.repository}}/releases/download/v${{ steps.semantic_release_info.outputs.git_tag }}/module.zip          
+          download: https://github.com/${{github.repository}}/releases/download/v${{steps.version.outputs.prop}}/module.zip          
+      - run: npm ci && npm run build --if-present          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.semantic_release_info.outputs.git_tag }}
-          release_name: ${{ steps.semantic_release_info.outputs.type }} v${{ steps.semantic_release_info.outputs.git_tag }} AngryBugbear
+          tag_name: v${{steps.version.outputs.prop}}
+          release_name: v${{steps.version.outputs.prop}}_AngryBugbear
           draft: true
           prerelease: true
           body_path: ${{ steps.semantic_release_info.outputs.notes }}
