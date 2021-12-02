@@ -42,12 +42,10 @@ jobs:
           cache: 'npm'
       - name: Get JSON Version
         id: version
-        uses: notiz-dev/github-action-json-property@release     
-      - name: Gets semantic release info
-        id: semantic_release_info
-        uses: jossef/action-semantic-release-info@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: notiz-dev/github-action-json-property@release
+            with: 
+              path: 'module.json'
+              prop_path: 'version'
       - name: Generate Changelog
         uses: scottbrenner/generate-changelog-action@f17b985298496cf8df35aa1104091c51e7bfea95
         env:
@@ -72,7 +70,7 @@ jobs:
           release_name: v${{steps.version.outputs.prop}}_AngryBugbear
           draft: true
           prerelease: true
-          body_path: ${{ steps.semantic_release_info.outputs.notes }}
+          body_path: changelog.md
       - name: Zip files
         run: |
             cd dist 
