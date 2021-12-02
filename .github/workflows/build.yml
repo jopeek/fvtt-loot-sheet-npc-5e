@@ -72,16 +72,11 @@ jobs:
           artifacts: "release.tar.gz,foo/*.txt"
           bodyFile: ${{ steps.build_changelog.outputs.changelog }}  
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
           allowUpdates: true
           tag: v${{steps.version.outputs.prop}}
           name: v${{steps.version.outputs.prop}}
           draft: true
           prerelease: true
           artifacts: 'lootpopulatornpc5e.zip'
+
 
