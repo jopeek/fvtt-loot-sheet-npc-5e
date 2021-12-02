@@ -43,9 +43,9 @@ jobs:
       - name: Get JSON Version
         id: version
         uses: notiz-dev/github-action-json-property@release
-            with: 
-              path: 'module.json'
-              prop_path: 'version'
+          with: 
+            path: 'module.json'
+            prop_path: 'version'
       - name: Generate Changelog
         uses: scottbrenner/generate-changelog-action@f17b985298496cf8df35aa1104091c51e7bfea95
         env:
