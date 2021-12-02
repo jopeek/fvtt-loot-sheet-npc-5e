@@ -4,15 +4,6 @@ class ModuleSettings {
 
     static registerSettings() {
         const WORLD = 'world';
-
-        game.settings.register(MODULE.ns, "showLootConfig", {
-            name: "Always Show Inventory Config?",
-            hint: "If enabled, the rolltable assignment will always be shown to the GM (default: only merchant sheet).",
-            scope: WORLD,
-            config: true,
-            default: false,
-            type: Boolean
-        });
     
         game.settings.register(MODULE.ns, "useBetterRolltables", {
             name: "Use better rolltables",
@@ -107,14 +98,14 @@ class ModuleSettings {
         /**
          * UI and Themes
          */
-         game.settings.register(MODULE.ns, "useCondensedLootsheet", {
-            name: "Use a condensed lootsheet",
-            hint: "Show a more condensed lootsheet to the players?",
-            scope: WORLD,
-            config: true,
-            default: false,
-            type: Boolean,
-        }); 
+             game.settings.register(MODULE.ns, "useCondensedLootsheet", {
+                name: "(!) ALPHA (!)Use a condensed lootsheet",
+                hint: "Show a more condensed lootsheet to the players?",
+                scope: WORLD,
+                config: true,
+                default: false,
+                type: Boolean,
+            }); 
     }
 }
 export { ModuleSettings };
