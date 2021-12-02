@@ -66,7 +66,7 @@ jobs:
         run: |
             cd dist && ls -al
             zip -r ../lootsheetnpc5e .
-            cd ..
+            cd .. && ls -al
       - uses: ncipollo/release-action@v1
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
