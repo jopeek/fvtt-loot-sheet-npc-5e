@@ -68,9 +68,7 @@ jobs:
             zip -r ../lootsheetnpc5e .
             cd ..
       - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "release.tar.gz,foo/*.txt"
-          bodyFile: ${{ steps.build_changelog.outputs.changelog }}  
+        with: 
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
           tag: v${{steps.version.outputs.prop}}
