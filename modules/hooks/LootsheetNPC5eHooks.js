@@ -96,7 +96,7 @@ class LootsheetNPC5eHooks {
                         ItemHelper.errorMessageToActor(looter, "GM not available, the GM must on the same scene to distribute coins.")
                         return ui.notifications.error("Player attempted to distribute coins on a different scene.");
                     }
-                    distributeCoins(container.actor);
+                    ItemHelper.distributeCoins(container.actor);
                 }
     
                 if (data.type === "lootCoins") {

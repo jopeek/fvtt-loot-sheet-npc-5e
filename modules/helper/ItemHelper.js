@@ -1,3 +1,4 @@
+import { LootSheetNPC5eHelper } from './LootSheetNPC5eHelper.js';
 class ItemHelper {
 
     /**
@@ -22,16 +23,16 @@ class ItemHelper {
      * @returns {Array<object>} Array with moved item
      */
     static async moveItems(source, destination, items) {
-        
+
         console.log(source);
         console.log(destination);
         console.log(items);
 
         const updates = [],
-              deletes = [],
-              additions = [],
-              destUpdates = [],
-              results = [];
+            deletes = [],
+            additions = [],
+            destUpdates = [],
+            results = [];
 
         for (let i of items) {
             let itemId = i.itemId,
@@ -136,7 +137,7 @@ class ItemHelper {
 
         itemCostInGold *= quantity;
         //console.log(`ItemCost: ${itemCostInGold}`)
-        let buyerFunds = duplicate(LootSheet5eNPCHelper.convertCurrencyFromObject(buyer.data.data.currency));
+        let buyerFunds = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(buyer.data.data.currency));
 
         //console.log(`Funds before purchase: ${buyerFunds}`);
         //console.log(buyer.data.data.currency);
@@ -246,6 +247,69 @@ class ItemHelper {
                 seller, buyer,
                 `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCostInGold}gp.`,
                 m.item);
+        }
+    }
+
+    /**
+     * 
+     * @param {Actor5e} containerActor 
+     * @param {User} looter 
+     */
+     static lootCoins(containerActor, looter) {
+        let actorData = containerActor.data;
+
+        let sheetCurrency = LootSheetNPC5eHelper.convertCurrencyFromObject(actorData.data.currency);
+        //console.log("Loot Sheet | Currency data", currency);
+
+        // add currency to actors existing coins
+        let msg = [];
+        let currency = LootSheetNPC5eHelper.convertCurrencyFromObject(looter.data.data.currency),
+            newCurrency = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(looter.data.data.currency));
+
+        //console.log("Loot Sheet | Current Currency", currency);
+
+        for (let c in currency) {
+            // add msg for chat description
+            if (sheetCurrency[c]) {
+                //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
+                msg.push(` ${sheetCurrency[c]} ${c} coins`)
+            }
+            if (sheetCurrency[c] != null) {
+                // Add currency to permitted actor
+                newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c]);
+                looter.update({
+                    'data.currency': newCurrency
+                });
+            }
+        }
+
+        // Remove currency from loot actor.
+        let lootCurrency = LootSheetNPC5eHelper.convertCurrencyFromObject(containerActor.data.data.currency),
+            zeroCurrency = {};
+
+        for (let c in lootCurrency) {
+            zeroCurrency[c] = {
+                'type': sheetCurrency[c].type,
+                'label': sheetCurrency[c].type,
+                'value': 0
+            }
+            containerActor.update({
+                "data.currency": zeroCurrency
+            });
+        }
+
+        // Create chat message for coins received
+        if (msg.length != 0) {
+            let message = `${looter.data.name} receives: `;
+            message += msg.join(",");
+            ChatMessage.create({
+                user: game.user._id,
+                speaker: {
+                    actor: containerActor,
+                    alias: containerActor.name
+                },
+                content: message
+            });
         }
     }
 

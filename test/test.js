@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as fs from 'fs';
-import { LootSheetNPC5eHelper } from '../modules/helper/Helper.js';
+import { LootSheetNPC5eHelper } from '../modules/helper/LootSheetNPC5eHelper.js';
 
 describe('Check module structure', function(){
   it('Helpers exist', function(done) {

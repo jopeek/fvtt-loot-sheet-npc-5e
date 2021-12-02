@@ -1,5 +1,5 @@
 import { PermissionHelper } from './helper/PermissionHelper.js';
-import { LootSheetNPC5eHelper } from "./helper/Helper.js";
+import { LootSheetNPC5eHelper } from "./helper/LootSheetNPC5eHelper.js";
 import { MODULE } from './config.js';
 
 class API {

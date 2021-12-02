@@ -2,13 +2,12 @@ import ActorSheet5eNPC from "/systems/dnd5e/module/actor/sheets/npc.js";
 import Item5e from "/systems/dnd5e/module/item/entity.js";
 
 import { MODULE } from "../config.js";
-import { LootSheetNPC5eHelper } from "../helper/Helper.js";
+import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from '../helper/PermissionHelper.js';
 import tableHelper from "../helper/tableHelper.js";
-
 class LootSheet5eNPC extends ActorSheet5eNPC {
     get template() {
-        const sheetType = (game.settings.get(MODULE.ns, "useCondensedLootsheet")) ? 'condensed' : 'default';
+        const sheetType = 'default';//(game.settings.get(MODULE.ns, "useCondensedLootsheet")) ? 'condensed' : 'default';
 
         loadTemplates([
             "modules/" + MODULE.ns + "/template/sheet.hbs",
@@ -27,8 +26,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         mergeObject(options, {
             classes: ["dnd5e sheet actor npc npc-sheet loot-sheet-npc"],
-            resizable: !game.settings.get(MODULE.ns, "useCondensedLootsheet")
+            //resizable: !game.settings.get(MODULE.ns, "useCondensedLootsheet")            
         });
+        
         return options;
     }
 
@@ -71,14 +71,13 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Booleans
         sheetData.isGM = (game.user.isGM) ? true : false;
-        sheetData.showLootConfig = game.settings.get(MODULE.ns, "showLootConfig") || (sheetType === 'Merchant');
 
         // Items
         sheetData.items = itemContents;
 
         // rest
         sheetData.lootsheettype = sheetType;
-        sheetData.isCondensedView = game.settings.get(MODULE.ns, "useCondensedLootsheet");
+        sheetData.isCondensedView = false; //game.settings.get(MODULE.ns, "useCondensedLootsheet");
         sheetData.totalItems = itemContents.length;
         sheetData.totalWeight = totalWeight.toLocaleString('en');
         sheetData.totalPrice = totalPrice.toLocaleString('en') + " gp";
@@ -128,9 +127,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
     async _onSubmit(e) {
         e.preventDefault();
-        let options = {};
+        let options = {},
+            inventorySettings = document.querySelector('.inventory-settings');
 
-        if (game.user.isGM && document.querySelector('.inventory-settings').contains(e.currentTarget)) {
+        if (game.user.isGM && inventorySettings &&inventorySettings.contains(e.currentTarget)) {
             options.preventClose = true;
             options.preventRender = true;
         }
@@ -166,7 +166,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         html.find('.help').hover(e => e.currentTarget.nextElementSibling.classList.toggle('hidden'));
 
         // Split Coins
-        html.find('.split-coins').removeAttr('disabled').click(ev => this._distributeCoins(ev));
+        html.find('.split-coins').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.distributeCoins(ev));
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
@@ -175,21 +175,21 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         // Loot Item
         if(game.settings.get(MODULE.ns, "useCondensedLootsheet")){
-            html.find('.loot-trigger').click(ev => LootSheet5eNPCHelper._lootItem(this.token, ev, 1));
+            html.find('.loot-trigger').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev, 1));
         } else {
-            html.find('.item-loot').click(ev => LootSheet5eNPCHelper._lootItem(this.token, ev));
+            html.find('.item-loot').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev));
         }
         
-        html.find('.item-lootall').click(ev => LootSheet5eNPCHelper._lootItem(this.token, ev, 1));
+        html.find('.item-lootall').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev, 1));
 
         // Loot Currency
-        html.find('.currency-loot').click(ev => this._lootCoins(ev));
+        html.find('.loot-currency').click(ev => LootSheetNPC5eHelper.lootCoins(this.token, ev));
 
         // Loot All
         html.find('.loot-all').removeAttr('disabled').click(ev => this._lootAll(ev, html));
 
         // Sheet Type
-        html.find('.sheet-type').change(ev => LootSheet5eNPCHelper._changeSheetType(this.actor, ev, html));
+        html.find('.sheet-type').change(ev => LootSheetNPC5eHelper._changeSheetType(this.actor, ev, html));
     }
 
     /* -------------------------------------------- */
@@ -338,7 +338,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
      * @param {*} sheetData 
      */
     _setClasses(sheetData) {
-        if (game.settings.get(MODULE.ns, "useCondensedLootsheet") || !sheetData.owner) {
+        if (false && game.settings.get(MODULE.ns, "useCondensedLootsheet") || !sheetData.owner) {
             this.options.classes.push('lootsheet-condensed');            
         }
     }
@@ -446,33 +446,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
     /* -------------------------------------------- */
 
-    /**
-     * Handle Loot coins
-     * @private
-     */
-    _lootCoins(event) {
-        event.preventDefault();
-        if (!game.settings.get(MODULE.ns, "lootCurrency")) {
-            return;
-        }
-        console.log("Loot Sheet | Loot Coins clicked");
-
-        let targetGm = PermissionHelper.getTargetGM();
-
-        if (!targetGm) return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
-        if (this.token === null) return ui.notifications.error(`You must loot coins from a token.`);
-        if (!game.user.actorId) return ui.notifications.error(`No active character for user.`);
-
-        const packet = {
-            type: "lootCoins",
-            looterId: game.user.actorId,
-            tokenId: this.token.id,
-            processorId: targetGm.id
-        };
-
-        console.log(MODULE.ns, "Sending loot request to " + targetGm.name, packet);
-        game.socket.emit(MODULE.socket, packet);
-    }
 
     /* -------------------------------------------- */
 
@@ -570,40 +543,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
     /* -------------------------------------------- */
 
-    /**
-     * Handle distribution of coins
-     * @private
-     */
-    _distributeCoins(event) {
-        event.preventDefault();
-        //console.log("Loot Sheet | Split Coins clicked");
-
-        let targetGm = PermissionHelper.getTargetGM();
-
-        if (!targetGm) {
-            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to purchase an item.");
-        }
-
-        if (this.token === null) {
-            return ui.notifications.error(`You must loot items from a token.`);
-        }
-
-        if (game.user.isGM) {
-            //don't use socket
-            let container = canvas.tokens.get(this.token.id);
-            this._hackydistributeCoins(container.actor);
-            return;
-        }
-
-        const packet = {
-            type: "distributeCoins",
-            looterId: game.user.actorId,
-            tokenId: this.token.id,
-            processorId: targetGm.id
-        };
-        console.log(MODULE.ns, "Sending distribute coins request to " + targetGm.name, packet);
-        game.socket.emit(MODULE.socket, packet);
-    }
+    
 
     /* -------------------------------------------- */
 
