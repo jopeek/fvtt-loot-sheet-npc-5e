@@ -41,22 +41,40 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci && npm run build --if-present
-      - name: Zip files
-        run: |
-            cd dist 
-             zip -r ../lootsheetnpc5e ./* ./**/*
-            cd ..
+      - name: Gets semantic release info
+        id: semantic_release_info
+        uses: jossef/action-semantic-release-info@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate Changelog
+        uses: scottbrenner/generate-changelog-action@f17b985298496cf8df35aa1104091c51e7bfea95
+        env:
+          REPO: ${{ github.repository }}
+      - name: Prepare Module Manifest
+        id: sub_manifest_link_version
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'module.json'
+        env:
+          version: ${{ steps.semantic_release_info.outputs.git_tag }}
+          manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
+          download: https://github.com/${{github.repository}}/releases/download/v${{ steps.semantic_release_info.outputs.git_tag }}/module.zip          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          tag_name: v${{ steps.semantic_release_info.outputs.git_tag }}
+          release_name: ${{ steps.semantic_release_info.outputs.type }} v${{ steps.semantic_release_info.outputs.git_tag }} AngryBugbear
           draft: true
           prerelease: true
-          body_path: changelog.md
+          body_path: ${{ steps.semantic_release_info.outputs.notes }}
+      - name: Zip files
+        run: |
+            cd dist 
+             zip -r ../lootsheetnpc5e ./* ./**/*
+            cd ..
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1.0.2
