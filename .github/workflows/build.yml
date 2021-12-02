@@ -41,17 +41,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - name: "Build Changelog"
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v2.7.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get JSON Version
         id: version
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'module.json'
-          prop_path: 'version'
+          prop_path: 'version'          
       - name: Prepare Module Manifest
         id: sub_manifest_link_version
         uses: microsoft/variable-substitution@v1
@@ -65,17 +60,17 @@ jobs:
       - name: Zip files
         run: |
             mkdir -p dist && cp -r -t dist icons/ modules/ packs/ template/ styles/ module.json *.js *.md
-            cd dist && tree
+            cd dist
             zip -r ../lootsheetnpc5e .
-            cd .. && ls -al
       - uses: ncipollo/release-action@v1
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
           tag: v${{steps.version.outputs.prop}}
           name: v${{steps.version.outputs.prop}}
+          artifacts: 'lootsheetnpc5e.zip'
           draft: true
           prerelease: true
-          artifacts: 'lootsheetnpc5e.zip'
+          generateReleaseNotes: true
 
 
