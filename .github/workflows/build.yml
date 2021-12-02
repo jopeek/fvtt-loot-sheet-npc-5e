@@ -41,16 +41,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - name: "Build Changelog"
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@{latest-release}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get JSON Version
         id: version
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'module.json'
           prop_path: 'version'
-      - name: Generate Changelog
-        uses: scottbrenner/generate-changelog-action@f17b985298496cf8df35aa1104091c51e7bfea95
-        env:
-          REPO: ${{ github.repository }}
       - name: Prepare Module Manifest
         id: sub_manifest_link_version
         uses: microsoft/variable-substitution@v1
@@ -59,31 +60,29 @@ jobs:
         env:
           version: ${{steps.version.outputs.prop}}
           manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-          download: https://github.com/${{github.repository}}/releases/download/v${{steps.version.outputs.prop}}/module.zip          
+          download: https://github.com/${{github.repository}}/releases/download/v${{steps.version.outputs.prop}}/lootsheetnpc5e.zip          
       - run: npm ci && npm run build --if-present          
+      - name: Zip files
+        run: |
+            cd dist 
+            zip -r ../lootsheetnpc5e .
+            cd ..
+      - name: 
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "release.tar.gz,foo/*.txt"
+          bodyFile: ${{ steps.build_changelog.outputs.changelog }}  
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{steps.version.outputs.prop}}
-          release_name: v${{steps.version.outputs.prop}}_AngryBugbear
+          allowUpdates: true
+          tag: v${{steps.version.outputs.prop}}
+          name: v${{steps.version.outputs.prop}}
           draft: true
           prerelease: true
-          body_path: changelog.md
-      - name: Zip files
-        run: |
-            cd dist 
-             zip -r ../lootsheetnpc5e ./* ./**/*
-            cd ..
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./lootsheetnpc5e.zip
-          asset_name: lootsheetnpc5e.zip
-          asset_content_type: application/zip
+          artifacts: 'lootpopulatornpc5e.zip'
+
