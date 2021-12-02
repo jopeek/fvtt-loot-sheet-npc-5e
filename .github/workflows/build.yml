@@ -67,7 +67,6 @@ jobs:
             cd dist 
             zip -r ../lootsheetnpc5e .
             cd ..
-      - name: 
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "release.tar.gz,foo/*.txt"
