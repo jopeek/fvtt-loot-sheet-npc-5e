@@ -8,3 +8,4 @@ dist/
 node_modules/
 docs/
 wiki/
+.nyc_output/
