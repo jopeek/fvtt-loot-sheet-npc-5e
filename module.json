@@ -1,53 +1,14 @@
-{
-	"name": "lootsheetnpc5e",
-	"title": "Loot Sheet NPC 5e",
-	"description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
-	"version": "3.3.0",
-	"minimumCoreVersion": "0.8.9",
-	"compatibleCoreVersion": "0.8.9",
-	"authors": [
-		{
-			"name": "Jan Ole Peek | ChalkOne",
-			"url": "https://github.com/jopeek"
-		},
-		{
-			"name": "Charles Miller | Kage",
-			"url": "https://github.com/KageJittai"
-		},
-		{
-			"name": "NonstickPanda",
-			"url": "https://github.com/Nonstick-Panda"
-		},
-		{
-			"name": "Kevin Brammer Striky",
-			"url": ""
-		},
-		{
-			"name": "Daniel Böttner | JackPrince#0494",
-			"url": "https://github.com/DanielBoettner/"
-		}
-	],
-	"packs": [
-		{
-			"name": "LootsheetNPC5e Rolltables",
-			"label": "LootsheetNPC5e Rolltables",
-			"system": "dnd5e",
-			"path": "./packs/lootsheetnpc5e_rolltables.db",
-			"entity": "RollTable"
-		},
-		{
-			"name": "LootsheetNPC5e Macros",
-			"label": "LootsheetNPC5e Macros",
-			"system": "dnd5e",
-			"path": "./packs/lootsheetnpc5e_macros.db",
-			"entity": "Macro"
-		}
-	],
-	"system": ["dnd5e"],
-    "esmodules": ["/lootsheetnpc5e.js"],
-	"styles": ["/styles/lootsheetnpc5e.css"],
-	"socket": true,
-	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
-	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/releases/latest/download/module.json",
-	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/download/v{SEMVER}/lootsheetnpc5e.zip"
-}
+import { LootSheet5eNPC } from './modules/classes/LootsheetNPC5e.js';
+import { LootsheetNPC5eHooks } from './modules/hooks/LootsheetNPC5eHooks.js';
+
+//Register the loot sheet
+Actors.registerSheet("dnd5e", LootSheet5eNPC, {
+    types: ["npc"],
+    makeDefault: false
+});
+
+/**
+ * Initial Setup with settings, socket, handlebars & API
+ */
+LootsheetNPC5eHooks.init();
+

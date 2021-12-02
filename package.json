@@ -5,10 +5,9 @@
   "main": "lootsheetnpc5e.js",
   "scripts": {
     "all": "npm run less && npm run copyfiles && npm run test",
-    "build": "npm run less && npm run copyfiles ",
+    "build": "npm run less",
     "local-all": "npm run less && npm run copyfiles && npm run localcopy && npm run generate-docs",
-    "copyfiles": "copyfiles -a ./lootsheetnpc5e.js ./module.json ./*.md ./modules/**/** ./modules/**/** ./modules/**/** ./modules/**/** ./dist",
-    "localcopy": "copyfiles -u 1 ./dist/**/* /Users/jackp/AppData/Local/FoundryVTT/Data/modules/lootsheetnpc5e",
+    "localcopy": "ncp ./dist/**/* /Users/jackp/AppData/Local/FoundryVTT/Data/modules/lootsheetnpc5e",
     "less": "lessc -clean-css ./styles/lootsheetNPC5e.less ./dist/styles/lootsheetNPC5e.css",
     "generate-docs": "jsdoc -c jsdoc.json",
     "test": "nyc --reporter=text mocha"
@@ -31,13 +30,13 @@
   },
   "homepage": "https://github.com/DanielBoettner/fvtt-loot-sheet-npc-5e#readme",
   "devDependencies": {
-    "copyfiles": "^2.4.1",
     "generate-docs": "^1.1.1",
     "jsdoc-to-markdown": "^7.1.0",
     "less-plugin-clean-css": "^1.5.1",
     "lessc": "^1.0.2",
     "mocha": "^9.1.3",
     "nyc": "^15.1.0",
+    "recursive-copy-cli": "^1.0.20",
     "unit.js": "^2.1.1"
   },
   "type": "module"
