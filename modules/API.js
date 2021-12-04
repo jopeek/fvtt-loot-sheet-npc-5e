@@ -1,13 +1,22 @@
 import { PermissionHelper } from './helper/PermissionHelper.js';
 import { LootSheetNPC5eHelper } from "./helper/LootSheetNPC5eHelper.js";
 import { MODULE } from './config.js';
-
+/**
+ * @description The lootsheet API
+ *  
+ * @module lootsheetnpc5e.API
+ * 
+ * @title Lootsheet NPC 5e API
+ */
 class API {
-    /**
-       * Converts the provided token to a lootable sheet
+        
+        /**
+       * @title Converts the provided token to a lootable sheet
        *
-       * Adapted from dfreds pocketChange Module
+       * @note titleAdapted from dfreds pocketChange Module
        * Originally adappted from the convert-to-lootable.js by @unsoluble, @Akaito, @honeybadger, @kekilla, and @cole.
+       * 
+       * @module lootsheetnpc5e.API.convertToken
        * 
        * @param {object} options
        * @param {Token5e} token - the token to convert
@@ -93,11 +102,14 @@ class API {
     }
 
     /**
-     * Convert a stack of Tokens to a given type, apply modifiers if given
+     * @title convertTokens()
+     * @description Convert a stack of Tokens to a given type, apply modifiers if given
+     * @module lootsheetnpc5e.API.convertTokens
      * 
      * @param {Array<Token5e>} tokens Array of ActorTokens
      * @param {string} type Type of sheet (loot|merchant)
      * @param {object} options 
+     * @returns {object}
      */
     static async convertTokens(
         tokens = canvas.tokens.controlled,
@@ -117,9 +129,9 @@ class API {
     }
 
     /**
-     * WIP:
+     * @module lootsheetnpc5e.API.makeObservable
      * 
-     * @param {Token} tokens A token or null (defaults to all controlled tokens)
+     * @param {Token|Array<Token>} tokens A a selection tokens or null (defaults to all controlled tokens)
      * @param {Array<User>|null} players Optional array with users to update (defaults to all) 
      * @returns {Array<object>} Array with user permissions
      */
@@ -139,9 +151,10 @@ class API {
     }
 
     /**
-     *  Return the player(s) current permissions or the tokens default permissions
+     * @description Return the player(s) current permissions or the tokens default permissions
+     * @module lootsheetnpc5e.API.getPermissionForPlayers
      * 
-     * @param {token}
+     * @param {Token} token token or null (defaults to all controlled tokens)
      * @param {Array<User>|null} players Optional array with users to update (defaults to all)
      * @returns {object} permissions Array of an permission enum values or a single permission
      */
@@ -164,7 +177,9 @@ class API {
     }
 
     /**
+     * @description Verbose ouput wrapper
      * 
+     * @module lootsheetnpc5e.API._verbose
      * @param {string} text 
      */
     static _verbose(text){
