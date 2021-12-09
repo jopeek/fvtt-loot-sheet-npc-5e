@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/DanielBoettner/fvtt-loot-sheet-npc-5e#readme",
   "devDependencies": {
+    "cpy": "^8.1.2",
     "generate-docs": "^1.1.1",
     "jsdoc-to-markdown": "^7.1.0",
     "less-plugin-clean-css": "^1.5.1",
