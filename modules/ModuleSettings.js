@@ -1,7 +1,16 @@
 import { MODULE } from './config.js';
 
+/**
+ * @module lootsheetnpc5e.ModuleSettings
+ */
 class ModuleSettings {  
 
+    /**
+     * @module lootsheetnpc5e.ModuleSettings.registerSettings
+     * 
+     * @description Register ModuleSettings with core Foundry
+     * @static
+     */
     static registerSettings() {
         const WORLD = 'world';
     

@@ -16,12 +16,12 @@
                 </button>
             {{/if}}
 
-        <button type="button" class="split-currency" type="split-coins" name="split-coins" value="1"
-            title="Loot Coins | Share between {{actor.flags.loot.observerCount}} in Party">
-            <i class="fas fa-users"></i>
-            <i class="fas fa-hand-holding-usd"></i>            
-            <span class="buttontext">{{localize "Share Coins"}}</span>
-        </button>
+            <button type="button" class="split-currency" type="split-coins" name="split-coins" value="1"
+                title="Loot Coins | Share between {{actor.flags.loot.observerCount}} in Party">
+                <i class="fas fa-users"></i>
+                <i class="fas fa-hand-holding-usd"></i>            
+                <span class="buttontext">{{localize "Share Coins"}}</span>
+            </button>
 
             {{#if lootCurrency}}
                 <button type="button" class="loot-currency">
@@ -32,14 +32,15 @@
                 </button>
             {{/if}}
         {{/ifeq}}
-
-        {{#ifeq lootsheettype "Merchant"}}
+        
         {{#if isGM}}
-        <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value="">
-            <i class="fa fa-balance-scale"></i>
-            <span class="buttontext">{{localize Price Modifier}}</span>
-        </button>
+            {{#ifeq lootsheettype "Merchant"}}                
+                <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value="">
+                    <i class="fa fa-balance-scale"></i>
+                    <span class="buttontext">{{localize "Price Modifier"}}</span>
+                </button>                    
+            {{/ifeq}}
         {{/if}}
-        {{/ifeq}}
+        
     </div>
 </header>

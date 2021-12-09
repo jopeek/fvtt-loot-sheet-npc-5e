@@ -1,0 +1,57 @@
+<div class="ls-gm-section permissions">
+    <h3 class="gm-header">
+        Permissions
+        <aside class="infobox-wrapper">
+            <i class="fas fa-info-circle help"></i>
+            <div class="sheet-infobox hidden">
+                ⚠️ Ensure a character is selected for the players via the 'Player configuration'. So they are displayed here. ⚠️
+            </div>
+        </aside>
+    </h3>
+    
+    <h4>{{localize 'Bulk Update'}}</h4>
+    <ul class="permissions-options">        
+        {{#each actor.flags.loot.permissions as |permission key|}}
+            <li class="permission-option" >
+                <a data-value="{{key}}" title="{{permission.title}} : {{permission.description}}">
+                    <i class="{{permission.class}}"></i>
+                </a>
+            </li>
+        {{/each}}        
+    </ul>
+
+    <h4>
+        {{localize 'Individual'}}
+        <aside class="infobox-wrapper">
+            <i class="fas fa-info-circle help"></i>
+            <div class="sheet-infobox hidden">
+                <dl>
+                    <dt>Hover</dt>
+                    <dd>Hover over a player Icon to see player name and permission info.</dd>
+                    <dt>Click</dt>
+                    <dd>Click on a player icon to cycle the players permission.</dd>
+                    <dd>🔁 (None ➡️ Observer ➡️ Owner)
+                </dl>
+            </div>
+        </aside>
+    </h4>
+    <ol class="permissions-list">
+        {{#each actor.flags.loot.players as |player p|}}
+            <li class="permission" data-skill="{{p}}">
+                <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}" data-dtype="Number"
+                    actor="{{player.actorId}}" />
+                <a class="permission-proficiency"
+                    title="{{player.name}} :{{player.lootPermissionDescription}}"
+                    data-player-id="{{player.playerId}}"
+                    data-player-permission="{{player.lootPermission}}
+                    ">
+                    <i class="{{player.class}}"></i>
+                    <img class="permission-player" src="{{player.character.data.img}}" data-img-mask="" alt="{{player.actor}} ({{player.name}})">
+                </a>
+            </li>
+        {{/each}}
+    </ol>
+</div>
+<input type="hidden" name="actor.flags.loot.playersPermission" value="{{actor.flags.loot.playersPermission}}"
+    data-dtype="Number" />
+

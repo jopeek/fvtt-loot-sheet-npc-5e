@@ -7,6 +7,7 @@ import { MODULE } from './config.js';
  * @module lootsheetnpc5e.API
  * 
  * @title Lootsheet NPC 5e API
+ * @version 1.0.0
  */
 class API {
         
@@ -31,8 +32,14 @@ class API {
         options = {},
         verbose = false
     ) {
-        if(!token && verbose) API._verbose({code: 403, msg: 'No token selected or supplied'});
-        if(!token) return {code: 403, msg: 'No token selected or supplied'};
+        let response = API._response(200, 'success');
+        if(!token) {
+            response.code = 403;
+            response.msg = 'No token selected or supplied';
+            response.error = true;
+            if (verbose) API._verbose(response);
+            return response;
+        }
 
         const sheet = token.actor.sheet,
             priorState = sheet._state; // -1 for opened before but now closed, // 0 for closed and never opened // 1 for currently open
@@ -42,7 +49,7 @@ class API {
         let newActorData = {
             flags: {
                 core: {
-                    sheetClass: 'dnd5e.LootSheet5eNPC',
+                    sheetClass: 'dnd5e.LootSheetNPC5e',
                 },
                 lootsheetnpc5e: {
                     lootsheettype: 'Loot',
@@ -97,8 +104,9 @@ class API {
             token.actor.sheet.render(true);
         }
 
-        if(verbose) API._verbose({code: 200, msg: 'token converted'});
-        return {code: 200, msg: 'success', data: token};
+        response.data = token;
+        if(verbose) API._verbose(response);
+        return response;
     }
 
     /**
@@ -117,15 +125,14 @@ class API {
         options = {},
         verbose = false
     ){
-        let ret = {code: 400, msg: 'undefined error', data: {} };
+        let response = API._response(200, 'success');
 
         for (let token of tokens){
-             ret.data[token.uuid] = await API.convertToken(token, type, options, verbose)
+             response.data[token.uuid] = await API.convertToken(token, type, options, verbose)
         }
 
-        ret.code = 200;
-        ret.msg = 'success';
-        return ret;
+        if(verbose) API._verbose(response);
+        return response;
     }
 
     /**
@@ -133,21 +140,32 @@ class API {
      * 
      * @param {Token|Array<Token>} tokens A a selection tokens or null (defaults to all controlled tokens)
      * @param {Array<User>|null} players Optional array with users to update (defaults to all) 
-     * @returns {Array<object>} Array with user permissions
+     * 
+     * @returns {object} API response object
      */
     static async makeObservable (
         tokens = game.canvas.tokens.controlled,
         players =  PermissionHelper.getPlayers()
     ) {
-        let tokenData = {
-                actorData: {
-                    permission: PermissionHelper._updatedUserPermissions(tokens,players)
-                }
-            };
+        let response = API._response(200, 'success');
+            responseData = {};
+        for (let token of tokens) {
+            const 
+                permissions = PermissionHelper._updatedUserPermissions(token, players),
+                tokenData = {
+                    actorData: {
+                        permission: permissions
+                    }
+                };
 
-        await token.document.update(tokenData);
-        
-        return {};
+            responseData[token.uuid] = permissions;
+
+            await token.update(tokenData);
+        }
+
+        response.data= permissions;
+        if(verbose) API._verbose(response);
+        return response;
     }
 
     /**
@@ -163,17 +181,46 @@ class API {
         players = PermissionHelper.getPlayers(),
         verbose = false
     ) {
-        if(!token && verbose) API._verbose({code: 403, msg: 'No token selected or supplied'});
-        if(!token) return {code: 403, msg: 'No token selected or supplied'};
+        let response = API._response(200, 'success', {});
+        if(!token) {
+            response.code = 403;
+            response.msg = 'No token selected or supplied';
+            if (verbose) API._verbose(response);
+            return response;
+        }
         
-
         let permissions = {};
         for (let player of players){
-            permissions[player.data._id] = PermissionHelper.getLootPermissionForPlayer(token.actor.data ,player); 
-            if (verbose) API._verbose('Player:' + player.data.name + ' has permission ' + permissions[player.data._id]);  
+            permissions[player.data._id] = PermissionHelper.getLootPermissionForPlayer(token.actor.data ,player);
+            response.data[player.data._id] = permissions[player.data._id];
         }
-        if (verbose) API._verbose({code: 200, msg: 'success', data: permissions});
-        return {code: 200, msg: 'success', data: permissions};
+        
+        if (verbose) API._verbose(response);
+        return response;
+    }
+
+    /**
+     * Use the PermissionHelper to update the users permissions for the token
+     * @param {Token5e} token 
+     * @param {number|null} permission enum
+     * 
+     * @return {object} reponse object
+     */
+    static async updatePermissionForPlayers () {
+        let response = API._response(200, permissions, 'success');
+        const 
+            tokens = canvas.tokens.controlled,
+            players = PermissionHelper.getPlayers();
+
+        for (let token of tokens) {
+            const 
+                permissions = PermissionHelper._updatedUserPermissions(token, players);
+
+            response.data[token.uuid] = permissions;
+        }
+
+        if (verbose) API._verbose(response);
+        return response;
     }
 
     /**
@@ -181,9 +228,19 @@ class API {
      * 
      * @module lootsheetnpc5e.API._verbose
      * @param {string} text 
+     * @private
      */
-    static _verbose(text){
-        console.log(MODULE.ns + ' - API | ', text);
+    static _verbose(data = ''){
+        console.log('|--- ' + MODULE.ns + ' API (verbose output) ---|', data, '|--- ' + MODULE.ns + ' API (/verbose output)---|');
+    }
+
+    static _response(code, msg = '', data = {}, error = false){
+        return {
+            code: code,
+            data: data,
+            msg: msg,
+            error: error
+        }
     }
 }
 

@@ -12,15 +12,16 @@
         <a class="item" data-tab="biography">Biography</a>
     </nav>
     <section class="sheet-lower flexrow">
-        <!-- SIDEBAR -->
-        {{> "modules/lootsheetnpc5e/template/partials/sidebar/sidebar.hbs"}}
-
+        <!-- SIDEBAR for GM -->
+        {{#if isGM}}
+            {{> "modules/lootsheetnpc5e/template/partials/sidebar/sidebar.hbs"}}
+        {{/if}}
+        
         <!-- BODY -->
         <section class="sheet-content content">
             <section class="sheet-body">
                 <div class="tab" data-tab="biography" data-group="primary">
-                    {{editor content=data.details.biography.value target="data.details.biography.value" button=true
-                    owner=owner editable=editable}}
+                    {{editor content=data.details.biography.value target="data.details.biography.value" button=true owner=owner editable=editable}}
                 </div>
 
                 <div class="tab" data-tab="inventory" data-group="primary">

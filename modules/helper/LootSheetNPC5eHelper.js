@@ -4,19 +4,24 @@ import { MODULE } from "../config.js";
 class LootSheetNPC5eHelper {
 
     /**
+     * Shange the {Actor5e}'s sheet type flag
+     * 
+     * Changes the current value of the Actor's sheet type
+     * to the one given in selection.
      * 
      * @param {Actor5e} actor 
-     * @param {*} event 
-     * @param {*} html 
+     * @param {Event} event 
+     * @param {HtmL} html 
      */
-    static async _changeSheetType(actor, event, html) {
+    static async _changeSheetType(event, actor, html) {
         event.preventDefault();
-        console.log("Loot Sheet | Sheet Type changed", event);
-
-        const selectedIndex = event.target.selectedIndex,
-            selectedItem = event.target[selectedIndex].value;
-
+        const selectedIndex = event.currentTarget.selectedIndex,
+            selectedItem = event.currentTarget[selectedIndex].value;
+        
         await actor.setFlag(MODULE.ns, "lootsheettype", selectedItem);
+        
+        console.log(MODULE.ns + " | " + game.user.name + ' (' + game.user.id + ') updated the sheet type for ', MODULE.ns + " event | " + event);
+        actor.sheet.render(true);
     }
 
     /**

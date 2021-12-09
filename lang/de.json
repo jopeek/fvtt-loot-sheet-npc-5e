@@ -1,3 +1,18 @@
 {
-    "lsnpc.no_active_gm": "Kein aktiver GM in der Szene, ein GM muss online und in der gleichen Szene sein."
+    "lsnpc.no_active_gm": "Kein aktiver GM in der Szene, ein GM muss online und in der gleichen Szene sein.",
+    "lsnpc.sendBuyText": "Sende Kaufanfrage an ",
+    "lsnpc.permissions": {
+        "0": {
+            "title": "None",
+            "desc": "cannot access sheet"
+        },
+        "2": {
+            "title": "Observer",
+            "desc": "Access to sheet but can only purchase items if merchant sheet type"
+        },
+        "3": {
+            "title": "Owner",
+            "desc": "Manage inventory of the actor, share coins."
+        }
+    }
 }

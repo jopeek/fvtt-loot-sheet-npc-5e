@@ -1,23 +1,43 @@
 import ActorSheet5eNPC from "/systems/dnd5e/module/actor/sheets/npc.js";
 import Item5e from "/systems/dnd5e/module/item/entity.js";
+// ⬆️ 5e core imports
 
 import { MODULE } from "../config.js";
 import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from '../helper/PermissionHelper.js';
 import tableHelper from "../helper/tableHelper.js";
-class LootSheet5eNPC extends ActorSheet5eNPC {
-    get template() {
-        const sheetType = 'default';//(game.settings.get(MODULE.ns, "useCondensedLootsheet")) ? 'condensed' : 'default';
+// ⬆️ module imports
 
-        loadTemplates([
+/**
+ * @module lootsheetnpc5e.LootSheet5eNPC
+ * @description A class for handling the loot sheet for NPCs.
+ * 
+ */
+class LootSheetNPC5e extends ActorSheet5eNPC {
+
+    /**
+     * @module lootsheetnpc5e.LootSheet5eNPC.template
+     * @description Handle template loading for the sheet
+     */
+    get template() {
+        const sheetType = 'default',//(game.settings.get(MODULE.ns, "useCondensedLootsheet")) ? 'condensed' : 'default';
+              path = "systems/dnd5e/templates/actors/";
+        
+        let templateList = [
             "modules/" + MODULE.ns + "/template/sheet.hbs",
-            "modules/" + MODULE.ns + "/template/partials/sidebar/sidebar.hbs",            
             "modules/" + MODULE.ns + "/template/partials/list/" + sheetType + ".hbs",
             "modules/" + MODULE.ns + "/template/partials/header/" + sheetType + ".hbs"
-        ]);
+        ];
+        
+        if(game.user.isGM) {
+            templateList.push("modules/" + MODULE.ns + "/template/partials/sidebar/sidebar.hbs");
+            templateList.push("modules/" + MODULE.ns + "/template/partials/sidebar/gm-settings/permissions.hbs");
+        }
 
-        const path = "systems/dnd5e/templates/actors/";
+        loadTemplates(templateList);
+
         if (!game.user.isGM && this.actor.limited) return path + "limited-sheet.html";
+
         return "modules/" + MODULE.ns + "/template/sheet.hbs";
     }
 
@@ -146,15 +166,16 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     /**
      * Activate event listeners using the prepared sheet HTML
      * 
-     * @param html {HTML}   The prepared HTML object ready to be rendered into the DOM
+     * @param html {HTML} The prepared HTML object ready to be rendered into the DOM
      * @todo change to use native JS methods instead of jQuery
      */
     activateListeners(html) {
         super.activateListeners(html);
         if (this.options.editable) {
-            // Toggle Permissions
-            html.find('.permission-proficiency').click(ev => this._onCyclePermissionProficiency(ev));
-            html.find('.permission-proficiency-bulk').click(ev => this._onCyclePermissionProficiencyBulk(ev));
+            // Change Permissions for all players
+            html.find('.permission-option a').click(ev => PermissionHelper.setPermissions(ev, this.actor));
+            // Cycle Permissions for an indidual player.
+            html.find('.permission-proficiency').click(ev => PermissionHelper._onCyclePermissionProficiency(ev, this.actor));
 
             // Price Modifier
             html.find('.price-modifier').click(ev => this._priceModifier(ev));
@@ -188,8 +209,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         // Loot All
         html.find('.loot-all').removeAttr('disabled').click(ev => this._lootAll(ev, html));
 
-        // Sheet Type
-        html.find('.sheet-type').change(ev => LootSheetNPC5eHelper._changeSheetType(this.actor, ev, html));
+        // Change sheet type
+        html.find('.sheet-type').change(ev => LootSheetNPC5eHelper._changeSheetType(ev, this.actor, html));
     }
 
     /* -------------------------------------------- */
@@ -259,8 +280,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                         customRole: customRoll.total,
                         itemLimit: itemQtyLimit
                     }
-                );            
-            return; //population should done, good bye 👋 
+                );
+
+            return this.actor.sheet.render(true); //population should done, good bye 👋 
         }
 
         let shopQtyRoll = new Roll(shopQtyFormula);
@@ -272,7 +294,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             }
         }        
 
-        console.log(`${MODULE.ns} | Updating Inventory for ` + this.actor.name);
+        console.log(MODULE.ns + ' | Updating Inventory for ' + this.actor.name);
 
         for (let i = 0; i < shopQtyRoll.total; i++) {
             const rollResult = await rolltable.roll();
@@ -331,6 +353,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 }
             }
         }
+
+        return this.actor.sheet.render(true);
     }
 
     /**
@@ -644,65 +668,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         }
     }
 
-    /* -------------------------------------------- */
-
-    /**
-     * Handle cycling permissions
-     * @private
-     */
-    _onCyclePermissionProficiency(event) {
-        event.preventDefault();
-
-        const levels = [0, 3, 2]; //const levels = [0, 2, 3];
-        let actorData = this.actor.data,
-            field = $(event.currentTarget).siblings('input[type="hidden"]'),
-            playerId = field[0].name,
-            level = parseFloat(field.val());
-
-        if (typeof level === undefined) level = 0;
-
-        let idx = levels.indexOf(level),
-            newLevel = levels[(idx === levels.length - 1) ? 0 : idx + 1];
-
-        PermissionHelper._updatePermissions(actorData, playerId, newLevel, event);
-        this._onSubmit(event);
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Handle cycling bulk permissions
-     * @private
-     */
-    _onCyclePermissionProficiencyBulk(event) {
-        event.preventDefault();
-
-        const levels = [0, 3, 2]; //const levels = [0, 2, 3];
-
-        let currentPermissions = duplicate(this.actor.data.permission),
-            field = $(event.currentTarget).parent().siblings('input[type="hidden"]'),
-            level = parseFloat(field.val()),
-            users = game.users.entities;
-
-        if (typeof level === undefined || level === 999) level = 0;
-
-        let idx = levels.indexOf(level),
-            newLevel = levels[(idx === levels.length - 1) ? 0 : idx + 1];
-
-        for (let u of users) {
-            if (u.data.role === 1 || u.data.role === 2) {
-                currentPermissions[u._id] = newLevel;
-            }
-        }
-
-        const lootPermissions = new PermissionControl(this.actor);
-        lootPermissions._updateObject(event, currentPermissions)
-
-        this._onSubmit(event);
-    }
-
-    /* -------------------------------------------- */
-
     /**
      * Organize and classify Items for Loot NPC sheets
      * @private
@@ -753,6 +718,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         items = items.sort((a, b) => {
             return a.name.localeCompare(b.name);
         });
+        
         for (let i of items) {
             i.img = i.img || DEFAULT_TOKEN;
             //console.log("Loot Sheet | item", i);
@@ -781,21 +747,21 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
     _prepareGMSettings(actorData) {
         const playerData = [],
-            observers = [];
+            observers = [],
+            permissionsInfo = PermissionHelper.getPermissionInfo();
         let players = game.users.players,
             commonPlayersPermission = -1;
 
         for (let player of players) {
             // get the name of the primary actor for a player
             const actor = game.actors.get(player.data.character);
-            //console.log("Loot Sheet | Checking actor", actor);
 
             if (actor) {
                 player.actor = actor.data.name;
                 player.actorId = actor.data._id;
                 player.playerId = player.data._id;
                 player.lootPermission = PermissionHelper.getLootPermissionForPlayer(actorData, player);
-
+                
                 if (player.lootPermission >= 2 && !observers.includes(actor.data._id)) {
                     observers.push(actor.data._id);
                 }
@@ -803,11 +769,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 if (commonPlayersPermission < 0) {
                     commonPlayersPermission = player.lootPermission;
                 } else if (commonPlayersPermission !== player.lootPermission) {
-                    commonPlayersPermission = 999;
+                    commonPlayersPermission = 0;
                 }
 
-                player.icon = PermissionHelper._getPermissionIcon(player.lootPermission);
-                player.lootPermissionDescription = PermissionHelper._getPermissionDescription(player.lootPermission);
+                const lootPermissionInfo = PermissionHelper.getPermissionInfo(player.lootPermission);
+                player.class = lootPermissionInfo.class;
+                player.lootPermissionDescription = lootPermissionInfo.description;
                 playerData.push(player);
             }
         }
@@ -828,11 +795,12 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         loot.players = playerData;
         loot.observerCount = observers.length;
         loot.currency = currencySplit;
+        loot.permissions = permissionsInfo;
         loot.playersPermission = commonPlayersPermission;
-        loot.playersPermissionIcon = PermissionHelper._getPermissionIcon(commonPlayersPermission);
-        loot.playersPermissionDescription = PermissionHelper._getPermissionDescription(commonPlayersPermission);
+        loot.playersPermissionIcon = PermissionHelper.getPermissionInfo(commonPlayersPermission);
+        loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(commonPlayersPermission).description;
         actorData.flags.loot = loot;
     }
 }
 
-export { LootSheet5eNPC };
+export { LootSheetNPC5e };

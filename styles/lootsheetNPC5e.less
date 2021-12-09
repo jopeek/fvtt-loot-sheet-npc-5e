@@ -102,6 +102,7 @@
 			float: left;
 			flex: none;
 			border: 1px solid var(--faint-white);
+			background: var(--safe-accent);
 			height: fit-content;
 			padding: 0.3em;
 			border-top-right-radius: 0.5em;
@@ -114,12 +115,23 @@
     form {
         overflow-y: auto !important;
         background: var(--background);
+		width: 100%;
 
         select {
             color: var(--primary-font);
         }
         button {
             color: var(--primary-font);
+			width: fit-content;
+			border-radius: 0.5em;
+			border: 1px solid var(--header-border);
+			padding: 0 0.3em;
+			align-self: self-end;
+			cursor: pointer;
+			
+			:hover {
+				box-shadow: 0 0 0.3em var(--icon-shadow) inset;
+			}
         }
         
     }
@@ -206,105 +218,6 @@
 	section.sheet-content.content {
         padding: 0 0.8em 0.8em 0;
     }
-
-    .inventory-filters {
-		.currency {
-			li {
-				border-radius: 0.5em;
-				background: var(--faint-color);
-				text-align: right;
-
-				&.currency-item-header {
-					background: none;
-    				padding: 0.3em;
-				}
-
-				>* {
-					background: none;
-					border: none;
-					margin: 0;
-					color: var(--primary-font);
-					text-overflow: ellipsis;
-					font-size: 0.9em;
-					height: calc(100% - 2px);
-					padding: 1px 3px;
-					display: inline-block;
-				}
-				input {
-					text-align: right;
-					width: 73%;
-					border: none;
-				}
-				label {
-					margin-left: 0;
-					width: 23%;
-					white-space: nowrap;
-					border: none;
-				}
-			}			
-            &.inventory {
-                span {
-                    >span {
-                        width: 40px;
-                        text-align: center;
-                        margin-left: 8px;
-                        white-space: nowrap;
-                    }
-                }
-            }
-		}
-
-		.currency + .currency { 
-			margin-top: -0.6em;
-
-			li {
-				margin: 0;
-				padding-bottom: 0;
-			}
-		}
-	}
-
-	.inventory-list {
-		.item {
-			background: var(--faintest-color);
-			margin: 1px 0;
-			border-radius: 0.5em;
-			overflow: hidden;
-			.item-price {
-				flex: 0 0 75px;
-				color: var(--tertiary-color);
-				font-size: 10px;
-			}
-			.item-quantity {
-				flex: 0 0 75px;
-				color: var(--tertiary-color);
-				font-size: 10px;
-			}
-			.item-weight {
-				flex: 0 0 75px;
-				color: var(--tertiary-color);
-				font-size: 10px;
-			}
-			.item-controls {
-				flex: 0 0 100px !important;
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				justify-content: flex-start;
-				justify-content: flex-end;
-			}
-		}
-		.inventory-header {
-			.item-controls {
-				a.item-create {
-					flex: initial;
-				}
-			}
-		}
-        .item-summary {
-            color: var(--primary-font);
-        }
-	}
 
 	.editor {
 		height: 600px;
@@ -396,11 +309,6 @@
 	}
 	.gm-settings {
 		padding: 0.3em;
-		.permissions-list {
-			margin: 0;
-			padding: 0;
-			list-style: none;
-		}
 		.coin-list {
 			margin: 0;
 			padding: 0;
@@ -430,29 +338,7 @@
 			margin: 0 0 0 24px;
 			line-height: 22px;
 		}
-		.permission {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: flex-start;
-			height: 21px;
-			line-height: 21px;
-			border-bottom: 1px solid #CCC;
-			font-size: 13px;
-			flex: 1;
-			flex-wrap: inherit;
-			height: auto;
-			.permission-name {
-				margin: 0;
-			}
-			.permission-proficiency {
-				text-align: center;
-				flex: 0 0 24px;
-				i.fa-circle {
-					font-size: 10px;
-				}
-			}
-		}
+		
 		.denomination {
 			display: flex;
 			flex-direction: row;
@@ -477,27 +363,8 @@
 			border-radius: 0.3em;
 			padding: 0.3em;
 			max-width: 15vw;
-		}
-		.permission-info {
-			display: block;
-			position: absolute;
-			background: var(--background);
-			color: var(--primary-font);
-			box-shadow: 0px 0px 4px var(--context-shadow);
-			border-radius: 0.3em;
-			padding: 0.3em;
-			max-width: 15vw;
-		}
-		.merchant-settings-info {
-			display: block;
-			position: absolute;
-			background: var(--background);
-			color: var(--primary-font);
-			box-shadow: 0px 0px 4px var(--context-shadow);
-			border-radius: 0.3em;
-			padding: 0.3em;
-			max-width: 15vw;
-		}
+			z-index: 1000;
+		}		
 		.inventory-clear-settings-info {
 			display: block;
 			position: absolute;
@@ -527,7 +394,7 @@
     .infobox-wrapper {
         display: inline-block;
     }
-    .itemsonce-info {
+    .itemsource-info {
         display: block;
         position: absolute;
         background: var(--background);
@@ -545,8 +412,26 @@
         box-shadow: 0px 0px 4px var(--context-shadow);
         border-radius: 0.3em;
         padding: 0.3em;
-        min-width: 15vw;
-		max-width: 25vw;
+        min-width: 25vw;
+		max-width: 40vw;
+		margin-top: -12%;
+    	margin-left: 1.6em;
+
+		dl {
+			display: flex;
+
+			> * {
+				border: 0;
+				padding: 0;
+				width: 50%;
+			}
+			dt {
+				width: 25%;
+			}
+			dd {
+				width: 75%;
+			}
+		}
     }
     
     section.sheet-sidebar.sidebar {
@@ -554,12 +439,13 @@
         background: url(/ui/parchment.jpg) repeat;
 		background-color: var(--background);
 		background-blend-mode: soft-light;
-        border-bottom: 1px solid var(--header-border);
-        border-right: 1px solid var(--header-border);
+        border: 1px solid var(--header-border);
+        border-left: 0;
         box-shadow: 1px 1px 4px var(--context-shadow);
         flex: 0 0 auto;
         justify-content: center;
         border-bottom-right-radius: 0.5em;
+		border-radius: 0 0.5em 0.5em 0;
         width: fit-content;
         opacity: 1;
         transition: all .75s ease;
@@ -598,5 +484,7 @@ input#quantity {
 		box-shadow: 0 0 8px red;
 	}
 }
+@import "partials/permissions.less";
+@import "partials/inventory.less";
 
 @import "themes/condensed.less";
