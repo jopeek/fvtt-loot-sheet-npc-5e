@@ -29,21 +29,6 @@ class PermissionHelper {
         return (!level && level != 0) ? permissions : permissions[parseInt(level)];
     }
 
-    /* -------------------------------------------- */
-
-    /**
-     * Get the font-awesome icon used to display the permission level.
-     * @private
-     */
-    static _getPermissionDescription(level) {
-        const description = {
-            0: "None (cannot access sheet)",
-            2: "Observer (access to sheet but can only purchase items if merchant sheet type)",
-            3: "Owner (can access items and share coins)"
-        };
-        return description[level];
-    }
-
     /**
      * Change the permission of players for an actor
      * by reading the dataset value of a permission option
@@ -73,22 +58,33 @@ class PermissionHelper {
         lootPermissions._updateObject(event, currentPermissions);
     }
 
-    /* -------------------------------------------- */
-
     /**
-     * 
+     * @module lootsheetnpc5e.helpers.PermissionHelper.cyclePermissions
+     * @title PermissionHelper.cyclePermissions
+     * @description Update the permissions of an player on the given actor
+     *
      * @param {ActorData} actor A token actor sheets actorData 
-     * @param {number} playerId 
-     * @param {number} newLevel 
      * @param {event} event
+     * @param {string|null} playerId 
+     * @param {number|null} newLevel 
      * 
-     * @uses PermissionControl 
+     * @version 1.0.0
      */
-    static _updatePermissions(event, actor, playerId, newLevel) {
+    static cyclePermissions(
+        event,
+        actor,
+        playerId = null,
+        newLevel = null
+        ) {
+        event.preventDefault();
+        const levels = [0, 2, 3];
         // Read player permission on this actor and adjust to new level
-        let currentPermissions = duplicate(actor.data.permission);
-        currentPermissions[playerId] = newLevel;
-        // Save updated player permissions
+        let currentPermissions = duplicate(actor.data.permission),
+            playerPermission = event.currentTarget.dataset.playerPermission;
+        
+        playerId = playerId || event.currentTarget.dataset.playerId;
+        
+        currentPermissions[playerId] = newLevel || levels[(levels.indexOf(parseInt(playerPermission)) + 1) % levels.length];
         const lootPermissions = new PermissionControl(actor);
         lootPermissions._updateObject(event, currentPermissions);
     }

@@ -170,6 +170,7 @@ class API {
 
     /**
      * @description Return the player(s) current permissions or the tokens default permissions
+     * 
      * @module lootsheetnpc5e.API.getPermissionForPlayers
      * 
      * @param {Token} token token or null (defaults to all controlled tokens)
@@ -189,10 +190,8 @@ class API {
             return response;
         }
         
-        let permissions = {};
         for (let player of players){
-            permissions[player.data._id] = PermissionHelper.getLootPermissionForPlayer(token.actor.data ,player);
-            response.data[player.data._id] = permissions[player.data._id];
+            response.data[player.data._id] = PermissionHelper.getLootPermissionForPlayer(token.actor.data, player);
         }
         
         if (verbose) API._verbose(response);
@@ -201,6 +200,7 @@ class API {
 
     /**
      * Use the PermissionHelper to update the users permissions for the token
+     * 
      * @param {Token5e} token 
      * @param {number|null} permission enum
      * 

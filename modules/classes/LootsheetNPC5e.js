@@ -175,7 +175,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
             // Change Permissions for all players
             html.find('.permission-option a').click(ev => PermissionHelper.setPermissions(ev, this.actor));
             // Cycle Permissions for an indidual player.
-            html.find('.permission-proficiency').click(ev => PermissionHelper._onCyclePermissionProficiency(ev, this.actor));
+            html.find('.permission-proficiency').click(ev => PermissionHelper.cyclePermissions(ev, this.actor));
 
             // Price Modifier
             html.find('.price-modifier').click(ev => this._priceModifier(ev));
