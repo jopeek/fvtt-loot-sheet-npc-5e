@@ -1,18 +1,61 @@
 {
-    "lsnpc.no_active_gm": "No active GM on your scene, a GM must be online and on the same scene to purchase an item.",
-    "lsnpc.sendBuyText": "Sending buy request to ",
-    "lsnpc.permissions": {
-        "0": {
-            "title": "None",
-            "desc": "cannot access sheet"
+    "lsnpc": {
+        "noActiveGM": "No active GM on your scene, a GM must be online and on the same scene to purchase an item.",
+        "sendBuyText": "Sending buy request to ",
+        "permissions": {
+            "0": {
+                "title": "None",
+                "desc": "cannot access sheet"
+            },
+            "2": {
+                "title": "Observer",
+                "desc": "Access to sheet but can only purchase items if merchant sheet type"
+            },
+            "3": {
+                "title": "Owner",
+                "desc": "Manage inventory of the actor, share coins."
+            }
         },
-        "2": {
-            "title": "Observer",
-            "desc": "Access to sheet but can only purchase items if merchant sheet type"
-        },
-        "3": {
-            "title": "Owner",
-            "desc": "Manage inventory of the actor, share coins."
+        "buttons": {
+            "loot": {
+                "items": {
+                    "all": {
+                        "title": "{n} {name} Loot all",
+                        "label": "Loot all items"
+                    },
+                    "single": {
+                        "title": "Single",
+                        "desc": "Single item"
+                    }
+                },
+                "currency": {
+                    "split": {
+                        "title": "Split 🪙 between {n} party members",
+                        "label": "Split coins"
+                    },
+                    "single": {
+                        "title": "Loot 🪙 from the body",
+                        "label": "Loot 🪙"
+                    }
+                }
+                
+            },
+            "merchant" : {
+                "buy": {
+                    "title": "Buy",
+                    "label": "Buy item"
+                },
+                "sell": {
+                    "title": "Sell",
+                    "label": "Sell item"
+                },
+                "gm": {
+                    "price": {
+                        "title": "Price modifier",
+                        "label": "Set price modifier"
+                    }
+                }
+            }
         }
-    }
+    }    
 }

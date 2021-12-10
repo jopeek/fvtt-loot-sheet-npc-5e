@@ -186,8 +186,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         // toggle infoboxes
         html.find('.help').hover(e => e.currentTarget.nextElementSibling.classList.toggle('hidden'));
 
-        // Split Coins
-        html.find('.split-coins').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.distributeCoins(ev));
+        
 
         // Buy Item
         html.find('.item-buy').click(ev => this._buyItem(ev));
@@ -195,7 +194,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         
 
         // Loot Item
-        if(game.settings.get(MODULE.ns, "useCondensedLootsheet")){
+        if(false && game.settings.get(MODULE.ns, "useCondensedLootsheet")){
             html.find('.loot-trigger').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev, 1));
         } else {
             html.find('.item-loot').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev));
@@ -204,8 +203,10 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         html.find('.item-lootall').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev, 1));
 
         // Loot Currency
-        html.find('.loot-currency').click(ev => LootSheetNPC5eHelper.lootCoins(this.token, ev));
-
+        html.find('.loot-currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.lootCoins(this.token, ev));
+        // Split Coins
+        html.find('.split-Currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.distributeCoins(ev));
+        
         // Loot All
         html.find('.loot-all').removeAttr('disabled').click(ev => this._lootAll(ev, html));
 
@@ -362,7 +363,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
      * @param {*} sheetData 
      */
     _setClasses(sheetData) {
-        if (false && game.settings.get(MODULE.ns, "useCondensedLootsheet") || !sheetData.owner) {
+        if (false && game.settings.get(MODULE.ns, "useCondensedLootsheet") || false && !sheetData.owner) {
             this.options.classes.push('lootsheet-condensed');            
         }
     }

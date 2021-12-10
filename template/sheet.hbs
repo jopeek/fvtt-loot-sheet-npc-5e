@@ -8,8 +8,11 @@
     {{/if}}                         
 
     <nav class="sheet-navigation tabs flexrow" data-group="primary">
-        <a class="item active" data-tab="inventory">Inventory</a>
-        <a class="item" data-tab="biography">Biography</a>
+        <a class="item active" data-tab="inventory">{{localize "DND5E.Inventory"}}</a>
+        {{#ifeq lootsheettype "Merchant"}}
+        <a class="item active" data-tab="inventory">{{localize "DND5E.ActionPl"}}</a>
+        {{/ifeq}}
+        <a class="item" data-tab="biography">{{localize "DND5E.Biography"}}</a>
     </nav>
     <section class="sheet-lower flexrow">
         <!-- SIDEBAR for GM -->

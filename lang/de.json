@@ -1,18 +1,61 @@
 {
-    "lsnpc.no_active_gm": "Kein aktiver GM in der Szene, ein GM muss online und in der gleichen Szene sein.",
-    "lsnpc.sendBuyText": "Sende Kaufanfrage an ",
-    "lsnpc.permissions": {
-        "0": {
-            "title": "None",
-            "desc": "cannot access sheet"
+    "lsnpc": {
+        "noActiveGM": "Kein aktiver GM in der Szene, ein GM muss online und in der gleichen Szene sein.",
+        "sendBuyText": "Sende Kaufanfrage an {gm}",
+        "permissions": {
+            "0": {
+                "title": "Keine Rechte",
+                "desc": "Kein Zugriff auf den NPC Charakterbogen"
+            },
+            "2": {
+                "title": "Beobachter",
+                "desc": "Access to sheet but can only purchase items if merchant sheet type"
+            },
+            "3": {
+                "title": "Besitzer",
+                "desc": "Inventar des Charakterbogen verwalten, Vermögen teilen."
+            }
         },
-        "2": {
-            "title": "Observer",
-            "desc": "Access to sheet but can only purchase items if merchant sheet type"
-        },
-        "3": {
-            "title": "Owner",
-            "desc": "Manage inventory of the actor, share coins."
+        "buttons": {
+            "loot": {
+                "items": {
+                    "all": {
+                        "title": "{n} {name} erbeuten",
+                        "label": "💰 erbeuten"
+                    },
+                    "single": {
+                        "title": "{name} erbeuten",
+                        "label": "Single item"
+                    }
+                },
+                "currency": {
+                    "split": {
+                        "title": "Münzen zwischen {n} Begleitern aufteilen.",
+                        "label": "🪙 teilen"
+                    },
+                    "single": {
+                        "title": "Alle 🪙 erbeuten",
+                        "label": "🪙 erbeuten"
+                    }
+                }
+                
+            },
+            "merchant" : {
+                "buy": {
+                    "title": "Buy",
+                    "label": "Buy item"
+                },
+                "sell": {
+                    "title": "Sell",
+                    "label": "Sell item"
+                },
+                "gm": {
+                    "price": {
+                        "title": "Price modifier",
+                        "label": "Set GM price"
+                    }
+                }
+            }
         }
-    }
+    }    
 }
