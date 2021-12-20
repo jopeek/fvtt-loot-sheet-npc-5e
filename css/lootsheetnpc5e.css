@@ -247,3 +247,7 @@ input#quantity:focus {
 .loot-sheet-npc li.item.flexrow.inventory-header {
     padding: 8px 8px 0 0;
 }
+
+.loot-sheet-npc .currency input[type="number"] {
+    max-width: 3rem;
+}
