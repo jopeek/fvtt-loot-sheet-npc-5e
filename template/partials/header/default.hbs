@@ -1,0 +1,49 @@
+<header class="sheet-header">
+    <div class="sheet-profile-img">
+        <img class="sheet-profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" />
+    </div>
+
+    <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'Character Name'}}" />
+    </h1>
+
+    <div class="charbutton">
+        {{#ifeq lootsheettype "Loot"}}
+            {{#if lootAll}}
+                <button type="button"
+                    class="loot-all"
+                    name="loot-all"
+                    value="1"
+                    title="{{localize 'lsnpc.buttons.loot.items.all.title'}}">
+                    <i class="fas fa-gem"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
+                </button>
+            {{/if}}
+
+            <button type="button" class="split-currency" type="split-coins" name="split-coins" value="1"
+                title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=actor.flags.loot.observerCount }}">
+                <i class="fas fa-users"></i>
+                <i class="fas fa-hand-holding-usd"></i>            
+                <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.split.label'}}</span>
+            </button>
+
+            {{#if lootCurrency}}
+                <button type="button" class="loot-currency"
+                    title="{{localize 'lsnpc.buttons.loot.currency.single.title'}}">
+                    <i class="fas fa-user"></i>
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.single.label'}}</span>
+                </button>
+            {{/if}}
+        {{/ifeq}}
+        
+        {{#if isGM}}
+            {{#ifeq lootsheettype "Merchant"}}                
+                <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value="">
+                    <i class="fa fa-balance-scale"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.merchant.gm.price.label'}}</span>
+                </button>                    
+            {{/ifeq}}
+        {{/if}}        
+    </div>
+</header>

@@ -1,0 +1,79 @@
+{
+    "lsnpc": {
+        "noActiveGM": "No active GM on your scene, a GM must be online and on the same scene to purchase an item.",
+        "sendBuyText": "Sending buy request to ",
+        "permissions": {
+            "0": {
+                "title": "None",
+                "desc": "cannot access sheet"
+            },
+            "2": {
+                "title": "Observer",
+                "desc": "Access to sheet but can only purchase items if merchant sheet type"
+            },
+            "3": {
+                "title": "Owner",
+                "desc": "Manage inventory of the actor, share coins."
+            }
+        },
+        "buttons": {
+            "loot": {
+                "items": {
+                    "all": {
+                        "title": "{n} {name} Loot all",
+                        "label": "Loot all items"
+                    },
+                    "single": {
+                        "title": "Single",
+                        "desc": "Single item"
+                    }
+                },
+                "currency": {
+                    "split": {
+                        "title": "Split 🪙 between {n} party members",
+                        "label": "Split coins"
+                    },
+                    "single": {
+                        "title": "Loot 🪙 from the body",
+                        "label": "Loot 🪙"
+                    }
+                }
+                
+            },
+            "merchant" : {
+                "buy": {
+                    "title": "Buy",
+                    "label": "Buy item"
+                },
+                "sell": {
+                    "title": "Sell",
+                    "label": "Sell item"
+                },
+                "gm": {
+                    "price": {
+                        "title": "Price modifier",
+                        "label": "Set price modifier"
+                    }
+                }
+            }
+        },
+        "infoboxes": {
+            "lootsheettype": {
+                "title": "Sheet type",
+                "content": "<dl><dt>Loot</dt><dd>Allows for distribution of coins across players</dd><dt>Merchant</dt><dd>Allows players to purchase items directly from the sheet.</dd></dl>"
+            },
+            "permissions": {
+                "title": "Permissions",
+                "content": "⚠️ Ensure a character is selected for the players via the 'Player configuration'. So they are displayed here. ⚠️"
+            },
+            "permissions_individual":{
+                "title": "Individual permissions",
+                "content": "🔁 Click on a character to to cycle the players permission. Hover to see information."
+            }
+        },
+        "sheettypes": {
+            "loot": "Loot",
+            "merchant": "Merchant"
+        }
+    }    
+}
