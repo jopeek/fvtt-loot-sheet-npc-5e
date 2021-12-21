@@ -9,3 +9,4 @@ node_modules/
 docs/
 wiki/
 .nyc_output/
+.DS_Store
