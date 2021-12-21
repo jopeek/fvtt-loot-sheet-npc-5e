@@ -17,7 +17,7 @@
                 "strictNullChecks": true,
                 "esModuleInterop": false,
                 "types": [
-                        "foundry-pc-types",
+                        "@league-of-foundry-developers/foundry-vtt-types",
                         "node",
                 ],
                 "typeRoots": [
