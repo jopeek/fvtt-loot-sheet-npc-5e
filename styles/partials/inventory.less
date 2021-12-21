@@ -1,0 +1,102 @@
+.app.actor.loot-sheet-npc { 
+    .window-content {
+        .inventory-filters {
+            .currency {
+                li {
+                    border-radius: 0.5em;
+                    background: var(--faint-color);
+                    text-align: right;
+    
+                    &.currency-item-header {
+                        background: none;
+                        padding: 0.3em;
+                    }
+    
+                    >* {
+                        background: none;
+                        border: none;
+                        margin: 0;
+                        color: var(--primary-font);
+                        text-overflow: ellipsis;
+                        font-size: 0.9em;
+                        height: calc(100% - 2px);
+                        padding: 1px 3px;
+                        display: inline-block;
+                    }
+                    input {
+                        text-align: right;
+                        width: 73%;
+                        border: none;
+                    }
+                    label {
+                        margin-left: 0;
+                        width: 23%;
+                        white-space: nowrap;
+                        border: none;
+                    }
+                }			
+                &.inventory {
+                    span {
+                        >span {
+                            width: 40px;
+                            text-align: center;
+                            margin-left: 8px;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+            }
+    
+            .currency + .currency { 
+                margin-top: -0.6em;
+    
+                li {
+                    margin: 0;
+                    padding-bottom: 0;
+                }
+            }
+        }
+    
+        .inventory-list {
+            .item {
+                background: var(--faintest-color);
+                margin: 1px 0;
+                border-radius: 0.5em;
+                overflow: hidden;
+                .item-price {
+                    flex: 0 0 75px;
+                    color: var(--tertiary-color);
+                    font-size: 10px;
+                }
+                .item-quantity {
+                    flex: 0 0 75px;
+                    color: var(--tertiary-color);
+                    font-size: 10px;
+                }
+                .item-weight {
+                    flex: 0 0 75px;
+                    color: var(--tertiary-color);
+                    font-size: 10px;
+                }
+                .item-controls {
+                    flex: 0 0 100px !important;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: flex-start;
+                    justify-content: flex-end;
+                }
+            }
+            .inventory-header {
+                .item-controls {
+                    a.item-create {
+                        flex: initial;
+                    }
+                }
+            }
+            .item-summary {
+                color: var(--primary-font);
+            }
+        }
+    }
+}

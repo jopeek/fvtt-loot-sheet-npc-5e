@@ -1,0 +1,60 @@
+{
+    "lsnpc": {
+        "noActiveGM": "Nenhum GM ativo na cena, um GM deve estar online e na mesma cena para comprar um item.",
+        "sendBuyText": "Enviando pedido de compra para ",
+        "permissions": {
+            "0": {
+                "title": "Nenhum",
+                "desc": "Sem acesso a ficha"
+            },
+            "2": {
+                "title": "Observador",
+                "desc": "Acesso � ficha, s� pode comprar itens se o tipo de ficha for de comerciante"
+            },
+            "3": {
+                "title": "Dono",
+                "desc": "Gerencie o invent�rio do ator, compartilhe moedas."
+            }
+        },
+        "buttons": {
+            "loot": {
+                "items": {
+                    "all": {
+                        "title": "{n} {name} Pilhar tudo",
+                        "label": "Pilhar todos os itens"
+                    },
+                    "single": {
+                        "title": "Unit�rio",
+                        "label": "Item unit�rio"
+                    }
+                },
+                "currency": {
+                    "split": {
+                        "title": "Dividir moedas entre {n} membros do grupo",
+                        "label": "Dividir moedas"
+                    },
+                    "single": {
+                        "title": "Pilhar moedas do corpo",
+                        "label": "Pilhar moedas"
+                    }
+                }
+            },
+            "merchant": {
+                "buy": {
+                    "title": "Comprar",
+                    "label": "Comprar item"
+                },
+                "sell": {
+                    "title": "Vender",
+                    "label": "Vender item"
+                },
+                "gm": {
+                    "price": {
+                        "title": "Modificador de pre�o",
+                        "label": "Definir modificador de pre�o"
+                    }
+                }
+            }
+        }
+    }
+}
