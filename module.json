@@ -65,6 +65,6 @@
 	"styles": ["/styles/lootsheetnpc5e.css"],
 	"socket": true,
 	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
-	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/releases/latest/download/module.json",
-	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/download/v{SEMVER}/lootsheetnpc5e.zip"
+	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/module.json",
+	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/download/latest/lootsheetnpc5e.zip"
 }
