@@ -6,7 +6,7 @@ name: Build Project
 on:
   workflow_dispatch:
   push:
-    branches: [ master , Refactor-BugBear ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -68,8 +68,8 @@ jobs:
           tag: v${{steps.version.outputs.prop}}
           name: v${{steps.version.outputs.prop}}
           artifacts: 'lootsheetnpc5e.zip'
-          draft: true
-          prerelease: true
+          draft: false
+          prerelease: false
           generateReleaseNotes: true
 
 
