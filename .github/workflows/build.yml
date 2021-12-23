@@ -70,7 +70,5 @@ jobs:
           name: v${{steps.version.outputs.prop}}
           artifacts: 'lootsheetnpc5e.zip'
           draft: false
-          prerelease: true
+          prerelease: false
           generateReleaseNotes: true
-
-
