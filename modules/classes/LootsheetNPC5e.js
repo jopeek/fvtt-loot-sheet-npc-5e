@@ -8,7 +8,7 @@ import { PermissionHelper } from '../helper/PermissionHelper.js';
 import tableHelper from "../helper/tableHelper.js";
 
 // this should be obsolete soon (we want to handle this in the helper)
-import { QuantityDialog } from "../classes/quantityDialog.js";
+import { QuantityDialog } from "./quantityDialog.js";
 // ⬆️ module imports
 
 /**
