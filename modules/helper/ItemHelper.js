@@ -1,4 +1,5 @@
 import { LootSheetNPC5eHelper } from './LootSheetNPC5eHelper.js';
+import { MODULE } from '../config.js';
 class ItemHelper {
 
     /**
@@ -233,14 +234,14 @@ class ItemHelper {
         }
 
         //console.log(`Funds after purchase1: ${buyerFunds}`);
-
         // Update buyer's funds
+        
         buyer.update({ "data.currency": buyerFunds });
 
         //console.log(`Funds after purchase2: ${buyerFunds}`);
         //console.log(buyer.data.data.currency);
 
-        let moved = await moveItems(seller, buyer, [{ itemId, quantity }]);
+        let moved = await ItemHelper.moveItems(seller, buyer, [{ itemId, quantity }]);
 
         for (let m of moved) {
             ItemHelper.chatMessage(
