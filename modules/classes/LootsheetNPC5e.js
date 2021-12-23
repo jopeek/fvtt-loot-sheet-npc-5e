@@ -804,7 +804,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         loot.permissions = permissionsInfo;
         loot.playersPermission = commonPlayersPermission;
         loot.playersPermissionIcon = PermissionHelper.getPermissionInfo(commonPlayersPermission);
-        loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(commonPlayersPermission).description;
+        loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(commonPlayersPermission)?.description;
         actorData.flags.loot = loot;
     }
 }
