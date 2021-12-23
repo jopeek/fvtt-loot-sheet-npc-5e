@@ -54,8 +54,8 @@ jobs:
           files: 'module.json'
         env:
           version: ${{steps.version.outputs.prop}}
-          manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-          download: https://github.com/${{github.repository}}/releases/download/v${{steps.version.outputs.prop}}/lootsheetnpc5e.zip          
+          manifest: https://raw.githubusercontent.com/${{github.repository}}/master/module.json
+          download: https://github.com/${{github.repository}}/releases/latest/download/lootsheetnpc5e.zip          
       - run: npm ci && npm run build --if-present          
       - name: Zip files
         run: |

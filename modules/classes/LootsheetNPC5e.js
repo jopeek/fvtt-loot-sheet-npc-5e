@@ -6,6 +6,9 @@ import { MODULE } from "../config.js";
 import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from '../helper/PermissionHelper.js';
 import tableHelper from "../helper/tableHelper.js";
+
+// this should be obsolete soon (we want to handle this in the helper)
+import { QuantityDialog } from "../classes/quantityDialog.js";
 // ⬆️ module imports
 
 /**

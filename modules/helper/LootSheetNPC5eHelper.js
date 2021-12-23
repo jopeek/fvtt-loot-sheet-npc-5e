@@ -1,5 +1,6 @@
 import { PermissionHelper } from "./PermissionHelper.js";
 import { MODULE } from "../config.js";
+import { QuantityDialog } from "../classes/quantityDialog.js";
 
 class LootSheetNPC5eHelper {
 
