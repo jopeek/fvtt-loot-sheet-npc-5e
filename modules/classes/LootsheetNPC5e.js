@@ -439,8 +439,8 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         if (this.token === null) return ui.notifications.error(`You must purchase items from a token.`);
         if (!game.user.actorId) return ui.notifications.error(`No active character for user.`);
 
-        const   itemId = event.currentTarget.dataset.ItemId || event.currentTarget.closest('.item').dataset.ItemId,
-                targetItem = this.actor.getEmbeddedEntity("Item", itemId),
+        const   itemId = event.currentTarget.dataset.itemId || event.currentTarget.closest('.item').dataset.itemId,
+                targetItem = this.actor.getEmbeddedDocument("Item", itemId),
                 item = { itemId: itemId, quantity: 1 };
 
         if (all || event.shiftKey) {
@@ -510,7 +510,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         const items = [];
         for (let i of itemTargets) {
             const itemId = i.getAttribute("data-item-id");
-            const item = this.actor.getEmbeddedEntity("Item", itemId);
+            const item = this.actor.getEmbeddedDocument("Item", itemId);
             items.push({ itemId: itemId, quantity: item.data.data.quantity });
         }
         if (items.length === 0) {

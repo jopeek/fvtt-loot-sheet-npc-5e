@@ -1,4 +1,5 @@
 import { LootSheetNPC5eHelper } from './LootSheetNPC5eHelper.js';
+import { MODULE } from '../config.js';
 class ItemHelper {
 
     /**
@@ -37,7 +38,7 @@ class ItemHelper {
         for (let i of items) {
             let itemId = i.itemId,
                 quantity = i.quantity,
-                item = source.getEmbeddedEntity("Item", itemId);
+                item = source.getEmbeddedDocument("Item", itemId);
 
             console.log("ITEM: \n");
             console.log(item);
@@ -112,7 +113,7 @@ class ItemHelper {
      * @param {number} quantity 
      */
     static async transaction(seller, buyer, itemId, quantity) {
-        let sellItem = seller.getEmbeddedEntity("Item", itemId);
+        let sellItem = seller.getEmbeddedDocument("Item", itemId);
 
         if (sellItem.data.data.quantity < quantity) {
             quantity = sellItem.data.data.quantity;
@@ -233,14 +234,14 @@ class ItemHelper {
         }
 
         //console.log(`Funds after purchase1: ${buyerFunds}`);
-
         // Update buyer's funds
+        
         buyer.update({ "data.currency": buyerFunds });
 
         //console.log(`Funds after purchase2: ${buyerFunds}`);
         //console.log(buyer.data.data.currency);
 
-        let moved = await moveItems(seller, buyer, [{ itemId, quantity }]);
+        let moved = await ItemHelper.moveItems(seller, buyer, [{ itemId, quantity }]);
 
         for (let m of moved) {
             ItemHelper.chatMessage(
