@@ -439,7 +439,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         if (this.token === null) return ui.notifications.error(`You must purchase items from a token.`);
         if (!game.user.actorId) return ui.notifications.error(`No active character for user.`);
 
-        const   itemId = event.currentTarget.dataset.ItemId || event.currentTarget.closest('.item').dataset.ItemId,
+        const   itemId = event.currentTarget.dataset.itemId || event.currentTarget.closest('.item').dataset.itemId,
                 targetItem = this.actor.getEmbeddedEntity("Item", itemId),
                 item = { itemId: itemId, quantity: 1 };
 
