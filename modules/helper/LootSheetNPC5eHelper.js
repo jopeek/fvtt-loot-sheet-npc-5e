@@ -144,7 +144,7 @@ class LootSheetNPC5eHelper {
         }
 
         const itemId = event.currentTarget.dataset.itemId || event.currentTarget.closest('.item').dataset.itemId,
-            targetItem = token.actor.getEmbeddedEntity("Item", itemId),
+            targetItem = token.actor.getEmbeddedDocument("Item", itemId),
             looterId = (game.user.isGM) ? targetGm.id : game.user.actorId;
 
         const item = { itemId: itemId, quantity: 1 };
