@@ -38,7 +38,7 @@ class ItemHelper {
         for (let i of items) {
             let itemId = i.itemId,
                 quantity = i.quantity,
-                item = source.getEmbeddedEntity("Item", itemId);
+                item = source.getEmbeddedDocument("Item", itemId);
 
             console.log("ITEM: \n");
             console.log(item);
@@ -113,7 +113,7 @@ class ItemHelper {
      * @param {number} quantity 
      */
     static async transaction(seller, buyer, itemId, quantity) {
-        let sellItem = seller.getEmbeddedEntity("Item", itemId);
+        let sellItem = seller.getEmbeddedDocument("Item", itemId);
 
         if (sellItem.data.data.quantity < quantity) {
             quantity = sellItem.data.data.quantity;
