@@ -109,6 +109,7 @@
 			border-bottom-right-radius: 0.5em;
 			border-left: none;
 			cursor: pointer;
+			z-index: 200;
 		}
     }
 
@@ -437,18 +438,20 @@
     section.sheet-sidebar.sidebar {
         position: absolute;
         background: url(/ui/parchment.jpg) repeat;
-		background-color: var(--background);
-		background-blend-mode: soft-light;
+	background-color: var(--background);
+	background-blend-mode: soft-light;
         border: 1px solid var(--header-border);
         border-left: 0;
         box-shadow: 1px 1px 4px var(--context-shadow);
         flex: 0 0 auto;
         justify-content: center;
         border-bottom-right-radius: 0.5em;
-		border-radius: 0 0.5em 0.5em 0;
+	border-radius: 0 0.5em 0.5em 0;
         width: fit-content;
         opacity: 1;
         transition: all .75s ease;
+	z-index: 200;
+	    
         &.hidden {
             width: 0px;
             opacity: 0;
