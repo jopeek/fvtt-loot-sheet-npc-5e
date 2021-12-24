@@ -272,7 +272,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
         if (clearInventory) {
             let currentItems = this.actor.data.items.map(i => i._id);
-            this.actor.deleteEmbeddedDocuments("Item", currentItems);
+            await this.actor.deleteEmbeddedDocuments("Item", currentItems);
         }
 
         // populate via better-rolltables if it is installed and its activated in config
