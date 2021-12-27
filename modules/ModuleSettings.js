@@ -3,17 +3,17 @@ import { MODULE } from './config.js';
 /**
  * @module lootsheetnpc5e.ModuleSettings
  */
-class ModuleSettings {  
+class ModuleSettings {
 
     /**
      * @module lootsheetnpc5e.ModuleSettings.registerSettings
-     * 
+     *
      * @description Register ModuleSettings with core Foundry
      * @static
      */
     static registerSettings() {
         const WORLD = 'world';
-    
+
         game.settings.register(MODULE.ns, "useBetterRolltables", {
             name: "Use better rolltables",
             hint: "If installed make use of better rolltables to update Inventory?",
@@ -22,7 +22,25 @@ class ModuleSettings {
             default: false,
             type: Boolean
         });
-    
+
+        game.settings.register(MODULE.ns, "lootItem", {
+            name: "Loot Item?",
+            hint: "If enabled, players will have the option to loot items from an NPC.",
+            scope: WORLD,
+            config: true,
+            default: true,
+            type: Boolean
+        });
+
+        game.settings.register(MODULE.ns, "buyItem", {
+            name: "Loot Item?",
+            hint: "If enabled, players will have the option to buy items from an NPC.",
+            scope: WORLD,
+            config: true,
+            default: true,
+            type: Boolean
+        });
+
         game.settings.register(MODULE.ns, "convertCurrency", {
             name: "Convert currency after purchases?",
             hint: "If enabled, all currency will be converted to the highest denomination possible after a purchase. If disabled, currency will subtracted simply.",
@@ -31,7 +49,7 @@ class ModuleSettings {
             default: false,
             type: Boolean
         });
-    
+
         game.settings.register(MODULE.ns, "buyChat", {
             name: "Display chat message for purchases?",
             hint: "If enabled, a chat message will display purchases of items from the loot sheet.",
@@ -40,7 +58,7 @@ class ModuleSettings {
             default: true,
             type: Boolean
         });
-    
+
         game.settings.register(MODULE.ns, "stackBuyConfirm", {
             name: "Confirm stack purchase?",
             hint: "If enabled, confirmation is requested when buying an item stack.",
@@ -49,7 +67,7 @@ class ModuleSettings {
             default: true,
             type: Boolean
         });
-    
+
         game.settings.register(MODULE.ns, "lootCurrency", {
             name: "Loot currency?",
             hint: "If enabled, players will have the option to loot all currency to their character, in addition to splitting the currency between players.",
@@ -58,7 +76,7 @@ class ModuleSettings {
             default: true,
             type: Boolean
         });
-    
+
         game.settings.register(MODULE.ns, "lootAll", {
             name: "Loot all?",
             hint: "If enabled, players will have the option to loot all items to their character, currency will follow the 'Loot Currency?' setting upon Loot All.",
@@ -67,7 +85,7 @@ class ModuleSettings {
             default: true,
             type: Boolean
         });
-    
+
         game.settings.register(MODULE.ns, "showStackWeight", {
             name: "Show Stack Weight?",
             hint: "If enabled, shows the weight of the entire stack next to the item weight",
@@ -76,7 +94,7 @@ class ModuleSettings {
             default: false,
             type: Boolean
         });
-    
+
         game.settings.register(MODULE.ns, "reduceUpdateVerbosity", {
             name: "Reduce Update Shop Verbosity",
             hint: "If enabled, no notifications will be created every time an item is added to the shop.",
@@ -85,7 +103,7 @@ class ModuleSettings {
             default: true,
             type: Boolean
         });
-    
+
         game.settings.register(MODULE.ns, "maxPriceIncrease", {
             name: "Maximum Price Increase",
             hint: "Change the maximum price increase for a merchant in percent",
@@ -94,7 +112,7 @@ class ModuleSettings {
             default: 200,
             type: Number
         });
-    
+
         game.settings.register(MODULE.ns, "includeCurrencyWeight", {
             name: "Include Currency Weight",
             hint: "Include the weight of the currency in the Total Weight calculation.",
@@ -103,7 +121,7 @@ class ModuleSettings {
             default: false,
             type: Boolean,
         });
-        
+
         /**
          * UI and Themes
          */
@@ -114,7 +132,7 @@ class ModuleSettings {
                 config: true,
                 default: false,
                 type: Boolean,
-            }); 
+            });
     }
 }
 export { ModuleSettings };

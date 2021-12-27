@@ -41,7 +41,7 @@
             {{#if section.items}}
                 <li class="items-header flexrow inventory-header">
                     <h3 class="item-name">{{section.label}}</h3>
-                    {{#if ../owner}}
+                    {{#if ../isOwner}}
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Item" data-type="{{section.type}}">
                             <i class="fas fa-plus"></i> Add
@@ -53,7 +53,7 @@
                 <ol class="item-list">
                     {{#each section.items as |item iid|}}
 
-                        <li class="item flexrow" data-item-id="{{item._id}}">
+                        <li class="item flexrow" data-item-id="{{item._id}}" data-max-quantity="{{item.data.quantity}}">
                             <div class="item-name flexrow rollable">
                                 <div class="item-image" style="background-image: url({{item.img}})"></div>
                                 <h4>
@@ -73,13 +73,13 @@
 
                             <div class="item-controls">
                                 {{#ifeq ../../lootsheettype "Loot"}}
-                                    <a class="item-control item-lootall" title="Loot Stack"><i class="fas fa-boxes"></i></a>
-                                    <a class="item-control item-loot" title="Loot Item"><i class="fas fa-box"></i></a>
+                                    <a class="item-control item-loot" title="Loot Stack" data-get-all="true"><i class="fas fa-boxes"></i></a>
+                                    <a class="item-control item-loot" title="Loot Item" data-get-all="false"><i class="fas fa-box"></i></a>
                                 {{/ifeq}}
 
                                 {{#ifeq ../../lootsheettype "Merchant"}}
-                                    <a class="item-control item-buyall" title="Buy Stack"><i class="fas fa-coins"></i></a>
-                                    <a class="item-control item-buy" title="Buy Item"><i class="fas fa-dollar-sign"></i></a>
+                                    <a class="item-control item-buyall" title="Buy Stack" data-get-all="true"><i class="fas fa-coins"></i></a>
+                                    <a class="item-control item-buy" title="Buy Item" data-get-all="false"><i class="fas fa-dollar-sign"></i></a>
                                 {{/ifeq}}
 
                                 {{#if ../../owner}}

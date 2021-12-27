@@ -10,6 +10,11 @@
 export const MODULE = {
     ns: 'lootsheetnpc5e',
     socket: 'module.lootsheetnpc5e',
+    sockettypes: {
+        loot: 'loot',
+        lootCoins: 'lootCoins',
+        buy: 'buy',
+    },
     keys: {
         priceModifier: 'priceModifier'
     }

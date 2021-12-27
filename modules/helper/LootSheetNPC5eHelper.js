@@ -1,50 +1,38 @@
 import { PermissionHelper } from "./PermissionHelper.js";
 import { MODULE } from "../config.js";
 import { QuantityDialog } from "../classes/quantityDialog.js";
+import { ItemHelper } from "../helper/ItemHelper.js";
 
+/**
+ * @Module LootSheetNPC5e.Helpers.LootSheetNPC5eHelper
+ *
+ * @description Helper Methods for the Loot Sheet NPC 5e Module
+ */
 class LootSheetNPC5eHelper {
 
     /**
-     * Shange the {Actor5e}'s sheet type flag
-     * 
-     * Changes the current value of the Actor's sheet type
-     * to the one given in selection.
-     * 
-     * @param {Actor5e} actor 
-     * @param {Event} event 
-     * @param {HtmL} html 
+     * @Module LootSheetNPC5e.Helpers.LootSheetNPC5eHelper.changeSheetType
+     *
+     * @description Change the {Actor5e}'s sheet type flag
+     *
+     * @param {Actor5e} actor
+     * @param {Event} event
+     *
      */
-    static async _changeSheetType(event, actor, html) {
+    static async changeSheetType(event, actor) {
         event.preventDefault();
         const selectedIndex = event.currentTarget.selectedIndex,
             selectedItem = event.currentTarget[selectedIndex].value;
-        
+
         await actor.setFlag(MODULE.ns, "lootsheettype", selectedItem);
-        
+
         console.log(MODULE.ns + " | " + game.user.name + ' (' + game.user.id + ') updated the sheet type for ', MODULE.ns + " event | " + event);
-        actor.sheet.render(true);
-    }
-
-    /**
-     * Retrieve the loot permission for a player, given the current actor data.
-     * 
-     * It first tries to get an entry from the actor's permissions, if none is found it uses default, otherwise returns 0.
-     * 
-     */
-    static getLootPermissionForPlayer(actorData, player) {
-        let defaultPermission = actorData.permission.default;
-        if (player.data._id in actorData.permission) {
-            return actorData.permission[player.data._id];
-        } else if (typeof defaultPermission !== "undefined") {
-            return defaultPermission;
-        }
-
-        return 0;
+        //actor.sheet.render(true);
     }
 
     /**
      * Handles Currency from currency.TYPE.value to currency.TYPE for backwords support
-     * @param {string} folderPath - The directory to loop through
+     *
      */
     static convertCurrencyFromObject(currency) {
         Object.entries(currency).map(([key, value]) => {
@@ -54,12 +42,12 @@ class LootSheetNPC5eHelper {
     }
 
     /**
-     * 
-     * @param {Array<object>} items 
-     * @param {number} chanceOfDamagedItems 
-     * @param {number} damagedItemsMultiplier 
-     * @param {number} removeDamagedItems 
-     * 
+     *
+     * @param {Array<object>} items
+     * @param {number} chanceOfDamagedItems
+     * @param {number} damagedItemsMultiplier
+     * @param {number} removeDamagedItems
+     *
      * @returns {Array<Items>} items Filtered lootable items
      */
     static _getLootableItems(
@@ -102,8 +90,8 @@ class LootSheetNPC5eHelper {
 
     /**
      * Take an options object an either keep values or set the default
-     * 
-     * @param {*} options 
+     *
+     * @param {*} options
      * @returns {object}
      */
     static _getOptionsDefault(options) {
@@ -131,7 +119,7 @@ class LootSheetNPC5eHelper {
      * Handle Loot item
      * @private
      */
-    static _lootItem(token, event, all = 0) {
+    static lootItem(token, event, all = 0) {
         event.preventDefault();
         console.log("Loot Sheet | Loot Item clicked");
         const targetGm = PermissionHelper.getTargetGM();
@@ -143,18 +131,18 @@ class LootSheetNPC5eHelper {
             return ui.notifications.error(`No active character for user.`);
         }
 
-        const itemId = event.currentTarget.dataset.itemId || event.currentTarget.closest('.item').dataset.itemId,
-            targetItem = token.actor.getEmbeddedDocument("Item", itemId),
+        const id = event.currentTarget.dataset.itemId || event.currentTarget.closest('.item').dataset.itemId,
+            targetItem = token.actor.getEmbeddedDocument("Item", id),
             looterId = (game.user.isGM) ? targetGm.id : game.user.actorId;
 
-        const item = { itemId: itemId, quantity: 1 };
+        const item = { id: id, quantity: 1 };
         if (all || event.shiftKey) {
             item.quantity = targetItem.data.data.quantity;
         }
 
         const packet = {
             type: "loot",
-            looterId: looterId,
+            triggerActorId: looterId,
             tokenId: token.id,
             items: [item],
             processorId: targetGm.id
@@ -179,136 +167,94 @@ class LootSheetNPC5eHelper {
     }
 
     /**
-    * Handle Loot coins
-    * @private
-    */
-    static lootCoins(token, event) {
+     *
+     * @param {token} token
+     * @param {event} event
+     * @param {boolean} all
+     *
+     * uses PermissionHelper
+     */
+    static buyItem(token, event, all = false) {
         event.preventDefault();
-        if (!game.settings.get("lootsheetnpc5e", "lootCurrency")) {
-            return;
-        }
-        console.log("Loot Sheet | Loot Coins clicked");
+        let targetGm = PermissionHelper.getTargetGM();
 
-        const targetGm = PermissionHelper.getTargetGM();
+        if (!targetGm) return ui.notifications.error("No active GM on your scene, a GM must be online and on the same scene to purchase an item.");
+        if (token === null) return ui.notifications.error(`You must purchase items from a token.`);
+        if (!game.user.actorId) return ui.notifications.error(`No active character for user. Are you a player?`);
 
-        if (!targetGm) {
-            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
-        }
+        const id = event.currentTarget.dataset.itemId || event.currentTarget.closest('.item').dataset.itemId,
+            targetItem = token.actor.getEmbeddedDocument("Item", id);
 
-        if (token === null) {
-            return ui.notifications.error(`You must loot coins from a token.`);
-        }
-        if (!game.user.actorId) {
-            console.log("Loot Sheet | No active character for user");
-            return ui.notifications.error(`No active character for user.`);
+        let item = { id: id, quantity: 1 };
+
+        if (all || event.shiftKey) {
+            item.quantity = targetItem.data.data.quantity;
         }
 
         const packet = {
-            type: "lootCoins",
-            looterId: game.user.actorId,
+            type: "buy",
+            triggerActorId: game.user.actorId,
             tokenId: token.id,
+            id: id,
+            quantity: 1,
             processorId: targetGm.id
         };
-        console.log("LootSheet5e", "Sending loot request to " + targetGm.name, packet);
-        game.socket.emit(MODULE.socket, packet);
+
+        if (targetItem.data.data.quantity === item.quantity) {
+            packet.quantity = item.quantity;
+            console.log(MODULE.ns, "Sending buy request to " + targetGm.name, packet);
+            game.socket.emit(MODULE.socket, packet);
+            return;
+        }
+
+
     }
 
-    static distributeCoins(containerActor) {
-        let actorData = containerActor.data;
-        let observers = [];
-        let players = game.users.players;
-
-        //console.log("Loot Sheet | actorData", actorData);
-        // Calculate observers
-        for (let player of players) {
-            let playerPermission = LootSheetNPC5eHelper.getLootPermissionForPlayer(actorData, player);
-            if (player != "default" && playerPermission >= 2) {
-                //console.log("Loot Sheet | player", player);
-                let actor = game.actors.get(player.data.character);
-                //console.log("Loot Sheet | actor", actor);
-                if (actor != null && (player.data.role === 1 || player.data.role === 2)) observers.push(actor);
-            }
+    /**
+     *
+     * @param {Actor5e} containerActor
+     * @param {Event} event
+     * @returns
+     */
+    static sendActionToSocket(token, action, event) {
+        event.preventDefault();
+        if (!game.settings.get(MODULE.ns, action)) {
+            return;
         }
+        const
+            targetGm = PermissionHelper.getTargetGM(),
+            dataSet = { ...event.currentTarget.dataset, ...event.currentTarget.closest('.item').dataset },
+            targetItemId = dataSet.itemId,
+            options = { acceptLabel: "Quantity" },
+            maxQuantity = parseInt(dataSet.maxQuantity);
+        let quantity = 1;
 
-        //console.log("Loot Sheet | observers", observers);
-        if (observers.length === 0) return;
+        if (!targetGm) return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
+        if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
+        if (!game.user.actorId) return ui.notifications.error(`No active character for user.`);
 
-        // Calculate split of currency
-        let currencySplit = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(actorData.data.currency));
-        //console.log("Loot Sheet | Currency data", currencySplit);
+        const packet = {
+            type: action,
+            triggerActorId: game.user.actorId,
+            tokenId: token.id,
+            processorId: targetGm.id,
+            targetItemId: targetItemId || null,
+            quantity: quantity || null
+        };
 
-        // keep track of the remainder
-        let currencyRemainder = {};
-
-        for (let c in currencySplit) {
-            if (observers.length) {
-                // calculate remainder
-                currencyRemainder[c] = (currencySplit[c] % observers.length);
-                //console.log("Remainder: " + currencyRemainder[c]);
-
-                currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
-            }
-            else currencySplit[c] = 0;
-        }
-
-        // add currency to actors existing coins
-        let msg = [];
-        for (let u of observers) {
-            //console.log("Loot Sheet | u of observers", u);
-            if (u === null) continue;
-
-            msg = [];
-            let currency = LootSheetNPC5eHelper.convertCurrencyFromObject(u.data.data.currency),
-                newCurrency = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(u.data.data.currency));
-
-            //console.log("Loot Sheet | Current Currency", currency);
-
-            for (let c in currency) {
-                // add msg for chat description
-                if (currencySplit[c]) {
-                    //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
-                    msg.push(` ${currencySplit[c]} ${c} coins`)
-                }
-
-                // Add currency to permitted actor
-                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c];
-
-                //console.log("Loot Sheet | New Currency", newCurrency);
-                u.update({
-                    'data.currency': newCurrency
-                });
-            }
-
-            // Remove currency from loot actor.
-            let lootCurrency = LootSheetNPC5eHelper.convertCurrencyFromObject(containerActor.data.data.currency),
-                zeroCurrency = {};
-
-            for (let c in lootCurrency) {
-                zeroCurrency[c] = {
-                    'type': currencySplit[c].type,
-                    'label': currencySplit[c].type,
-                    'value': currencyRemainder[c]
-                }
-                containerActor.update({
-                    "data.currency": zeroCurrency
-                });
-            }
-
-            // Create chat message for coins received
-            if (msg.length != 0) {
-                let message = `${u.data.name} receives: `;
-                message += msg.join(",");
-                ChatMessage.create({
-                    user: game.user._id,
-                    speaker: {
-                        actor: containerActor,
-                        alias: containerActor.name
-                    },
-                    content: message
-                });
-            }
+        if (event.shiftKey || dataSet?.getAll == true) {
+            packet.quantity = maxQuantity;
+            game.socket.emit(MODULE.socket, packet);
+        } else {
+            options.max = maxQuantity;
+            const d = new QuantityDialog((quantityCallback) => {
+                packet.quantity = quantityCallback;
+                game.socket.emit(MODULE.socket, packet);
+            },
+                options
+            );
+            d.render(true);
         }
     }
-
 }
 export { LootSheetNPC5eHelper };

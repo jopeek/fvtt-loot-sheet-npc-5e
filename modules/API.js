@@ -149,6 +149,7 @@ class API {
     ) {
         let response = API._response(200, 'success');
             responseData = {};
+
         for (let token of tokens) {
             const 
                 permissions = PermissionHelper._updatedUserPermissions(token, players),

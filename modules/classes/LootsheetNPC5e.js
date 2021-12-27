@@ -14,7 +14,7 @@ import { QuantityDialog } from "./quantityDialog.js";
 /**
  * @module lootsheetnpc5e.LootSheet5eNPC
  * @description A class for handling the loot sheet for NPCs.
- * 
+ *
  */
 class LootSheetNPC5e extends ActorSheet5eNPC {
 
@@ -25,13 +25,13 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
     get template() {
         const sheetType = 'default',//(game.settings.get(MODULE.ns, "useCondensedLootsheet")) ? 'condensed' : 'default';
               path = "systems/dnd5e/templates/actors/";
-        
+
         let templateList = [
             "modules/" + MODULE.ns + "/template/sheet.hbs",
             "modules/" + MODULE.ns + "/template/partials/list/" + sheetType + ".hbs",
             "modules/" + MODULE.ns + "/template/partials/header/" + sheetType + ".hbs"
         ];
-        
+
         if(game.user.isGM) {
             templateList.push("modules/" + MODULE.ns + "/template/partials/sidebar/sidebar.hbs");
             templateList.push("modules/" + MODULE.ns + "/template/partials/sidebar/gm-settings/permissions.hbs");
@@ -49,14 +49,14 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
         mergeObject(options, {
             classes: ["dnd5e sheet actor npc npc-sheet loot-sheet-npc"],
-            //resizable: !game.settings.get(MODULE.ns, "useCondensedLootsheet")            
+            //resizable: !game.settings.get(MODULE.ns, "useCondensedLootsheet")
         });
-        
+
         return options;
     }
 
     /**
-     * 
+     *
      * @returns {object} Data for sheet to render
      */
     async getData() {
@@ -117,9 +117,9 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
     /**
      * WIP
-     * 
+     *
      * @todo convert this to work
-     * 
+     *
      * @return void
      */
     async _getGameWorldRolltables() {
@@ -155,7 +155,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         let options = {},
             inventorySettings = document.querySelector('.inventory-settings');
 
-        if (game.user.isGM && inventorySettings &&inventorySettings.contains(e.currentTarget)) {
+        if (game.user.isGM && inventorySettings && inventorySettings.contains(e.currentTarget)) {
             options.preventClose = true;
             options.preventRender = true;
         }
@@ -170,7 +170,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
     /**
      * Activate event listeners using the prepared sheet HTML
-     * 
+     *
      * @param html {HTML} The prepared HTML object ready to be rendered into the DOM
      * @todo change to use native JS methods instead of jQuery
      */
@@ -178,7 +178,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         super.activateListeners(html);
         if (this.options.editable) {
             // Change Permissions for all players
-            html.find('.permission-option a').click(ev => PermissionHelper.setPermissions(ev, this.actor));
+            html.find('.permission-option a').click(ev => PermissionHelper.assignPermissions(ev, this.actor));
             // Cycle Permissions for an indidual player.
             html.find('.permission-proficiency').click(ev => PermissionHelper.cyclePermissions(ev, this.actor));
 
@@ -191,32 +191,16 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         // toggle infoboxes
         html.find('.help').hover(e => e.currentTarget.nextElementSibling.classList.toggle('hidden'));
 
-        
+        html.find('.item-buy').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'buyItem', ev));
+        html.find('.item-buyall').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'buyItemAll', ev));
+        // Loot
+        html.find('.loot-all').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootAll', ev));
+        html.find('.item-loot').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootItem', ev));
+        //html.find('.item-lootall').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootItemAll', ev));
 
-        // Buy Item
-        html.find('.item-buy').click(ev => this._buyItem(ev));
-        html.find('.item-buyall').click(ev => this._buyItem(ev, 1));
-        
-
-        // Loot Item
-        if(false && game.settings.get(MODULE.ns, "useCondensedLootsheet")){
-            html.find('.loot-trigger').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev, 1));
-        } else {
-            html.find('.item-loot').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev));
-        }
-        
-        html.find('.item-lootall').click(ev => LootSheetNPC5eHelper._lootItem(this.token, ev, 1));
-
-        // Loot Currency
-        html.find('.loot-currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.lootCoins(this.token, ev));
-        // Split Coins
-        html.find('.split-Currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.distributeCoins(ev));
-        
-        // Loot All
-        html.find('.loot-all').removeAttr('disabled').click(ev => this._lootAll(ev, html));
-
-        // Change sheet type
-        html.find('.sheet-type').change(ev => LootSheetNPC5eHelper._changeSheetType(ev, this.actor, html));
+        // currency
+        html.find('.loot-currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootCoins', ev));
+        html.find('.split-currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'distributeCoins', ev));
     }
 
     /* -------------------------------------------- */
@@ -229,12 +213,9 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         event.preventDefault();
 
         const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "clearInventory", "itemOnlyOnce"];
-
-        console.log(MODULE.ns + " | Merchant/Loot Config settings changed");
-
         let targetKey = event.target.name.split('.')[3];
 
-        if (expectedKeys.indexOf(targetKey) === -1) {
+        if (!expectedKeys.includes(targetKey)) {
             console.log(MODULE.ns + ` | Error changing stettings for "${targetKey}".`);
             return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
         }
@@ -244,7 +225,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
             await this.actor.setFlag(MODULE.ns, targetKey, event.target.checked);
             return;
         }
-        
+
         console.log(MODULE.ns + " | " + targetKey + " set to " + event.target.value);
         await this.actor.setFlag(MODULE.ns, targetKey, event.target.value);
     }
@@ -253,7 +234,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
     /**
      * Handle inventory update
-     * 
+     *
      * @private
      */
     async _inventoryUpdate(event, html) {
@@ -288,7 +269,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
                     }
                 );
 
-            return this.actor.sheet.render(true); //population should done, good bye 👋 
+            return this.actor.sheet.render(true); //population should done, good bye 👋
         }
 
         let shopQtyRoll = new Roll(shopQtyFormula);
@@ -298,7 +279,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
             if (rolltable.results.length < shopQtyRoll.total) {
                 return ui.notifications.error(`Cannot create an inventory with ${shopQtyRoll.total} unqiue entries if the rolltable only contains ${rolltable.results.length} items`);
             }
-        }        
+        }
 
         console.log(MODULE.ns + ' | Updating Inventory for ' + this.actor.name);
 
@@ -323,7 +304,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
             let itemQtyRoll = new Roll(itemQtyFormula),
                 existingItem = this.actor.items.find(item => item.data.name == newItem.name);
-            
+
             itemQtyRoll.roll();
 
             console.log(MODULE.ns + ` | Adding ${itemQtyRoll.total} x ${newItem.name}`);
@@ -364,17 +345,17 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
     }
 
     /**
-     * 
-     * @param {*} sheetData 
+     *
+     * @param {*} sheetData
      */
     _setClasses(sheetData) {
         if (false && game.settings.get(MODULE.ns, "useCondensedLootsheet") || false && !sheetData.owner) {
-            this.options.classes.push('lootsheet-condensed');            
+            this.options.classes.push('lootsheet-condensed');
         }
     }
 
     /**
-     * 
+     *
      * @returns currently not in use, likely obsolet for now
      */
     _createRollTable() {
@@ -425,68 +406,16 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
     /* -------------------------------------------- */
 
     /**
-     * 
-     * @param {event} event 
-     * @param {number|null} all 
-     * 
-     * uses PermissionHelper
-     */
-    _buyItem(event, all = null) {
-        event.preventDefault();
-        let targetGm = PermissionHelper.getTargetGM();
-
-        if (!targetGm) return ui.notifications.error("No active GM on your scene, a GM must be online and on the same scene to purchase an item.");
-        if (this.token === null) return ui.notifications.error(`You must purchase items from a token.`);
-        if (!game.user.actorId) return ui.notifications.error(`No active character for user.`);
-
-        const   itemId = event.currentTarget.dataset.itemId || event.currentTarget.closest('.item').dataset.itemId,
-                targetItem = this.actor.getEmbeddedDocument("Item", itemId),
-                item = { itemId: itemId, quantity: 1 };
-
-        if (all || event.shiftKey) {
-            item.quantity = targetItem.data.data.quantity;
-        }
-
-        const packet = {
-            type: "buy",
-            buyerId: game.user.actorId,
-            tokenId: this.token.id,
-            itemId: itemId,
-            quantity: 1,
-            processorId: targetGm.id
-        };
-
-        if (targetItem.data.data.quantity === item.quantity) {
-            console.log(MODULE.ns, "Sending buy request to " + targetGm.name, packet);
-            game.socket.emit(MODULE.socket, packet);
-            return;
-        }
-
-        const d = new QuantityDialog((quantity) => {
-            packet.quantity = quantity;
-            console.log(MODULE.ns, "Sending buy request to " + targetGm.name, packet);
-            game.socket.emit(MODULE.socket, packet);
-        },
-            {
-                acceptLabel: "Purchase"
-            }
-        );
-        d.render(true);
-    }
-
-    /* -------------------------------------------- */
-
-
-    /* -------------------------------------------- */
-
-    /**
      * Handle Loot all
-     * @private
+     *
+     * @param {Event} event
+     *
+     * @returns {Promise}
      */
     _lootAll(event, html) {
         event.preventDefault();
         console.log("Loot Sheet | Loot All clicked");
-        this._lootCoins(event);
+        LootSheetNPC5eHelper.lootCoins(this.token, event);
 
         let targetGm = PermissionHelper.getTargetGM();
 
@@ -573,7 +502,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
     /* -------------------------------------------- */
 
-    
+
 
     /* -------------------------------------------- */
 
@@ -586,7 +515,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         //console.log("Loot Sheet | actorData", actorData);
         // Calculate observers
         for (let player of players) {
-            let playerPermission = LootSheetNPC5eHelper.getLootPermissionForPlayer(actorData, player);
+            let playerPermission = PermissionHelper.getLootPermissionForPlayer(actorData, player);
             if (player != "default" && playerPermission >= 2) {
                 //console.log("Loot Sheet | player", player);
                 let actor = game.actors.get(player.data.character);
@@ -724,7 +653,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         items = items.sort((a, b) => {
             return a.name.localeCompare(b.name);
         });
-        
+
         for (let i of items) {
             i.img = i.img || DEFAULT_TOKEN;
             //console.log("Loot Sheet | item", i);
@@ -767,7 +696,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
                 player.actorId = actor.data._id;
                 player.playerId = player.data._id;
                 player.lootPermission = PermissionHelper.getLootPermissionForPlayer(actorData, player);
-                
+
                 if (player.lootPermission >= 2 && !observers.includes(actor.data._id)) {
                     observers.push(actor.data._id);
                 }

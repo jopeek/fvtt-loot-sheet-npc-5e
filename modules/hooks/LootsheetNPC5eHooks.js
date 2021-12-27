@@ -5,7 +5,7 @@ import { API } from '../API.js';
 
 class LootsheetNPC5eHooks {
     /**
-     * Hooks on game hooks and attaches methods 
+     * Hooks on game hooks and attaches methods
      */
     static init(){
         Hooks.once("init", LootsheetNPC5eHooks.foundryInit);
@@ -29,7 +29,7 @@ class LootsheetNPC5eHooks {
     }
 
     static foundryInit(){
-        ModuleSettings.registerSettings();  
+        ModuleSettings.registerSettings();
         LootsheetNPC5eHooks.socketListener();
     }
 
@@ -62,56 +62,46 @@ class LootsheetNPC5eHooks {
 
     static socketListener(){
         game.socket.on(MODULE.socket, data => {
-            console.log("Loot Sheet | Socket Message: ", data);
-            if (game.user.isGM && data.processorId === game.user.id) {
-                if (data.type === "buy") {
-                    let buyer = game.actors.get(data.buyerId);
-                    let seller = canvas.tokens.get(data.tokenId);
-    
-                    if (buyer && seller && seller.actor) {
-                        ItemHelper.transaction(seller.actor, buyer, data.itemId, data.quantity);
-                    }
-                    else if (!seller) {
-                        ItemHelper.errorMessageToActor(buyer, "GM not available, the GM must on the same scene to purchase an item.")
-                        ui.notifications.error("Player attempted to purchase an item on a different scene.");
-                    }
-                }
-    
-                if (data.type === "loot") {
-                    let looter = game.actors.get(data.looterId);
-                    let container = canvas.tokens.get(data.tokenId);
-    
-                    if (looter && container && container.actor) {
-                        ItemHelper.lootItems(container.actor, looter, data.items);
-                    }
-                    else if (!container) {
-                        errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot an item.")
-                        ui.notifications.error("Player attempted to loot an item on a different scene.");
-                    }
-                }
-    
-                if (data.type === "distributeCoins") {
-                    let container = canvas.tokens.get(data.tokenId);
-                    if (!container || !container.actor) {
-                        ItemHelper.errorMessageToActor(looter, "GM not available, the GM must on the same scene to distribute coins.")
-                        return ui.notifications.error("Player attempted to distribute coins on a different scene.");
-                    }
-                    ItemHelper.distributeCoins(container.actor);
-                }
-    
-                if (data.type === "lootCoins") {
-                    let looter = game.actors.get(data.looterId);
-                    let container = canvas.tokens.get(data.tokenId);
-                    if (!container || !container.actor || !looter) {
-                        ItemHelper.errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot coins.")
-                        return ui.notifications.error("Player attempted to loot coins on a different scene.");
-                    }
-                    ItemHelper.lootCoins(container.actor, looter);
-                }
+
+            const triggeringActor = game.actors.get(data.triggerActorId),
+                npcActorToken = canvas.tokens.get(data.tokenId),
+                action = data.type;
+
+            console.log(MODULE.ns + " | Hooks | socketListener | data", data);
+
+            if (!action || action === "error") {
+                ui.notifications.error(MODULE.ns + " | socketListener | InvalidData");
+                console.log("Loot Sheet | Transaction Error: ", data);
+                return;
             }
-            if (data.type === "error" && data.targetId === game.user.actorId) {
-                console.log("Loot Sheet | Transaction Error: ", data.message);
-                return ui.notifications.error(data.message);
+
+            if (!triggeringActor) {
+                ui.notifications.error(MODULE.ns + " | socketListener | Exception | Could not get acting player.");
+                return;
+            }
+
+            if (!npcActorToken) {
+                ItemHelper.errorMessageToActor(triggeringActor, "GM not available, the GM must on the same scene to purchase an item.")
+                ui.notifications.error(MODULE.ns + " | Player attempted to trigger `" + action + "` on a different scene.");
+                return;
+            }
+
+            if (game.user.isGM && data.processorId === game.user.id) {
+                if (action === "buyItem") {
+                    ItemHelper.transaction(npcActorToken.actor, triggeringActor, data.targetItemId, data.quantity);
+                }
+                if (action === "lootAll") {
+                    ItemHelper.lootItems(npcActorToken.actor, triggeringActor, data.items);
+                }
+                if (action === "lootItem") {
+                    ItemHelper.lootItems(npcActorToken.actor, triggeringActor, [{id: data.targetItemId, quantity: data.quantity}]);
+                }
+                if (action === "distributeCoins") {
+                    ItemHelper.distributeCoins(npcActorToken.actor);
+                }
+                if (action === "lootCoins") {
+                    ItemHelper.lootCoins(npcActorToken.actor, triggeringActor);
+                }
             }
         });
     }
