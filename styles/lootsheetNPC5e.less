@@ -1,5 +1,5 @@
 
-.system-dnd5e {
+.system-dnd5e, .system-pf2, .system-pf1 {
 	--modesto: "Modesto Condensed", "Palatino Linotype", serif;
 	--signika: "Signika", sans-serif;
 	--primary-font: rgba(0, 0, 0, 0.9);
@@ -55,6 +55,16 @@
 	--checkbox-outline: #969696;
 	--checkbox-unchecked: #D8D7D1;
 	--checkbox-checked: rgba(0, 255, 0, 0.3);
+	--icon-size: 32px;
+
+	/**
+	* Entity rarity colors
+	*/
+	--rarity-common: rgba(255,255,255, 0.75);
+	--rarity-uncommon: rgba(30,255,0, 0.75);
+	--rarity-rare: rgba(0,112,221, 0.75);
+	--rarity-veryrare: rgba(163,53,238, 0.75);
+	--rarity-legendary: rgba(255,128,0, 0.75);
 }
 
 .system-dnd5e.tidy5eDark {
@@ -86,8 +96,27 @@
 	--checkbox-unchecked: #4b4b4b;
 	--checkbox-checked: rgba(0, 255, 0, 0.5);
 }
+.rarityMixin() {
+	&[class*='rarity'] {
+		.item-image{
+			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-common);
+		}
+		&[class*='uncommon'] .item-image {
+			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-uncommon);
+		}
+		&[class*='rare'] .item-image {
+			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-rare);
+		}
+		&[class*='veryRare'] .item-image {
+			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-veryrare);
+		}
+		&[class*='legendary'] .item-image {
+			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-legendary);
+		}
+	}
+}
 
-.app.actor.loot-sheet-npc { 
+.app.actor.loot-sheet-npc {
     .window-content {
         color: var(--primary-font);
         padding: 0;
@@ -129,12 +158,12 @@
 			padding: 0 0.3em;
 			align-self: self-end;
 			cursor: pointer;
-			
+
 			:hover {
 				box-shadow: 0 0 0.3em var(--icon-shadow) inset;
 			}
         }
-        
+
     }
 
     header.sheet-header {
@@ -236,6 +265,8 @@
 
     .items-list {
         .item {
+			.rarityMixin();
+
             h4 {
                 color: var(--primary-font);
             }
@@ -258,7 +289,7 @@
             &:hover {
                 color: var(--secondary-color);
             }
-        }        
+        }
     }
 
     input[type="text"] {
@@ -291,7 +322,7 @@
     }
 }
 
-/** GM specific */ 
+/** GM specific */
 
 .app.loot-sheet-npc {
     .gm-section {
@@ -339,7 +370,7 @@
 			margin: 0 0 0 24px;
 			line-height: 22px;
 		}
-		
+
 		.denomination {
 			display: flex;
 			flex-direction: row;
@@ -365,7 +396,7 @@
 			padding: 0.3em;
 			max-width: 15vw;
 			z-index: 1000;
-		}		
+		}
 		.inventory-clear-settings-info {
 			display: block;
 			position: absolute;
@@ -434,7 +465,7 @@
 			}
 		}
     }
-    
+
     section.sheet-sidebar.sidebar {
         position: absolute;
         background: url(/ui/parchment.jpg) repeat;
@@ -447,7 +478,8 @@
         justify-content: center;
         border-bottom-right-radius: 0.5em;
 		border-radius: 0 0.5em 0.5em 0;
-        width: fit-content;
+		min-width: fit-content;
+        max-width: 310px;
         opacity: 1;
         transition: all .75s ease;
 		z-index: 200;
@@ -489,5 +521,6 @@ input#quantity {
 }
 @import "partials/permissions.less";
 @import "partials/inventory.less";
+@import "partials/lootchatcard.less";
 
 @import "themes/condensed.less";

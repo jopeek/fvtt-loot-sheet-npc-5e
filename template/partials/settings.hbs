@@ -1,0 +1,85 @@
+<div class="form-group">
+    {{#if (eq this.type 'Object')}}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Filters</th>
+                    <th>Rolltable</th>
+                    <th>Tags</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.value as |customRule uniquekey|}}
+                <tr data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}">
+                    <th data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.name">{{customRule.name}}</th>
+                    <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.filters">
+                        <table>
+                            {{#each customRule.filters as |filter index|}}
+                                <tr>
+                                    <td data-name="{{../../this.module}}.{{../this.key}}.{{../uniquekey}}.filters.{{index}}.filterpath">{{filter.filterpath}}</td>
+                                    <td data-name="{{../../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.comparison">{{filter.comparison}}</td>
+                                    <td data-name="{{../../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.value">{{filter.value}}</td>
+                                </tr>
+                            {{/each}}
+                        </table>
+                    </td>
+
+                    <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
+                        <em data-action="openSheet">
+                            {{#if customRule.rolltableName}}
+                                {{truncate customRule.rolltableName 25}}
+                            {{else}}
+                                {{truncate customRule.rolltable 25}}
+                            {{/if}}
+                            </em>
+                    </td>
+                    <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.tags">
+                        {{#if customRule.tags}}
+                            {{customRule.tags}}
+                        {{/if}}
+                    </td>
+                    <td class="actions">
+                        <button data-action="deleteRow" data-update-setting="true" title="delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <label>{{this.name}}</label>
+        <div class="form-fields">
+
+            {{#if this.isCheckbox}}
+            <input type="checkbox" name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" data-dtype="Boolean"
+                {{checked this.value}} />
+
+            {{else if this.isSelect}}
+            <select name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" data-dtype="String">
+                {{#select this.value}}
+                <option value="0">-- Select an option --</option>
+                {{#each this.choices as |array group|}}
+                <optgroup label="{{group}}">
+                    {{#each array}}
+                    <option value="{{this.uuid}}">{{this.name}}</option>
+                    {{/each}}
+                </optgroup>
+                {{/each}}
+                {{/select}}
+            </select>
+
+            {{else if this.isRange}}
+            <input type="range" name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" data-dtype="Number"
+                value="{{ this.value }}" min="{{ this.range.min }}" max="{{ this.range.max }}"
+                step="{{ this.range.step }}" />
+            <span class="range-value">{{this.value}}</span>
+
+            {{else}}
+            <input type="text" name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" value="{{this.value}}"
+                data-dtype="{{this.type}}" />
+            {{/if}}
+        </div>
+        <p class="notes">{{this.hint}}</p>
+    {{/if}}
+</div>

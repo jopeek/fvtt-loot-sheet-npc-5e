@@ -13,7 +13,7 @@
                 <button type="button"
                     class="loot-all"
                     name="loot-all"
-                    value="1"
+                    data-get-all="true"
                     title="{{localize 'lsnpc.buttons.loot.items.all.title'}}">
                     <i class="fas fa-gem"></i>
                     <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
@@ -21,9 +21,9 @@
             {{/if}}
 
             <button type="button" class="split-currency" type="split-coins" name="split-coins" value="1"
-                title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=actor.flags.loot.observerCount }}">
+                title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=actor.flags.lootsheetnpc5e.observerCount }}">
                 <i class="fas fa-users"></i>
-                <i class="fas fa-hand-holding-usd"></i>            
+                <i class="fas fa-hand-holding-usd"></i>
                 <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.split.label'}}</span>
             </button>
 
@@ -36,14 +36,14 @@
                 </button>
             {{/if}}
         {{/ifeq}}
-        
+
         {{#if isGM}}
-            {{#ifeq lootsheettype "Merchant"}}                
+            {{#ifeq lootsheettype "Merchant"}}
                 <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value="">
                     <i class="fa fa-balance-scale"></i>
                     <span class="buttontext">{{localize 'lsnpc.buttons.merchant.gm.price.label'}}</span>
-                </button>                    
+                </button>
             {{/ifeq}}
-        {{/if}}        
+        {{/if}}
     </div>
 </header>

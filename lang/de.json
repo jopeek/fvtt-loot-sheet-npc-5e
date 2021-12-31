@@ -73,6 +73,14 @@
         "sheettypes": {
             "loot": "Beute",
             "merchant": "Händler"
+        },
+        "settings": {
+            "menu": {
+                "moduleDefaults": "Modul Standards",
+                "merchant": "Händler",
+                "loot": "Beute",
+                "info": "?"
+            }
         }
     }
 }

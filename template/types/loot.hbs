@@ -19,15 +19,15 @@
                     </div>
                 {{/if}}
 
-                <button type="button" class= "split-currency" type="split-coins" name="split-coins" value="1" title="Loot Coins | Share between {{actor.flags.loot.observerCount}} in Party">
+                <button type="button" class= "split-currency" type="split-coins" name="split-coins" value="1" title="Loot Coins | Share between {{actor.flags.lootsheetnpc5e.observerCount}} in Party">
                     <i class="fas fa-users"></i><i class="fas fa-hand-holding-usd"></i> {{localize "Share Coins"}}
                 </button>
 
                 {{#if lootCurrency}}
-                    <button type="button" class="loot-currency" 
+                    <button type="button" class="loot-currency"
                         <i class="fas fa-user"></i><i class="fas fa-hand-holding-usd"></i> {{localize "Loot Coins"}}
                     </button>
-               {{/if}}     
+               {{/if}}
         </div>
     </header>
 
@@ -37,7 +37,7 @@
     </nav>
     <section class="sheet-lower flexrow">
         <!-- SIDEBAR -->
-        {{#if isGM}}     
+        {{#if isGM}}
             <section class="sheet-sidebar sidebar hidden">
                 <!-- GM SETTINGS -->
                 <section class="gm-settings" data-group="sidebar" data-tab="gm-settings">
@@ -72,7 +72,7 @@
                     </div>
 
                     <h3 class="gm-header">
-                        <a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> 
+                        <a class="permission-proficiency-bulk" title="{{actor.flags.lootsheetnpc5e.playersPermissionDescription}}">{{{actor.flags.lootsheetnpc5e.playersPermissionIcon}}}</a>
                         Permissions
                         <aside class="infobox-wrapper">
                             <i class="fas fa-info-circle help"></i>
@@ -81,11 +81,11 @@
                             </div>
                         </aside>
                     </h3>
-                    <input type="hidden" name="actor.flags.loot.playersPermission"
-                        value="{{actor.flags.loot.playersPermission}}" data-dtype="Number" />
-                    
+                    <input type="hidden" name="actor.flags.lootsheetnpc5e.playersPermission"
+                        value="{{actor.flags.lootsheetnpc5e.playersPermission}}" data-dtype="Number" />
+
                     <ol class="permissions-list">
-                        {{#each actor.flags.loot.players as |player p|}}
+                        {{#each actor.flags.lootsheetnpc5e.players as |player p|}}
                         <li class="permission" data-skill="{{p}}">
                             <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}"
                                 data-dtype="Number" actor="{{player.actorId}}" />
@@ -97,7 +97,7 @@
                     </ol>
 
                     {{#if showLootConfig}}
-                        <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Inventory Settings 
+                        <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Inventory Settings
                             <aside class="infobox-wrapper">
                                 <i class="fas fa-info-circle help"></i>
                                 <div class="sheet-infobox hidden">
@@ -165,7 +165,7 @@
                                             <div class="sheet-infobox hidden">
                                                 ⚠️If the tokens actor is <em>not</em> a merchant you typically don't want to clear the inventory.
                                             </div>
-                                        </aside> 
+                                        </aside>
                                     </h4>
                                     <div class="inventory-clear-settings-info"></div>
                                 </div>
@@ -200,7 +200,7 @@
                 <div class="tab" data-tab="inventory" data-group="primary">
                     <!-- FEATURES -->
                     <div class="features" data-group="primary" data-tab="features">
-                        <div class="inventory-filters flexrow">                          
+                        <div class="inventory-filters flexrow">
                             {{#ifeq lootsheettype "Loot"}}
                                 <ul class="currency flexrow">
                                         <li class="currency-item-header">
@@ -210,16 +210,16 @@
                                         <li class="currency-item">
                                             <input type="text" name="data.currency.{{i}}" value="{{c}}" data-dtype="number" />
                                             <label class="denomination {{i}}" title="{{lookup (lookup ../config.currencies i) 'label'}}">{{i}}</label>
-                                            
+
                                         </li>
                                     {{/each}}
-                                    {{#each actor.flags.loot.currency as |c i|}}
+                                    {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}
                                         <li class="denomination {{i}}">
                                             <aside class="denomination-value">
                                                 <em>{{c}} each</em>
-                                            </aside>  
+                                            </aside>
                                         </li>
-                                    {{/each}}                                                                        
+                                    {{/each}}
                                 </ul>
 
                             {{/ifeq}}
@@ -250,8 +250,8 @@
                                         {{/if}}
                                     </li>
                                 {{/if}}
-                                
-                                <ol class="item-list">                            
+
+                                <ol class="item-list">
                                     {{#each section.items as |item iid|}}
 
                                     <li class="item flexrow" data-item-id="{{item._id}}">

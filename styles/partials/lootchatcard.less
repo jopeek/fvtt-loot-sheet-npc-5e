@@ -1,0 +1,34 @@
+.lsnpc {
+    &.loot-item-card {
+        .loot-info {
+            .entity-link {
+                flex: 0 0 22px;
+                padding: 0;
+                margin: 1px;
+
+                .looter-icon {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        .item {
+            .rarityMixin();
+
+            .item-amount {
+                flex: 0 0 22px;
+            }
+
+            .item-image {
+                flex: 0 0 22px;
+                width: 22px;
+                height: 22px;
+            }
+
+            span {
+                line-height: 2em;
+                padding: 0.1em;
+            }
+        }
+    }
+}

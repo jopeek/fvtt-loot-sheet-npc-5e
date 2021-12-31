@@ -69,7 +69,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
         let sheetType = await this.actor.getFlag(MODULE.ns, typeKey),
             priceModifier = 1.0,
-            itemContents = LootSheetNPC5eHelper._getLootableItems(sheetData.actor.items),
+            itemContents = LootSheetNPC5eHelper.getLootableItems(sheetData.actor.items),
             totalWeight = 0,
             totalPrice = 0,
             totalQuantity = 0;
@@ -111,7 +111,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         sheetData.rolltables = gameWorldTables; //game.tables.entities;
         sheetData.lootCurrency = game.settings.get(MODULE.ns, "lootCurrency");
         sheetData.lootAll = game.settings.get(MODULE.ns, "lootAll");
-        sheetData.data.currency = LootSheetNPC5eHelper.convertCurrencyFromObject(sheetData.data.currency);
+        sheetData.colorRarity = game.settings.get(MODULE.ns, "colorRarity");
         return sheetData;
     }
 
@@ -406,75 +406,20 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
     /* -------------------------------------------- */
 
     /**
-     * Handle Loot all
-     *
-     * @param {Event} event
-     *
-     * @returns {Promise}
-     */
-    _lootAll(event, html) {
-        event.preventDefault();
-        console.log("Loot Sheet | Loot All clicked");
-        LootSheetNPC5eHelper.lootCoins(this.token, event);
-
-        let targetGm = PermissionHelper.getTargetGM();
-
-        if (!targetGm) {
-            return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to purchase an item.");
-        }
-
-        if (this.token === null) {
-            return ui.notifications.error(`You must loot items from a token.`);
-        }
-        if (!game.user.actorId) {
-            console.log("Loot Sheet | No active character for user");
-            return ui.notifications.error(`No active character for user.`);
-        }
-
-        const itemTargets = html.find('.item[data-item-id]');
-        if (!itemTargets) {
-            return;
-        }
-
-        const items = [];
-        for (let i of itemTargets) {
-            const itemId = i.getAttribute("data-item-id");
-            const item = this.actor.getEmbeddedDocument("Item", itemId);
-            items.push({ itemId: itemId, quantity: item.data.data.quantity });
-        }
-        if (items.length === 0) {
-            return;
-        }
-
-        const packet = {
-            type: "loot",
-            looterId: game.user.actorId,
-            tokenId: this.token.id,
-            items: items,
-            processorId: targetGm.id
-        };
-
-        console.log(MODULE.ns, "Sending loot request to " + targetGm.name, packet);
-        game.socket.emit(MODULE.socket, packet);
-    }
-
-    /* -------------------------------------------- */
-
-    /**
      * Handle price modifier
      * @private
      */
     async _priceModifier(event) {
         event.preventDefault();
 
+        const maxModifier = game.settings.get(MODULE.ns, "maxPriceIncrease");
         let priceModifier = await this.actor.getFlag(MODULE.ns, "priceModifier");
+
         if (typeof priceModifier !== 'number') priceModifier = 1.0;
 
         priceModifier = Math.round(priceModifier * 100);
 
-        const maxModifier = game.settings.get(MODULE.ns, "maxPriceIncrease");
-
-        var html = "<p>Use this slider to increase or decrease the price of all items in this inventory. <i class='fa fa-question-circle' title='This uses a percentage factor where 100% is the current price, 0% is 0, and 200% is double the price.'></i></p>";
+        let html = "<p>Use this slider to increase or decrease the price of all items in this inventory. <i class='fa fa-question-circle' title='This uses a percentage factor where 100% is the current price, 0% is 0, and 200% is double the price.'></i></p>";
         html += '<p><input name="price-modifier-percent" id="price-modifier-percent" type="range" min="0" max="' + maxModifier + '" value="' + priceModifier + '" class="slider"></p>';
         html += '<p><label>Percentage:</label> <input type=number min="0" max="' + maxModifier + '" value="' + priceModifier + '" id="price-modifier-percent-display"></p>';
         html += '<script>var pmSlider = document.getElementById("price-modifier-percent"); var pmDisplay = document.getElementById("price-modifier-percent-display"); pmDisplay.value = pmSlider.value; pmSlider.oninput = function() { pmDisplay.value = this.value; }; pmDisplay.oninput = function() { pmSlider.value = this.value; };</script>';
@@ -502,109 +447,9 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
     /* -------------------------------------------- */
 
-
-
-    /* -------------------------------------------- */
-
-    _hackydistributeCoins(containerActor) {
-        //This is identical as the distributeCoins function defined in the init hook which for some reason can't be called from the above _distributeCoins method of the LootSheetNPC5E class. I couldn't be bothered to figure out why a socket can't be called as the GM... so this is a hack but it works.
-        let actorData = containerActor.data
-        let observers = [];
-        let players = game.users.players;
-
-        //console.log("Loot Sheet | actorData", actorData);
-        // Calculate observers
-        for (let player of players) {
-            let playerPermission = PermissionHelper.getLootPermissionForPlayer(actorData, player);
-            if (player != "default" && playerPermission >= 2) {
-                //console.log("Loot Sheet | player", player);
-                let actor = game.actors.get(player.data.character);
-                //console.log("Loot Sheet | actor", actor);
-                if (actor != null && (player.data.role === 1 || player.data.role === 2)) observers.push(actor);
-            }
-        }
-
-        //console.log("Loot Sheet | observers", observers);
-        if (observers.length === 0) return;
-
-        // Calculate split of currency
-        let currencySplit = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(actorData.data.currency));
-        //console.log("Loot Sheet | Currency data", currencySplit);
-
-        // keep track of the remainder
-        let currencyRemainder = {};
-
-        for (let c in currencySplit) {
-            if (observers.length) {
-                // calculate remainder
-                currencyRemainder[c] = (currencySplit[c] % observers.length);
-                //console.log("Remainder: " + currencyRemainder[c]);
-
-                currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
-            }
-            else currencySplit[c] = 0;
-        }
-
-        // add currency to actors existing coins
-        let msg = [];
-        for (let u of observers) {
-            //console.log("Loot Sheet | u of observers", u);
-            if (u === null) continue;
-
-            msg = [];
-            let currency = LootSheetNPC5eHelper.convertCurrencyFromObject(u.data.data.currency),
-                newCurrency = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(u.data.data.currency));
-
-            //console.log("Loot Sheet | Current Currency", currency);
-
-            for (let c in currency) {
-                // add msg for chat description
-                if (currencySplit[c]) {
-                    //console.log("Loot Sheet | New currency for " + c, currencySplit[c]);
-                    msg.push(` ${currencySplit[c]} ${c} coins`)
-                }
-                if (currencySplit[c] != null) {
-                    // Add currency to permitted actor
-                    newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c];
-                    u.update({
-                        'data.currency': newCurrency
-                    });
-                }
-            }
-
-            // Remove currency from loot actor.
-            let lootCurrency = LootSheetNPC5eHelper.convertCurrencyFromObject(containerActor.data.data.currency),
-                zeroCurrency = {};
-
-            for (let c in lootCurrency) {
-                zeroCurrency[c] = {
-                    'type': currencySplit[c].type,
-                    'label': currencySplit[c].type,
-                    'value': currencyRemainder[c]
-                }
-                containerActor.update({
-                    "data.currency": zeroCurrency
-                });
-            }
-
-            // Create chat message for coins received
-            if (msg.length != 0) {
-                let message = `${u.data.name} receives: `;
-                message += msg.join(",");
-                ChatMessage.create({
-                    user: game.user._id,
-                    speaker: {
-                        actor: containerActor,
-                        alias: containerActor.name
-                    },
-                    content: message
-                });
-            }
-        }
-    }
-
     /**
      * Organize and classify Items for Loot NPC sheets
+     *
      * @private
      */
     _prepareItems(actorData) {
@@ -646,7 +491,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         };
 
         //console.log("Loot Sheet | Prepare Items");
-        let items = LootSheetNPC5eHelper._getLootableItems(actorData.items);
+        let items = LootSheetNPC5eHelper.getLootableItems(actorData.items);
 
         // Iterate through items, allocating to containers
 
@@ -708,14 +553,16 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
                 }
 
                 const lootPermissionInfo = PermissionHelper.getPermissionInfo(player.lootPermission);
+
                 player.class = lootPermissionInfo.class;
+                player.borderClass = lootPermissionInfo.borderClass;
                 player.lootPermissionDescription = lootPermissionInfo.description;
                 playerData.push(player);
             }
         }
 
         // calculate the split of coins between all observers of the sheet.
-        let currencySplit = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(actorData.data.currency));
+        let currencySplit = duplicate(actorData.data.currency);
         for (let c in currencySplit) {
             if (observers.length) {
                 if (currencySplit[c] != null) {
@@ -734,7 +581,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         loot.playersPermission = commonPlayersPermission;
         loot.playersPermissionIcon = PermissionHelper.getPermissionInfo(commonPlayersPermission);
         loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(commonPlayersPermission)?.description;
-        actorData.flags.loot = loot;
+        actorData.flags.lootsheetnpc5e = loot;
     }
 }
 

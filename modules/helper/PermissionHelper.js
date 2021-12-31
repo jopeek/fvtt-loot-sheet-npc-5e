@@ -22,9 +22,9 @@ class PermissionHelper {
     */
     static getPermissionInfo(level = null) {
         const permissions = {
-            0: { class: 'fas fa-ban', description: game.i18n.localize('lsnpc.permissions.0.desc'), title: game.i18n.localize('lsnpc.permissions.0.title') },
-            2: { class: 'fas fa-eye', description: game.i18n.localize('lsnpc.permissions.2.desc'), title: game.i18n.localize('lsnpc.permissions.2.title') },
-            3: { class: 'fas fa-check', description: game.i18n.localize('lsnpc.permissions.3.desc'), title: game.i18n.localize('lsnpc.permissions.3.title') },
+            0: { class: 'fas fa-ban', borderClass: 'none', description: game.i18n.localize('lsnpc.permissions.0.desc'), title: game.i18n.localize('lsnpc.permissions.0.title') },
+            2: { class: 'fas fa-eye', borderClass: 'observer', description: game.i18n.localize('lsnpc.permissions.2.desc'), title: game.i18n.localize('lsnpc.permissions.2.title') },
+            3: { class: 'fas fa-check', borderClass: 'owner', description: game.i18n.localize('lsnpc.permissions.3.desc'), title: game.i18n.localize('lsnpc.permissions.3.title') },
         };
         return (!level && level != 0) ? permissions : permissions[parseInt(level)];
     }
@@ -38,7 +38,7 @@ class PermissionHelper {
      *
      * @uses  {Array<User>} users The games users
      **/
-    static assignPermissions(event, actor) {
+    static async assignPermissions(event, actor) {
         event.preventDefault();
         const actorData = actor.data,
             htmlObject = event.currentTarget,
@@ -53,7 +53,7 @@ class PermissionHelper {
         }
 
         //update the actor with new permissions
-        actor.update({ permission: currentPermissions });
+        await actor.update({ permission: currentPermissions });
     }
 
     /**
@@ -68,7 +68,7 @@ class PermissionHelper {
      *
      * @version 1.0.0
      */
-    static cyclePermissions(
+    static async cyclePermissions(
         event,
         actor,
         playerId = null,
@@ -77,15 +77,13 @@ class PermissionHelper {
         event.preventDefault();
         const levels = [0, 2, 3];
         // Read player permission on this actor and adjust to new level
-        let currentPermissions = duplicate(actor.data.permission),
-            playerPermission = event.currentTarget.dataset.playerPermission;
+        let currentPermissions = duplicate(actor.data.permission);
 
         playerId = playerId || event.currentTarget.dataset.playerId;
-
-        currentPermissions[playerId] = newLevel || levels[(levels.indexOf(parseInt(playerPermission)) + 1) % levels.length];
+        currentPermissions[playerId] = newLevel || levels[(levels.indexOf(parseInt(currentPermissions[playerId])) + 1) % levels.length];
 
         //update the actor with new permissions
-        actor.update({ permission: currentPermissions });
+        await actor.update({ permission: currentPermissions });
     }
 
     /**
@@ -123,8 +121,8 @@ class PermissionHelper {
      */
     static getLootPermissionForPlayer(actorData, player) {
         let defaultPermission = actorData.permission.default;
-        if (player.data.id in actorData.permission) {
-            return actorData.permission[player.data.id];
+        if (player.data._id in actorData.permission) {
+            return actorData.permission[player.data._id];
         } else if (typeof defaultPermission !== "undefined") {
             return defaultPermission;
         }

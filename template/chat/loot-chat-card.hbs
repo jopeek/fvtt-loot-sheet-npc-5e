@@ -1,0 +1,38 @@
+<div class="dnd5e lsnpc chat-card item-card loot-item-card"
+    data-actor-id="{{destination.id}}"
+    data-lootsheet-loot-id="{{#if destination.isToken}}{{destination.token.id}}{{else}}{{destination.id}}{{/if}}-{{#if source.isToken}}{{source.token.id}}{{else}}{{source.id}}{{/if}}"
+    >
+    <div class="loot-info flexrow" style="align-items: center; justify-content: center;">
+        <a class="entity-link" draggable="true" data-entity="Actor" data-id="{{destination.uuid}}">
+            <img src="{{destination.img}}" class="looter-icon" title="{{destination.name}}">
+        </a><span class="action-message"> did {{type}} from </span><a class="entity-link" draggable="true" data-entity="Actor" data-id="{{source.uuid}}">  <!-- Keep in mind, source can be a token reference here -->
+            <img src="{{source.img}}" class="looter-icon" title="{{source.name}}">
+        </a>
+    </div>
+
+    <header class="card-header flexrow">
+        <span class="item-name">Toggle Loot Details ↕</span>
+    </header>
+
+    <div class="card-content" style="display:none">
+        <ol class="loot-results item-list">
+            {{#each items as |item|}}
+                <li class="table-result item flexrow {{#if ../colorRarity}}rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}{{/if}}">
+                    <div class="item-quantity">
+                        <strong>{{item.quantity}}&nbsp; &#xD7;</strong>
+                    </div>
+                    <img class="item-image" src="{{item.data.img}}" class="rarity-{{item.data.rarity}}">
+                    <div class="item-name">
+                        <a class="entity-link" draggable="true"
+                            data-entity="{{item.data.documentName}}"
+                            data-id="{{item.data.uuid}}">{{{item.data.name}}}
+                        </a>
+                    </div>
+                    <div class="price">
+                        worth {{item.priceTotal}}gp <i class="fas fa-coins" title="Price"></i> ({{item.data.price}} each)
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    </div>
+</div>

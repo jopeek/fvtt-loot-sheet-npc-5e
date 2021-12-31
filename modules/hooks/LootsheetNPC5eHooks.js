@@ -1,6 +1,8 @@
 import { MODULE } from '../config.js';
 import { ItemHelper } from '../helper/ItemHelper.js';
 import { ModuleSettings } from '../ModuleSettings.js';
+import VersionCheck from '../versioning/version-check.js';
+import renderWelcomeScreen from '../versioning/welcome-screen.js';
 import { API } from '../API.js';
 
 class LootsheetNPC5eHooks {
@@ -58,6 +60,10 @@ class LootsheetNPC5eHooks {
         Handlebars.registerHelper('lootsheetweight', function (weight) {
             return (Math.round(weight * 1e5) / 1e5).toString();
         });
+
+        if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
+            renderWelcomeScreen();
+        }
     }
 
     static socketListener(){
@@ -70,7 +76,8 @@ class LootsheetNPC5eHooks {
             console.log(MODULE.ns + " | Hooks | socketListener | data", data);
 
             if (!action || action === "error") {
-                ui.notifications.error(MODULE.ns + " | socketListener | InvalidData");
+                const msg = data.message || " | socketListener | InvalidData ";
+                ui.notifications.error(MODULE.ns + ' | ' + msg);
                 console.log("Loot Sheet | Transaction Error: ", data);
                 return;
             }
@@ -91,10 +98,20 @@ class LootsheetNPC5eHooks {
                     ItemHelper.transaction(npcActorToken.actor, triggeringActor, data.targetItemId, data.quantity);
                 }
                 if (action === "lootAll") {
-                    ItemHelper.lootItems(npcActorToken.actor, triggeringActor, data.items);
+                    const items = ItemHelper.getLootableItems(npcActorToken.actor.items).map((item) => ({
+                        id: item.id,
+                        data: {
+                            data: {
+                                quantity: item.data.data.quantity
+                            }
+                        }
+                    }));
+
+                    ItemHelper.lootItems(npcActorToken, triggeringActor, items);
                 }
                 if (action === "lootItem") {
-                    ItemHelper.lootItems(npcActorToken.actor, triggeringActor, [{id: data.targetItemId, quantity: data.quantity}]);
+                    let items = [{id: data.targetItemId, data : { data: { quantity: data.quantity}}}];
+                    ItemHelper.lootItems(npcActorToken, triggeringActor, items);
                 }
                 if (action === "distributeCoins") {
                     ItemHelper.distributeCoins(npcActorToken.actor);

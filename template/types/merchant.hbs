@@ -62,7 +62,7 @@
 
                 <h3 class="gm-header">
                     <a class="permission-proficiency-bulk"
-                        title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a>
+                        title="{{actor.flags.lootsheetnpc5e.playersPermissionDescription}}">{{{actor.flags.lootsheetnpc5e.playersPermissionIcon}}}</a>
                     Permissions
                     <aside class="infobox-wrapper">
                         <i class="fas fa-info-circle help"></i>
@@ -71,11 +71,11 @@
                         </div>
                     </aside>
                 </h3>
-                <input type="hidden" name="actor.flags.loot.playersPermission"
-                    value="{{actor.flags.loot.playersPermission}}" data-dtype="Number" />
+                <input type="hidden" name="actor.flags.lootsheetnpc5e.playersPermission"
+                    value="{{actor.flags.lootsheetnpc5e.playersPermission}}" data-dtype="Number" />
 
                 <ol class="permissions-list">
-                    {{#each actor.flags.loot.players as |player p|}}
+                    {{#each actor.flags.lootsheetnpc5e.players as |player p|}}
                     <li class="permission" data-skill="{{p}}">
                         <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}"
                             data-dtype="Number" actor="{{player.actorId}}" />

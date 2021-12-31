@@ -17,7 +17,7 @@ describe('Check module structure', function(){
 
 describe('Check Permissions', () => {
   const pid = "aplayerID1234",
-        mockPlayer = { data: { id: pid }},
+        mockPlayer = { data: { _id: pid }},
         mockActor = {permission: [{default: 0}]};
         mockActor.permission[pid] = 2;
 
@@ -29,7 +29,7 @@ describe('Check Permissions', () => {
         it(
           'Get default loot permissions',
           () => {
-            mockPlayer.data.id = 'doesntexist';
+            mockPlayer.data._id = 'doesntexist';
             assert.strictEqual(PermissionHelper.getLootPermissionForPlayer(mockActor,mockPlayer),0);
           }
         );

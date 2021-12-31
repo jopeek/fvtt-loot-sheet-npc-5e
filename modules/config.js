@@ -9,11 +9,16 @@
  */
 export const MODULE = {
     ns: 'lootsheetnpc5e',
+    path: 'modules/lootsheetnpc5e',
+    templatePath: 'modules/lootsheetnpc5e/template',
     socket: 'module.lootsheetnpc5e',
     sockettypes: {
-        loot: 'loot',
+        lootItem: 'lootItem',
+        lootAll: 'lootAll',
+        distributeCoins: 'distributeCoins',
         lootCoins: 'lootCoins',
-        buy: 'buy',
+        buyItem: 'buyItem',
+        buyAll: 'buyAll',
     },
     keys: {
         priceModifier: 'priceModifier'

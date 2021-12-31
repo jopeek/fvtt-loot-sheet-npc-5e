@@ -31,17 +31,6 @@ class LootSheetNPC5eHelper {
     }
 
     /**
-     * Handles Currency from currency.TYPE.value to currency.TYPE for backwords support
-     *
-     */
-    static convertCurrencyFromObject(currency) {
-        Object.entries(currency).map(([key, value]) => {
-            currency[key] = value.value ?? value;
-        });
-        return currency;
-    }
-
-    /**
      *
      * @param {Array<object>} items
      * @param {number} chanceOfDamagedItems
@@ -50,7 +39,7 @@ class LootSheetNPC5eHelper {
      *
      * @returns {Array<Items>} items Filtered lootable items
      */
-    static _getLootableItems(
+    static getLootableItems(
         items,
         options = undefined
     ) {
@@ -223,10 +212,10 @@ class LootSheetNPC5eHelper {
         }
         const
             targetGm = PermissionHelper.getTargetGM(),
-            dataSet = { ...event.currentTarget.dataset, ...event.currentTarget.closest('.item').dataset },
-            targetItemId = dataSet.itemId,
+            dataSet = { ...event.currentTarget.dataset, ...event.currentTarget.closest('.item')?.dataset },
+            targetItemId = dataSet?.itemId,
             options = { acceptLabel: "Quantity" },
-            maxQuantity = parseInt(dataSet.maxQuantity);
+            maxQuantity = parseInt(dataSet?.maxQuantity);
         let quantity = 1;
 
         if (!targetGm) return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
@@ -242,7 +231,7 @@ class LootSheetNPC5eHelper {
             quantity: quantity || null
         };
 
-        if (event.shiftKey || dataSet?.getAll == true) {
+        if (event.shiftKey || dataSet?.getAll === 'true') {
             packet.quantity = maxQuantity;
             game.socket.emit(MODULE.socket, packet);
         } else {

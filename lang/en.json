@@ -38,7 +38,7 @@
                         "label": "Loot 🪙"
                     }
                 }
-                
+
             },
             "merchant" : {
                 "buy": {
@@ -57,6 +57,9 @@
                 }
             }
         },
+        "defaults": {
+
+        },
         "infoboxes": {
             "lootsheettype": {
                 "title": "Sheet type",
@@ -74,6 +77,14 @@
         "sheettypes": {
             "loot": "Loot",
             "merchant": "Merchant"
+        },
+        "settings": {
+            "menu": {
+                "moduleDefaults": "Modul Standards",
+                "merchant": "Merchant",
+                "loot": "Loot",
+                "info": "?"
+            }
         }
-    }    
+    }
 }

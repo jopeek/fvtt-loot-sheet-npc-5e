@@ -8,7 +8,7 @@
                 {{/each}}
             </ul>
             <ul class="currency flexrow">
-                {{#each actor.flags.loot.currency as |c i|}}
+                {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}
                 <li class="denomination {{i}}">
                     <aside class="denomination-value">
                         <em>{{c}} each</em>
@@ -30,7 +30,7 @@
     <ul class="items-list inventory-list">
         {{#each actor.features as |section sid|}}
             {{#each section.items as |item iid|}}
-                <li class="item loot-trigger r_{{#if item.data.rarity}}{{item.data.rarity}}{{else}}uncommon{{/if}}"
+                <li class="item loot-trigger rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
                     data-item-id="{{item._id}}"
                     data-item-quantity="{{item.data.quantity}}"
                     data-item-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
@@ -40,7 +40,7 @@
                     >
                     <div class="image" style="background-image: url({{item.img}})">
                         <span class="quantity">{{item.data.quantity}}</span>
-                    </div>                    
+                    </div>
                 </li>
             {{/each}}
         {{/each}}
