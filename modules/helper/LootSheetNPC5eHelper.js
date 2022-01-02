@@ -1,5 +1,5 @@
 import { PermissionHelper } from "./PermissionHelper.js";
-import { MODULE } from "../config.js";
+import { MODULE } from "../data/config.js";
 import { QuantityDialog } from "../classes/quantityDialog.js";
 import { ItemHelper } from "../helper/ItemHelper.js";
 
