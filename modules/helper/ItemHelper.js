@@ -1,5 +1,5 @@
 import { LootSheetNPC5eHelper } from './LootSheetNPC5eHelper.js';
-import { MODULE } from '../config.js';
+import { MODULE } from '../data/config.js';
 import { PermissionHelper } from './PermissionHelper.js';
 class ItemHelper {
     /**
@@ -13,7 +13,8 @@ class ItemHelper {
         return {
             chanceOfDamagedItems: options?.chanceOfDamagedItems | 0,
             damagedItemsMultiplier: options?.damagedItemsMultiplier | 0,
-            removeDamagedItems: options?.removeDamagedItems | false
+            removeDamagedItems: options?.removeDamagedItems | false,
+            filterNaturalWeapons: game.settings.get(MODULE.ns, 'filterNaturalWeapons') | true,
         };
     }
     /**
@@ -103,14 +104,17 @@ class ItemHelper {
                 return item.toObject();
             })*/
             .filter((item) => {
-                if (item.type == 'weapon') {
-                    return item.data.weaponType != 'natural';
+                if (options?.filterNaturalWeapons) {
+                    if (item.type == 'weapon') {
+                        return item.data.weaponType != 'natural';
+                    }
                 }
 
                 if (item.type == 'equipment') {
                     if (!item.data.armor) return true;
                     return item.data.armor.type != 'natural';
                 }
+
 
                 return !['class', 'spell', 'feat'].includes(item.type);
             })
@@ -153,29 +157,30 @@ class ItemHelper {
     }
 
     /**
-     * Handle a buy transaction between seller & buyer
+     * Handle a buy transaction between a seller & a buyer
+     *
      *
      * @param {Actor} seller
      * @param {Actor} buyer
      * @param {string} id
      * @param {number} quantity
      */
-    static async transaction(seller, buyer, id, quantity) {
+    static async transaction(seller, buyer, id, quantity, options = { chatOutPut: true }) {
         // On 0 quantity skip everything to avoid error down the line
         if (quantity == 0) return ItemHelper.errorMessageToActor(buyer, `Not enought items on vendor.`);
 
         const soldItem = seller.getEmbeddedDocument("Item", id);
-
+        let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
         let priceModifier = parseInt(seller.getFlag(MODULE.ns, MODULE.keys.priceModifier)),
             itemCostInGold = (Math.round(soldItem.data.data.price * priceModifier * 100) / 100) * quantity,
             successfullTransaction = await ItemHelper.updateFunds(seller, buyer, itemCostInGold);
 
-        if (successfullTransaction) {
-            let moved = await ItemHelper.moveItems(seller, buyer, [{ id: id, data: { data: { quantity: quantity } } }]);
-            ItemHelper.chatMessage(seller, buyer, moved, { type: 'buy' });
-        }
+        if (!successfullTransaction) return false;
+        moved = await ItemHelper.moveItems(seller, buyer, [{ id: id, data: { data: { quantity: quantity } } }]);
+
+        if (moved || options?.chatOutPut) return ItemHelper.chatMessage(seller, buyer, moved, { type: 'buy' });
     }
 
     /**
@@ -188,8 +193,8 @@ class ItemHelper {
      */
     static async updateFunds(seller, buyer, itemCostInGold) {
         //console.log(`ItemCost: ${itemCostInGold}`)
-        let buyerFunds = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(buyer.data.data.currency)),
-            sellerFunds = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(seller.data.data.currency));
+        let buyerFunds = duplicate(buyer.data.data.currency),
+            sellerFunds = duplicate(seller.data.data.currency);
 
         const compensationCurrency = { "pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp" },
             convertCurrency = game.settings.get(MODULE.ns, "convertCurrency"),
@@ -299,12 +304,12 @@ class ItemHelper {
     static async lootCoins(source, destination) {
         const actorData = source.data;
 
-        let sheetCurrency = LootSheetNPC5eHelper.convertCurrencyFromObject(actorData.data.currency);
+        let sheetCurrency = duplicate(actorData.data.currency);
         //console.log("Loot Sheet | Currency data", currency);
 
         let msg = [];
-        let currency = LootSheetNPC5eHelper.convertCurrencyFromObject(destination.data.data.currency),
-            newCurrency = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(destination.data.data.currency));
+        let currency = duplicate(destination.data.data.currency),
+            newCurrency = duplicate(destination.data.data.currency);
 
         //console.log("Loot Sheet | Current Currency", currency);
 
@@ -324,7 +329,7 @@ class ItemHelper {
         }
 
         // Remove currency from loot actor.
-        let lootCurrency = LootSheetNPC5eHelper.convertCurrencyFromObject(source.data.data.currency),
+        let lootCurrency = duplicate(source.data.data.currency),
             zeroCurrency = {};
 
         for (let c in lootCurrency) {
@@ -389,8 +394,8 @@ class ItemHelper {
             if (u === null) continue;
 
             msg = [];
-            let currency = LootSheetNPC5eHelper.convertCurrencyFromObject(u.data.data.currency),
-                newCurrency = duplicate(LootSheetNPC5eHelper.convertCurrencyFromObject(u.data.data.currency));
+            let currency = duplicate(u.data.data.currency),
+                newCurrency = duplicate(u.data.data.currency);
 
             //console.log("Loot Sheet | Current Currency", currency);
 
@@ -483,7 +488,7 @@ class ItemHelper {
      * @param {Item5e} item
      */
     static async chatMessage(source, destination, movedItems, options = { type: 'loot' }) {
-        if (game.settings.get(MODULE.ns, "buyChat")) {
+        if (game.settings.get(MODULE.ns, MODULE.settingsKey.generateChatMessages)) {
             const existingMessage = ItemHelper.getItemsFromLootMessage(destination.id, source.id);
             let existingItems = existingMessage?.items;
 
@@ -494,24 +499,36 @@ class ItemHelper {
              */
             movedItems = movedItems.map(el => ({
                 quantity: el.quantity,
-                priceTotal: Math.floor(el.item.data.data.price * el.quantity),
+                priceTotal: Math.floor((el.item.data.data.price || 0 ) * el.quantity),
                 data: {
                     documentName: el.item.documentName,
                     img: el.item.img,
                     name: el.item.name,
                     id: el.item._id,
-                    price: Math.floor(el.item.data.data.price),
+                    uuid: el.item.uuid,
+                    price: Math.floor(el.item.data.data?.price || 0),
                     rarity: el.item.data.data.rarity || 'common'
                 }
             }));
 
             if (existingItems) {
-                for (let entry of movedItems) {
-                    const itemInMessage = existingItems.find(item => item.data.id === entry.data.id);
+                for (let movedItem of movedItems) {
+                    let itemInMessage = existingItems.find(item => item.data.id === movedItem.data.id);
+                    /**
+                     * If an item is already in the message, add the quantity and recalculate the stack worth
+                     *
+                     * Merge the object to upate the existing items structure
+                     * if we ever change the structure of the items.
+                     * Otherwise push the new movedItem to the existingItems array
+                     *
+                     */
                     if (itemInMessage) {
-                        itemInMessage.quantity += entry.quantity;
+                        movedItem.quantity += itemInMessage.quantity;
+                        movedItem.priceTotal = Math.floor(movedItem.priceTotal * movedItem.quantity);
+
+                        itemInMessage = mergeObject(itemInMessage, movedItem);
                     } else {
-                        existingItems.push(entry);
+                        existingItems.push(movedItem);
                     }
                 }
             }
