@@ -1,17 +1,16 @@
 class PermissionHelper {
 
     /**
-    * @returns {User|null} GM user or null
-    */
+     *
+     * @version 1.0.1
+     * @returns {User|false} GM user or false
+     * */
     static getTargetGM() {
-        let targetGM = null;
-        game.users.forEach((u) => {
-            if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
-                targetGM = u;
-            }
+        let targetGM = game.users.filter((u) => {
+            return u.isGM && u.active && u.viewedScene === game.user.viewedScene
         });
 
-        return targetGM;
+        return targetGM?.[0] || false;
     }
 
     /**
@@ -42,7 +41,7 @@ class PermissionHelper {
         event.preventDefault();
         const actorData = actor.data,
             htmlObject = event.currentTarget,
-            permissionValue = (!htmlObject.dataset.value)? 0 : parseInt(htmlObject.dataset.value);
+            permissionValue = (!htmlObject.dataset.value) ? 0 : parseInt(htmlObject.dataset.value);
         let currentPermissions = duplicate(actorData.permission);
 
         //update permissions object
@@ -73,7 +72,7 @@ class PermissionHelper {
         actor,
         playerId = null,
         newLevel = null
-        ) {
+    ) {
         event.preventDefault();
         const levels = [0, 2, 3];
         // Read player permission on this actor and adjust to new level
