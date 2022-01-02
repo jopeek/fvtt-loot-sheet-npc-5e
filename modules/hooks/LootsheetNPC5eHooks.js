@@ -5,6 +5,7 @@ import { PopulatorSettings } from '../classes/settings/populatorSettings.js';
 import VersionCheck from '../helper/versionCheckHelper.js';
 import renderWelcomeScreen from '../apps/welcomeScreen.js';
 import { API } from '../API.js';
+import { tokenHelper } from '../helper/tokenHelper.js';
 
 /**
  * @module LootSheetNPC5e.hooks
@@ -160,21 +161,18 @@ class LootsheetNPC5eHooks {
     }
 
     static async onCreateToken(token, createData, options, userId) {
+        const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.populator.useSkiplist),
+            skipThisType = game.settings.get(MODULE.ns, "skiplist_" + creatureType);
         // only act on tokens dropped by the GM
-        if (!game.user.isGM)
-            return token;
-        if (!game.settings.get(MODULE.ns, "autoPopulateTokens"))
-            return token;
+        if (!game.user.isGM) return token;
+        if (!game.settings.get(MODULE.ns, "autoPopulateTokens")) return token;
         // ignore linked tokens
-        if (!token.actor || token.data.actorLink)
-            return token;
+        if (!token.actor || token.data.actorLink) return token;
         // skip if monster's creaturType is on the skiplist
         let creatureType = token.actor.data.data.details.type.value;
-        if (game.settings.get(MODULE.ns, "useSkiplist") &&
-            game.settings.get(MODULE.ns, "skiplist_" + creatureType)) {
-            return token;
-        }
-        game.LootPopulator.populate(token);
+        if (useSkiplist && skipThisType) return token;
+
+        await tokenHelper.populate(token);
     }
 
     static onDevModeReady({ registerPackageDebugFlag }) {
