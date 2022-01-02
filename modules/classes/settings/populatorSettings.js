@@ -27,7 +27,8 @@ export class PopulatorSettings {
     async setRolltables() {
         await this._getGameWorldRolltables();
     }
-    registerSettings() {
+
+    static registerSettings() {
         game.settings.register(MODULE.ns, MODULE.settings.keys.populator.autoPopulateTokens, {
             name: "Auto populate tokens with loot",
             hint: "If an actor has a rolltable assigned to it, should the token be populated with the Loot?",
@@ -51,6 +52,7 @@ export class PopulatorSettings {
         this._registerCreatureTypeFallbacks();
         this._registerSkiplistSettings();
     }
+
     /**
      *
      * @return void

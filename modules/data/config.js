@@ -71,6 +71,7 @@ export const MODULE = {
             lootpopulator: {
                 advancedOptions: 'advancedPopulatorOptions',
                 autoPopulateTokens: 'autoPopulateTokens',
+                useSkiplist: 'useSkiplist',
             }
         }
     }
