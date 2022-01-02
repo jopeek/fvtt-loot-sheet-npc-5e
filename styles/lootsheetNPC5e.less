@@ -96,16 +96,32 @@
 	--checkbox-unchecked: #4b4b4b;
 	--checkbox-checked: rgba(0, 255, 0, 0.5);
 }
+
 .rarityMixin() {
 	&[class*='rarity'] {
-		.item-image{
-			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-common);
+		.item-name{
+			font-family: var(--modesto);
+			@color: --rarity-common;
+			color: @color;
+			//box-shadow: 0 0 0.2em 0.1em inset var(@color);
 		}
-		&[class*='uncommon'] .item-image {
-			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-uncommon);
+		&[class*='uncommon'] {
+			@color: --rarity-uncommon;
+			.item-image {
+				box-shadow: 0 0 0.2em 0.1em inset;
+			}
+			.item-name{
+				color: @color;
+			}
 		}
 		&[class*='rare'] .item-image {
-			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-rare);
+			@color: --rarity-rare;
+			.item-image {
+				box-shadow: 0 0 0.2em 0.1em inset;
+			}
+			.item-name{
+				color: @color;
+			}
 		}
 		&[class*='veryRare'] .item-image {
 			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-veryrare);

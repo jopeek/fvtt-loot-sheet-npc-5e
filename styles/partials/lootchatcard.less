@@ -1,7 +1,7 @@
 .lsnpc {
     &.loot-item-card {
         .loot-info {
-            .entity-link {
+            .lsnpc-document-link {
                 flex: 0 0 22px;
                 padding: 0;
                 margin: 1px;
@@ -14,7 +14,11 @@
         }
         .item {
             .rarityMixin();
-
+            .item-quantity {
+                flex: 0 0 22px;
+                font-size: 0.8em;
+                line-height: 22px;
+            }
             .item-amount {
                 flex: 0 0 22px;
             }
@@ -23,6 +27,17 @@
                 flex: 0 0 22px;
                 width: 22px;
                 height: 22px;
+            }
+
+            .item-name {
+                font-family: var(--modesto);
+                font-size: 1.2em;
+                padding-left: 0.1em;
+                line-height: 22px;
+            }
+
+            .item-price {
+               cursor: help;
             }
 
             span {
