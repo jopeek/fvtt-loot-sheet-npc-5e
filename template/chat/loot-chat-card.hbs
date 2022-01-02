@@ -1,12 +1,12 @@
 <div class="dnd5e lsnpc chat-card item-card loot-item-card"
     data-actor-id="{{destination.id}}"
-    data-lootsheet-loot-id="{{#if destination.isToken}}{{destination.token.id}}{{else}}{{destination.id}}{{/if}}-{{#if source.isToken}}{{source.token.id}}{{else}}{{source.id}}{{/if}}"
+    data-lootsheet-loot-id="{{destination.data._id}}-{{source.data._id}}"
     >
     <div class="loot-info flexrow" style="align-items: center; justify-content: center;">
-        <a class="entity-link" draggable="true" data-entity="Actor" data-id="{{destination.uuid}}">
-            <img src="{{destination.img}}" class="looter-icon" title="{{destination.name}}">
-        </a><span class="action-message"> did {{type}} from </span><a class="entity-link" draggable="true" data-entity="Actor" data-id="{{source.uuid}}">  <!-- Keep in mind, source can be a token reference here -->
-            <img src="{{source.img}}" class="looter-icon" title="{{source.name}}">
+        <a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-id="{{destination._id}}">
+            <img src="{{destination.data.img}}" class="looter-icon" title="{{destination.name}}">
+        </a><span class="action-message"> did {{type}} from </span><a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-id="{{source.data._id}}" data-uuid="{{source.data.uuid}}">
+            <img src="{{source.data.img}}" class="looter-icon" title="{{source.data.name}}">
         </a>
     </div>
 
@@ -23,13 +23,15 @@
                     </div>
                     <img class="item-image" src="{{item.data.img}}" class="rarity-{{item.data.rarity}}">
                     <div class="item-name">
-                        <a class="entity-link" draggable="true"
+                        <a class="lsnpc-document-link" draggable="true"
                             data-entity="{{item.data.documentName}}"
-                            data-id="{{item.data.uuid}}">{{{item.data.name}}}
+                            data-id="{{item.data.id}}"
+                            data-uuid="{{item.data.uuid}}">
+                            {{{item.data.name}}}
                         </a>
                     </div>
-                    <div class="price">
-                        worth {{item.priceTotal}}gp <i class="fas fa-coins" title="Price"></i> ({{item.data.price}} each)
+                    <div class="item-price" title="{{item.quantity}} &#xD7; {{item.data.price}} gp">
+                        {{item.priceTotal}} ({{item.data.price}} ) <i class="fas fa-coins"></i>
                     </div>
                 </li>
             {{/each}}
