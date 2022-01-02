@@ -80,10 +80,16 @@
         },
         "settings": {
             "menu": {
+                "currency": "Currency",
+                "defaults": "Defaults",
+                "fallbacks": "Fallbacks",
                 "moduleDefaults": "Modul Standards",
                 "merchant": "Merchant",
+                "creatureTypeFallbacks": "by type",
                 "loot": "Loot",
-                "info": "?"
+                "skiplist": "Skiplist",
+                "info": "?",
+                "rulesets": "Rulesets"
             }
         }
     }

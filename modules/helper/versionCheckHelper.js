@@ -1,7 +1,7 @@
 /**
  * Version check function from Forien Unedintified item module
  */
-export default class VersionCheck {
+export class VersionCheck {
   static _reg (mN) {
     if (this._r) return
 

@@ -1,6 +1,7 @@
 import { PermissionHelper } from './helper/PermissionHelper.js';
 import { LootSheetNPC5eHelper } from "./helper/LootSheetNPC5eHelper.js";
 import { MODULE } from './data/config.js';
+import { LootPopulator } from './classes/LootPopulator.js';
 /**
  * @description The lootsheet API
  *
@@ -217,11 +218,49 @@ class API {
             const
                 permissions = PermissionHelper._updatedUserPermissions(token, players);
 
-            response.data[token.uuid] = permissions;
+            response.data[token.data.uuid] = permissions;
         }
 
         if (verbose) API._verbose(response);
         return response;
+    }
+
+    static getRegisteredCustomRules() {
+        return game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.ruleset);
+    }
+
+    /**
+     * Update the lootpopulator custom rules
+     * Expects a {LootPopulatorRule} object
+     *
+     * @param {LootPopulatorRule} rule
+     */
+    static addCustomRule(rule) {
+        /**
+         * @param {LootPopulatorRule} currentRules
+         */
+        let currentRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.ruleset);
+        game.settings.set(MODULE.ns, MODULE.settings.keys.lootpopulator.ruleset, { ...currentRules, rule });
+    }
+
+    /**
+     *
+     * @param {boolean} state
+     */
+    static switchPopulatorState(state) {
+        game.settings.set(MODULE.ns, MODULE.settings.keys.lootpopulator.autoPopulateTokens, state);
+    }
+
+    /**
+     * Populate a token with given options
+     *
+     * @module lootsheetnpc5e.API.populateTokenWithOptions
+     *
+     * @param {Token} token
+     * @param {object} options
+     */
+    static async populateTokenWithOptions(token, options) {
+        await LootPopulator.populate(token, options);
     }
 
     /**

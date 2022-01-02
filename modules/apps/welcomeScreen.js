@@ -1,11 +1,11 @@
 import { MODULE } from '../data/config.js'
-import VersionCheck from '../helper/versionCheckHelper.js'
+import { VersionCheck } from '../helper/versionCheckHelper.js'
 
 /**
  * Based on https://github.com/Moerill/mess
  * modified by Forien
  */
-class WelcomeScreen extends Application {
+export class WelcomeScreen extends Application {
 
   static get defaultOptions () {
     return mergeObject(super.defaultOptions, {
@@ -39,6 +39,6 @@ class WelcomeScreen extends Application {
   }
 }
 
-export default function renderWelcomeScreen () {
+export function renderWelcomeScreen () {
   (new WelcomeScreen()).render(true)
 }

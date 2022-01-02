@@ -62,7 +62,7 @@
 	],
 	"system": ["dnd5e"],
     "esmodules": ["/lootsheetnpc5e.js"],
-	"styles": ["/styles/lootsheetNPC5e.css"],
+	"styles": ["/styles/lootsheetNPC5e.css", "/styles/lootpopulator.css"],
 	"socket": true,
 	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
 	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/module.json",

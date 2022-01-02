@@ -6,25 +6,14 @@ import { MODULE } from "../data/config.js";
  *
  * @extends {FormApplication}
  */
-class LootSheetNPC5eSettingsConfig extends FormApplication {
+class LootPopulationSettingsConfig extends FormApplication {
   constructor() {
     super();
     this.app = null;
 
-    Handlebars.registerHelper ('truncate', function (str, len) {
-      if (str.length > len && str.length > 0) {
-          var new_str = str + " ";
-          new_str = str.substr (0, len);
-          new_str = str.substr (0, new_str.lastIndexOf(" "));
-          new_str = (new_str.length > 0) ? new_str : str.substr (0, len);
-
-          return new Handlebars.SafeString ( new_str +'...' );
-      }
-      return str;
-    });
-
     loadTemplates([
       `${MODULE.templatePath}/config/settings.hbs`,
+      `${MODULE.templatePath}/config/new_rule_form.hbs`,
       `${MODULE.templatePath}/partials/actions.hbs`,
       `${MODULE.templatePath}/partials/dropdown_options.hbs`,
       `${MODULE.templatePath}/partials/filters.hbs`,
@@ -38,8 +27,8 @@ class LootSheetNPC5eSettingsConfig extends FormApplication {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      title: game.i18n.localize("LootsheetNPC5e Advanced Settings"),
-      id: MODULE.appIds.lootsheetSettings,
+      title: game.i18n.localize("Loot population Settings"),
+      id: MODULE.appIds.lootpopulatorSettings,
       template: `${MODULE.templatePath}/config/settings.hbs`,
       width: 680,
       height: "auto",
@@ -62,11 +51,33 @@ class LootSheetNPC5eSettingsConfig extends FormApplication {
      * The settings assigned to this need a "group" that is either of these tabs.name
      */
     const data = {
+      hasBetterRolltables: (typeof game.betterTables !== "undefined"),
       tabs: [
-        { name: "defaults", i18nName: game.i18n.localize('lsnpc.settings.menu.moduleDefaults'), class: "fas fa-cog", menus: [], settings: [] },
-        { name: "Loot", i18nName: game.i18n.localize('lsnpc.settings.menu.loot'), class: "fas fa-filter", menus: [], settings: [] },
-        { name: "Merchant", i18nName: game.i18n.localize('lsnpc.settings.menu.merchant'), class: "fab fa-grunt", menus: [], settings: [] },
-        { name: "Info", i18nName: `${game.i18n.localize('LPnpc5e.Settings.Menu.Skiplist')}`, class: "fas fa-ban", menus: [], settings: [] }
+        {
+          name: MODULE.settings.groups.lootpopulator.fallbacks,
+          i18nName: game.i18n.localize('lsnpc.settings.menu.fallbacks'),
+          class: "fas fa-cog", menus: [], settings: []
+        },
+        {
+          name: MODULE.settings.groups.lootpopulator.creatureTypeFallbacks,
+          i18nName: game.i18n.localize('lsnpc.settings.menu.creatureTypeFallbacks'),
+          class: "fab fa-grunt", menus: [], settings: []
+        },
+        {
+          name: MODULE.settings.groups.lootpopulator.currency,
+          i18nName: game.i18n.localize('lsnpc.settings.menu.currency'),
+          class: "fas fa-coins", menus: [], settings: []
+        },
+        {
+          name: MODULE.settings.groups.lootpopulator.rulesets,
+          i18nName: game.i18n.localize('lsnpc.settings.menu.rulesets'),
+          class: "fas fa-filter", menus: [], settings: []
+        },
+        {
+          name: MODULE.settings.groups.lootpopulator.skiplist,
+          i18nName: game.i18n.localize('lsnpc.settings.menu.skiplist'),
+          class: "fas fa-ban", menus: [], settings: []
+        }
       ]
     };
 
@@ -113,7 +124,7 @@ class LootSheetNPC5eSettingsConfig extends FormApplication {
   /** @override */
   async activateListeners(html) {
     if(!this.app){
-      this.app = document.getElementById(MODULE.appIds.lootsheetSettings);
+      this.app = document.getElementById(MODULE.appIds.lootpopulatorSettings);
     }
 
     super.activateListeners(html);
@@ -207,7 +218,7 @@ class LootSheetNPC5eSettingsConfig extends FormApplication {
           currentObject = game.settings.get(MODULE.ns, target),
           key = newObject.name + '_' + newObject.rolltable + '_' + Math.random(),
           final = {};
-        newObject.rolltableName = event.currentTarget.querySelector('select[name="' + MODULE.ns + '.customFallbacks.rolltable"] option:checked').dataset.label;
+        newObject.rolltableName = event.currentTarget.querySelector('select[name="lootpopulatornpc5e.customFallbacks.rolltable"] option:checked').dataset.label;
 
       final[key] = newObject;
 
@@ -233,7 +244,7 @@ class LootSheetNPC5eSettingsConfig extends FormApplication {
     switch(event.target.dataset.action) {
       case 'addNewFilter':
         const fieldset = event.target.closest('fieldset'),
-              ele = await renderTemplate(`${MODULE.templatePath}/partials/filters.hbs`, {
+              ele = await renderTemplate(`${MODULE.path}/templates/partials/filters.hbs`, {
                 module: MODULE.ns,
                 key: event.target.dataset.settingsKey,
                 index: fieldset.querySelectorAll('.form-group').length
@@ -277,4 +288,4 @@ class LootSheetNPC5eSettingsConfig extends FormApplication {
   }
 }
 
-export { LootSheetNPC5eSettingsConfig };
+export { LootPopulationSettingsConfig as LootPopulatorSettingsConfig };

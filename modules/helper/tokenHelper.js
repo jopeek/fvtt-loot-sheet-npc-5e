@@ -1,6 +1,7 @@
-import Item5e from "../../../systems/dnd5e/module/item/entity.js";
+import Item5e from "/systems/dnd5e/module/item/entity.js";
 
-import { tableHelper } from "./tableHelper";
+import { MODULE } from '../data/config.js';
+import { tableHelper } from "../helper/tableHelper.js";
 
 export class tokenHelper {
     /**
@@ -9,7 +10,7 @@ export class tokenHelper {
      * @returns {String|false} a RollTable.id
      */
     static getLinkedRolltable(token) {
-        return token.actor.getFlag(MODULE_NS, "rolltable") || false;
+        return token.actor.getFlag(MODULE.ns, MODULE.flags.rolltable) || false;
     }
 
     /**
@@ -18,7 +19,7 @@ export class tokenHelper {
      * @returns {String|false} a RollTable.id
      */
     static getLinkedRolltableByCreatureType(creatureType) {
-        let fallback = game.settings.get(MODULE_NS, "creaturetype_default_" + creatureType + '_table');
+        let fallback = game.settings.get(MODULE.ns, "creaturetype_default_" + creatureType + '_table');
         if (fallback != 0) {
             return fallback || false;
         }
@@ -27,7 +28,7 @@ export class tokenHelper {
     }
 
     static getDefaultFallbackRolltable() {
-        return game.settings.get(MODULE_NS, "fallbackRolltable") || false;
+        return game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackRolltable) || false;
     }
 
     /**
@@ -36,13 +37,11 @@ export class tokenHelper {
      * @returns {Array<String>|false}
      */
     static getLinkedRolltableByFilters(token) {
-        const filterRules = game.settings.get(MODULE_NS, "customFallbacks") || false;
+        const filterRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets) || false;
         let rolltable = false;
 
         for (const key in filterRules) {
-            if (
-                this.passesFilter(token.actor, filterRules[key].filters)
-                ) {
+            if (this.passesFilter(token.actor, filterRules[key].filters)) {
                 if (!rolltable) rolltable = [];
 
                 rolltable.push(filterRules[key].rolltable);
@@ -75,16 +74,54 @@ export class tokenHelper {
         return false;
     }
 
-    	/**
+	/**
+	 * Converts certain documents to loot items
+	 *
+	 * @param {Item} item
+	 * @param
+	 * @returns
+	 */
+	static async applyItemConversions(item, conversions){
+		if (item.type === "spell") {
+			item = await Item5e.createScrollFromSpell(item);
+		}
+
+		const defaultConversions = {
+			Actor: {
+			  text: `${item.text} Portrait`,
+			  img: newItem?.img || "icons/svg/mystery-man.svg"
+			},
+			Scene: {
+			  text: 'Map of '+ newItem?.data?.name,
+			  img: newItem?.data?.thumb || "icons/svg/direction.svg",
+			  data: {
+				  price: new Roll('1d20 + 10').roll().total || 1
+			  }
+			}
+		};
+
+		conversions = conversions || defaultConversions;
+
+		const convert = conversions[item.documentName] ?? false;
+
+		if (convert) {
+			for (const prop in convert) {
+				item[prop] = convert[prop];
+			}
+		}
+
+		return item;
+	}
+    /**
 	 *
 	 * @param {RollTableDocument} rolltable
 	 * @param {TokenDocument} token
 	 *
 	 */
-	static async populate(rolltable, token) {
+	static async populateWithRolltable(rolltable, token) {
 		const tokenActor = token.actor,
 			shopQtyFormula = tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
-			itemQtyFormula = tokenActor.getFlag(MODULE.ns, "itemQty") || game.settings.get(MODULE.ns, "fallbackItemQty") || "1",
+			itemQtyFormula = itemQtyFormula = token.actor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
 			itemQtyLimit = tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
 			itemOnlyOnce = tokenActor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
             reducedVerbosity = game.settings.get(MODULE.ns, "reduceUpdateVerbosity") || true;
@@ -121,9 +158,7 @@ export class tokenHelper {
                  * BetterRolltables does it but needs a spell compendium with spells.
                  *
                  */
-				if (newItem.type === "spell") {
-					newItem = await Item5e.createScrollFromSpell(newItem);
-				}
+				newItem = this.applyItemConversions(newItem);
 
 				let itemQtyRoll = new Roll(itemQtyFormula);
 				itemQtyRoll.roll();

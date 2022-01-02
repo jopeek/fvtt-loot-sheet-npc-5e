@@ -2,10 +2,11 @@ import { MODULE } from '../data/config.js';
 import { ItemHelper } from '../helper/ItemHelper.js';
 import { SheetSettings } from '../classes/settings/sheetSettings.js';
 import { PopulatorSettings } from '../classes/settings/populatorSettings.js';
-import VersionCheck from '../helper/versionCheckHelper.js';
-import renderWelcomeScreen from '../apps/welcomeScreen.js';
+import { VersionCheck } from '../helper/versionCheckHelper.js';
+import { renderWelcomeScreen } from '../apps/welcomeScreen.js';
 import { API } from '../API.js';
-import { tokenHelper } from '../helper/tokenHelper.js';
+
+import { LootPopulator } from '../classes/LootPopulator.js';
 
 /**
  * @module LootSheetNPC5e.hooks
@@ -46,11 +47,12 @@ class LootsheetNPC5eHooks {
 
     static foundryInit() {
         SheetSettings.registerSettings();
-        PopulatorSettings.registerSettings();
         LootsheetNPC5eHooks.socketListener();
     }
 
     static foundryReady() {
+        PopulatorSettings.registerSettings();
+
         Handlebars.registerHelper('ifeq', function (a, b, options) {
             return (a == b) ? options.fn(this) : options.inverse(this);
         });
@@ -74,6 +76,18 @@ class LootsheetNPC5eHooks {
 
         Handlebars.registerHelper('lootsheetweight', function (weight) {
             return (Math.round(weight * 1e5) / 1e5).toString();
+        });
+
+        Handlebars.registerHelper ('truncate', function (str, len) {
+            if (str.length > len && str.length > 0) {
+                var new_str = str + " ";
+                new_str = str.substr (0, len);
+                new_str = str.substr (0, new_str.lastIndexOf(" "));
+                new_str = (new_str.length > 0) ? new_str : str.substr (0, len);
+
+                return new Handlebars.SafeString ( new_str +'...' );
+            }
+            return str;
         });
 
         if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
@@ -161,18 +175,19 @@ class LootsheetNPC5eHooks {
     }
 
     static async onCreateToken(token, createData, options, userId) {
-        const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.populator.useSkiplist),
-            skipThisType = game.settings.get(MODULE.ns, "skiplist_" + creatureType);
+        const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.useSkiplist);
+
         // only act on tokens dropped by the GM
         if (!game.user.isGM) return token;
-        if (!game.settings.get(MODULE.ns, "autoPopulateTokens")) return token;
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.autoPopulateTokens)) return token;
         // ignore linked tokens
         if (!token.actor || token.data.actorLink) return token;
         // skip if monster's creaturType is on the skiplist
-        let creatureType = token.actor.data.data.details.type.value;
+        let creatureType = token.actor.data.data.details.type.value,
+            skipThisType = game.settings.get(MODULE.ns, "skiplist_" + creatureType);
         if (useSkiplist && skipThisType) return token;
 
-        await tokenHelper.populate(token);
+        await LootPopulator.populate(token);
     }
 
     static onDevModeReady({ registerPackageDebugFlag }) {

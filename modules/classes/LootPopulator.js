@@ -1,12 +1,8 @@
 import { currencyHelper } from "../helper/currencyHelper.js";
 import { tokenHelper } from "../helper/tokenHelper.js";
-import { MODULE } from ".../data/config.js";
+import { MODULE } from "../data/config.js";
 
 export class LootPopulator {
-	constructor() {
-		return this;
-	}
-
 	/**
 	 * Populate given token(s) with items from rolltables.
 	 * @module lootpopulatornpc5e.populate
@@ -15,9 +11,10 @@ export class LootPopulator {
 	 * @param {object} options
 	 * @returns
 	 */
-	async populate(token = null, options = {}) {
-		const reducedVerbosity = game.settings.get(MODULE.ns, "reduceUpdateVerbosity") || true,
-			tokenstack = (token) ? (token.length >= 0) ? token : [token] : canvas.tokens.controlled,
+	static async populate(token = null, options = {}) {
+		const tokenstack = (token) ? (token.length >= 0) ? token : [token] : canvas.tokens.controlled,
+			fallbackShopQty = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackShopQty),
+			fallbackItemQtyLimit = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQtyLimit),
 			betterRolltablesModule = {
 				ns: 'better-rolltables',
 				use: game.settings.get(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables) || false
@@ -26,6 +23,8 @@ export class LootPopulator {
 		for (const currentToken of tokenstack) {
 			const tokenActor = currentToken.actor,
 				creatureType = tokenActor.data.data.details.type.value,
+				shopQtyFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.shopQty) || fallbackShopQty || "1",
+				itemQtyLimit = tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || fallbackItemQtyLimit || "0",
 				rolltableFromActor = tokenHelper.getLinkedRolltable(currentToken),
 				rolltableByCreature = tokenHelper.getLinkedRolltableByCreatureType(creatureType),
 				rolltableByFilters = tokenHelper.getLinkedRolltableByFilters(currentToken),
@@ -61,24 +60,26 @@ export class LootPopulator {
 
 							let customRoll = new Roll(shopQtyFormula);
             				customRoll.roll();
+
+							options.customRole = customRoll.total;
+							options.itemQtyLimit = itemQtyLimit;
+
 							await betterRolltablesAPI.addLootToSelectedToken(
 									rolltable,
 									currentToken,
-									{
-										customRole: customRoll.total,
-										itemLimit: itemQtyLimit
-									}
+									options
 								);
 
 						// override brt_currencyString if empty
 						// better solution could be to take the currency string with the highest prio - that is if we add prio
-						brt_currencyString = brt_currencyString || rolltable.getFlag('better-rolltables', 'table-currency-string');
+						brt_currencyString = brt_currencyString || rolltable.getFlag(betterRolltablesModule.ns, 'table-currency-string');
 					} else {
-						await tokenHelper.populate(rolltable, currentToken);
+						await tokenHelper.populateWithRolltable(rolltable, currentToken);
 					}
 				}
 			} else {
 				let rolltable = await fromUuid(rolltableReference);
+				const hasBetterRolltableType = rolltable.getFlag(betterRolltablesModule.ns, 'table-type') || false;
 
 				if (!rolltable) {
 					return ui.notifications.error(MODULE.ns + `: No Rollable Table found with id "${rolltableReference}".`);
@@ -92,20 +93,20 @@ export class LootPopulator {
 						const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
 						let customRoll = new Roll(shopQtyFormula);
 						customRoll.roll();
+
+						options.customRole = customRoll.total;
+						options.itemQtyLimit = itemQtyLimit;
 						await betterRolltablesAPI.addLootToSelectedToken(
 								rolltable,
 								currentToken,
-								{
-									customRole: customRoll.total,
-									itemLimit: itemQtyLimit
-								}
+								options
 							);
 
 					// override brt_currencyString if empty
 					// better solution could be to take the currency string with the highest prio - that is if we add prio
 					brt_currencyString = brt_currencyString || rolltable.getFlag('better-rolltables', 'table-currency-string');
 				} else {
-					await tokenHelper.populate(rolltable, currentToken);
+					await tokenHelper.populateWithRolltable(rolltable, currentToken);
 				}
 			}
 

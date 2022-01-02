@@ -1,0 +1,28 @@
+<fieldset class="row" data-id="new_rule_form">
+    <legend>Add new rule</legend>
+        <div class="form-group">
+            <input type="hidden" name="{{this.module}}.{{this.key}}.uuid" >
+            <input type="text" name="{{this.module}}.{{this.key}}.name" placeholder="name">
+        </div>
+        <fieldset>
+            <legend>Filters</legend>
+            <div class="actions" style="float: right;">
+                    <button type="button" data-action="addNewFilter" data-settings-key="{{this.key}}" style="float:right;"><i class="fas fa-plus" style="pointer-events: none;"></i></button>
+            </div>
+
+            {{> "modules/lootsheetnpc5e/template/partials/filters.hbs" module=this.module key=this.key index=0}}
+
+        </fieldset>
+        <div>
+            <select name="{{this.module}}.{{this.key}}.rolltable">
+                <option value="null"><em>Select rolltable</em></option>
+                {{> "modules/lootsheetnpc5e/template/partials/dropdown_options.hbs" data=this.data}}
+            </select>
+
+            {{#if @root.data.hasBetterRolltables}}
+                <em>and / or </em>
+                <input type="text" name="{{this.module}}.{{this.key}}.tags" placeholder="comma seperated better-rolltable tags">
+            {{/if}}
+        </div>
+    </div>
+</fieldset>

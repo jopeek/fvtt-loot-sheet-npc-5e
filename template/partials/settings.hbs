@@ -1,3 +1,11 @@
+{{#if this.actions}}
+    {{#each this.actions as |action actionName|}}
+        {{#if (eq actionName 'new')}}
+            {{> "modules/lootsheetnpc5e/template/config/new_rule_form.hbs" module=../this.module key=../this.key data=action.data}}
+        {{/if}}
+    {{/each}}
+{{/if}}
+
 <div class="form-group">
     {{#if (eq this.type 'Object')}}
         <table>

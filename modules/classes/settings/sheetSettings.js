@@ -1,5 +1,5 @@
 import { MODULE } from '../../data/config.js';
-import { LootSheetNPC5eSettingsConfig } from '../../apps/lootSheetConfig.js';
+import { LootSheetNPC5eSettingsConfig } from '../../apps/config/lootsheet.js';
 
 /**
  * @module lootsheetnpc5e.ModuleSettings
@@ -13,7 +13,7 @@ export class SheetSettings {
      */
     static registerSettings() {
 
-        game.settings.registerMenu(MODULE.ns, MODULE.settings.keys.common.advancedOptions, {
+        game.settings.registerMenu(MODULE.ns, MODULE.settings.keys.sheet.advancedOptions, {
             name: game.i18n.format("Advanced Options"),
             label: game.i18n.format("Advanced Options & Defaults"),
             icon: "fas fa-user-cog",

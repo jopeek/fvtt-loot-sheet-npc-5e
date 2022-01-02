@@ -2,13 +2,14 @@ import ActorSheet5eNPC from "/systems/dnd5e/module/actor/sheets/npc.js";
 import Item5e from "/systems/dnd5e/module/item/entity.js";
 // ⬆️ 5e core imports
 
-import { MODULE } from "../data/config.js";
-import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
-import { PermissionHelper } from '../helper/PermissionHelper.js';
-import { tableHelper } from "../helper/tableHelper.js";
+import { MODULE } from "../../data/config.js";
+import { LootSheetNPC5eHelper } from "../../helper/LootSheetNPC5eHelper.js";
+import { PermissionHelper } from '../../helper/PermissionHelper.js';
+import { tableHelper } from "../../helper/tableHelper.js";
 
 // this should be obsolete soon (we want to handle this in the helper)
-import { QuantityDialog } from "../classes/quantityDialog.js";
+import { QuantityDialog } from "../../classes/quantityDialog.js";
+import { tokenHelper } from "../../helper/tokenHelper.js";
 // ⬆️ module imports
 
 /**
@@ -23,25 +24,25 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
      * @description Handle template loading for the sheet
      */
     get template() {
-        const sheetType = 'default',//(game.settings.get(MODULE.ns, "useCondensedLootsheet")) ? 'condensed' : 'default';
-              path = "systems/dnd5e/templates/actors/";
+        const sheetType = 'default',
+              fallbackPath = "systems/dnd5e/templates/actors/";
 
         let templateList = [
-            "modules/" + MODULE.ns + "/template/sheet.hbs",
-            "modules/" + MODULE.ns + "/template/partials/list/" + sheetType + ".hbs",
-            "modules/" + MODULE.ns + "/template/partials/header/" + sheetType + ".hbs"
+            MODULE.templatePath + "/sheet.hbs",
+            MODULE.templatePath + "/partials/list/" + sheetType + ".hbs",
+            MODULE.templatePath + "/partials/header/" + sheetType + ".hbs"
         ];
 
         if(game.user.isGM) {
-            templateList.push("modules/" + MODULE.ns + "/template/partials/sidebar/sidebar.hbs");
-            templateList.push("modules/" + MODULE.ns + "/template/partials/sidebar/gm-settings/permissions.hbs");
+            templateList.push(MODULE.templatePath + "/partials/sidebar/sidebar.hbs");
+            templateList.push(MODULE.templatePath + "/partials/sidebar/gm-settings/permissions.hbs");
         }
 
         loadTemplates(templateList);
 
-        if (!game.user.isGM && this.actor.limited) return path + "limited-sheet.html";
+        if (!game.user.isGM && this.actor.limited) return fallbackPath + "limited-sheet.html";
 
-        return "modules/" + MODULE.ns + "/template/sheet.hbs";
+        return MODULE.templatePath + "/sheet.hbs";
     }
 
     static get defaultOptions() {
@@ -65,7 +66,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
     async getData() {
         const typeKey = "lootsheettype",
             sheetData = super.getData(),
-            gameWorldTables = tableHelper.getGameWorldRolltables();
+            gameWorldTables = await tableHelper.getGameWorldRolltables();
 
         this._setClasses(sheetData);
         this._prepareGMSettings(sheetData.actor);
@@ -209,12 +210,9 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         event.preventDefault();
 
         const rolltableUUID = this.actor.getFlag(MODULE.ns, "rolltable"),
-                shopQtyFormula = this.actor.getFlag(MODULE.ns, "shopQty") || "1",
-                itemQtyFormula = this.actor.getFlag(MODULE.ns, "itemQty") || "1",
-                itemQtyLimit = this.actor.getFlag(MODULE.ns, "itemQtyLimit") || "0",
-                clearInventory = this.actor.getFlag(MODULE.ns, "clearInventory"),
-                itemOnlyOnce = this.actor.getFlag(MODULE.ns, "itemOnlyOnce")  || false,
-                reducedVerbosity = game.settings.get(MODULE.ns, "reduceUpdateVerbosity"),
+                shopQtyFormula = this.token.actor.getFlag(MODULE.ns, MODULE.flags.shopQty) || "1",
+                itemQtyLimit = this.token.actor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || "0",
+                clearInventory = this.token.actor.getFlag(MODULE.ns, MODULE.flags.clearInventory),
                 betterRolltablesModule = {
                     ns: 'better-rolltables',
                     use: game.settings.get(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables) || false
@@ -231,90 +229,25 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         // populate via better-rolltables if it is installed and its activated in config
         if (
             betterRolltablesModule.use
-            && hasBetterRolltableType
+            && rolltable.getFlag(betterRolltablesModule.ns, 'table-type')
             ) {
             const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
-            let customRoll = new Roll(shopQtyFormula);
+            let customRoll = new Roll(shopQtyFormula),
+            options = {};
             customRoll.roll();
+
+            options.customRole = customRoll.total;
+            options.itemQtyLimit = itemQtyLimit;
+
             await betterRolltablesAPI.addLootToSelectedToken(
                     rolltable,
                     this.token,
-                    {
-                        customRole: customRoll.total,
-                        itemLimit: itemQtyLimit
-                    }
+                    options
                 );
 
             return this.actor.sheet.render(true); //population should done, good bye 👋
-        }
-
-        let shopQtyRoll = new Roll(shopQtyFormula);
-        shopQtyRoll.roll();
-
-        if (itemOnlyOnce) {
-            if (rolltable.results.length < shopQtyRoll.total) {
-                return ui.notifications.error(`Cannot create an inventory with ${shopQtyRoll.total} unqiue entries if the rolltable only contains ${rolltable.results.length} items`);
-            }
-        }
-
-        console.log(MODULE.ns + ' | Updating Inventory for ' + this.actor.name);
-
-        for (let i = 0; i < shopQtyRoll.total; i++) {
-            const rollResult = await rolltable.roll();
-            console.log(rollResult.results[0]);
-            let newItem = null;
-
-            if (rollResult.results[0].data.collection === "Item") {
-                newItem = game.items.get(rollResult.results[0].data.resultId);
-            } else {
-                // Try to find it in the compendium
-                const items = game.packs.get(rollResult.results[0].data.collection);
-                newItem = await items.getDocument(rollResult.results[0].data.resultId);
-            }
-
-            if (!newItem || newItem === null) return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
-
-            if (newItem.type === "spell") {
-                newItem = await Item5e.createScrollFromSpell(newItem);
-            }
-
-            let itemQtyRoll = new Roll(itemQtyFormula),
-                existingItem = this.actor.items.find(item => item.data.name == newItem.name);
-
-            itemQtyRoll.roll();
-
-            console.log(MODULE.ns + ` | Adding ${itemQtyRoll.total} x ${newItem.name}`);
-
-            if (existingItem === undefined) {
-                console.log(MODULE.ns + ` | ${newItem.name} does not exist.`);
-
-                const createdItems = await this.actor.createEmbeddedDocuments("Item", [newItem.toObject()]);
-                existingItem = createdItems[0];
-
-                if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
-                    await existingItem.update({ "data.quantity": itemQtyLimit });
-                    if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyLimit} x ${newItem.name}.`);
-                } else {
-                    await existingItem.update({ "data.quantity": itemQtyRoll.total });
-                    if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyRoll.total} x ${newItem.name}.`);
-                }
-            } else {
-                console.log(MODULE.ns + ` | Item ${newItem.name} exists.`, existingItem);
-
-                let newQty = Number(existingItem.data.data.quantity) + Number(itemQtyRoll.total);
-
-                if (itemQtyLimit > 0 && Number(itemQtyLimit) === Number(existingItem.data.data.quantity)) {
-                    if (!reducedVerbosity) ui.notifications.info(`${newItem.name} already at maximum quantity (${itemQtyLimit}).`);
-                }
-                else if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
-                    //console.log("Exceeds existing quantity, limiting");
-                    await existingItem.update({ "data.quantity": itemQtyLimit });
-                    if (!reducedVerbosity) ui.notifications.info(`Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`);
-                } else {
-                    await existingItem.update({ "data.quantity": newQty });
-                    if (!reducedVerbosity) ui.notifications.info(`Added additional ${itemQtyRoll.total} quantity to ${newItem.name}.`);
-                }
-            }
+        } else {
+            await tokenHelper.populateWithRolltable(rolltable, currentToken);
         }
 
         return this.actor.sheet.render(true);

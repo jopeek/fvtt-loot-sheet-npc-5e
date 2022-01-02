@@ -13,6 +13,11 @@ export const MODULE = {
         lootpopulatorSettings: 'lootsheetnpc5e-lootpopulator-settings',
         lootsheetSettings: 'lootsheetnpc5e-lootsheet-settings'
     },
+    flags: {
+        rolltable: 'rolltable',
+        loot: 'loot',
+        shopQty: 'shopQtyFormula',
+    },
     ns: 'lootsheetnpc5e',
     path: 'modules/lootsheetnpc5e',
     templatePath: 'modules/lootsheetnpc5e/template',
@@ -25,6 +30,10 @@ export const MODULE = {
         buyItem: 'buyItem',
         buyAll: 'buyAll',
     },
+    sheets: {
+        loot: 'loot',
+        merchant: 'merchant'
+    },
     settings: {
         scopes: {
             world: 'world',
@@ -32,15 +41,21 @@ export const MODULE = {
             default: 'defaults'
         },
         groups: {
+            moduleDefaults: 'moduleDefaults',
             sheet: {
                 ui: 'UI',
                 loot: 'Loot',
                 merchant: 'Merchant',
             },
             lootpopulator: {
-                customFallbacks: 'custom_fallbacks',
+                fallbacks: 'fallbacks',
+                customFallbacks: 'customFallbacks',
+                creatureTypeFallbacks: 'creatureTypeFallbacks',
                 skiplist: 'skiplist',
-                defaults: 'creature_defaults'
+                defaults: 'creature_defaults',
+                creature: 'creature',
+                currency: 'currency',
+                rulesets: 'rulesets'
             }
         },
         keys: {
@@ -70,8 +85,20 @@ export const MODULE = {
             },
             lootpopulator: {
                 advancedOptions: 'advancedPopulatorOptions',
+                adjustCurrencyWithCR: 'adjustCurrencyWithCR',
                 autoPopulateTokens: 'autoPopulateTokens',
-                useSkiplist: 'useSkiplist',
+                creatureTypeFallbacks: 'creatureTypeFallbacks',
+                customFallbackSwitch: 'customFallbackSwitch',
+                customFallbacks: 'customFallbacks',
+                rulesets: 'rulesets',
+                fallbackRolltable: 'fallbackRolltable',
+                fallbackShopQty: 'fallbackShopQty',
+                fallbackItemQty: 'fallbackItemQty',
+                fallbackItemQtyLimit: 'fallbackItemQtyLimit',
+                generateCurrency: 'generateCurrency',
+                lootCurrencyDefault: 'lootCurrencyDefault',
+                useRulesets: 'useRulesets',
+                useSkiplist: 'useSkiplist'
             }
         }
     }
