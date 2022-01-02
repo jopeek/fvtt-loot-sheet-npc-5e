@@ -1,0 +1,154 @@
+<!--
+/**
+ * Based on https://github.com/Moerill/mess
+ */
+-->
+<style>
+    .welcome-screen a[href] {
+        color: #4a52ca;
+    }
+    .welcome-screen .window-content {
+        background: var(--background);
+        color: var(--primary-color)
+    }
+
+    .welcome-screen .window-content > * {
+        flex: 0;
+    }
+
+    .welcome-screen .window-content p {
+        padding-left: 1em;
+    }
+
+    .welcome-screen .window-content .hideinfo {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 1em;
+        background: var(--header-background);
+        border: 1px solid var(--header-border);
+        padding: 0.5em;
+    }
+    .welcome-screen .window-content .hideinfo > * {
+        flex: 1;
+    }
+
+    .welcome-screen .window-content .hideinfo .input {
+        flex: 0;
+        align-self: flex-end;
+        padding-right: 1em;
+    }
+</style>
+
+<nav class="tabs" data-group="ws-sections">
+    <a class="item active" data-tab="misc"><i class="fas fa-cog"></i> General</a>
+    <a class="item" data-tab="pachtnotes"><i class="fas fa-filter"></i> Patchnotes</a>
+</nav>
+<section class="content">
+    <article class="tab" data-tab="misc" data-group="ws-sections">
+        <h1>LootsheetNPC5e</h1>
+        <p>
+            <span class="lsnpc icon">
+                <i class="fa fa-circle-thin fa-stack-3x"></i>
+                <i class="far fa-file fa-stack-2x"></i>
+                <i class="fas fa-theater-masks fa-stack-1x"></i>
+            </span>
+            The module was installed or updated. See the Patchnodes below for more information.
+        </p>
+
+        <h3>Bugs or suggestions 🐛🔧 </h3>
+        <p>
+            If you encounter any bugs or if you have feature ideas. Feel free to contact us.
+        <ul>
+            <li>Via the <a href="https://github.com/jopeek/fvtt-loot-sheet-npc-5e/issues">issues</a> section on the
+                <a href="https://github.com/jopeek/fvtt-loot-sheet-npc-5e"><iclass="fab fa-github"></i> github repository</a>.</li>
+            <li>On the FoundryVTT Discord <a href="https://discord.gg/foundryvtt"><i class="fas fa-dice-d20"></i><i
+                        class="fab fa-discord"></i></a>.</li>
+        </ul>
+        </p>
+        <h3>Authors / Maintainers / Contributers</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Contacts
+                    </th>
+                    <th>
+                        TipJar
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ChalkOne</td>
+                    <td>
+                        <a href="https://discordapp.com/users/ChalkOne#0156" title="ChalkOne">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="https://github.com/jopeek"><i class="fab fa-github"></i></a>
+                        <a href="https://www.janolepeek.com/#home" title="Jan Ole Peek">
+                            <i class="fab fa-globe"></i>
+                        </a>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>JackPrince</td>
+                    <td>
+                        <a href="https://discordapp.com/users/JackPrince#0494" title="Paypal TipJar: JackPrince / Daniel Böttner"><i
+                                class="fab fa-discord"></i></a>
+                        <a href="https://github.com/DanielBoettner"><i class="fab fa-github"></i></a>
+                    </td>
+                    <td>
+                        <a href="https://www.paypal.com/paypalme/JackPrince title=" Paypal TipJar: JackPrince">
+                            <i class="fab fa-paypal"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <small>If you are a contributer and wish to appear in this list. Please contact us.</small>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="hideinfo">
+            <label for="welcome-screen-show-again">Don't show this screen again until next update.</label>
+            <input type="checkbox" class='show-again' id="welcome-screen-show-again" {{checked isChecked}} />
+        </div>
+    </article>
+    <article class="tab" data-tab="pachtnotes" data-group="ws-sections">
+        <h1>Patchnotes</h1>
+        <h2 id="v3.4.2.8">v3.4.2.8</h2>
+        <ul>
+            <li>
+                <header>feature: Better chat cards</header>
+                <main>
+                    <ul>
+                        <li>Loot from the same NPC will automatically update the existing chat card.</li>
+                        <li>Loot chat cards are automatically collapsed and can be extended to view the items.</li>
+                        <li>With given permissions, all things are linked (items, actor, token)</li>
+                        <li></li>
+                    </ul>
+                </main>
+                <footer>
+                    <ul>
+                        <li class="">
+                            <a href="https://github.com/jopeek/"><i class="fab fa-github"></i></a>
+                        </li>
+                    </ul>
+                </footer>
+            </li>
+        </ul>
+    </article>
+</section>
+
+
