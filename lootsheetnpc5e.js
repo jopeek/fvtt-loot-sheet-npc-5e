@@ -1,4 +1,4 @@
-import { LootSheetNPC5e } from './modules/classes/LootsheetNPC5e.js';
+import { LootSheetNPC5e } from './modules/apps/LootsheetNPC5e.js';
 import { LootsheetNPC5eHooks } from './modules/hooks/LootsheetNPC5eHooks.js';
 
 //Register the loot sheet
