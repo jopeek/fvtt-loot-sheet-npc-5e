@@ -1,22 +1,35 @@
-import { MODULE } from '../config.js';
+import { MODULE } from '../data/config.js';
 import { ItemHelper } from '../helper/ItemHelper.js';
-import { ModuleSettings } from '../ModuleSettings.js';
-import VersionCheck from '../versioning/version-check.js';
-import renderWelcomeScreen from '../versioning/welcome-screen.js';
+import { SheetSettings } from '../classes/settings/sheetSettings.js';
+import { PopulatorSettings } from '../classes/settings/populatorSettings.js';
+import VersionCheck from '../helper/versionCheckHelper.js';
+import renderWelcomeScreen from '../apps/welcomeScreen.js';
 import { API } from '../API.js';
 
+/**
+ * @module LootSheetNPC5e.hooks
+ *
+ * @description
+ * Handles the following:
+ * - initializing the module API
+ * - registering the module settings
+ * - initializing the modules socketListeners that handles incoming  player interaction requests
+ * -
+ *
+ */
 class LootsheetNPC5eHooks {
     /**
      * Hooks on game hooks and attaches methods
      */
-    static init(){
+    static init() {
         Hooks.once("init", LootsheetNPC5eHooks.foundryInit);
         Hooks.once("ready", LootsheetNPC5eHooks.foundryReady);
+        Hooks.once('devModeReady', LootsheetNPC5eHooks.onDevModeReady);
         Hooks.once('setup', LootsheetNPC5eHooks.foundrySetup);
+        Hooks.on('createToken', LootsheetNPC5eHooks.onCreateToken);
     }
 
-    static foundrySetup()
-    {
+    static foundrySetup() {
         const moduleData = game.modules.get(MODULE.ns);
 
         /**
@@ -30,12 +43,13 @@ class LootsheetNPC5eHooks {
         Object.freeze(moduleData.public);
     }
 
-    static foundryInit(){
-        ModuleSettings.registerSettings();
+    static foundryInit() {
+        SheetSettings.registerSettings();
+        PopulatorSettings.registerSettings();
         LootsheetNPC5eHooks.socketListener();
     }
 
-    static foundryReady(){
+    static foundryReady() {
         Handlebars.registerHelper('ifeq', function (a, b, options) {
             return (a == b) ? options.fn(this) : options.inverse(this);
         });
@@ -64,9 +78,31 @@ class LootsheetNPC5eHooks {
         if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
             renderWelcomeScreen();
         }
+
+        LootsheetNPC5eHooks._activateListeners();
     }
 
-    static socketListener(){
+    /**
+     * Activate module eventListeners
+     */
+    static _activateListeners(app = document) {
+
+        //listen on document link clicks in loot sheet chat messages
+        const chatMsgLink = app.querySelectorAll('#chat .lsnpc-document-link');
+
+        chatMsgLink.forEach(async el => {
+            el.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (!e.target.dataset.uuid) return;
+                const doc = await fromUuid(e.target.dataset.uuid);
+                if (!doc) return;
+                await doc.sheet.render(true);
+                e.stopPropagation();
+            });
+        });
+    }
+
+    static socketListener() {
         game.socket.on(MODULE.socket, data => {
 
             const triggeringActor = game.actors.get(data.triggerActorId),
@@ -110,7 +146,7 @@ class LootsheetNPC5eHooks {
                     ItemHelper.lootItems(npcActorToken, triggeringActor, items);
                 }
                 if (action === "lootItem") {
-                    let items = [{id: data.targetItemId, data : { data: { quantity: data.quantity}}}];
+                    let items = [{ id: data.targetItemId, data: { data: { quantity: data.quantity } } }];
                     ItemHelper.lootItems(npcActorToken, triggeringActor, items);
                 }
                 if (action === "distributeCoins") {
@@ -121,6 +157,28 @@ class LootsheetNPC5eHooks {
                 }
             }
         });
+    }
+
+    static async onCreateToken(token, createData, options, userId) {
+        // only act on tokens dropped by the GM
+        if (!game.user.isGM)
+            return token;
+        if (!game.settings.get(MODULE.ns, "autoPopulateTokens"))
+            return token;
+        // ignore linked tokens
+        if (!token.actor || token.data.actorLink)
+            return token;
+        // skip if monster's creaturType is on the skiplist
+        let creatureType = token.actor.data.data.details.type.value;
+        if (game.settings.get(MODULE.ns, "useSkiplist") &&
+            game.settings.get(MODULE.ns, "skiplist_" + creatureType)) {
+            return token;
+        }
+        game.LootPopulator.populate(token);
+    }
+
+    static onDevModeReady({ registerPackageDebugFlag }) {
+        registerPackageDebugFlag(MODULE.ns);
     }
 }
 
