@@ -81,7 +81,7 @@ export class tokenHelper {
 	 * @param {TokenDocument} token
 	 *
 	 */
-	async populate(rolltable, token) {
+	static async populate(rolltable, token) {
 		const tokenActor = token.actor,
 			shopQtyFormula = tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
 			itemQtyFormula = tokenActor.getFlag(MODULE.ns, "itemQty") || game.settings.get(MODULE.ns, "fallbackItemQty") || "1",
