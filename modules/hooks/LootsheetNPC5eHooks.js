@@ -207,14 +207,14 @@ export class LootsheetNPC5eHooks {
     }
 
     static attachTokenHudButtons(hud) {
-        const token = hud.object.document;
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons)) return;
 
-        // only for players
-        // if ((game.user.role > 1 && game.user.role <= 3) || game.user.isGM) return;
+        const token = hud.object.document;
         if(!token.actor) return;
         if(!token.actor.isToken) return;
         // only for unlinked Tokens
         if(token.actorLink) return;
+
 
         const HUD_left = document.querySelector('#token-hud .left');
         let lsnNav = document.createElement('nav'),
@@ -236,8 +236,7 @@ export class LootsheetNPC5eHooks {
             lsnLootAllButton.appendChild(lsnLootAllImg);
             lsnNav.appendChild(lsnLootAllButton);
 
-            // GM Stuff
-            //makeObservable Button
+
             if(game.user.isGM){
                 lsnGMButtonMakeObservable.classList.add('lsnpc5e-hud-make-observable', 'control-icon');
                 lsnGMButtonMakeObservable.dataset.action = "makeObservable";
