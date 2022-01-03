@@ -1,8 +1,9 @@
 {
 	"name": "lootsheetnpc5e",
 	"title": "Loot Sheet NPC 5e",
-	"description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
-	"version": "3.4.2.7",
+	"description": "Add NPC sheet for looting and trading. Now with automatic npc token population options.",
+	"version": "3.4.2.8",
+	"manifestPlusVersion": "1.2.0",
 	"minimumCoreVersion": "0.8.9",
 	"compatibleCoreVersion": "0.9.0",
 	"authors": [
@@ -19,12 +20,12 @@
 			"url": "https://github.com/Nonstick-Panda"
 		},
 		{
-			"name": "Kevin Brammer Striky",
-			"url": ""
-		},
-		{
 			"name": "Daniel Böttner | JackPrince#0494",
 			"url": "https://github.com/DanielBoettner/"
+		},
+		{
+			"name": "Kevin Brammer Striky",
+			"url": ""
 		}
 	],
 	"packs": [
@@ -62,7 +63,7 @@
 	],
 	"system": ["dnd5e"],
     "esmodules": ["/lootsheetnpc5e.js"],
-	"styles": ["/styles/lootsheetNPC5e.css", "/styles/lootpopulator.css"],
+	"styles": ["/styles/lootsheetNPC5e.css"],
 	"socket": true,
 	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
 	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/module.json",

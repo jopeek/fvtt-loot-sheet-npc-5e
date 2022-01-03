@@ -63,6 +63,7 @@ export const MODULE = {
             common: {
                 useBetterRolltables: 'useBetterRolltables',
                 autoCheckUpdates: 'autoCheckUpdates',
+                addInterfaceButtons: 'addInterfaceButtons'
             },
             sheet: {
                 advancedOptions: 'advancedSheetOptions',

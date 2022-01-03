@@ -243,7 +243,7 @@ export class LootsheetNPC5eHooks {
                 lsnGMButtonMakeObservable.addEventListener('click', async (e) => {
                     if(game.user.isGM){
                         const API = game.modules.get("lootsheetnpc5e").public.API;
-                        await API.makeObservable(token);
+                        await API.makeObservable();
                     }
                 });
 

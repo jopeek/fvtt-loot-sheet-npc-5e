@@ -207,6 +207,10 @@
                 "name": "Update Check",
                 "hint": "Automatically check for module updates on startup"
             },
+            "addInterfaceButtons": {
+                "name": "Add interface buttons",
+                "hint": "Add buttons to the interface"
+            },
             "useBetterRolltables": {
                 "name": "Use better rolltables",
                 "hint": "If installed make use of better rolltables to update Inventory?"

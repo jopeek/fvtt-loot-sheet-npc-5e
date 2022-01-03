@@ -148,28 +148,26 @@ class API {
      */
     static async makeObservable (
         tokens = game.canvas.tokens.controlled,
-        players =  PermissionHelper.getPlayers()
+        players =  PermissionHelper.getPlayers(),
+        verbose = false
     ) {
+        if(!game.user.isGM) return;
+
         const tokenstack = (tokens) ? (tokens.length >= 0) ? tokens : [tokens] : canvas.tokens.controlled;
 
-        let response = API._response(200, 'success'),
-        responseData = {};
+        let permissions = false,
+            response = API._response(200, 'success'),
+            responseData = {},
+            tokenData = { actorData: { permission: {} }};
 
         for (let token of tokenstack) {
-            const
-                permissions = PermissionHelper._updatedUserPermissions(token, players),
-                tokenData = {
-                    actorData: {
-                        permission: permissions
-                    }
-                };
-
-            responseData[token.uuid] = permissions;
-
+            let permissions = PermissionHelper._updatedUserPermissions(token, CONST.ENTITY_PERMISSIONS.OBSERVER, players);
+            tokenData.actorData.permission = permissions,
+            responseData[token.uuid] = tokenData.actorData.permission;
             await token.update(tokenData);
         }
 
-        response.data = permissions;
+        response.data = responseData;
         if(verbose) API._verbose(response);
         return response;
     }

@@ -22,6 +22,16 @@ export class PopulatorSettings {
             type: Boolean
         });
 
+
+        game.settings.register(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons, {
+            name: game.i18n.localize('lsnpc.settings.populator.addInterfaceButtons.name'),
+            hint: game.i18n.localize('lsnpc.settings.populator.addInterfaceButtons.hint'),
+            scope: MODULE.settings.scopes.world,
+            config: true,
+            default: true,
+            type: Boolean
+        });
+
         this._registerDefaultFallbacks();
         this._registerCurrencySettings();
         this._registerCustomFallbacks();
