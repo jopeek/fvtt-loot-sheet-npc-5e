@@ -1,6 +1,6 @@
 import Item5e from "/systems/dnd5e/module/item/entity.js";
 
-import { MODULE } from '../data/config.js';
+import { MODULE } from '../data/moduleConstants.js';
 import { tableHelper } from "../helper/tableHelper.js";
 
 export class tokenHelper {
