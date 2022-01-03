@@ -16,12 +16,12 @@
                 <header>
                     <h2 class="module-header">{{tabData.i18nName}}</h2>
                     {{#each tabData.menus}}
-                    {{> "modules/lootsheetnpc5e/template/partials/menu.hbs"}}
+                    {{> "modules/lootsheetnpc5e/templates/partials/settings/menu.hbs"}}
                     {{/each}}
                     {{#if tabData.actions}}
                     <nav class="action_buttons">
                         {{#each tabData.actions}}
-                        {{> "modules/lootsheetnpc5e/template/partials/actions.hbs"}}
+                        {{> "modules/lootsheetnpc5e/templates/partials/settings/actions.hbs"}}
                         {{/each}}
                     </nav>
                     {{/if}}
@@ -29,7 +29,7 @@
 
                 <main>
                     {{#each tabData.settings}}
-                    {{> "modules/lootsheetnpc5e/template/partials/settings.hbs"}}
+                    {{> "modules/lootsheetnpc5e/templates/partials/settings/settings.hbs"}}
                     {{else}}
                 </main>
 

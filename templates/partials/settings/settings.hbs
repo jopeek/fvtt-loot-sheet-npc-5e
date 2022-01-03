@@ -1,7 +1,7 @@
 {{#if this.actions}}
     {{#each this.actions as |action actionName|}}
         {{#if (eq actionName 'new')}}
-            {{> "modules/lootsheetnpc5e/template/config/new_rule_form.hbs" module=../this.module key=../this.key data=action.data}}
+            {{> "modules/lootsheetnpc5e/templates/settings/new_rule_form.hbs" module=../this.module key=../this.key data=action.data}}
         {{/if}}
     {{/each}}
 {{/if}}
@@ -35,13 +35,13 @@
                     </td>
 
                     <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
-                        <em data-action="openSheet">
+                        <em class="lsnpc-document-link" data-uuid="{{customRule.rolltable}}">
                             {{#if customRule.rolltableName}}
                                 {{truncate customRule.rolltableName 25}}
                             {{else}}
                                 {{truncate customRule.rolltable 25}}
                             {{/if}}
-                            </em>
+                        </em>
                     </td>
                     <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.tags">
                         {{#if customRule.tags}}
@@ -49,7 +49,9 @@
                         {{/if}}
                     </td>
                     <td class="actions">
-                        <button data-action="deleteRow" data-update-setting="true" title="delete"><i class="fas fa-trash"></i></button>
+                        <button data-action="toggle" data-update-setting="true" title="delete"><i class="fas fa-trash"></i></button>
+                        <button data-action="edit" data-update-setting="true" title="edit"><i class="fas fa-pencil"></i></button>
+                        <button data-action="delete" data-update-setting="true" title="delete"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
                 {{/each}}
