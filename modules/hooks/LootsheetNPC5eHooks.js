@@ -1,10 +1,10 @@
-import { MODULE } from '../data/config.js';
+import { MODULE } from '../data/moduleConstants.js';
 import { ItemHelper } from '../helper/ItemHelper.js';
-import { SheetSettings } from '../classes/settings/sheetSettings.js';
-import { PopulatorSettings } from '../classes/settings/populatorSettings.js';
+import { SheetSettings } from '../settings/sheetSettings.js';
+import { PopulatorSettings } from '../settings/populatorSettings.js';
 import { VersionCheck } from '../helper/versionCheckHelper.js';
 import { renderWelcomeScreen } from '../apps/welcomeScreen.js';
-import { API } from '../API.js';
+import { API } from '../api/API.js';
 
 import { LootPopulator } from '../classes/LootPopulator.js';
 
@@ -16,19 +16,21 @@ import { LootPopulator } from '../classes/LootPopulator.js';
  * - initializing the module API
  * - registering the module settings
  * - initializing the modules socketListeners that handles incoming  player interaction requests
- * -
+ * - listens to token creation to populate the token with loot (if conditions are met)
  *
  */
-class LootsheetNPC5eHooks {
+export class LootsheetNPC5eHooks {
     /**
      * Hooks on game hooks and attaches methods
      */
     static init() {
-        Hooks.once("init", LootsheetNPC5eHooks.foundryInit);
-        Hooks.once("ready", LootsheetNPC5eHooks.foundryReady);
-        Hooks.once('devModeReady', LootsheetNPC5eHooks.onDevModeReady);
-        Hooks.once('setup', LootsheetNPC5eHooks.foundrySetup);
-        Hooks.on('createToken', LootsheetNPC5eHooks.onCreateToken);
+        Hooks.once("init", this.foundryInit);
+        Hooks.once("ready", this.foundryReady);
+        Hooks.once('devModeReady', this.onDevModeReady);
+        Hooks.once('setup', this.foundrySetup);
+        Hooks.on('createToken', this.onCreateToken);
+        Hooks.on('getSceneControlButtons', this.attachSceneControlButtons);
+        Hooks.on('renderTokenHUD', this.attachTokenHudButtons);
     }
 
     static foundrySetup() {
@@ -190,9 +192,75 @@ class LootsheetNPC5eHooks {
         await LootPopulator.populate(token);
     }
 
+    static attachSceneControlButtons(buttons){
+        let tokenButton = buttons.find(b => b.name == "token");
+        if (tokenButton) {
+            tokenButton.tools.push({
+                name: "lsnpc5e-populate-loot",
+                title: "LSNPC | Generate Loot",
+                icon: "fas fa-gem",
+                visible: game.user.isGm,
+                onClick: async () => await LootPopulator.populate(),
+                button: true
+            });
+        }
+    }
+
+    static attachTokenHudButtons(hud) {
+        const token = hud.object.document;
+
+        // only for players
+        // if ((game.user.role > 1 && game.user.role <= 3) || game.user.isGM) return;
+        if(!token.actor) return;
+        if(!token.actor.isToken) return;
+        // only for unlinked Tokens
+        if(token.actorLink) return;
+
+        const HUD_left = document.querySelector('#token-hud .left');
+        let lsnNav = document.createElement('nav'),
+            lsnLootAllButton = document.createElement('div'),
+            lsnGMButtonMakeObservable = document.createElement('div'),
+            lsnLootAllImg = document.createElement('img'),
+            lsnMakeObservableImg = document.createElement('img');
+
+            lsnNav.classList.add('lsnpc5e-nav');
+
+            // LootAll Button
+            lsnLootAllButton.classList.add('lsnpc5e-hud-loot-all', 'control-icon');
+            lsnLootAllButton.dataset.action = "lootAll";
+            lsnLootAllButton.title = game.i18n.localize("LootSheetNPC5e.lootAll");
+
+            lsnLootAllImg.src = "icons/svg/item-bag.svg";
+            lsnLootAllImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
+
+            lsnLootAllButton.appendChild(lsnLootAllImg);
+            lsnNav.appendChild(lsnLootAllButton);
+
+            // GM Stuff
+            //makeObservable Button
+            if(game.user.isGM){
+                lsnGMButtonMakeObservable.classList.add('lsnpc5e-hud-make-observable', 'control-icon');
+                lsnGMButtonMakeObservable.dataset.action = "makeObservable";
+                lsnGMButtonMakeObservable.addEventListener('click', async (e) => {
+                    if(game.user.isGM){
+                        const API = game.modules.get("lootsheetnpc5e").public.API;
+                        await API.makeObservable(token);
+                    }
+                });
+
+                lsnMakeObservableImg.src = "icons/svg/eye.svg";
+                lsnMakeObservableImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
+                lsnGMButtonMakeObservable.appendChild(lsnMakeObservableImg);
+
+                lsnNav.appendChild(lsnGMButtonMakeObservable);
+            }
+
+        if(HUD_left){
+            HUD_left.appendChild(lsnNav);
+        }
+    }
+
     static onDevModeReady({ registerPackageDebugFlag }) {
         registerPackageDebugFlag(MODULE.ns);
     }
 }
-
-export { LootsheetNPC5eHooks };
