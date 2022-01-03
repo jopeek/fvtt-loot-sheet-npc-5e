@@ -5,7 +5,7 @@
   "main": "lootsheetnpc5e.js",
   "scripts": {
     "all": "npm run less && npm run copyfiles && npm run test",
-    "build": "npm run less && cp -r module.json *.js template packs lang icons modules dist",
+    "build": "npm run less && cp -r module.json *.js templates packs lang icons modules dist",
     "local-deploy": "npm run build && npm run localcopy && npm run generate-docs",
     "localcopy": "cd dist && cp -r . /mnt/c/Users/jackp/AppData/Local/FoundryVTT/Data/modules/lootsheetnpc5e",
     "less": "lessc -clean-css ./styles/lootsheetNPC5e.less ./dist/styles/lootsheetNPC5e.css",
