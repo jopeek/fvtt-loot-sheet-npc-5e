@@ -1,4 +1,4 @@
-import { MODULE } from "../data/config.js";
+import { MODULE } from "../data/moduleConstants.js";
 
 export class currencyHelper {
 

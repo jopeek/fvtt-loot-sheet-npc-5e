@@ -2,7 +2,7 @@ import ActorSheet5eNPC from "/systems/dnd5e/module/actor/sheets/npc.js";
 import Item5e from "/systems/dnd5e/module/item/entity.js";
 // ⬆️ 5e core imports
 
-import { MODULE } from "../../data/config.js";
+import { MODULE } from "../../data/moduleConstants.js";
 import { LootSheetNPC5eHelper } from "../../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from '../../helper/PermissionHelper.js';
 import { tableHelper } from "../../helper/tableHelper.js";
