@@ -1,5 +1,5 @@
 import { LootSheetNPC5eHelper } from './LootSheetNPC5eHelper.js';
-import { MODULE } from '../data/config.js';
+import { MODULE } from '../data/moduleConstants.js';
 import { PermissionHelper } from './PermissionHelper.js';
 class ItemHelper {
     /**
