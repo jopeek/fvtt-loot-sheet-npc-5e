@@ -1,6 +1,6 @@
 import { currencyHelper } from "../helper/currencyHelper.js";
 import { tokenHelper } from "../helper/tokenHelper.js";
-import { MODULE } from "../data/config.js";
+import { MODULE } from "../data/moduleConstants.js";
 
 export class LootPopulator {
 	/**
