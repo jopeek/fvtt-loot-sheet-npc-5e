@@ -59,7 +59,7 @@
         "infoboxes": {
             "lootsheettype": {
                 "title": "Bogen Typ",
-                "content": "<dl><dt>Loot</dt><dd>Allows for distribution of coins across players</dd><dt>Merchant</dt><dd>Allows players to purchase items directly from the sheet.</dd></dl>"
+                "content": "<dl><dt>Beute</dt><dd>Spieler können Inventar plündern.</dd><dd>Erlaubt es Geld zu teilen.</dd><dt>Händler</dt><dd>Spieler können Gegenstände kaufen.</dd></dl>"
             },
             "permissions": {
                 "title": "Berechtigungen",
@@ -67,7 +67,7 @@
             },
             "permissions_individual": {
                 "title": "Individuelle Berechtigungen",
-                "content": "🔁 Click on a character to to cycle the players permission. Hover to see information."
+                "content": "🔁 Einen Avatar anklicken um die Berechtigungen durchzuschalten."
             }
         },
         "sheettypes": {
@@ -76,10 +76,16 @@
         },
         "settings": {
             "menu": {
+                "currency": "Currency",
+                "defaults": "Standards",
+                "fallbacks": "Fallbacks",
                 "moduleDefaults": "Modul Standards",
                 "merchant": "Händler",
+                "creatureTypeFallbacks": "Kreaturtyp",
                 "loot": "Beute",
-                "info": "?"
+                "skiplist": "Ignorierliste",
+                "info": "?",
+                "rulesets": "Filterregeln"
             }
         }
     }

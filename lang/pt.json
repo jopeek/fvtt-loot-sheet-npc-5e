@@ -55,6 +55,41 @@
                     }
                 }
             }
+        },
+        "defaults": {
+
+        },
+        "infoboxes": {
+            "lootsheettype": {
+                "title": "Sheet type",
+                "content": "<dl><dt>Loot</dt><dd>Allows for distribution of coins across players</dd><dt>Merchant</dt><dd>Allows players to purchase items directly from the sheet.</dd></dl>"
+            },
+            "permissions": {
+                "title": "Permissions",
+                "content": "⚠️ Ensure a character is selected for the players via the 'Player configuration'. So they are displayed here. ⚠️"
+            },
+            "permissions_individual":{
+                "title": "Individual permissions",
+                "content": "🔁 Click on a character to to cycle the players permission. Hover to see information."
+            }
+        },
+        "sheettypes": {
+            "loot": "Loot",
+            "merchant": "Merchant"
+        },
+        "settings": {
+            "menu": {
+                "currency": "Currency",
+                "defaults": "Defaults",
+                "fallbacks": "Fallbacks",
+                "moduleDefaults": "Modul Standards",
+                "merchant": "Merchant",
+                "creatureTypeFallbacks": "by type",
+                "loot": "Loot",
+                "skiplist": "Skiplist",
+                "info": "?",
+                "rulesets": "Rulesets"
+            }
         }
     }
 }
