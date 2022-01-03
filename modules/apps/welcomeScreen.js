@@ -1,4 +1,4 @@
-import { MODULE } from '../data/config.js'
+import { MODULE } from '../data/moduleConstants.js'
 import { VersionCheck } from '../helper/versionCheckHelper.js'
 
 /**
