@@ -121,14 +121,16 @@ class API {
      * @returns {object}
      */
     static async convertTokens(
-        tokens = canvas.tokens.controlled,
+        tokens,
         type = 'loot',
         options = {},
         verbose = false
     ){
+        const tokenstack = (tokens) ? (tokens.length >= 0) ? tokens : [tokens] : canvas.tokens.controlled;
+
         let response = API._response(200, 'success');
 
-        for (let token of tokens){
+        for (let token of tokenstack){
              response.data[token.uuid] = await API.convertToken(token, type, options, verbose)
         }
 
