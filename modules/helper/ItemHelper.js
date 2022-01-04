@@ -1,6 +1,6 @@
-import { LootSheetNPC5eHelper } from './LootSheetNPC5eHelper.js';
 import { MODULE } from '../data/moduleConstants.js';
 import { PermissionHelper } from './PermissionHelper.js';
+
 class ItemHelper {
     /**
     * Take an options object an either keep values or set the default
@@ -17,16 +17,47 @@ class ItemHelper {
             filterNaturalWeapons: game.settings.get(MODULE.ns, 'filterNaturalWeapons') | true,
         };
     }
+
+    static _isItemDamaged(item, chanceOfDamagedItems) {
+        const rarity = item.data.rarity;
+        if (!rarity) return false;
+
+        // Never consider items above common rarity breakable
+        if (rarity.toLowerCase() !== 'common' && rarity.toLowerCase() !== 'none')
+            return false;
+
+        return Math.random() < chanceOfDamagedItems;
+    }
+
     /**
      *
-     * @param {Actor5e} source
+     * @param {Token} source
      * @param {Actor5e} destination
      * @param {Array<Item>} items
      */
-    static async lootItems(source, destination, items, sourceToken) {
-        let movedItems = await ItemHelper.moveItems(source.actor, destination, items);
+    static async lootItems(source, destination, items) {
+        let movedItems = await this.moveItems(source.actor, destination, items);
 
         ItemHelper.chatMessage(source, destination, movedItems, { type: 'loot' })
+    }
+
+    /**
+     * @description All you Items belong to us
+     *
+     * @param {Token} source
+     * @param {Actor} destination
+     */
+    static async lootAllItems(source, destination) {
+        const items = ItemHelper.getLootableItems(source.actor.items).map((item) => ({
+            id: item.id,
+            data: {
+                data: {
+                    quantity: item.data.data.quantity
+                }
+            }
+        }));
+
+        ItemHelper.lootItems(source, destination, items);
     }
 
     /**
@@ -97,7 +128,7 @@ class ItemHelper {
         items,
         options = {}
     ) {
-        options = ItemHelper._getOptionsDefault(options);
+        options = this._getOptionsDefault(options);
 
         return items
             /** .map((item) => {
@@ -115,11 +146,10 @@ class ItemHelper {
                     return item.data.armor.type != 'natural';
                 }
 
-
                 return !['class', 'spell', 'feat'].includes(item.type);
             })
             .filter((item) => {
-                if (LootSheetNPC5eHelper._isItemDamaged(item, options.chanceOfDamagedItems)) {
+                if (ItemHelper._isItemDamaged(item, options.chanceOfDamagedItems)) {
                     if (options.removeDamagedItems) return false;
 
                     item.name += ' (Damaged)';
@@ -142,7 +172,6 @@ class ItemHelper {
      * @param {Array<Item5e>} updatedItems
      */
     static async _updateActorInventory(actor, items, updatedItems) {
-
         if (items.data.length > 0) {
             if (items.type === 'create') {
                 await actor.createEmbeddedDocuments("Item", items.data);
@@ -151,9 +180,8 @@ class ItemHelper {
             }
         }
 
-        if (updatedItems.length > 0) {
+        if (updatedItems.length > 0)
             await actor.updateEmbeddedDocuments("Item", updatedItems);
-        }
     }
 
     /**
@@ -178,7 +206,7 @@ class ItemHelper {
             successfullTransaction = await ItemHelper.updateFunds(seller, buyer, itemCostInGold);
 
         if (!successfullTransaction) return false;
-        moved = await ItemHelper.moveItems(seller, buyer, [{ id: id, data: { data: { quantity: quantity } } }]);
+        moved = await this.moveItems(seller, buyer, [{ id: id, data: { data: { quantity: quantity } } }]);
 
         if (moved || options?.chatOutPut) return ItemHelper.chatMessage(seller, buyer, moved, { type: 'buy' });
     }
@@ -301,7 +329,7 @@ class ItemHelper {
      * @param {Actor5e} source
      * @param {User} destination
      */
-    static async lootCoins(source, destination) {
+    static async lootCurrency(source, destination) {
         const actorData = source.data;
 
         let sheetCurrency = duplicate(actorData.data.currency);
@@ -488,7 +516,7 @@ class ItemHelper {
      * @param {Item5e} item
      */
     static async chatMessage(source, destination, movedItems, options = { type: 'loot' }) {
-        if (game.settings.get(MODULE.ns, MODULE.settingsKey.generateChatMessages)) {
+        if (game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.generateChatMessages)) {
             const existingMessage = ItemHelper.getItemsFromLootMessage(destination.id, source.id);
             let existingItems = existingMessage?.items;
 
@@ -499,7 +527,7 @@ class ItemHelper {
              */
             movedItems = movedItems.map(el => ({
                 quantity: el.quantity,
-                priceTotal: Math.floor((el.item.data.data.price || 0 ) * el.quantity),
+                priceTotal: Math.floor((el.item.data.data?.price || 0 ) * el.quantity),
                 data: {
                     documentName: el.item.documentName,
                     img: el.item.img,
@@ -507,7 +535,7 @@ class ItemHelper {
                     id: el.item._id,
                     uuid: el.item.uuid,
                     price: Math.floor(el.item.data.data?.price || 0),
-                    rarity: el.item.data.data.rarity || 'common'
+                    rarity: el.item.data?.data?.rarity || 'common'
                 }
             }));
 

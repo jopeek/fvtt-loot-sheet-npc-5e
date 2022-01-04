@@ -7,7 +7,7 @@ class PermissionHelper {
      * */
     static getTargetGM() {
         let targetGM = game.users.filter((u) => {
-            return u.isGM && u.active && u.viewedScene === game.user.viewedScene
+            return u.isGM && u.active
         });
 
         return targetGM?.[0] || false;

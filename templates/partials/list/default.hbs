@@ -75,13 +75,13 @@
 
                             <div class="item-controls">
                                 {{#ifeq ../../lootsheettype "Loot"}}
-                                    <a class="item-control item-loot" title="Loot Stack" data-get-all="true"><i class="fas fa-boxes"></i></a>
-                                    <a class="item-control item-loot" title="Loot Item" data-get-all="false"><i class="fas fa-box"></i></a>
+                                    <a class="item-control lsnpc-action-link" title="Loot Stack" data-action="lootItem" data-get-all="true"><i class="fas fa-boxes"></i></a>
+                                    <a class="item-control lsnpc-action-link" title="Loot Item" data-action="lootItem" data-get-all="false"><i class="fas fa-box"></i></a>
                                 {{/ifeq}}
 
                                 {{#ifeq ../../lootsheettype "Merchant"}}
-                                    <a class="item-control item-buyall" title="Buy Stack" data-get-all="true"><i class="fas fa-coins"></i></a>
-                                    <a class="item-control item-buy" title="Buy Item" data-get-all="false"><i class="fas fa-dollar-sign"></i></a>
+                                    <a class="item-control lsnpc-action-link" title="Buy Stack" data-action="buyItem" data-get-all="true"><i class="fas fa-coins"></i></a>
+                                    <a class="item-control lsnpc-action-link" title="Buy Item" data-action="buyItem" data-get-all="false"><i class="fas fa-dollar-sign"></i></a>
                                 {{/ifeq}}
 
                                 {{#if ../../owner}}

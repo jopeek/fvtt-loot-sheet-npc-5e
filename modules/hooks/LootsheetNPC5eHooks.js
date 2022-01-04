@@ -7,6 +7,7 @@ import { renderWelcomeScreen } from '../apps/welcomeScreen.js';
 import { API } from '../api/API.js';
 
 import { LootPopulator } from '../classes/LootPopulator.js';
+import { socketListener } from './socketListener.js';
 
 /**
  * @module LootSheetNPC5e.hooks
@@ -49,7 +50,8 @@ export class LootsheetNPC5eHooks {
 
     static foundryInit() {
         SheetSettings.registerSettings();
-        LootsheetNPC5eHooks.socketListener();
+        //await LootsheetNPC5eHooks.socketListener();
+        game.socket.on(MODULE.socket, socketListener.handleRequest);
     }
 
     static foundryReady() {
@@ -80,14 +82,14 @@ export class LootsheetNPC5eHooks {
             return (Math.round(weight * 1e5) / 1e5).toString();
         });
 
-        Handlebars.registerHelper ('truncate', function (str, len) {
+        Handlebars.registerHelper('truncate', function (str, len) {
             if (str.length > len && str.length > 0) {
                 var new_str = str + " ";
-                new_str = str.substr (0, len);
-                new_str = str.substr (0, new_str.lastIndexOf(" "));
-                new_str = (new_str.length > 0) ? new_str : str.substr (0, len);
+                new_str = str.substr(0, len);
+                new_str = str.substr(0, new_str.lastIndexOf(" "));
+                new_str = (new_str.length > 0) ? new_str : str.substr(0, len);
 
-                return new Handlebars.SafeString ( new_str +'...' );
+                return new Handlebars.SafeString(new_str + '...');
             }
             return str;
         });
@@ -119,63 +121,6 @@ export class LootsheetNPC5eHooks {
         });
     }
 
-    static socketListener() {
-        game.socket.on(MODULE.socket, data => {
-
-            const triggeringActor = game.actors.get(data.triggerActorId),
-                npcActorToken = canvas.tokens.get(data.tokenId),
-                action = data.type;
-
-            console.log(MODULE.ns + " | Hooks | socketListener | data", data);
-
-            if (!action || action === "error") {
-                const msg = data.message || " | socketListener | InvalidData ";
-                ui.notifications.error(MODULE.ns + ' | ' + msg);
-                console.log("Loot Sheet | Transaction Error: ", data);
-                return;
-            }
-
-            if (!triggeringActor) {
-                ui.notifications.error(MODULE.ns + " | socketListener | Exception | Could not get acting player.");
-                return;
-            }
-
-            if (!npcActorToken) {
-                ItemHelper.errorMessageToActor(triggeringActor, "GM not available, the GM must on the same scene to purchase an item.")
-                ui.notifications.error(MODULE.ns + " | Player attempted to trigger `" + action + "` on a different scene.");
-                return;
-            }
-
-            if (game.user.isGM && data.processorId === game.user.id) {
-                if (action === "buyItem") {
-                    ItemHelper.transaction(npcActorToken.actor, triggeringActor, data.targetItemId, data.quantity);
-                }
-                if (action === "lootAll") {
-                    const items = ItemHelper.getLootableItems(npcActorToken.actor.items).map((item) => ({
-                        id: item.id,
-                        data: {
-                            data: {
-                                quantity: item.data.data.quantity
-                            }
-                        }
-                    }));
-
-                    ItemHelper.lootItems(npcActorToken, triggeringActor, items);
-                }
-                if (action === "lootItem") {
-                    let items = [{ id: data.targetItemId, data: { data: { quantity: data.quantity } } }];
-                    ItemHelper.lootItems(npcActorToken, triggeringActor, items);
-                }
-                if (action === "distributeCoins") {
-                    ItemHelper.distributeCoins(npcActorToken.actor);
-                }
-                if (action === "lootCoins") {
-                    ItemHelper.lootCoins(npcActorToken.actor, triggeringActor);
-                }
-            }
-        });
-    }
-
     static async onCreateToken(token, createData, options, userId) {
         const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.useSkiplist);
 
@@ -192,7 +137,7 @@ export class LootsheetNPC5eHooks {
         await LootPopulator.populate(token);
     }
 
-    static attachSceneControlButtons(buttons){
+    static attachSceneControlButtons(buttons) {
         let tokenButton = buttons.find(b => b.name == "token");
         if (tokenButton) {
             tokenButton.tools.push({
@@ -210,10 +155,10 @@ export class LootsheetNPC5eHooks {
         if (!game.settings.get(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons)) return;
 
         const token = hud.object.document;
-        if(!token.actor) return;
-        if(!token.actor.isToken) return;
+        if (!token.actor) return;
+        if (!token.actor.isToken) return;
         // only for unlinked Tokens
-        if(token.actorLink) return;
+        if (token.actorLink) return;
 
 
         const HUD_left = document.querySelector('#token-hud .left');
@@ -223,38 +168,38 @@ export class LootsheetNPC5eHooks {
             lsnLootAllImg = document.createElement('img'),
             lsnMakeObservableImg = document.createElement('img');
 
-            lsnNav.classList.add('lsnpc5e-nav');
+        lsnNav.classList.add('lsnpc5e-nav');
 
-            // LootAll Button
-            lsnLootAllButton.classList.add('lsnpc5e-hud-loot-all', 'control-icon');
-            lsnLootAllButton.dataset.action = "lootAll";
-            lsnLootAllButton.title = game.i18n.localize("LootSheetNPC5e.lootAll");
+        // LootAll Button
+        lsnLootAllButton.classList.add('lsnpc5e-hud-loot-all', 'control-icon');
+        lsnLootAllButton.dataset.action = "lootAll";
+        lsnLootAllButton.title = game.i18n.localize("LootSheetNPC5e.lootAll");
 
-            lsnLootAllImg.src = "icons/svg/item-bag.svg";
-            lsnLootAllImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
+        lsnLootAllImg.src = "icons/svg/item-bag.svg";
+        lsnLootAllImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
 
-            lsnLootAllButton.appendChild(lsnLootAllImg);
-            lsnNav.appendChild(lsnLootAllButton);
+        lsnLootAllButton.appendChild(lsnLootAllImg);
+        lsnNav.appendChild(lsnLootAllButton);
 
 
-            if(game.user.isGM){
-                lsnGMButtonMakeObservable.classList.add('lsnpc5e-hud-make-observable', 'control-icon');
-                lsnGMButtonMakeObservable.dataset.action = "makeObservable";
-                lsnGMButtonMakeObservable.addEventListener('click', async (e) => {
-                    if(game.user.isGM){
-                        const API = game.modules.get("lootsheetnpc5e").public.API;
-                        await API.makeObservable();
-                    }
-                });
+        if (game.user.isGM) {
+            lsnGMButtonMakeObservable.classList.add('lsnpc5e-hud-make-observable', 'control-icon');
+            lsnGMButtonMakeObservable.dataset.action = "makeObservable";
+            lsnGMButtonMakeObservable.addEventListener('click', async (e) => {
+                if (game.user.isGM) {
+                    const API = game.modules.get("lootsheetnpc5e").public.API;
+                    await API.makeObservable();
+                }
+            });
 
-                lsnMakeObservableImg.src = "icons/svg/eye.svg";
-                lsnMakeObservableImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
-                lsnGMButtonMakeObservable.appendChild(lsnMakeObservableImg);
+            lsnMakeObservableImg.src = "icons/svg/eye.svg";
+            lsnMakeObservableImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
+            lsnGMButtonMakeObservable.appendChild(lsnMakeObservableImg);
 
-                lsnNav.appendChild(lsnGMButtonMakeObservable);
-            }
+            lsnNav.appendChild(lsnGMButtonMakeObservable);
+        }
 
-        if(HUD_left){
+        if (HUD_left) {
             HUD_left.appendChild(lsnNav);
         }
     }

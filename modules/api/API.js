@@ -42,6 +42,9 @@ class API {
             return response;
         }
 
+        if(!game.user.isGM) return;
+        if(!token.actor.sheet) return;
+
         const sheet = token.actor.sheet,
             priorState = sheet._state; // -1 for opened before but now closed, // 0 for closed and never opened // 1 for currently open
 

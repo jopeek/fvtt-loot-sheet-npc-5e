@@ -30,6 +30,15 @@ export class SheetSettings {
             type: Boolean,
         });
 
+        game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.sheetUpdate, {
+            name: game.i18n.localize('lsnpc.settings.sheetUpdate.name'),
+            hint: game.i18n.localize('lsnpc.settings.sheetUpdate.hint'),
+            scope: MODULE.settings.scopes.world,
+            config: true,
+            default: false,
+            type: Boolean,
+        });
+
         game.settings.register(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables, {
             name: game.i18n.localize('lsnpc.settings.useBetterRolltables.name'),
             hint: game.i18n.localize('lsnpc.settings.useBetterRolltables.hint'),
@@ -92,6 +101,16 @@ export class SheetSettings {
         game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.lootCurrency, {
             name: game.i18n.localize('lsnpc.settings.sheet.lootCurrency.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.lootCurrency.hint'),
+            scope: MODULE.settings.scopes.world,
+            group: MODULE.settings.groups.sheet.loot,
+            config: false,
+            default: true,
+            type: Boolean
+        });
+
+        game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.distributeCurrency, {
+            name: game.i18n.localize('lsnpc.settings.sheet.distributeCurrency.name'),
+            hint: game.i18n.localize('lsnpc.settings.sheet.distributeCurrency.hint'),
             scope: MODULE.settings.scopes.world,
             group: MODULE.settings.groups.sheet.loot,
             config: false,

@@ -157,19 +157,17 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
             html.find('.update-inventory').click(ev => this._inventoryUpdate(ev));
         }
 
+
+        let sheetActionButtons = document.querySelectorAll('.lsnpc-app .lsnpc-action-link');
+
+        for (let actionButton of sheetActionButtons) {
+            const eventType = actionButton.nodeName === 'SELECT' ? 'change' : 'click';
+            actionButton.toggleAttribute('disabled', false);
+            actionButton.addEventListener(eventType, ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, ev));
+        }
+
         // toggle infoboxes
         html.find('.help').hover(e => e.currentTarget.nextElementSibling.classList.toggle('hidden'));
-
-        html.find('.item-buy').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'buyItem', ev));
-        html.find('.item-buyall').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'buyItemAll', ev));
-        // Loot
-        html.find('.loot-all').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootAll', ev));
-        html.find('.item-loot').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootItem', ev));
-        //html.find('.item-lootall').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootItemAll', ev));
-
-        // currency
-        html.find('.loot-currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'lootCoins', ev));
-        html.find('.split-currency').removeAttr('disabled').click(ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, 'distributeCoins', ev));
     }
 
     /* -------------------------------------------- */
@@ -247,9 +245,10 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
             return this.actor.sheet.render(true); //population should done, good bye 👋
         } else {
-            await tokenHelper.populateWithRolltable(rolltable, currentToken);
+            // use built-in population method
+            await tokenHelper.populateWithRolltable(rolltable, this.token);
         }
-
+        await this.actor.sheet.close();
         return this.actor.sheet.render(true);
     }
 

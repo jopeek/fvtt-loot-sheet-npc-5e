@@ -17,6 +17,7 @@ export const MODULE = {
         rolltable: 'rolltable',
         loot: 'loot',
         shopQty: 'shopQtyFormula',
+        clearInventory: 'clearInventory',
     },
     ns: 'lootsheetnpc5e',
     path: 'modules/lootsheetnpc5e',
@@ -26,10 +27,11 @@ export const MODULE = {
     sockettypes: {
         lootItem: 'lootItem',
         lootAll: 'lootAll',
-        distributeCoins: 'distributeCoins',
-        lootCoins: 'lootCoins',
+        distributeCurrency: 'distributeCurrency',
+        lootCurrency: 'lootCurrency',
         buyItem: 'buyItem',
         buyAll: 'buyAll',
+        sheetUpdate: 'sheetUpdate'
     },
     sheets: {
         loot: 'loot',
@@ -46,7 +48,7 @@ export const MODULE = {
             sheet: {
                 ui: 'UI',
                 loot: 'Loot',
-                merchant: 'Merchant',
+                merchant: 'Merchant'
             },
             lootpopulator: {
                 fallbacks: 'fallbacks',
@@ -71,7 +73,7 @@ export const MODULE = {
                 buyAll: 'buyAll',
                 colorRarity: 'colorRarity',
                 convertCurrency: 'convertCurrency',
-                distributeCoins: 'distributeCoins',
+                distributeCurrency: 'distributeCurrency',
                 priceModifier: 'priceModifier',
                 filterNaturalWeapons: 'filterNaturalWeapons',
                 generateChatMessages: 'generateChatMessages',
@@ -79,11 +81,12 @@ export const MODULE = {
                 lootAll: 'lootAll',
                 lootCurrency: 'lootCurrency',
                 lootItem: 'lootItem',
+                sheetUpdate: 'sheetUpdate',
                 maxPriceIncrease: 'maxPriceIncrease',
                 reduceUpdateVerbosity: 'reduceUpdateVerbosity',
                 stackBuyConfirm: 'stackBuyConfirm',
                 showStackWeight: 'showStackWeight',
-                useCondensedLootsheet: 'useCondensedLootsheet',
+                useCondensedLootsheet: 'useCondensedLootsheet'
             },
             lootpopulator: {
                 populatorOptions: 'populatorOptions',

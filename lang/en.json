@@ -116,6 +116,10 @@
                     "name": "Filter natural weapons",
                     "hint": "Filter natural weapons from the inventory?"
                 },
+                "distributeCurrency": {
+                    "name": "Distribute currency",
+                    "hint": "Allow players to split currency between the party members?"
+                },
                 "generateChatMessages" : {
                     "name": "Generate chat messages",
                     "hint": "Generate chat messages for looting or transactions."
@@ -151,6 +155,10 @@
                 "stackBuyConfirm": {
                     "name": "Stack buy confirm",
                     "hint": "Ask for confirmation before purchasing a stack?"
+                },
+                "sheetUpdate": {
+                    "name": "Force sheet update",
+                    "hint": "Send an update to the players that tells there client to refresh the sheet."
                 },
                 "useCondensedLootsheet": {
                     "name": "⚠️ ALPHA Testing Preview ⚠️ Condensed lootsheet",

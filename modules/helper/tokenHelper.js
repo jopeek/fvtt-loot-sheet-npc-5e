@@ -112,6 +112,7 @@ export class tokenHelper {
 
 		return item;
 	}
+
     /**
 	 *
 	 * @param {RollTableDocument} rolltable
@@ -282,5 +283,28 @@ export class tokenHelper {
 				}
 			}
 		}
+	}
+
+	/**
+	 *
+	 * Rerender an {ActorSheet} if it is currently being displayed.s
+	 *
+	 * @param {string} uuid of the sheet to be rerendered
+	 * @returns
+	 */
+	static async handleRerender(uuid) {
+		const token = await fromUuid(uuid);
+		if (!token?.actor?._sheet) return;
+        const sheet = token.actor.sheet,
+		 priorState = sheet._state;
+		 // Close the old sheet if it's open
+		await sheet.close();
+
+        // Deregister the old sheet class
+        token.actor._sheet = null;
+        delete token.actor.apps[sheet.appId];
+		// Re-render the sheet if it was open
+        if (priorState > 0)
+            return sheet.render(true);
 	}
 }
