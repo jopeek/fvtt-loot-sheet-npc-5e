@@ -52,7 +52,7 @@ export class SheetSettings {
             name: game.i18n.localize('lsnpc.settings.sheet.filterNaturalWeapons.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.filterNaturalWeapons.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.default,
+            group: MODULE.settings.groups.sheet.moduleDefaults,
             config: false,
             default: true,
             type: Boolean
@@ -92,7 +92,7 @@ export class SheetSettings {
             name: game.i18n.localize('lsnpc.settings.sheet.convertCurrency.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.convertCurrency.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.default,
+            group: MODULE.settings.groups.sheet.loot,
             config: false,
             default: false,
             type: Boolean
@@ -122,7 +122,7 @@ export class SheetSettings {
             name: game.i18n.localize('lsnpc.settings.sheet.includeCurrencyWeight.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.includeCurrencyWeight.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.default,
+            group: MODULE.settings.groups.sheet.loot,
             config: false,
             default: false,
             type: Boolean,
@@ -132,7 +132,7 @@ export class SheetSettings {
             name: game.i18n.localize('lsnpc.settings.sheet.generateChatMessages.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.generateChatMessages.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.default,
+            group: MODULE.settings.groups.sheet.moduleDefaults,
             config: false,
             default: true,
             type: Boolean
@@ -163,7 +163,7 @@ export class SheetSettings {
             name: game.i18n.localize('lsnpc.settings.sheet.showStackWeight.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.showStackWeight.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.default,
+            group: MODULE.settings.groups.sheet.merchant,
             config: false,
             default: false,
             type: Boolean
@@ -173,7 +173,7 @@ export class SheetSettings {
             name: game.i18n.localize('lsnpc.settings.sheet.reduceUpdateVerbosity.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.reduceUpdateVerbosity.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.default,
+            group: MODULE.settings.groups.sheet.moduleDefaults,
             config: false,
             default: true,
             type: Boolean

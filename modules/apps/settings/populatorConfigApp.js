@@ -233,7 +233,7 @@ export class PopulatorSettingsConfigApp extends FormApplication {
 
         fieldset.insertAdjacentHTML('beforeend',ele);
 
-        fieldset.querySelector('button[data-action="deleteRow"').addEventListener('click', async (e) => {
+        fieldset.querySelector('button[data-action="delete"').addEventListener('click', async (e) => {
           e.preventDefault();
             if(!e.target.dataset.action) return ui.notifications.error("No action found for the provided key");
               this._runAction(e);

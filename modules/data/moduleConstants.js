@@ -43,9 +43,9 @@ export const MODULE = {
             client: 'client',
             default: 'defaults'
         },
-        groups: {
-            moduleDefaults: 'moduleDefaults',
+        groups: {            
             sheet: {
+                moduleDefaults: 'moduleDefaults',
                 ui: 'UI',
                 loot: 'Loot',
                 merchant: 'Merchant'

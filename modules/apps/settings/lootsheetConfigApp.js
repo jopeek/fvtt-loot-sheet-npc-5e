@@ -51,10 +51,10 @@ export class lootsheetSettingsConfigApp extends FormApplication {
      */
     const data = {
       tabs: [
-        { name: "defaults", i18nName: game.i18n.localize('lsnpc.settings.menu.moduleDefaults'), class: "fas fa-cog", menus: [], settings: [] },
-        { name: "Loot", i18nName: game.i18n.localize('lsnpc.settings.menu.loot'), class: "fas fa-filter", menus: [], settings: [] },
-        { name: "Merchant", i18nName: game.i18n.localize('lsnpc.settings.menu.merchant'), class: "fab fa-grunt", menus: [], settings: [] },
-        { name: "Info", i18nName: `${game.i18n.localize('lsnpc.settings.menu.info')}`, class: "fas fa-ban", menus: [], settings: [] }
+        { name: MODULE.settings.groups.sheet.moduleDefaults, i18nName: game.i18n.localize('lsnpc.settings.menu.moduleDefaults'), class: "fas fa-cog", menus: [], settings: [] },
+        { name: MODULE.settings.groups.sheet.ui, i18nName: game.i18n.localize('lsnpc.settings.menu.loot'), class: "fas fa-filter", menus: [], settings: [] },
+        { name: MODULE.settings.groups.sheet.Loot, i18nName: game.i18n.localize('lsnpc.settings.menu.merchant'), class: "fab fa-grunt", menus: [], settings: [] },
+        { name: MODULE.settings.groups.sheet.Merchant, i18nName: `${game.i18n.localize('lsnpc.settings.menu.info')}`, class: "fas fa-ban", menus: [], settings: [] }
       ]
     };
 
