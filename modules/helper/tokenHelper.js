@@ -122,7 +122,7 @@ export class tokenHelper {
 	static async populateWithRolltable(rolltable, token) {
 		const tokenActor = token.actor,
 			shopQtyFormula = tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
-			itemQtyFormula = itemQtyFormula = token.actor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
+			itemQtyFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
 			itemQtyLimit = tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
 			itemOnlyOnce = tokenActor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
             reducedVerbosity = game.settings.get(MODULE.ns, "reduceUpdateVerbosity") || true;

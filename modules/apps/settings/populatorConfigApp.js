@@ -198,7 +198,8 @@ export class PopulatorSettingsConfigApp extends FormApplication {
           currentObject = game.settings.get(MODULE.ns, target),
           key = newObject.name + '_' + newObject.rolltable + '_' + Math.random(),
           final = {};
-        newObject.rolltableName = event.currentTarget.querySelector('select[name="lootpopulatornpc5e.customFallbacks.rolltable"] option:checked').dataset.label;
+
+      newObject.rolltableName = event.currentTarget.querySelector('select[name="lootsheetnpc5e.rulesets.rolltable"] option:checked').dataset.label;
 
       final[key] = newObject;
 

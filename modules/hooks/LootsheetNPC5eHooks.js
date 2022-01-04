@@ -29,6 +29,7 @@ export class LootsheetNPC5eHooks {
         Hooks.once("ready", this.foundryReady);
         Hooks.once('devModeReady', this.onDevModeReady);
         Hooks.once('setup', this.foundrySetup);
+        Hooks.once('aipSetup', this.onAIPSetup);
         Hooks.on('createToken', this.onCreateToken);
         Hooks.on('getSceneControlButtons', this.attachSceneControlButtons);
         Hooks.on('renderTokenHUD', this.attachTokenHudButtons);
@@ -119,6 +120,36 @@ export class LootsheetNPC5eHooks {
                 e.stopPropagation();
             });
         });
+    }
+
+    /**
+       * Register with AIP
+       */
+    static async onAIPSetup() {
+        const api = game.modules.get("autocomplete-inline-properties").API;
+        const DATA_MODE = api.CONST.DATA_MODE;
+
+        // AIP
+        // Define the config for our package
+        const config = {
+            packageName: MODULE.ns,
+            sheetClasses: [
+                {
+                    name: "PopulatorSettingsConfigApp", // this _must_ be the class name of the `Application` you want it to apply to
+                    fieldConfigs: [
+                        {
+                            selector: `.data-path-input`,
+                            showButton: true,
+                            allowHotkey: true,
+                            dataMode: DATA_MODE.OWNING_ACTOR_DATA,
+                        },
+                    ]
+                },
+            ]
+        };
+
+        // Add our config
+        api.PACKAGE_CONFIG.push(config);
     }
 
     static async onCreateToken(token, createData, options, userId) {
