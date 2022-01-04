@@ -26,13 +26,15 @@
             });
         }
         for (const pack of rollTablePacks) {
-            const idx = await pack.getIndex();
-            availableRolltables[pack.metadata.label] = [];
+            const idx = await pack.getIndex({fields: ['name', 'data.uuid']}),
+				tableString = `Compendium.${pack.collection}.`;
+
+			availableRolltables[pack.metadata.label] = [];
 
             for (let table of idx) {
                 availableRolltables[pack.metadata.label].push({
                     name: table.name,
-                    uuid: table.uuid,
+                    uuid: tableString + table._id,
                 });
             }
         }

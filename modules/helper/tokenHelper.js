@@ -89,11 +89,11 @@ export class tokenHelper {
 		const defaultConversions = {
 			Actor: {
 			  text: `${item.text} Portrait`,
-			  img: newItem?.img || "icons/svg/mystery-man.svg"
+			  img: item?.img || "icons/svg/mystery-man.svg"
 			},
 			Scene: {
 			  text: 'Map of '+ newItem?.data?.name,
-			  img: newItem?.data?.thumb || "icons/svg/direction.svg",
+			  img: item?.data?.thumb || "icons/svg/direction.svg",
 			  data: {
 				  price: new Roll('1d20 + 10').roll().total || 1
 			  }
@@ -159,7 +159,7 @@ export class tokenHelper {
                  * BetterRolltables does it but needs a spell compendium with spells.
                  *
                  */
-				newItem = this.applyItemConversions(newItem);
+				newItem = await this.applyItemConversions(newItem);
 
 				let itemQtyRoll = new Roll(itemQtyFormula);
 				itemQtyRoll.roll();
