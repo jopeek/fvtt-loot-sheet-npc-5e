@@ -1,7 +1,7 @@
 {{#each data as |array group|}}
     <optgroup label="{{group}}">
-    {{#each array}}
-        <option value="{{this.uuid}}" data-label="{{this.name}}">{{this.name}}</option>
-    {{/each}}
+        {{#each array}}
+            <option value="{{this.uuid}}" data-label="{{this.name}}">{{this.name}}</option>
+        {{/each}}
     </optgroup>
 {{/each}}
