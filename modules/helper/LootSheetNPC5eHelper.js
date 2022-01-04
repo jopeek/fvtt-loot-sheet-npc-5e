@@ -27,8 +27,6 @@ class LootSheetNPC5eHelper {
         await actor.setFlag(MODULE.ns, "lootsheettype", selectedItem);
         console.log(MODULE.ns + " | " + game.user.name + ' (' + game.user.id + ') updated the sheet type for ', MODULE.ns + " event | " + event);
         // tell everyone that the sheet has changed.
-
-        debugger;
         this.sendActionToSocket(actor.token, event);
         actor.sheet.render(true);
     }
