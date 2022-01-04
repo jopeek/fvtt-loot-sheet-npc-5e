@@ -209,7 +209,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
 
         const rolltableUUID = this.actor.getFlag(MODULE.ns, "rolltable"),
                 shopQtyFormula = this.token.actor.getFlag(MODULE.ns, MODULE.flags.shopQty) || "1",
-                itemQtyLimit = this.token.actor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || "0",
+                itemQtyLimitFormula = this.token.actor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || "0",
                 clearInventory = this.token.actor.getFlag(MODULE.ns, MODULE.flags.clearInventory),
                 betterRolltablesModule = {
                     ns: 'better-rolltables',
@@ -231,11 +231,14 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
             ) {
             const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
             let customRoll = new Roll(shopQtyFormula),
-            options = {};
+                itemLimitRoll = new Roll(itemQtyLimitFormula),
+                options = {};
+
             customRoll.roll();
+            itemLimitRoll.roll();
 
             options.customRole = customRoll.total;
-            options.itemQtyLimit = itemQtyLimit;
+            options.itemQtyLimit = itemLimitRoll.total;
 
             await betterRolltablesAPI.addLootToSelectedToken(
                     rolltable,
@@ -408,7 +411,7 @@ class LootSheetNPC5e extends ActorSheet5eNPC {
         });
 
         for (let i of items) {
-            i.img = i.img || DEFAULT_TOKEN;
+            i.img = i.img || 'icons/svg/item-bag.svg';
             //console.log("Loot Sheet | item", i);
 
             // Features

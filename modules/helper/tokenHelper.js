@@ -123,7 +123,7 @@ export class tokenHelper {
 		const tokenActor = token.actor,
 			shopQtyFormula = tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
 			itemQtyFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
-			itemQtyLimit = tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
+			itemQtyLimitFormula = tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
 			itemOnlyOnce = tokenActor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
             reducedVerbosity = game.settings.get(MODULE.ns, "reduceUpdateVerbosity") || true;
 
@@ -154,17 +154,14 @@ export class tokenHelper {
 					return;
 				}
 
-                /**
-                 * @todo make this system agnostic
-                 * BetterRolltables does it but needs a spell compendium with spells.
-                 *
-                 */
 				newItem = await this.applyItemConversions(newItem);
 
-				let itemQtyRoll = new Roll(itemQtyFormula);
-				itemQtyRoll.roll();
+				let itemQtyRoll = new Roll(itemQtyFormula),
+					itemLimitRoll = new Roll(itemQtyLimitFormula),
+					itemQtyTotal = itemQtyRoll.roll().total,
+					itemLimitTotal = itemLimitRoll.roll().total;
 
-				if (!reducedVerbosity) console.log(MODULE.ns + `: Adding ${itemQtyRoll.total} x ${newItem.name}`);
+				if (!reducedVerbosity) console.log(MODULE.ns + `: Adding ${itemQtyTotal} x ${newItem.name}`);
 
 				let existingItem = tokenActor.items.find(item => item.data.name == newItem.name);
 
@@ -173,26 +170,26 @@ export class tokenHelper {
 					//console.log(MODULE.ns + `: ${newItem.name} does not exist.`);
 					existingItem = await tokenActor.items.find(item => item.data.name == newItem.name);
 
-					if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
-						await existingItem.update({ "data.quantity": itemQtyLimit });
-						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemQtyLimit} x ${newItem.name}.`);
+					if (itemLimitTotal > 0 && Number(itemLimitTotal) < Number(itemQtyTotal)) {
+						await existingItem.update({ "data.quantity": itemLimitTotal });
+						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemLimitTotal} x ${newItem.name}.`);
 					} else {
-						await existingItem.update({ "data.quantity": itemQtyRoll.total });
-						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemQtyRoll.total} x ${newItem.name}.`);
+						await existingItem.update({ "data.quantity": itemQtyTotal });
+						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemQtyTotal} x ${newItem.name}.`);
 					}
 				} else {
 					if (!reducedVerbosity) console.log(MODULE.ns + `:  Item ${newItem.name} exists.`);
 
-					let newQty = Number(existingItem.data.data.quantity) + Number(itemQtyRoll.total);
+					let newQty = Number(existingItem.data.data.quantity) + Number(itemQtyTotal);
 
-					if (itemQtyLimit > 0 && Number(itemQtyLimit) === Number(existingItem.data.data.quantity)) {
-						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: ${newItem.name} already at maximum quantity (${itemQtyLimit}).`);
+					if (itemLimitTotal > 0 && Number(itemLimitTotal) === Number(existingItem.data.data.quantity)) {
+						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: ${newItem.name} already at maximum quantity (${itemLimitTotal}).`);
 					}
-					else if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
+					else if (itemLimitTotal > 0 && Number(itemLimitTotal) < Number(newQty)) {
 						//console.log("Exceeds existing quantity, limiting");
-						await existingItem.update({ "data.quantity": itemQtyLimit });
+						await existingItem.update({ "data.quantity": itemLimitTotal });
 
-						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`);
+						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added additional quantity to ${newItem.name} to the specified maximum of ${itemLimitTotal}.`);
 					} else {
 						await existingItem.update({ "data.quantity": newQty });
 						if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added additional ${itemQtyRoll.total} quantity to ${newItem.name}.`);
@@ -249,7 +246,9 @@ export class tokenHelper {
 
 			for (const index of indexesToUse) {
 				let itemQtyRoll = new Roll(itemQtyFormula);
-				itemQtyRoll.roll();
+					itemLimitRoll = new Roll(itemQtyLimitFormula),
+					itemQtyTotal = itemQtyRoll.roll().total,
+					itemLimitTotal = itemLimitRoll.roll().total;
 
 				let newItem = null;
 
@@ -267,19 +266,17 @@ export class tokenHelper {
 					return ui.notifications.error(MODULE.ns + `: No item found "${rolltable.results[index].resultId}".`);
 				}
 
-				if (newItem.type === "spell") {
-					newItem = await Item5e.createScrollFromSpell(newItem);
-				}
+				newItem = await this.applyItemConversions(newItem);
 
 				await item.createEmbeddedDocuments("Item", [newItem.toObject()]);
 				let existingItem = tokenActor.items.find(item => item.data.name == newItem.name);
 
-				if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
-					await existingItem.update({ "data.quantity": itemQtyLimit });
-					if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemQtyLimit} x ${newItem.name}.`);
+				if (itemLimitTotal > 0 && Number(itemLimitTotal) < Number(itemQtyTotal)) {
+					await existingItem.update({ "data.quantity": itemLimitTotal });
+					if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemLimitTotal} x ${newItem.name}.`);
 				} else {
-					await existingItem.update({ "data.quantity": itemQtyRoll.total });
-					if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemQtyRoll.total} x ${newItem.name}.`);
+					await existingItem.update({ "data.quantity": itemQtyTotal });
+					if (!reducedVerbosity) ui.notifications.info(MODULE.ns + `: Added new ${itemQtyTotal} x ${newItem.name}.`);
 				}
 			}
 		}
