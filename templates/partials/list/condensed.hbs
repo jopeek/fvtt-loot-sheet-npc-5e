@@ -1,0 +1,47 @@
+    <div class="inventory-filters flexrow">
+        {{#ifeq lootsheettype "Loot"}}
+            <ul class="currency flexrow">
+                {{#each data.currency as |c i|}}
+                    <li class="coin currency-item coin-{{i}}" title="{{lookup (lookup ../config.currencies i) 'label'}}">
+                        <input type="text" name="data.currency.{{i}}" value="{{c}}" data-dtype="number"/>
+                    </li>
+                {{/each}}
+            </ul>
+            <ul class="currency flexrow">
+                {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}
+                <li class="denomination {{i}}">
+                    <aside class="denomination-value">
+                        <em>{{c}} each</em>
+                    </aside>
+                </li>
+                {{/each}}
+            </ul>
+        {{/ifeq}}
+        <ol class="currency inventory flexrow">
+            <span style="flex: 0 0 60px;">
+                <h3>Totals</h3>
+            </span>
+            <span><label>Items</label> <span>{{totalItems}}</span></span>
+            <span><label>Quantity</label> <span>{{totalQuantity}}</span></span>
+            <span><label>Weight</label> <span>{{totalWeight}}</span></span>
+            <span><label>Value</label> <span>{{totalPrice}}</span></span>
+        </ol>
+    </div>
+    <ul class="items-list inventory-list">
+        {{#each actor.features as |section sid|}}
+            {{#each section.items as |item iid|}}
+                <li class="item loot-trigger rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
+                    data-item-id="{{item._id}}"
+                    data-item-quantity="{{item.data.quantity}}"
+                    data-item-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
+                    data-item-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
+                    data-item-description="{{item.data.description.value}}"
+                    data-item-name="{{item.data.name}}"
+                    >
+                    <div class="image" style="background-image: url({{item.img}})">
+                        <span class="quantity">{{item.data.quantity}}</span>
+                    </div>
+                </li>
+            {{/each}}
+        {{/each}}
+    </ul>

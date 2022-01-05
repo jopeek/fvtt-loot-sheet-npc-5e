@@ -1,0 +1,49 @@
+#lootsheetnpc5e-lootpopulator-settings {
+	border: 2px solid #ff6400;
+	border-radius: 5px;
+	overflow-x: hidden;
+	box-shadow: 0 0 10px rgb(0 0 0 / 75%);
+	max-height: 80vh;
+	min-height: 40vh;
+	.tabs {
+		flex: none;
+	}
+	footer {
+		flex: none;
+	}
+	form {
+		.form-group {
+			.form-fields {
+				>* {
+					&:last-child {
+						width: calc(100% - 2px);
+					}
+				}
+			}
+		}
+		#config-tabs {
+			fieldset {
+				.form-group {
+					>input {
+						font-size: 0.8em;
+						max-width: 25%;
+						font-family: system-ui, monospace;
+					}
+					>select {
+						font-size: 0.8em;
+						max-width: 25%;
+						font-family: system-ui, monospace;
+					}
+				}
+				select {
+					max-width: fit-content;
+				}
+			}
+		}
+	}
+	.actions {
+		button {
+			width: 35px;
+		}
+	}
+}

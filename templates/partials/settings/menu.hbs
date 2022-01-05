@@ -1,0 +1,8 @@
+<div class="form-group submenu">
+    <label>{{ localize this.name }}</label>
+    <button type="button" data-key="{{ this.key }}">
+        {{#if this.icon}}<i class="{{ this.icon }}"></i>{{/if}}
+        <label>{{ localize this.label }}</label>
+    </button>
+    {{#if this.hint}}<p class="notes">{{ localize this.hint }}</p>{{/if}}
+</div>

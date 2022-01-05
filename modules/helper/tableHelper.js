@@ -1,21 +1,54 @@
 
 /**
  * @description {Rolltable} related helper functions
- * 
+ *
  * @see {@link https://github.com/DanielBoettner/fvtt-loot-populator-npc-5e/blob/master/scripts/modules/tableHelper.mjs}
- * 
- * @version 1.0.0
- * 
+ *
+ * @version 1.0.1
+ *
  */
- class tableHelper {
+ export class tableHelper {
+
+	/**
+	 *
+	 * @returns {Array}
+	 */
+	static async getGameWorldRolltables() {
+        const rollTablePacks = game.packs.filter((pack) => pack.documentName === "RollTable");
+
+        let availableRolltables = {};
+
+        if (game.tables.size > 0) availableRolltables["World"] = [];
+        for (const table of game.tables) {
+            availableRolltables["World"].push({
+                name: table.name,
+                uuid: table.uuid,
+            });
+        }
+        for (const pack of rollTablePacks) {
+            const idx = await pack.getIndex({fields: ['name', 'data.uuid']}),
+				tableString = `Compendium.${pack.collection}.`;
+
+			availableRolltables[pack.metadata.label] = [];
+
+            for (let table of idx) {
+                availableRolltables[pack.metadata.label].push({
+                    name: table.name,
+                    uuid: tableString + table._id,
+                });
+            }
+        }
+
+        return availableRolltables;
+    }
 
     /**
-	 * @param {string} rolltableReference 
+	 * @param {string} rolltableReference
 	 * @returns {RollTable}
-	 * 
+	 *
 	 * @version 1.0.0
 	 */
-	static async _getRolltable(rolltableReference){
+	static async getRolltable(rolltableReference){
 		const [type, source, category, packReference] = rolltableReference.split('.');
 		if(packReference){
 			return await game.packs.get(source + '.' + category).getDocument(packReference);
@@ -26,10 +59,10 @@
 	}
 
 	/**
-	 * 
-	 * @param {Item} item 
-	 * @param {string|number} index 
-	 * 
+	 *
+	 * @param {Item} item
+	 * @param {string|number} index
+	 *
 	 * @returns {Document}
 	 */
     static async _rollSubTables(item, index = 0) {
@@ -52,4 +85,3 @@
 		return item;
 	}
 }
-export default tableHelper;

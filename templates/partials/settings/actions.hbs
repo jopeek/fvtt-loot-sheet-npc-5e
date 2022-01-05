@@ -1,0 +1,8 @@
+
+<div class="form-group actions" data-action-name="{{this.name}}">
+    <button type="button" data-action="{{ this.action }}">
+        {{#if this.icon}}<i class="{{ this.icon }}"></i>{{/if}}
+        <label data-action="{{ this.action }}">{{ localize this.label }}</label>
+    </button>
+    {{#if this.hint}}<p class="notes">{{ localize this.hint }}</p>{{/if}}
+</div>

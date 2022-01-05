@@ -1,0 +1,51 @@
+<form class="flexcol" autocomplete="off">
+
+    <!-- Navigation Tabs -->
+    <nav class="sheet-tabs tabs" data-group="sections">
+        {{#each data.tabs as |tabData k|}}
+        <a class="item" data-tab={{tabData.name}}><i class="{{tabData.class}}"></i> {{tabData.i18nName}}</a>
+        {{/each}}
+    </nav>
+
+    <!-- Main Content Section -->
+    <section id="config-tabs" class="content">
+        <!-- Systems Tab -->
+        {{#each data.tabs as |tabData k|}}
+        <div class="tab" data-tab={{tabData.name}} data-group="sections">
+            <div class="settings-list">
+                <header>
+                    <h2 class="module-header">{{tabData.i18nName}}</h2>
+                    {{#each tabData.menus}}
+                    {{> "modules/lootsheetnpc5e/templates/partials/settings/menu.hbs"}}
+                    {{/each}}
+                    {{#if tabData.actions}}
+                    <nav class="action_buttons">
+                        {{#each tabData.actions}}
+                        {{> "modules/lootsheetnpc5e/templates/partials/settings/actions.hbs"}}
+                        {{/each}}
+                    </nav>
+                    {{/if}}
+                </header>
+
+                <main>
+                    {{#each tabData.settings}}
+                    {{> "modules/lootsheetnpc5e/templates/partials/settings/settings.hbs"}}
+                    {{else}}
+                </main>
+
+                <p class="notes">{{localize 'SETTINGS.None'}}</p>
+                {{/each}}
+            </div>
+            <!-- Settings Footer -->
+        </div>
+        {{/each}}
+    </section>
+    <footer class="sheet-footer flexrow">
+        <button type="submit" name="submit">
+            <i class="far fa-save"></i> {{localize 'SETTINGS.Save'}}
+        </button>
+        <button type="button" name="reset">
+            <i class="fas fa-undo"></i> {{localize 'SETTINGS.Reset'}}
+        </button>
+    </footer>
+</form>

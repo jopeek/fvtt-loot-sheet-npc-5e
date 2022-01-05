@@ -11,7 +11,7 @@ class QuantityDialog extends Dialog {
             <form>
                 <div class="form-group">
                     <label>Quantity:</label>
-                    <input type=number min="1" id="quantity" name="quantity" value="1">
+                    <input type="number" min="1" max="`+ options.max +`" step="1" id="quantity" name="quantity" value="1">
                 </div>
             </form>`,
             buttons: {

@@ -1,0 +1,67 @@
+<header class="sheet-header">
+    <div class="sheet-profile-img">
+        <img class="sheet-profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" />
+    </div>
+
+    <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'Character Name'}}" />
+    </h1>
+
+    <div class="charbuttons">
+        {{#ifeq lootsheettype "Loot"}}
+            {{#if lootAll}}
+                <button type="button"
+                    class="loot-all lsnpc-action-link"
+                    name="loot-all"
+                    data-get-all="true"
+                    data-action="lootAll"
+                    title="{{localize 'lsnpc.buttons.loot.items.all.title'}}">
+                    <i class="fas fa-gem"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
+                </button>
+            {{/if}}
+
+            {{#if splitCurrency}}
+                <button
+                    type="button"
+                    class="split-currency lsnpc-action-link"
+                    type="split-coins"
+                    name="split-coins"
+                    value="1"
+                    data-action="splitCurrency"
+                    title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=actor.flags.lootsheetnpc5e.observerCount }}">
+                    <i class="fas fa-users"></i>
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.split.label'}}</span>
+                </button>
+            {{/if}}
+
+            {{#if lootCurrency}}
+                <button
+                    type="button"
+                    class="loot-currency lsnpc-action-link"
+                    data-action="lootCurrency"
+                    title="{{localize 'lsnpc.buttons.loot.currency.single.title'}}">
+                    <i class="fas fa-user"></i>
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.single.label'}}</span>
+                </button>
+            {{/if}}
+        {{/ifeq}}
+
+        {{#if isGM}}
+            {{#ifeq lootsheettype "Merchant"}}
+                <button
+                    type="button"
+                    class="price-modifier lsnpc-action-link"
+                    type="price-modifier"
+                    name="price-modifier"
+                    data-action="priceModifier"
+                    value="">
+                    <i class="fa fa-balance-scale"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.merchant.gm.price.label'}}</span>
+                </button>
+            {{/ifeq}}
+        {{/if}}
+    </div>
+</header>

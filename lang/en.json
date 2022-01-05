@@ -38,7 +38,7 @@
                         "label": "Loot 🪙"
                     }
                 }
-                
+
             },
             "merchant" : {
                 "buy": {
@@ -57,6 +57,9 @@
                 }
             }
         },
+        "defaults": {
+
+        },
         "infoboxes": {
             "lootsheettype": {
                 "title": "Sheet type",
@@ -74,6 +77,152 @@
         "sheettypes": {
             "loot": "Loot",
             "merchant": "Merchant"
+        },
+        "settings": {
+            "menu": {
+                "advancedOptions": {
+                    "name": "Advanced Options",
+                    "label": "Advanced Options & Defaults"
+                },
+                "populatorOptions": {
+                    "name": "Loot population Settings",
+                    "label": "Token loot population settings"
+                },
+                "currency": "Currency",
+                "defaults": "Defaults",
+                "fallbacks": "Fallbacks",
+                "moduleDefaults": "Modul Standards",
+                "merchant": "Merchant",
+                "creatureTypeFallbacks": "by type",
+                "loot": "Loot",
+                "skiplist": "Skiplist",
+                "info": "?",
+                "rulesets": "Rulesets"
+            },
+            "sheet": {
+                "buyItem": {
+                    "name": "Buy item",
+                    "hint": "Allow players to buy items from the merchant sheet?"
+                },
+                "colorRarity": {
+                    "name": "Colorize rarity?",
+                    "hint": "Use slight color indication to show rarity? (Be aware that this might affect colorblind players)"
+                },
+                "convertCurrency": {
+                    "name": "Convert currency",
+                    "hint": "Convert currency to the highest denomination possible after a purchase. (e.g. gp to pp)"
+                },
+                "filterNaturalWeapons": {
+                    "name": "Filter natural weapons",
+                    "hint": "Filter natural weapons from the inventory?"
+                },
+                "distributeCurrency": {
+                    "name": "Distribute currency",
+                    "hint": "Allow players to split currency between the party members?"
+                },
+                "generateChatMessages" : {
+                    "name": "Generate chat messages",
+                    "hint": "Generate chat messages for looting or transactions."
+                },
+                "lootAll": {
+                    "name": "Loot all",
+                    "hint": "Allow players to loot all items from the sheet ate once. Currency will follow the currency settings."
+                },
+                "includeCurrencyWeight": {
+                    "name": "Include currency weight",
+                    "hint": "Include the weight of the currency in the total weight of the sheet."
+                },
+                "lootCurrency": {
+                    "name": "Loot currency",
+                    "hint": "Allow player to loot the currency to their own character."
+                },
+                "lootItem": {
+                    "name": "Looting",
+                    "hint": "Allow players to loot items from the sheet."
+                },
+                "maxPriceIncrease": {
+                    "name": "Maximum Price Increase",
+                    "hint": "Maximum price increase for the merchant sheet. (e.g. 200% = 100gp -> 200gp)"
+                },
+                "reduceUpdateVerbosity": {
+                    "name": "Reduce update verbosity",
+                    "hint": "No notifications will be created every time an item is added to the inventory."
+                },
+                "showStackWeight": {
+                    "name": "Show stack weight",
+                    "hint": "Show the weight of the stack next to the indicudual item weight."
+                },
+                "stackBuyConfirm": {
+                    "name": "Stack buy confirm",
+                    "hint": "Ask for confirmation before purchasing a stack?"
+                },
+                "sheetUpdate": {
+                    "name": "Force sheet update",
+                    "hint": "Send an update to the players that tells there client to refresh the sheet."
+                },
+                "useCondensedLootsheet": {
+                    "name": "⚠️ ALPHA Testing Preview ⚠️ Condensed lootsheet",
+                    "hint": "Use a condensed styled loothseet. This is to get an idea for potential future theming options."
+                }
+            },
+            "populator": {
+                "autoPopulateTokens": {
+                    "name": "Auto Populate Tokens",
+                    "hint": "Automatically roll for loot. If an actor has a rolltable assigned to it, or if Fallbacks are found."
+                },
+                "adjustCurrencyWithCR": {
+                    "name": "Adjust currency with CR",
+                    "hint": "Currency will be slightly adjusted by the CR (rollFormula + round up CR)."
+                },
+                "creatureTypeFallbacks": {
+                    "name": "Creature type fallbacks",
+                    "hint": "Fallback rolltables to use if no rolltable is assigned to the actor but the actor macthes this creature type."
+                },
+                "lootCurrencyDefault": {
+                    "name": "Currency default formula",
+                    "hint": "Formula to use  for loot currency generation. (e.g. 1d4[gp], 1d20[sp], 1d50[cp])"
+                },
+                "fallbackRolltable": {
+                    "name": "Fallback Rolltable",
+                    "label": "Fallback rolltable to use if no rolltable is assigned to the actor."
+                },
+                "fallbackShopQty": {
+                    "name": "Fallback shop quantity",
+                    "hint": "Fallback shop quantity to use if no shop quantity is assigned to the actor. (e.g. 1d6)"
+                },
+                "fallbackItemQty": {
+                    "name": "Fallback item quantity",
+                    "hint": "Fallback item quantity to use if no quantity is assigned to the actor. (e.g. 1d6)"
+                },
+                "fallbackItemQtyMax": {
+                    "name": "Fallback item quantity maximum",
+                    "hint": "Fallback item quantity maxmimum to use if no maxmimum quantity is assigned to the actor. (e.g. 2d20 || 10)"
+                },
+                "generateCurrency": {
+                    "name": "Generate currency",
+                    "hint": "Generate currency during loot population."
+                },                
+                "useRulesets": {
+                    "name": "Use filter rulesets",
+                    "hint": "Custom rules to test against a token. E.g. if tokens actor matches the rules rolltable will be used instead of a fallback rolltable."
+                },
+                "useSkiplist": {
+                    "name": "Use skiplist",
+                    "hint": "Use the skiplist to ignore tokens with checked types during population."
+                }
+            },
+            "autoCheckUpdates": {
+                "name": "Update Check",
+                "hint": "Automatically check for module updates on startup"
+            },
+            "addInterfaceButtons": {
+                "name": "Add interface buttons",
+                "hint": "Add buttons to the interface"
+            },
+            "useBetterRolltables": {
+                "name": "Use better rolltables",
+                "hint": "If installed make use of better rolltables to update Inventory?"
+            }
         }
-    }    
+    }
 }

@@ -1,4 +1,4 @@
-.app.actor.loot-sheet-npc { 
+.app.actor.loot-sheet-npc {
     .window-content {
         .inventory-filters {
             .currency {
@@ -6,12 +6,12 @@
                     border-radius: 0.5em;
                     background: var(--faint-color);
                     text-align: right;
-    
+
                     &.currency-item-header {
                         background: none;
                         padding: 0.3em;
                     }
-    
+
                     >* {
                         background: none;
                         border: none;
@@ -34,7 +34,7 @@
                         white-space: nowrap;
                         border: none;
                     }
-                }			
+                }
                 &.inventory {
                     span {
                         >span {
@@ -46,17 +46,17 @@
                     }
                 }
             }
-    
-            .currency + .currency { 
+
+            .currency + .currency {
                 margin-top: -0.6em;
-    
+
                 li {
                     margin: 0;
                     padding-bottom: 0;
                 }
             }
         }
-    
+
         .inventory-list {
             .item {
                 background: var(--faintest-color);
@@ -96,6 +96,23 @@
             }
             .item-summary {
                 color: var(--primary-font);
+                .secret {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.loot-sheet-npc-gmview {
+        .content {
+            .tab {
+                .item {
+                    .item-summary {
+                        .secret {
+                            display: initial;
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,20 +1,41 @@
-import { MODULE } from '../config.js';
+import { MODULE } from '../data/moduleConstants.js';
 import { ItemHelper } from '../helper/ItemHelper.js';
-import { ModuleSettings } from '../ModuleSettings.js';
-import { API } from '../API.js';
+import { SheetSettings } from '../settings/sheetSettings.js';
+import { PopulatorSettings } from '../settings/populatorSettings.js';
+import { VersionCheck } from '../helper/versionCheckHelper.js';
+import { renderWelcomeScreen } from '../apps/welcomeScreen.js';
+import { API } from '../api/API.js';
 
-class LootsheetNPC5eHooks {
+import { LootPopulator } from '../classes/LootPopulator.js';
+import { socketListener } from './socketListener.js';
+
+/**
+ * @module LootSheetNPC5e.hooks
+ *
+ * @description
+ * Handles the following:
+ * - initializing the module API
+ * - registering the module settings
+ * - initializing the modules socketListeners that handles incoming  player interaction requests
+ * - listens to token creation to populate the token with loot (if conditions are met)
+ *
+ */
+export class LootsheetNPC5eHooks {
     /**
-     * Hooks on game hooks and attaches methods 
+     * Hooks on game hooks and attaches methods
      */
-    static init(){
-        Hooks.once("init", LootsheetNPC5eHooks.foundryInit);
-        Hooks.once("ready", LootsheetNPC5eHooks.foundryReady);
-        Hooks.once('setup', LootsheetNPC5eHooks.foundrySetup);
+    static init() {
+        Hooks.once("init", this.foundryInit);
+        Hooks.once("ready", this.foundryReady);
+        Hooks.once('devModeReady', this.onDevModeReady);
+        Hooks.once('setup', this.foundrySetup);
+        Hooks.once('aipSetup', this.onAIPSetup);
+        Hooks.on('createToken', this.onCreateToken);
+        Hooks.on('getSceneControlButtons', this.attachSceneControlButtons);
+        Hooks.on('renderTokenHUD', this.attachTokenHudButtons);
     }
 
-    static foundrySetup()
-    {
+    static foundrySetup() {
         const moduleData = game.modules.get(MODULE.ns);
 
         /**
@@ -28,12 +49,15 @@ class LootsheetNPC5eHooks {
         Object.freeze(moduleData.public);
     }
 
-    static foundryInit(){
-        ModuleSettings.registerSettings();  
-        LootsheetNPC5eHooks.socketListener();
+    static foundryInit() {
+        SheetSettings.registerSettings();
+        //await LootsheetNPC5eHooks.socketListener();
+        game.socket.on(MODULE.socket, socketListener.handleRequest);
     }
 
-    static foundryReady(){
+    static foundryReady() {
+        PopulatorSettings.registerSettings();
+
         Handlebars.registerHelper('ifeq', function (a, b, options) {
             return (a == b) ? options.fn(this) : options.inverse(this);
         });
@@ -58,63 +82,160 @@ class LootsheetNPC5eHooks {
         Handlebars.registerHelper('lootsheetweight', function (weight) {
             return (Math.round(weight * 1e5) / 1e5).toString();
         });
+
+        Handlebars.registerHelper('truncate', function (str, len) {
+            if (str.length > len && str.length > 0) {
+                var new_str = str + " ";
+                new_str = str.substr(0, len);
+                new_str = str.substr(0, new_str.lastIndexOf(" "));
+                new_str = (new_str.length > 0) ? new_str : str.substr(0, len);
+
+                return new Handlebars.SafeString(new_str + '...');
+            }
+            return str;
+        });
+
+        if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
+            renderWelcomeScreen();
+        }
+
+        LootsheetNPC5eHooks._activateListeners();
     }
 
-    static socketListener(){
-        game.socket.on(MODULE.socket, data => {
-            console.log("Loot Sheet | Socket Message: ", data);
-            if (game.user.isGM && data.processorId === game.user.id) {
-                if (data.type === "buy") {
-                    let buyer = game.actors.get(data.buyerId);
-                    let seller = canvas.tokens.get(data.tokenId);
-    
-                    if (buyer && seller && seller.actor) {
-                        ItemHelper.transaction(seller.actor, buyer, data.itemId, data.quantity);
-                    }
-                    else if (!seller) {
-                        ItemHelper.errorMessageToActor(buyer, "GM not available, the GM must on the same scene to purchase an item.")
-                        ui.notifications.error("Player attempted to purchase an item on a different scene.");
-                    }
-                }
-    
-                if (data.type === "loot") {
-                    let looter = game.actors.get(data.looterId);
-                    let container = canvas.tokens.get(data.tokenId);
-    
-                    if (looter && container && container.actor) {
-                        ItemHelper.lootItems(container.actor, looter, data.items);
-                    }
-                    else if (!container) {
-                        errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot an item.")
-                        ui.notifications.error("Player attempted to loot an item on a different scene.");
-                    }
-                }
-    
-                if (data.type === "distributeCoins") {
-                    let container = canvas.tokens.get(data.tokenId);
-                    if (!container || !container.actor) {
-                        ItemHelper.errorMessageToActor(looter, "GM not available, the GM must on the same scene to distribute coins.")
-                        return ui.notifications.error("Player attempted to distribute coins on a different scene.");
-                    }
-                    ItemHelper.distributeCoins(container.actor);
-                }
-    
-                if (data.type === "lootCoins") {
-                    let looter = game.actors.get(data.looterId);
-                    let container = canvas.tokens.get(data.tokenId);
-                    if (!container || !container.actor || !looter) {
-                        ItemHelper.errorMessageToActor(looter, "GM not available, the GM must on the same scene to loot coins.")
-                        return ui.notifications.error("Player attempted to loot coins on a different scene.");
-                    }
-                    ItemHelper.lootCoins(container.actor, looter);
-                }
-            }
-            if (data.type === "error" && data.targetId === game.user.actorId) {
-                console.log("Loot Sheet | Transaction Error: ", data.message);
-                return ui.notifications.error(data.message);
-            }
+    /**
+     * Activate module eventListeners
+     */
+    static _activateListeners(app = document) {
+
+        //listen on document link clicks in loot sheet chat messages
+        const chatMsgLink = app.querySelectorAll('#chat .lsnpc-document-link');
+
+        chatMsgLink.forEach(async el => {
+            el.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (!e.target.dataset.uuid) return;
+                const doc = await fromUuid(e.target.dataset.uuid);
+                if (!doc) return;
+                await doc.sheet.render(true);
+                e.stopPropagation();
+            });
         });
     }
-}
 
-export { LootsheetNPC5eHooks };
+    /**
+       * Register with AIP
+       */
+    static async onAIPSetup() {
+        const api = game.modules.get("autocomplete-inline-properties").API;
+        const DATA_MODE = api.CONST.DATA_MODE;
+
+        // AIP
+        // Define the config for our package
+        const config = {
+            packageName: MODULE.ns,
+            sheetClasses: [
+                {
+                    name: "PopulatorSettingsConfigApp", // this _must_ be the class name of the `Application` you want it to apply to
+                    fieldConfigs: [
+                        {
+                            selector: `.data-path-input`,
+                            showButton: true,
+                            allowHotkey: true,
+                            dataMode: DATA_MODE.OWNING_ACTOR_DATA,
+                        },
+                    ]
+                },
+            ]
+        };
+
+        // Add our config
+        api.PACKAGE_CONFIG.push(config);
+    }
+
+    static async onCreateToken(token, createData, options, userId) {
+        const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.useSkiplist);
+
+        // only act on tokens dropped by the GM
+        if (!game.user.isGM) return token;
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.autoPopulateTokens)) return token;
+        // ignore linked tokens
+        if (!token.actor || token.data.actorLink) return token;
+        // skip if monster's creaturType is on the skiplist
+        let creatureType = token.actor.data.data.details.type.value,
+            skipThisType = game.settings.get(MODULE.ns, "skiplist_" + creatureType);
+        if (useSkiplist && skipThisType) return token;
+
+        await LootPopulator.populate(token);
+    }
+
+    static attachSceneControlButtons(buttons) {
+        let tokenButton = buttons.find(b => b.name == "token");
+        if (tokenButton) {
+            tokenButton.tools.push({
+                name: "lsnpc5e-populate-loot",
+                title: "LSNPC | Generate Loot",
+                icon: "fas fa-gem",
+                visible: game.user.isGm,
+                onClick: async () => await LootPopulator.populate(),
+                button: true
+            });
+        }
+    }
+
+    static attachTokenHudButtons(hud) {
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons)) return;
+
+        const token = hud.object.document;
+        if (!token.actor) return;
+        if (!token.actor.isToken) return;
+        // only for unlinked Tokens
+        if (token.actorLink) return;
+
+
+        const HUD_left = document.querySelector('#token-hud .left');
+        let lsnNav = document.createElement('nav'),
+            lsnLootAllButton = document.createElement('div'),
+            lsnGMButtonMakeObservable = document.createElement('div'),
+            lsnLootAllImg = document.createElement('img'),
+            lsnMakeObservableImg = document.createElement('img');
+
+        lsnNav.classList.add('lsnpc5e-nav');
+
+        // LootAll Button
+        lsnLootAllButton.classList.add('lsnpc5e-hud-loot-all', 'control-icon');
+        lsnLootAllButton.dataset.action = "lootAll";
+        lsnLootAllButton.title = game.i18n.localize("LootSheetNPC5e.lootAll");
+
+        lsnLootAllImg.src = "icons/svg/item-bag.svg";
+        lsnLootAllImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
+
+        lsnLootAllButton.appendChild(lsnLootAllImg);
+        lsnNav.appendChild(lsnLootAllButton);
+
+
+        if (game.user.isGM) {
+            lsnGMButtonMakeObservable.classList.add('lsnpc5e-hud-make-observable', 'control-icon');
+            lsnGMButtonMakeObservable.dataset.action = "makeObservable";
+            lsnGMButtonMakeObservable.addEventListener('click', async (e) => {
+                if (game.user.isGM) {
+                    const API = game.modules.get("lootsheetnpc5e").public.API;
+                    await API.makeObservable();
+                }
+            });
+
+            lsnMakeObservableImg.src = "icons/svg/eye.svg";
+            lsnMakeObservableImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
+            lsnGMButtonMakeObservable.appendChild(lsnMakeObservableImg);
+
+            lsnNav.appendChild(lsnGMButtonMakeObservable);
+        }
+
+        if (HUD_left) {
+            HUD_left.appendChild(lsnNav);
+        }
+    }
+
+    static onDevModeReady({ registerPackageDebugFlag }) {
+        registerPackageDebugFlag(MODULE.ns);
+    }
+}
