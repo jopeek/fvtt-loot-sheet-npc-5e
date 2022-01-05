@@ -92,8 +92,8 @@
   height: 20px;
   background: var(--header-background);
   border: none;
-  margin: none;
-  padding: none;
+  margin: 0px;
+  padding: 0px;
   z-index: 221;
   border-radius: 25%;
   cursor: pointer;
@@ -126,14 +126,14 @@
 }
 .app.loot-sheet-npc.lootsheet-condensed .inventory-filters .currency li {
   background: none;
-  margin: none;
-  padding: none;
+  margin: 0px;
+  padding: 0px;
 }
 .app.loot-sheet-npc.lootsheet-condensed .inventory-filters .currency input[type=text] {
   height: auto;
   border: none;
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   width: inherit;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
