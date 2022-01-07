@@ -4,7 +4,7 @@
         common: rgba(255,255,255, 0.75);
         uncommon: rgba(30,255,0, 0.75);
         rare: rgba(0,112,221, 0.75);
-        veryrare: rgba(163,53,238, 0.75);
+        veryRare: rgba(163,53,238, 0.75);
         legendary: rgba(255,128,0, 0.75);
     }
 }
@@ -22,27 +22,20 @@
 }
 
 .rarityMixin(@index) when (@indey > 0) {
-
 	&[class*='rarity'] {
-
-	}
-	&[class*='rarity'] {
-		.item-name {
-
-		}
 		.item-image{
 			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-common);
 		}
-		&[class*='uncommon'] .item-image {
+		&[class*='-uncommon'] .item-image {
 			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-uncommon);
 		}
-		&[class*='rare'] .item-image {
+		&[class*='-rare'] .item-image {
 			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-rare);
 		}
-		&[class*='veryRare'] .item-image {
-			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-veryrare);
+		&[class*='-veryRare'] .item-image {
+			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-veryRare);
 		}
-		&[class*='legendary'] .item-image {
+		&[class*='-legendary'] .item-image {
 			box-shadow: 0 0 0.2em 0.1em inset var(--rarity-legendary);
 		}
 	}

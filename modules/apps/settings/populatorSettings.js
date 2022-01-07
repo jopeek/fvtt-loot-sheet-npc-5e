@@ -1,6 +1,6 @@
-import { MODULE } from '../data/moduleConstants.js';
-import { PopulatorSettingsConfigApp } from '../apps/settings/populatorConfigApp.js';
-import { tableHelper } from '../helper/tableHelper.js';
+import { MODULE } from '../../data/moduleConstants.js';
+import { PopulatorSettingsConfigApp } from './populatorConfigApp.js';
+import { tableHelper } from '../../helper/tableHelper.js';
 
 export class PopulatorSettings {
 

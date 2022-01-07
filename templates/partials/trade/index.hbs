@@ -1,0 +1,25 @@
+
+<main class="tradegrid">
+    <header>Trade</header>
+    <section class="token-inventory">
+        {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs"}}
+    </section>
+    <section class="info flairbox">
+        <div class="flairbox">
+            <aside>⬅️ Merchant </aside>
+            <aside>Playername➡️</aside>
+        </div>
+
+        <!-- a box with a dropzone to accept items -->
+
+        <div class="trade-stage" dropzone="true">
+
+        </div>
+    </section>
+    <section class="player-inventory">
+        {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=player.items}}
+    </section>
+    <footer>
+        actions
+    </footer>
+</main>

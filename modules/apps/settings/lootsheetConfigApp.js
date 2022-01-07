@@ -53,31 +53,33 @@ export class lootsheetSettingsConfigApp extends FormApplication {
       tabs: [
         { name: MODULE.settings.groups.sheet.moduleDefaults, i18nName: game.i18n.localize('lsnpc.settings.menu.moduleDefaults'), class: "fas fa-cog", menus: [], settings: [] },
         { name: MODULE.settings.groups.sheet.ui, i18nName: game.i18n.localize('lsnpc.settings.menu.loot'), class: "fas fa-filter", menus: [], settings: [] },
-        { name: MODULE.settings.groups.sheet.Loot, i18nName: game.i18n.localize('lsnpc.settings.menu.merchant'), class: "fab fa-grunt", menus: [], settings: [] },
-        { name: MODULE.settings.groups.sheet.Merchant, i18nName: `${game.i18n.localize('lsnpc.settings.menu.info')}`, class: "fas fa-ban", menus: [], settings: [] }
+        { name: MODULE.settings.groups.sheet.loot, i18nName: game.i18n.localize('lsnpc.settings.menu.merchant'), class: "fab fa-grunt", menus: [], settings: [] },
+        { name: MODULE.settings.groups.sheet.merchant, i18nName: `${game.i18n.localize('lsnpc.settings.menu.info')}`, class: "fas fa-ban", menus: [], settings: [] }
       ]
     };
+
+    // Exclude settings the user cannot change
+    if (!game.user.isGM) return;
 
     // Classify all settings
     for (let setting of gs.settings.values()) {
       // Only concerned about loot populator settings
-      if (setting.module !== MODULE.ns) continue;
 
-      // Exclude settings the user cannot change
-      if (!game.user.isGM) continue;
+      if (setting?.namespace !== MODULE.ns || setting?.module) continue;
 
       // Update setting data
-      const s = duplicate(setting);
+      const s = duplicate(setting),
+        moduleNamespace = s?.namespace ?? s?.module;
       s.name = game.i18n.localize(s.name);
       s.hint = game.i18n.localize(s.hint);
-      s.value = game.settings.get(s.module, s.key);
+      s.value = game.settings.get(moduleNamespace, s.key);
       s.type = setting.type instanceof Function ? setting.type.name : "String";
       s.isCheckbox = setting.type === Boolean;
       s.isSelect = s.choices !== undefined;
       s.isRange = (setting.type === Number) && s.range;
 
       // Classify setting
-      const name = s.module;
+      const name = moduleNamespace;
       if (name === MODULE.ns) {
         const group = s.group;
         let groupTab = data.tabs.find(tab => tab.name === group) ?? false;

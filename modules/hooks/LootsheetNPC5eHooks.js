@@ -1,7 +1,6 @@
 import { MODULE } from '../data/moduleConstants.js';
-import { ItemHelper } from '../helper/ItemHelper.js';
-import { SheetSettings } from '../settings/sheetSettings.js';
-import { PopulatorSettings } from '../settings/populatorSettings.js';
+import { SheetSettings } from '../apps/settings/sheetSettings.js';
+import { PopulatorSettings } from '../apps/settings/populatorSettings.js';
 import { VersionCheck } from '../helper/versionCheckHelper.js';
 import { renderWelcomeScreen } from '../apps/welcomeScreen.js';
 import { API } from '../api/API.js';
@@ -64,6 +63,18 @@ export class LootsheetNPC5eHooks {
 
         Handlebars.registerHelper('uneq', function (arg1, arg2, options) {
             return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
+        });
+
+        Handlebars.registerHelper('hexToRGB', function (hex, alpha) {
+            let r = parseInt(hex.slice(1, 3), 16),
+                g = parseInt(hex.slice(3, 5), 16),
+                b = parseInt(hex.slice(5, 7), 16);
+
+            if (alpha) {
+                return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+            } else {
+                return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+            }
         });
 
         Handlebars.registerHelper('lootsheetprice', function (basePrice, modifier) {
@@ -162,7 +173,7 @@ export class LootsheetNPC5eHooks {
         if (!token.actor || token.data.actorLink) return token;
         // skip if monster's creaturType is on the skiplist
         let creatureType = token.actor.data.data.details.type.value,
-            skipThisType = game.settings.get(MODULE.ns, "skiplist_" + creatureType);
+            skipThisType = creatureType ? game.settings.get(MODULE.ns, "skiplist_" + creatureType) : false;
         if (useSkiplist && skipThisType) return token;
 
         await LootPopulator.populate(token);
@@ -200,18 +211,6 @@ export class LootsheetNPC5eHooks {
             lsnMakeObservableImg = document.createElement('img');
 
         lsnNav.classList.add('lsnpc5e-nav');
-
-        // LootAll Button
-        lsnLootAllButton.classList.add('lsnpc5e-hud-loot-all', 'control-icon');
-        lsnLootAllButton.dataset.action = "lootAll";
-        lsnLootAllButton.title = game.i18n.localize("LootSheetNPC5e.lootAll");
-
-        lsnLootAllImg.src = "icons/svg/item-bag.svg";
-        lsnLootAllImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
-
-        lsnLootAllButton.appendChild(lsnLootAllImg);
-        lsnNav.appendChild(lsnLootAllButton);
-
 
         if (game.user.isGM) {
             lsnGMButtonMakeObservable.classList.add('lsnpc5e-hud-make-observable', 'control-icon');

@@ -1,5 +1,5 @@
-import { MODULE } from '../data/moduleConstants.js';
-import { lootsheetSettingsConfigApp } from '../apps/settings/lootsheetConfigApp.js';
+import { MODULE } from '../../data/moduleConstants.js';
+import { lootsheetSettingsConfigApp } from './lootsheetConfigApp.js';
 
 /**
  * @module lootsheetnpc5e.ModuleSettings
@@ -35,7 +35,7 @@ export class SheetSettings {
             hint: game.i18n.localize('lsnpc.settings.sheetUpdate.hint'),
             scope: MODULE.settings.scopes.world,
             config: true,
-            default: false,
+            default: true,
             type: Boolean,
         });
 

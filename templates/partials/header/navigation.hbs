@@ -1,0 +1,13 @@
+<nav class="sheet-navigation tabs flexrow" data-group="primary">
+    <a class="item active" data-tab="inventory">{{localize "DND5E.Inventory"}}</a>
+    {{#ifeq lootsheettype "Merchant"}}
+        <a class="item" data-tab="trade"><i class="lsn trade"></i>{{localize "Trade"}}</a>
+        {{#if isGM}}
+            <a class="item" data-tab="actions">{{localize "DND5E.ActionPl"}}</a>
+        {{/if}}
+    {{/ifeq}}
+    <a class="item" data-tab="biography">{{localize "DND5E.Biography"}}</a>
+    {{#if isGM}}
+        <a class="item" data-tab="gm-settings"><i class="fas fa-cog" title="{{localize " GM"}}"></i></a>
+    {{/if}}
+</nav>

@@ -1,3 +1,4 @@
+import { currencyHelper } from "./currencyHelper.js";
 
 /**
  * @description {Rolltable} related helper functions
@@ -7,50 +8,50 @@
  * @version 1.0.1
  *
  */
- export class tableHelper {
+export class tableHelper {
 
 	/**
 	 *
 	 * @returns {Array}
 	 */
 	static async getGameWorldRolltables() {
-        const rollTablePacks = game.packs.filter((pack) => pack.documentName === "RollTable");
+		const rollTablePacks = game.packs.filter((pack) => pack.documentName === "RollTable");
 
-        let availableRolltables = {};
+		let availableRolltables = {};
 
-        if (game.tables.size > 0) availableRolltables["World"] = [];
-        for (const table of game.tables) {
-            availableRolltables["World"].push({
-                name: table.name,
-                uuid: table.uuid,
-            });
-        }
-        for (const pack of rollTablePacks) {
-            const idx = await pack.getIndex({fields: ['name', 'data.uuid']}),
+		if (game.tables.size > 0) availableRolltables["World"] = [];
+		for (const table of game.tables) {
+			availableRolltables["World"].push({
+				name: table.name,
+				uuid: table.uuid,
+			});
+		}
+		for (const pack of rollTablePacks) {
+			const idx = await pack.getIndex({ fields: ['name', 'data.uuid'] }),
 				tableString = `Compendium.${pack.collection}.`;
 
 			availableRolltables[pack.metadata.label] = [];
 
-            for (let table of idx) {
-                availableRolltables[pack.metadata.label].push({
-                    name: table.name,
-                    uuid: tableString + table._id,
-                });
-            }
-        }
+			for (let table of idx) {
+				availableRolltables[pack.metadata.label].push({
+					name: table.name,
+					uuid: tableString + table._id,
+				});
+			}
+		}
 
-        return availableRolltables;
-    }
+		return availableRolltables;
+	}
 
-    /**
+	/**
 	 * @param {string} rolltableReference
 	 * @returns {RollTable}
 	 *
 	 * @version 1.0.0
 	 */
-	static async getRolltable(rolltableReference){
+	static async getRolltable(rolltableReference) {
 		const [type, source, category, packReference] = rolltableReference.split('.');
-		if(packReference){
+		if (packReference) {
 			return await game.packs.get(source + '.' + category).getDocument(packReference);
 		}
 
@@ -65,10 +66,10 @@
 	 *
 	 * @returns {Document}
 	 */
-    static async _rollSubTables(item, index = 0) {
+	static async _rollSubTables(item, index = 0) {
 		if (item instanceof RollTable) {
 			const subTableResults = await item.roll(),
-				  collection = subTableResults.results[index].data.collection;
+				collection = subTableResults.results[index].data.collection;
 
 			if (collection === "Item") {
 				item = game.items.get(subTableResults.results[index].data.resultId);
@@ -84,4 +85,6 @@
 
 		return item;
 	}
+
+	
 }

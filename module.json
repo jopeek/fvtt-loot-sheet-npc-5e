@@ -2,7 +2,7 @@
 	"name": "lootsheetnpc5e",
 	"title": "Loot Sheet NPC 5e",
 	"description": "Add NPC sheet for looting and trading. Now with automatic npc token population options.",
-	"version": "3.4.2.8",
+	"version": "3.4.5.1",
 	"manifestPlusVersion": "1.2.0",
 	"minimumCoreVersion": "0.8.9",
 	"compatibleCoreVersion": "0.9.0",
@@ -66,6 +66,13 @@
 			"path": "./lang/pt.json"
 		}
 	],
+	"dependencies": [
+        {
+			"name": "better-rolltables",
+        	"type": "module",
+			"manifest": "https://raw.githubusercontent.com/ultrakorne/better-rolltables/master/module.json"
+		}
+    ],
 	"system": ["dnd5e"],
     "esmodules": ["/lootsheetnpc5e.js"],
 	"styles": ["/styles/lootsheetNPC5e.css"],

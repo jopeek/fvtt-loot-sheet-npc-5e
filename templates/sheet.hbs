@@ -1,43 +1,23 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form
+    class="{{cssClass}} sheetgrid {{#if data.flags.lootsheetnpc5e.sheettint.style}}styled {{data.flags.lootsheetnpc5e.sheettint.style}}{{/if}}"
+    autocomplete="off" data-sheettint-value="{{data.flags.lootsheetnpc5e.sheettint.value}}"
+    data-sheettint-alpha="{{data.flags.lootsheetnpc5e.sheettint.alpha}}" {{#if
+    data.flags.lootsheetnpc5e.sheettint.value}}
+    style="
+    --sheettint: {{hexToRGB data.flags.lootsheetnpc5e.sheettint.value data.flags.lootsheetnpc5e.sheettint.alpha}};
+    --avatartint: {{hexToRGB data.flags.lootsheetnpc5e.avatartint.value data.flags.lootsheetnpc5e.avatartint.alpha}};
+    --blendmode: {{data.flags.lootsheetnpc5e.sheettint.blendmode}};
+    --style: {{data.flags.lootsheetnpc5e.sheettint.style}};"
+    {{/if}}>
+    {{log data.flags.lootsheetnpc5e.sheettint}}
     <!-- <section class="sheet-upper"> -->
+
     <!-- HEADER -->
-    {{#if isCondensedView}}
-        {{> "modules/lootsheetnpc5e/templates/partials/header/condensed.hbs"}}
-    {{else}}
-        {{> "modules/lootsheetnpc5e/templates/partials/header/default.hbs"}}
-    {{/if}}
+    {{> "modules/lootsheetnpc5e/templates/partials/header.hbs"}}
 
-    <nav class="sheet-navigation tabs flexrow" data-group="primary">
-        <a class="item active" data-tab="inventory">{{localize "DND5E.Inventory"}}</a>
-        {{#ifeq lootsheettype "Merchant"}}
-        <a class="item active" data-tab="actions">{{localize "DND5E.ActionPl"}}</a>
-        {{/ifeq}}
-        <a class="item" data-tab="biography">{{localize "DND5E.Biography"}}</a>
-    </nav>
-    <section class="sheet-lower flexrow">
-        <!-- SIDEBAR for GM -->
-        {{#if isGM}}
-            {{> "modules/lootsheetnpc5e/templates/partials/sidebar/sidebar.hbs"}}
-        {{/if}}
+    <!-- BODY -->
+    {{> "modules/lootsheetnpc5e/templates/partials/body.hbs"}}
 
-        <!-- BODY -->
-        <section class="sheet-content content">
-            <section class="sheet-body">
-                <div class="tab" data-tab="biography" data-group="primary">
-                    {{editor content=data.details.biography.value target="data.details.biography.value" button=true owner=owner editable=editable}}
-                </div>
-
-                <div class="tab" data-tab="inventory" data-group="primary">
-                    <!-- FEATURES -->
-                    <div class="features" data-group="primary" data-tab="features">
-                        {{#if isCondensedView}}
-                            {{> "modules/lootsheetnpc5e/templates/partials/list/condensed.hbs"}}
-                        {{else}}
-                            {{> "modules/lootsheetnpc5e/templates/partials/list/default.hbs"}}
-                        {{/if}}
-                    </div>
-                </div>
-            </section>
-        </section>
-    </section>
+    <!-- FOOTER -->
+    {{> "modules/lootsheetnpc5e/templates/partials/footer.hbs"}}
 </form>

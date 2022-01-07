@@ -1,4 +1,4 @@
-class PermissionHelper {
+export class PermissionHelper {
 
     /**
      *
@@ -140,5 +140,3 @@ class PermissionHelper {
         });
     }
 }
-
-export { PermissionHelper };

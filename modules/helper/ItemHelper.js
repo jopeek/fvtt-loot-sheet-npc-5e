@@ -201,7 +201,7 @@ class ItemHelper {
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
-        let priceModifier = parseInt(seller.getFlag(MODULE.ns, MODULE.keys.priceModifier)),
+        let priceModifier = parseInt(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1,
             itemCostInGold = (Math.round(soldItem.data.data.price * priceModifier * 100) / 100) * quantity,
             successfullTransaction = await ItemHelper.updateFunds(seller, buyer, itemCostInGold);
 
@@ -361,6 +361,7 @@ class ItemHelper {
             zeroCurrency = {};
 
         for (let c in lootCurrency) {
+            debugger;
             zeroCurrency[c] = {
                 'type': sheetCurrency[c].type,
                 'label': sheetCurrency[c].type,
@@ -608,7 +609,7 @@ class ItemHelper {
      */
     static getItemsFromLootMessage(looterId, lootedId) {
         //get messages by lootId
-        let existingLootMessage = game.messages.find(m => m.data.flags.lootsheetnpc5e.lootId == looterId + '-' + lootedId)
+        let existingLootMessage = game.messages.find(m => m.data.flags?.lootsheetnpc5e?.lootId == looterId + '-' + lootedId)
 
         if (existingLootMessage) {
             return { id: existingLootMessage.id, items: existingLootMessage.getFlag(MODULE.ns, 'loot') };
@@ -628,6 +629,86 @@ class ItemHelper {
             targetId: target.id,
             message: message
         });
+    }
+
+    /**
+	 * Converts certain non lootable documents to lootable items
+     *
+     * @description This function is called when a document is converted to loot.
+     * It checks itemData for the item type.
+     *
+     *  * Converts "spell" items to spellScrolls
+     *  * checks the given or default conversions
+	 *  * If conversions are given for the itemType replace the given properties accordingly
+     *
+	 * @param {Item} itemData ~ {Item}.data
+	 * @param {string} itemType ~ {Item}.documentName
+     * @param {object} conversions
+	 * @returns
+	 */
+	static async applyItemConversions(itemData, itemType, conversions = null) {
+		if (itemData.type === "spell") {
+			itemData = await Item5e.createScrollFromSpell(itemData);
+		}
+
+        const rarity = this.getRandomRarity(),
+            randomPriceFormula = '1d' + rarity.priceRange[1],
+            priceRoller = new Roll(randomPriceFormula),
+            priceRoll = await priceRoller.roll();
+        debugger;
+
+        const defaultConversions = {
+            Actor: {
+            name: `${itemData.name} Portrait`,
+            img: itemData?.img || "icons/svg/mystery-man.svg",
+            type: 'loot',
+            data: {
+                rarity: rarity.rarity,
+                price: priceRoll.total || 0.1
+            }
+          },
+          Scene: {
+            name: 'Map of '+ itemData.name,
+            img: itemData.thumb || "icons/svg/direction.svg",
+            data: {
+                rarity: rarity.rarity,
+                price: priceRoll.total || 0.1
+            },
+            type: 'loot'
+          }
+        };
+
+		conversions = conversions || defaultConversions;
+
+		const convert = conversions[itemType] ?? false;
+
+		if (convert) {
+			for (const prop in convert) {
+				itemData[prop] = convert[prop];
+			}
+		}
+
+		return itemData;
+	}
+
+    /**
+     * Get a random item rarity by weight
+     *
+     */
+    static getRandomRarity (weights = undefined) {
+        const randomizerWeights = weights || [
+            { rarity: '', priceRange: [0, 49], max: 30},
+            { rarity: 'common', priceRange: [50,100], max: 60 },
+            { rarity: 'uncommon', priceMax: [101,500], max: 80 },
+            { rarity: 'rare', priceMax: [501,5000], max: 98.5 },
+            { rarity: 'veryrare',priceMax: [5001,50000], max: 99.8 },
+            { rarity: 'legendary', priceMax: [50001,1000000], max: 100}
+        ];
+        //⬆️ @todo make this a settings changable thing in the future || game.settings.get(MODULE.ns, MODULE.settings.keys.rarityWeights);
+
+        const pindex = Math.round(twist.random() * 99) + 1;
+
+        return randomizerWeights.find(r => (pindex <= r.max));
     }
 }
 export { ItemHelper };
