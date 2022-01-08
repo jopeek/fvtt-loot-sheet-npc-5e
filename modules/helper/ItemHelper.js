@@ -361,7 +361,6 @@ class ItemHelper {
             zeroCurrency = {};
 
         for (let c in lootCurrency) {
-            debugger;
             zeroCurrency[c] = {
                 'type': sheetCurrency[c].type,
                 'label': sheetCurrency[c].type,
@@ -652,10 +651,9 @@ class ItemHelper {
 		}
 
         const rarity = this.getRandomRarity(),
-            randomPriceFormula = '1d' + rarity.priceRange[1],
-            priceRoller = new Roll(randomPriceFormula),
+            randomPriceFormula = Math.floor(twist.random() * (rarity.priceRange[1] - rarity.priceRange[0] +1)) + rarity.priceRange[0],
+            priceRoller = new Roll('1d' + randomPriceFormula),
             priceRoll = await priceRoller.roll();
-        debugger;
 
         const defaultConversions = {
             Actor: {
@@ -699,10 +697,10 @@ class ItemHelper {
         const randomizerWeights = weights || [
             { rarity: '', priceRange: [0, 49], max: 30},
             { rarity: 'common', priceRange: [50,100], max: 60 },
-            { rarity: 'uncommon', priceMax: [101,500], max: 80 },
-            { rarity: 'rare', priceMax: [501,5000], max: 98.5 },
-            { rarity: 'veryrare',priceMax: [5001,50000], max: 99.8 },
-            { rarity: 'legendary', priceMax: [50001,1000000], max: 100}
+            { rarity: 'uncommon', priceRange: [101,500], max: 80 },
+            { rarity: 'rare', priceRange: [501,5000], max: 98.5 },
+            { rarity: 'veryrare',priceRange: [5001,50000], max: 99.8 },
+            { rarity: 'legendary', priceRange: [50001,1000000], max: 100}
         ];
         //⬆️ @todo make this a settings changable thing in the future || game.settings.get(MODULE.ns, MODULE.settings.keys.rarityWeights);
 

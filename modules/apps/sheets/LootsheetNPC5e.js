@@ -33,12 +33,11 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             MODULE.templatePath + "/partials/header.hbs",
             MODULE.templatePath + "/partials/header/navigation.hbs",
             MODULE.templatePath + "/partials/list/" + sheetType + ".hbs",
+            MODULE.templatePath + "/partials/list/currency.hbs",
+            MODULE.templatePath + "/partials/list/actions.hbs",
+            MODULE.templatePath + "/partials/trade/index.hbs",
+            MODULE.templatePath + "/partials/trade/inventory.hbs"
         ];
-
-        if (lootsheetType === "Merchant") {
-            templateList.push(MODULE.templatePath + "/partials/trade/index.hbs");
-            templateList.push(MODULE.templatePath + "/partials/trade/inventory.hbs");
-        }
 
         if (game.user.isGM) {
             templateList.push(MODULE.templatePath + "/partials/gm/gm-settings.hbs");
@@ -101,7 +100,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         itemContents.forEach((item) => totalWeight += Math.round((item.data.quantity * item.data.weight * 100) / 100));
 
         if (game.settings.get(MODULE.ns, "includeCurrencyWeight"))
-            totalWeight += (Object.values(this.actor.data.data.currency).reduce(function(accumVariable, curValue) {
+            totalWeight += (Object.values(this.actor.data.data.currency).reduce(function (accumVariable, curValue) {
                 return accumVariable + curValue
             }, 0) / 50).toNearest(0.01);
 
@@ -189,7 +188,8 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     async _inventorySettingChange(event, html) {
         event.preventDefault();
 
-        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "clearInventory", "itemOnlyOnce"];
+        // @todo get this from the settings, leverage the constants, if key exists in MODULE.
+        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "clearInventory", "itemOnlyOnce", "currencyFormula"];
         let targetKey = event.target.name.split('.')[3];
 
         if (!expectedKeys.includes(targetKey)) {
@@ -291,7 +291,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         let i = 0;
         let output = [];
 
-        pack.getIndex().then(index => index.forEach(function(arrayItem) {
+        pack.getIndex().then(index => index.forEach(function (arrayItem) {
             var x = arrayItem._id;
             //console.log(arrayItem);
             i++;
@@ -379,66 +379,16 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     _prepareItems(actorData) {
 
         //console.log("Loot Sheet | Prepare Features");
-        // Actions
-        const features = {
-            weapons: {
-                label: "Weapons",
-                items: [],
-                type: "weapon"
-            },
-            equipment: {
-                label: "Equipment",
-                items: [],
-                type: "equipment"
-            },
-            consumables: {
-                label: "Consumables",
-                items: [],
-                type: "consumable"
-            },
-            tools: {
-                label: "Tools",
-                items: [],
-                type: "tool"
-            },
-            containers: {
-                label: "Containers",
-                items: [],
-                type: "container"
-            },
-            loot: {
-                label: "Loot",
-                items: [],
-                type: "loot"
-            },
 
-        };
-
-        //console.log("Loot Sheet | Prepare Items");
-        let items = LootSheetNPC5eHelper.getLootableItems(actorData.items);
+        const items = duplicate(actorData.items),
+            lootableItems = LootSheetNPC5eHelper.getLootableItems(items);
 
         // Iterate through items, allocating to containers
-
-        items = items.sort((a, b) => {
-            return a.name.localeCompare(b.name);
-        });
-
-        for (let i of items) {
-            i.img = i.img || 'icons/svg/item-bag.svg';
-            //console.log("Loot Sheet | item", i);
-
-            // Features
-            if (i.type === "weapon") features.weapons.items.push(i);
-            else if (i.type === "equipment") features.equipment.items.push(i);
-            else if (i.type === "consumable") features.consumables.items.push(i);
-            else if (i.type === "tool") features.tools.items.push(i);
-            else if (["container", "backpack"].includes(i.type)) features.containers.items.push(i);
-            else if (i.type === "loot") features.loot.items.push(i);
-            else features.loot.items.push(i);
-        }
-
-        actorData.actor.features = features;
+        actorData.actor.actions = LootSheetNPC5eHelper.sortAndGroupItems(items);
+        actorData.actor.lootableItems = LootSheetNPC5eHelper.sortAndGroupItems(lootableItems);
     }
+
+
 
     /* -------------------------------------------- */
     /* -------------------------------------------- */

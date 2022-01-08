@@ -1,6 +1,5 @@
 
 <main class="tradegrid">
-    <header>Trade</header>
     <section class="token-inventory">
         {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs"}}
     </section>
@@ -11,11 +10,10 @@
         </div>
 
         <!-- a box with a dropzone to accept items -->
-
-        <div class="trade-stage" dropzone="true">
-
-        </div>
     </section>
+    <div class="stage" dropzone="true">
+
+    </div>
     <section class="player-inventory">
         {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=player.items}}
     </section>

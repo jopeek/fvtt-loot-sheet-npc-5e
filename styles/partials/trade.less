@@ -1,0 +1,84 @@
+.app.actor.loot-sheet-npc {
+    .window-content {
+        .tradegrid {
+            display: grid;
+            grid-template-areas:
+                "TOKENINVENTORY INFO PLAYERINVENTORY"
+                "TOKENINVENTORY INFO PLAYERINVENTORY"
+                "TOKENINVENTORY INFO PLAYERINVENTORY"
+                "TOKENINVENTORY STAGE PLAYERINVENTORY"
+                "TOKENINVENTORY STAGE PLAYERINVENTORY"
+                "FOOTER FOOTER FOOTER";
+
+            grid-template-columns: 1fr 1fr 1fr;
+            height: 100%;
+            width: 100%;
+
+            --iconwidth: 44px;
+
+            .inventory-list {
+                display: grid;
+                grid-template-columns: repeat(4,var(--iconwidth));
+                grid-template-rows: var(--iconwidth);
+                background: var(--header-background);
+                gap: 0.4em;
+                padding-top: 0.5em;
+
+                .item {
+                    cursor: pointer;
+                }
+                .image{
+                    display: inline-block;
+                    align-self: flex-start;
+                    justify-self: flex-start;
+                    height: var(--iconwidth);
+                    width: var(--iconwidth);
+                    background-position: center;
+                    background-size: contain;
+                    box-shadow: inset 0 0 0.8em rgba(0,0,0,80%);
+                    padding: 0.3em;
+                    &:hover {
+                        box-shadow: inset 0 0 0.8em rgba(243,242,242,91%);
+                    }
+                }
+                .quantity {
+                    font-family: var(--modesto);
+                    font-size: 1.8em;
+                    padding: 0.5em;
+                    line-height: 0.9em;
+                    display: block;
+                    margin-top: auto;
+                    margin-left: auto;
+                    align-self: flex-end;
+                    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+                }
+            }
+
+            .token-inventory {
+                grid-area: TOKENINVENTORY;
+                background: var(--avatartint);
+            }
+
+            .player-inventory {
+                grid-area: PLAYERINVENTORY;
+                background: var(--sheettint);
+            }
+
+            .info {
+                grid-area: INFO;
+            }
+
+            .stage {
+                background: var(--header-background);
+                grid-area: STAGE;
+                display: grid;
+                grid-auto-flow: column;
+                background: linear-gradient(90deg, var(--avatartint) 29%, transparent), linear-gradient(-90deg, var(--sheettint) 22%, transparent);
+            }
+
+            .footer {
+                grid-area: FOOTER;
+            }
+        }
+    }
+}

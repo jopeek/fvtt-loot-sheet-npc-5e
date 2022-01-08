@@ -5,6 +5,7 @@ export class TableRoller {
 
 	constructor(table) {
 		this.table = table;
+		this.rollOptionDefault = { total: 1, itemQtyFormula: 1, itemQtyLimit: 0, currencyFormula: 0 };
 		return this;
 	}
 
@@ -15,8 +16,8 @@ export class TableRoller {
 	 * @returns {array} results
 	 */
 	async roll(rollOptions = undefined) {
-		rollOptions = rollOptions || 1;//await BRTHelper.rollsAmount(this.table);
-		this.results = await this.rollManyOnTable(rollOptions, this.table);
+		rollOptions = rollOptions || this.rollOptionDefault ;
+		this.results = await this.rollManyOnTable(rollOptions , this.table);
 		return this.results;
 	}
 
@@ -29,12 +30,14 @@ export class TableRoller {
 	 *  Collect the results in an array.
 	 *
 	 *	@param {RollTable} table
-	 *	@param {number} amount
+	 *	@param {number} rollOptions
 	 *	@param {object} options
 	 *	@returns {array}
 	 */
-	async rollManyOnTable(amount, table, { _depth = 0 } = {}) {
+	async rollManyOnTable(rollOptions, table, { _depth = 0 } = {}) {
 		const maxRecursions = 5;
+
+		let amountToRoll = rollOptions?.total || 1;
 
 		// Prevent infinite recursion
 		if (_depth > maxRecursions) {
@@ -44,8 +47,8 @@ export class TableRoller {
 
 		let drawnResults = [];
 
-		while (amount > 0) {
-			let resultToDraw = amount;
+		while (amountToRoll > 0) {
+			let resultToDraw = amountToRoll;
 			/** if we draw without replacement we need to reset the table once all entries are drawn */
 			if (!table.data.replacement) {
 				const resultsLeft = table.data.results.reduce(function (n, r) { return n + (!r.drawn) }, 0)
@@ -55,7 +58,7 @@ export class TableRoller {
 					continue;
 				}
 
-				resultToDraw = Math.min(resultsLeft, amount);
+				resultToDraw = Math.min(resultsLeft, amountToRoll);
 			}
 
 			if (!table.data.formula) {
@@ -88,11 +91,12 @@ export class TableRoller {
 					drawnResults = drawnResults.concat(innerResults);
 				} else {
 					for (let i = 0; i < entryAmount; i++) {
+						debugger;
 						drawnResults.push(entry);
 					}
 				}
 			}
-			amount -= resultToDraw;
+			amountToRoll -= resultToDraw;
 		}
 
 		return drawnResults;

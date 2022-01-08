@@ -41,8 +41,8 @@ export class currencyHelper {
      *  @param {String} currencyString
      *  @returns {Array}
      */
-    static generateCurrency(currencyString) {
-        const currenciesToAdd = {};
+    static async generateCurrency(currencyString) {
+        let currenciesToAdd = {};
 
         if (currencyString) {
             const currenciesPieces = currencyString.split(",");
@@ -50,7 +50,6 @@ export class currencyHelper {
             for (const currency of currenciesPieces) {
                 const match = /(.*)\[(.*?)\]/g.exec(currency); //capturing 2 groups, the formula and then the currency symbol in brakets []
 
-                debugger;
                 if (!match || match.length < 3) {
                     ui.notifications.warn(MODULE.ns + ` | Currency loot field contain wrong formatting, currencies need to be define as "diceFormula[currencyType]" => "1d100[gp]" but was ${currency}`);
                     continue;
@@ -58,7 +57,7 @@ export class currencyHelper {
 
                 const rollFormula = match[1];
                 const currencyString = match[2];
-                const amount = currencyHelper._tryRoll(rollFormula);
+                const amount = await currencyHelper.tryRoll(rollFormula);
                 currenciesToAdd[currencyString] = (currenciesToAdd[currencyString] || 0) + amount;
             }
         }

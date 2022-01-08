@@ -87,19 +87,73 @@ class LootSheetNPC5eHelper {
                 return;
         }
 
-        if (event.shiftKey || dataSet?.getAll === 'true') {
+        if (event.shiftKey && dataSet?.getAll === 'true') {
             packet.quantity = maxQuantity;
+            game.socket.emit(MODULE.socket, packet);
+        } else if(event.shiftKey) {
             game.socket.emit(MODULE.socket, packet);
         } else {
             options.max = maxQuantity;
-            const d = new QuantityDialog((quantityCallback) => {
+            const quantityDialog = new QuantityDialog((quantityCallback) => {
                 packet.quantity = quantityCallback;
                 game.socket.emit(MODULE.socket, packet);
             },
                 options
             );
-            d.render(true);
+            quantityDialog.render(true);
         }
+    }
+
+    static sortAndGroupItems(items) {
+        let groups = {
+            weapons: { label: "Weapons", items: [], type: "weapon" },
+            equipment: { label: "Equipment", items: [], type: "equipment" },
+            consumables: { label: "Consumables", items: [], type: "consumable" },
+            tools: { label: "Tools", items: [], type: "tool" },
+            containers: { label: "Containers", items: [], type: "container" },
+            loot: { label: "Loot", items: [], type: "loot" },
+            misc: { label: "Feat", items: [], type: "feat" },
+        };
+        /**
+         * Sort items by name
+         */
+        items = items.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+        });
+
+        /**
+         * categorize items
+         * @type {Array}
+         */
+
+        for (let i of items) {
+            i.img = i.img || 'icons/svg/item-bag.svg';
+            //console.log("Loot Sheet | item", i);
+
+            // if object has the propery "type" push the current item to the proper group
+            if (i.type && hasProperty(groups, i.type +'s')) {
+                groups[i.type + 's'].items.push(i);
+            } else if (["container", "backpack"].includes(i.type)){
+                groups.containers.items.push(i);
+            } else if (hasProperty(groups, i.type)){
+                groups[i.type].items.push(i);
+            } else {
+                groups.misc.items.push(i);
+            }
+
+            continue;
+            // Features
+            if (i.type === "weapon") groups.weapons.items.push(i);
+            else if (i.type === "equipment") groups.equipment.items.push(i);
+            else if (i.type === "consumable") groups.consumables.items.push(i);
+            else if (i.type === "tool") groups.tools.items.push(i);
+            else if (["container", "backpack"].includes(i.type)) groups.containers.items.push(i);
+            else if (i.type === "loot") groups.loot.items.push(i);
+            else if (i.type === "feat") groups.feat.items.push(i);
+            else groups.loot.items.push(i);
+        }
+
+        return groups;
     }
 }
 export { LootSheetNPC5eHelper };

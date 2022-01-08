@@ -25,18 +25,23 @@ export class LootProcessor {
         this.actor = actor || this._getLootActor(actor);
         this.results = results;
         this.lootResults = [];
-        this.currencyData = options.currencyData || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+        this.currencyData = actor.data.data?.currency || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
         this.defaultConversions = {};
+        this.options = options || {
+            currencyString: '',
+            stackSame: true,
+            tokenUuid: null,
+        };
 
         return this;
     }
 
     async buildResults(options = {}) {
-        const currencyString = options.currencyString || '1';
+        const currencyString = options?.currencyString ?? '0';
         this.currencyData = await currencyHelper.generateCurrency(currencyString);
 
         for (let i = 0; i < this.results.length; i++) {
-            const betterResults = await this._parseResult(this.results[i]);
+            const betterResults = await this._parseResult(this.results[i], options);
             // if a inner table is rolled, the result returned is undefined but the array this.lootResults is extended with the new results
 
             for (const r of betterResults) {
@@ -53,7 +58,7 @@ export class LootProcessor {
        *
        * @returns
        */
-     async buildItemData(item, conversions = null) {
+    async buildItemData(item, conversions = null) {
         let itemData = {},
             existingItem = false;
 
@@ -119,7 +124,7 @@ export class LootProcessor {
          * @param {*} result
          * @returns
          */
-    async _parseResult(result) {
+    async _parseResult(result, options) {
         const betterResults = []
         if (result.data.type === CONST.TABLE_RESULT_TYPES.TEXT) {
             const textResults = result.data.text.split('|');
@@ -176,9 +181,11 @@ export class LootProcessor {
                 // if a table definition is found, the textString is the rollFormula to be rolled on that table
                 if (table) {
                     const numberRolls = await this.tryRoll(textString);
-                    const innerTable = new TableRoller(table);
-                    const innerTableResults = await TableRoller.roll(numberRolls);
+                    const innerTableRoller = new TableRoller(table);
+                    const innerTableResults = await innerTableRoller.roll(numberRolls);
 
+                    debugger;
+                    // take care of nested tables
                     this.tableResults = this.tableResults.concat(innerTableResults);
                 } else if (textString) {
                     // if no table definition is found, the textString is the item name
@@ -204,27 +211,39 @@ export class LootProcessor {
         return betterResults;
     }
 
-    async addCurrenciesToActor(actor = this.actor) {
+    /**
+     * obsolete?
+     *
+     * @param {Actor} actor
+     * @param {object} options
+     * @returns
+     */
+    async addCurrenciesToActor(actor = this.actor, options = {}) {
         if (!actor) return;
         const currencyData = duplicate(this.actor.data.data.currency);
         const lootCurrency = this.currencyData;
 
-        let currenciesToAdd = currencyHelper.getCurrenciesToAdd(currencyData, lootCurrency);
+        let currenciesToAdd = currencyHelper.addCurrenciesToToken(currencyData, lootCurrency);
 
         if (!actor) return;
-        await actor.update({ 'data.currency': currencyData });
+        debugger;
+        await actor.update({ 'data.currency': currenciesToAdd });
     }
 
     /**
+     * Obsolete?
      *
      * @param {boolean} stackSame Should same items be stacked together? Default = true
      *
      * @returns
      */
-    async addItemsToActor(stackSame = true) {
+    async addItemsToActor(options = { stackSame: true }) {
+        debugger;
+        // we do use this?
+
         const items = [];
         for (const item of this.lootResults) {
-            const newItem = await this._createLootItem(item, this.actor, stackSame);
+            const newItem = await this._createLootItem(item, this.actor, options.stackSame);
             items.push(newItem);
         }
         return items;
@@ -236,31 +255,41 @@ export class LootProcessor {
        * @param {Actor} actor to which to add items to
        * @param {boolean} stackSame if true add quantity to an existing item of same name in the current actor
        * @param {number} customLimit
+       *
        * @returns {Item} the create Item (foundry item)
        */
-    async _createLootItem(item, actor, stackSame = true, customLimit = 0) {
-        const newItem = {data: await this.buildItemData(item)},
+    async _createLootItem(item, actor, options) {
+        const newItem = { data: await this.buildItemData(item) },
             itemPrice = newItem.data?.data?.price || 0,
             embeddedItems = [...actor.getEmbeddedCollection('Item').values()],
             originalItem = embeddedItems.find(i => i.name === newItem.data?.name && itemPrice === getProperty(i.data, 'data.price'));
 
+        let itemQuantity = new Roll(options?.itemQtyFormula, actor.data).roll().total || newItem?.data?.data.quantity || 1,
+            itemLimit = new Roll(options?.itemQtyLimitFormula, actor.data).roll().total || 0;
+        originalItemQuantity = originalItem?.data?.quantity || 1,
+            limitCheckedQuantity = this._handleLimitedQuantity(itemQuantity, originalItemQuantity, itemLimit);
+
         /** if the item is already owned by the actor (same name and same PRICE) */
         if (originalItem && stackSame) {
             /** add quantity to existing item */
-            const newItemQty = getProperty(newItem.data, 'data.quantity') || 1,
-                originalQty = getProperty(originalItem.data, 'data.quantity') || 1,
-                updateItem = { _id: originalItem.id },
-                newQty = this._handleLimitedQuantity(newItemQty, originalQty, customLimit);
+            let updateItem = {
+                _id: originalItem.id,
+                data: {
+                    quantity: limitCheckedQuantity
+                }
+            };
 
-            if (newQty != newItemQty) {
-                setProperty(updateItem, 'data.quantity', newQty);
+            if (limitCheckedQuantity != itemQuantity) {
                 await actor.updateEmbeddedDocuments('Item', [updateItem]);
             }
+
             return actor.items.get(originalItem.id);
-        } else {
-            /** we create a new item if we don't own already */
-            return await actor.createEmbeddedDocuments('Item', [newItem.data]);
         }
+
+        /** we create a new item if we don't own already */
+        await actor.createEmbeddedDocuments('Item', [newItem.data]);
+        /** Get the new item and return it */
+        return actor.items.get(newItem.data._id);
     }
 
     /**
@@ -288,20 +317,35 @@ export class LootProcessor {
 
 
     /**
-	  *
-	  * @param {String} tableText
-	  * @returns
-	  */
-	async _processTextAsCurrency(tableText) {
-		const regex = /{([^}]+)}/g
-		let matches
+      *
+      * @param {String} tableText
+      * @returns
+      */
+    async _processTextAsCurrency(tableText) {
+        const regex = /{([^}]+)}/g
+        let matches
 
-		while ((matches = regex.exec(tableText)) != null) {
-			this._addCurrency(await this._generateCurrency(matches[1]))
-		}
+        while ((matches = regex.exec(tableText)) != null) {
+            this._addCurrency(await this._generateCurrency(matches[1]))
+        }
 
-		return tableText.replace(regex, '')
-	}
+        return tableText.replace(regex, '')
+    }
+
+    /**
+     *
+     * @param {string} tableText
+     * @returns
+     */
+    async _rollInlineDice(tableText) {
+        const regex = /\[{2}(\w*[^\]])\]{2}/g
+        let matches
+        while ((matches = regex.exec(tableText)) != null) {
+            tableText = tableText.replace(matches[0], await this.tryRoll(matches[1]))
+        }
+
+        return tableText
+    }
 
     /**
        *
@@ -321,6 +365,20 @@ export class LootProcessor {
             setProperty(itemData, `data.${cmd.command.toLowerCase()}`, rolledValue);
         }
         return itemData;
+    }
+
+    /**
+       *
+       * @param {string} rollFormula
+       * @returns
+       */
+	async tryRoll(rollFormula) {
+        try {
+            return (await (new Roll(rollFormula)).roll({ async: true })).total || 1;
+        } catch (error) {
+            console.error(MODULE.ns + ' | currencyHelper :', error);
+            return 1;
+        }
     }
 
     /**
@@ -435,7 +493,7 @@ export class LootProcessor {
      *
      * @returns {object} itemData ~ {Item}.data
      */
-    async createScrollFromSpell(itemData){
+    async createScrollFromSpell(itemData) {
 
         const match = /\s*Spell\s*Scroll\s*(\d+|cantrip)/gi.exec(itemData.name);
 

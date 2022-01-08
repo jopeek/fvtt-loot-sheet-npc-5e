@@ -66,7 +66,8 @@
 	--rarity-veryRare: rgba(163,53,238, 0.75);
 	--rarity-legendary: rgba(255,128,0, 0.75);
 
-	--sheet-tint: rgba(0, 0, 0, 0.5);
+	--sheet-tint: rgba(0, 0, 0, 0.2);
+	--avatar-tint: rgba(0, 0, 0, 0.2);
 }
 
 .system-dnd5e, .system-pf2, .system-pf1 {
@@ -189,38 +190,6 @@
 				grid-area: NAVIGATION;
 				align-self: self-end;
 			}
-		}
-	}
-
-	.tradegrid {
-		display: grid;
-		grid-template-areas:
-			"HEADER HEADER HEADER"
-			"TOKENINVENTORY INFO PLAYERINVENOTRY"
-			"TOKENINVENTORY TRADESTAGE PLAYERINVENTORY"
-			"FOOTER FOOTER FOOTER";
-
-		grid-template-rows: 10em auto 10em;
-		grid-template-columns: 1fr 1fr 1fr;
-
-		.token-inventory {
-			grid-area: TOKENINVENTORY;
-		}
-
-		.player-inventory {
-			grid-area: PLAYERINVENTORY;
-		}
-
-		.info {
-			grid-area: INFO;
-		}
-
-		.trade-stage {
-			grid-area: TRADESTAGE;
-		}
-
-		.footer {
-			grid-area: FOOTER;
 		}
 	}
 
@@ -708,6 +677,7 @@ input#quantity {
 }
 @import "partials/permissions.less";
 @import "partials/inventory.less";
+@import "partials/trade.less";
 
 @import "lootchatcard.less";
 @import "lootpopulator.less";

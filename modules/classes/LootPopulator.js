@@ -16,12 +16,13 @@ export class LootPopulator {
 		const tokenstack = (token) ? (token.length >= 0) ? token : [token] : canvas.tokens.controlled,
 			fallbackShopQty = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackShopQty),
 			fallbackItemQtyLimit = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQtyLimit),
-			fallbackCurrencyFormula = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula)
-			;
+			fallbackItemQty = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty),
+			fallbackCurrencyFormula = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula);
+
 		let betterRolltablesModule = {
-				ns: 'better-rolltables',
-				use: game.settings.get(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables) || false
-			};
+			ns: 'better-rolltables',
+			use: game.settings.get(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables) || false
+		};
 
 		betterRolltablesModule.active = game.modules.get('better-rolltables')?.active || false;
 
@@ -29,7 +30,8 @@ export class LootPopulator {
 			const tokenActor = currentToken.actor,
 				creatureType = tokenActor.data.data.details.type.value,
 				shopQtyFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.shopQty) || fallbackShopQty || "1",
-				itemQtyLimit = tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || fallbackItemQtyLimit || "0",
+				itemQtyFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQty) || fallbackItemQty || "0",
+				itemQtyLimitFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || fallbackItemQtyLimit || "0",
 				currencyFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.currencyFormula) || fallbackCurrencyFormula || "0",
 				rolltableFromActor = tokenHelper.getLinkedRolltable(currentToken),
 				rolltableByCreature = tokenHelper.getLinkedRolltableByCreatureType(creatureType),
@@ -61,20 +63,21 @@ export class LootPopulator {
 						betterRolltablesModule.use
 						&& betterRolltablesModule.active
 						&& rolltable.getFlag(betterRolltablesModule.ns, 'table-type')
-						) {
-							const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
+					) {
+						const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
 
-							let customRoll = new Roll(shopQtyFormula);
-            				customRoll.roll();
+						let customRoll = new Roll(shopQtyFormula);
+						customRoll.roll();
 
-							options.customRole = customRoll.total;
-							options.itemQtyLimit = itemQtyLimit;
+						options.customRole = customRoll.total;
+						options.itemQty = itemQtyFormula;
+						options.itemQtyLimit = itemQtyLimitFormula;
 
-							await betterRolltablesAPI.addLootToSelectedToken(
-									rolltable,
-									currentToken,
-									options
-								);
+						await betterRolltablesAPI.addLootToSelectedToken(
+							rolltable,
+							currentToken,
+							options
+						);
 
 						// override brt_currencyString if empty
 						// better solution could be to take the currency string with the highest prio - that is if we add prio
@@ -90,13 +93,17 @@ export class LootPopulator {
 					return ui.notifications.error(MODULE.ns + `: No Rollable Table found with id "${rolltableReference}".`);
 				}
 
-				let customRoll = await new Roll(shopQtyFormula).roll();
+				let customRoll = await new Roll(shopQtyFormula, token.data).roll();
 
 				options = {
-					customRole: customRoll.total,
-					itemQtyLimit: itemQtyLimit,
-					shopQtyFormula: shopQtyFormula,
-					currencyFormula: currencyFormula || ""
+					customRole: {
+						total: await customRoll.total,
+						itemQtyFormula: itemQtyFormula,
+						itemQtyLimitFormula: itemQtyLimitFormula,
+						shopQtyFormula: shopQtyFormula,
+						currencyFormula: currencyFormula || ""
+					},
+					tokenUuid: currentToken.uuid
 				};
 
 				// if we use betterRolltables and the table is of a brt type, let it handle the loot
@@ -104,13 +111,13 @@ export class LootPopulator {
 					betterRolltablesModule.use
 					&& betterRolltablesModule.active
 					&& rolltable.getFlag(betterRolltablesModule.ns, 'table-type')
-					) {
-						const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
-						await betterRolltablesAPI.addLootToSelectedToken(
-								rolltable,
-								currentToken,
-								options
-							);
+				) {
+					const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
+					await betterRolltablesAPI.addLootToSelectedToken(
+						rolltable,
+						currentToken,
+						options
+					);
 
 					// override brt_currencyString if empty
 					// better solution could be to take the currency string with the highest prio - that is if we add prio

@@ -51,12 +51,10 @@ export class utils {
    * @deprectaed use fromUuid() instead
    */
   static async findInCompendiumById(compendiumName, entityId) {
-    debugger;
     return await game.packs.get(compendiumName)?.getDocument(entityId)
   }
 
   static separateIdCompendiumName(stringWithComendium) {
-    debugger;
     const split = stringWithComendium.split('.')
     const nameOrId = split.pop().trim()
     const compendiumName = split.join('.').trim()

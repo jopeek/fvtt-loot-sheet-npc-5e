@@ -157,7 +157,7 @@ class API {
         const isTokenActor = (options && options?.isTokenActor),
             stackSame = (options && options?.stackSame) ? options.stackSame : true,
             customRoll = (options && options?.customRole) ? options.customRole : undefined,
-            itemLimit = (options && options?.itemLimit) ? Number(options.itemLimit) : 0,
+            itemLimit = (options && options?.itemQtyLimitFormula) ? Number(options.itemQtyLimitFormula) : 0,
             verboseCall = options?.verbose ?? false;
 
         let tokenstack = [];
@@ -174,12 +174,12 @@ class API {
         let tableRoller = new TableRoller(table);
 
         for (const token of tokenstack) {
-            const rollResults = await tableRoller.roll(customRoll, options),
+            const rollResults = await tableRoller.roll(options),
                 lootProcess = new LootProcessor(rollResults, token.actor, options),
                 betterResults = await lootProcess.buildResults(options);
             //LootCreator(betterResults, currencyData);
             //
-            await currencyHelper.addCurrenciesToToken(token, isTokenActor);
+            await currencyHelper.addCurrenciesToToken(token, lootProcess?.currencyData);
             await lootProcess.addItemsToToken(token, stackSame, isTokenActor, itemLimit);
         }
 

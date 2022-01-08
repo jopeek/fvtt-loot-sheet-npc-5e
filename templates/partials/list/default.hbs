@@ -37,7 +37,7 @@
 </div>
 <div class="header-details flexrow">
     <ul class="items-list inventory-list">
-        {{#each actor.features as |section sid|}}
+        {{#each actor.lootableItems as |section sid|}}
             {{#if section.items}}
                 <li class="items-header flexrow inventory-header">
                     <h3 class="item-name">{{section.label}}</h3>

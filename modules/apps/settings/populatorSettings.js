@@ -81,6 +81,15 @@ export class PopulatorSettings {
             default: '1d2',
             type: String
         });
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula, {
+            name: game.i18n.localize('lsnpc.settings.populator.fallbackCurrencyFormula.name'),
+            hint: game.i18n.localize('lsnpc.settings.populator.fallbackCurrencyFormula.hint'),
+            scope: MODULE.settings.scopes.world,
+            group: MODULE.settings.groups.lootpopulator.fallbacks,
+            config: false,
+            default: '1d4[gp], 1d4[sp], 1d4[cp]',
+            type: String
+        });
     }
 
     static async _registerCreatureTypeFallbacks() {
