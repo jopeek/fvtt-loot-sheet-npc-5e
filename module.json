@@ -58,6 +58,11 @@
 			"lang": "pt-BR",
 			"name": "Português (Brasil)",
 			"path": "./lang/pt.json"
+		},
+		{
+			"lang": "ja",
+			"name": "日本語",
+			"path": "./lang/ja.json"
 		}
 	],
 	"system": ["dnd5e"],

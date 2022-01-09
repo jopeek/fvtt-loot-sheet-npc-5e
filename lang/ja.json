@@ -1,0 +1,79 @@
+{
+    "lsnpc": {
+        "noActiveGM": "シーンにアクティブなGMが存在しません。アイテムを購入するには、同じシーンにオンラインのGMが必要です。",
+        "sendBuyText": "購入リクエスト宛先",
+        "permissions": {
+            "0": {
+                "title": "なし",
+                "desc": "アクセス許可無し"
+            },
+            "2": {
+                "title": "観測者（Observer）",
+                "desc": "中身をを閲覧できるが、商人シートのときのみ購入が行えます。"
+            },
+            "3": {
+                "title": "所有者（Owner）",
+                "desc": "キャラの中身を閲覧可能で、編集やお金のやり取りができます。"
+            }
+        },
+        "buttons": {
+            "loot": {
+                "items": {
+                    "all": {
+                        "title": "{n}{name}全取得",
+                        "label": "全取得"
+                    },
+                    "single": {
+                        "title": "単品",
+                        "desc": "単品アイテム"
+                    }
+                },
+                "currency": {
+                    "split": {
+                        "title": "🪙お金を{n}人のパーティで分配する",
+                        "label": "資金分配"
+                    },
+                    "single": {
+                        "title": "🪙お金を取得する",
+                        "label": "🪙取得"
+                    }
+                }
+                
+            },
+            "merchant" : {
+                "buy": {
+                    "title": "購入",
+                    "label": "アイテム購入"
+                },
+                "sell": {
+                    "title": "売却",
+                    "label": "アイテム売却"
+                },
+                "gm": {
+                    "price": {
+                        "title": "値段修正",
+                        "label": "値段の修正倍率を設定します。"
+                    }
+                }
+            }
+        },
+        "infoboxes": {
+            "lootsheettype": {
+                "title": "シート種別",
+                "content": "<dl><dt>お宝</dt><dd>は資金の分配をパーティ内で許可します。</dd><dt>商人</dt><dd>はシートから直接購入することを許可します。</dd></dl>"
+            },
+            "permissions": {
+                "title": "権限",
+                "content": "⚠️ 「ユーザ設定」よりそのプレイヤーにキャラクターが設定されていることを確認してください。設定されていればここに表示されます。 ⚠️"
+            },
+            "permissions_individual":{
+                "title": "個別権限",
+                "content": "🔁 キャラにクリックして権限の設定を切り替えます。ホバーで詳細情報が閲覧できます。"
+            }
+        },
+        "sheettypes": {
+            "loot": "お宝",
+            "merchant": "商人"
+        }
+    }    
+}
