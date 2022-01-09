@@ -264,17 +264,7 @@ export class LootProcessor {
     }
 
     /**
-       *
-       * @param {object} item representation
-       * @param {Actor} actor to which to add items to
-       * @param {boolean} stackSame if true add quantity to an existing item of same name in the current actor
-       * @param {number} customLimit
-       *
-
-       */
-
-    /**
-     * 
+     *
      *
      * @param {object} item
      * @param {Actor} actor

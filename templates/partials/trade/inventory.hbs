@@ -3,7 +3,7 @@
         {{#each section.items as |item iid|}}
             <li class="item lsnpc-action-link rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
                 {{#ifeq ../../lootsheettype "Merchant"}}
-                    title="{{item.data.name}}" data-action="stageItem" data-get-all="false"
+                    title="{{item.name}}" data-action="stageItem" data-get-all="false"
                 {{/ifeq}}
                 {{#ifeq ../../lootsheettype "Loot"}}
                     title="Buy Stack" data-action="lootItem" data-get-all="false"
@@ -15,7 +15,7 @@
                 data-item-price="{{item.data.price}}"
                 data-item-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
                 data-item-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
-                data-item-description="{{item.data.description.value}}" data-item-name="{{item.data.name}}"
+                data-item-description="{{item.description}}" data-item-name="{{item.name}}"
                 draggable="true"
                 style="background-image: url({{item.img}})">
             </li>
