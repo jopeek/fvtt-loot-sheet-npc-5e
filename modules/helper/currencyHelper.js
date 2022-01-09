@@ -74,11 +74,10 @@ export class currencyHelper {
      */
     static async addCurrenciesToToken(token, lootCurrency, adjutsByCR = false) {
         const currencyDataInitial = game.settings.get(MODULE.ns, 'lootCurrencyDefault') || { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 };
-        let currencyData = currencyDataInitial,
-            amount = 0;
+        let currencyData = currencyDataInitial;
 
-        if (token.data.actorData.data?.currency) {
-            currencyData = duplicate(token.data.actorData.data.currency);
+        if (token.data.data?.currency) {
+            currencyData = duplicate(token.data.data.currency);
         }
 
         for (let key in lootCurrency) {

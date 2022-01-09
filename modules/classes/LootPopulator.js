@@ -129,7 +129,7 @@ export class LootPopulator {
 
 			let currencyFlags = {
 				"generateCurrency": game.settings.get(MODULE.ns, 'generateCurrency'),
-				"lootCurrencyDefault": game.settings.get(MODULE.ns, 'lootCurrencyDefault'),
+				"currencyFormula": game.settings.get(MODULE.ns, 'lootCurrencyDefault'),
 				"useBetterRolltables": game.settings.get(MODULE.ns, "useBetterRolltables"),
 				"brt_rt_tcs": brt_currencyString,
 				"adjustCurrency": game.settings.get(MODULE.ns, "adjustCurrencyWithCR")

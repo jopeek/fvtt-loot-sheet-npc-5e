@@ -11,7 +11,8 @@ export const MODULE = {
     appIds: {
         lootsheet: 'lootsheetnpc5e',
         lootpopulatorSettings: 'lootsheetnpc5e-lootpopulator-settings',
-        lootsheetSettings: 'lootsheetnpc5e-lootsheet-settings'
+        lootsheetSettings: 'lootsheetnpc5e-lootsheet-settings',
+        ruleEditor: 'lootsheetnpc5e-rule-editor',
     },
     flags: {
         rolltable: 'rolltable',
@@ -23,6 +24,7 @@ export const MODULE = {
     ns: 'lootsheetnpc5e',
     path: 'modules/lootsheetnpc5e',
     templatePath: 'modules/lootsheetnpc5e/templates',
+    templateAppsPath: 'modules/lootsheetnpc5e/templates/apps',
     templatePartialsPath: 'modules/lootsheetnpc5e/templates/partials',
     socket: 'module.lootsheetnpc5e',
     sockettypes: {
@@ -44,7 +46,7 @@ export const MODULE = {
             client: 'client',
             default: 'defaults'
         },
-        groups: {            
+        groups: {
             sheet: {
                 moduleDefaults: 'moduleDefaults',
                 ui: 'UI',

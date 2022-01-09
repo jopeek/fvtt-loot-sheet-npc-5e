@@ -1,4 +1,4 @@
-<div class="form-group flexrow">
+<div class="form-group spaced">
     <input class="data-path-input" type="text" name="{{this.module}}.{{this.key}}.filters.{{index}}.filterpath" placeholder="{{localize 'path'}}">
         <select name="{{this.module}}.{{this.key}}.filters.{{index}}.comparison">
             <option value="=="><span title="equals">==</span></option>
@@ -8,7 +8,7 @@
         </select>
     <input type="text" name="{{this.module}}.{{this.key}}.filters.{{index}}.value">
     <div class="actions">
-        <button data-action="deleteRow"><i class="fas fa-trash" data-action="deleteRow"></i></button>
+        <button data-action="delete"><i class="fas fa-trash"></i></button>
     </div>
 </div>
 

@@ -3,9 +3,9 @@
     data-lootsheet-loot-id="{{destination.data._id}}-{{source.data._id}}"
     >
     <div class="loot-info flexrow" style="align-items: center; justify-content: center;">
-        <a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-id="{{destination._id}}">
+        <a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-uuid="{{destination.uuid}}">
             <img src="{{destination.data.img}}" class="looter-icon" title="{{destination.name}}">
-        </a><span class="action-message"> did {{type}} from </span><a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-id="{{source.data._id}}" data-uuid="{{source.data.uuid}}">
+        </a><span class="action-message"> did {{type}} from </span><a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-id="{{source.data._id}}" data-uuid="{{source.uuid}}">
             <img src="{{source.data.img}}" class="looter-icon" title="{{source.data.name}}">
         </a>
     </div>

@@ -1,23 +1,41 @@
 
 <main class="tradegrid">
     <section class="token-inventory">
-        {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs"}}
+        <main data-event-target="token" data-event-action="buy">
+        {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems}}
+        </main>
     </section>
-    <section class="info flairbox">
+
+    <section class="token-info flairbox">
         <div class="flairbox">
-            <aside>⬅️ Merchant </aside>
-            <aside>Playername➡️</aside>
+            <aside sytle="float:left;">
+                <h3>{{actor.name}}</h3>
+            </aside>
         </div>
 
         <!-- a box with a dropzone to accept items -->
     </section>
-    <div class="stage" dropzone="true">
-
-    </div>
-    <section class="player-inventory">
-        {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=player.items}}
+    <section class="stage dropzone" dropzone="true">
+        <main data-event-target="sell" data-event-action="player">
+            <header>Sell</header>
+            <ul class="inventory-list inventory-condensed" data-document-type="Item">
+            </ul>
+        </main>
+        <main data-event-target="buy" data-event-action="token">
+            <header>Buy</header>
+            <ul class="inventory-list inventory-condensed" data-document-type="Item">
+            </ul>
+        </main>
     </section>
-    <footer>
-        actions
-    </footer>
+    <section class="player-info flairbox">
+            {{log this}}
+            <aside sytle="float:left;">
+                <h3>{{player.name}}</h3>
+            </aside>
+    </section>
+    <section class="player-inventory">
+        <main data-event-target="player" data-event-action="sell">
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory}}
+        </main>
+    </section>
 </main>

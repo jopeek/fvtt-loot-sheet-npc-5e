@@ -9,7 +9,7 @@ export class WelcomeScreen extends Application {
 
   static get defaultOptions () {
     return mergeObject(super.defaultOptions, {
-      template: `${MODULE.templatePath}/welcome-screen.hbs`,
+      template: `${MODULE.templateAppsPath}/welcomeScreen.hbs`,
       resizable: true,
       width: 450,
       height: 636,

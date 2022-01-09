@@ -1,83 +1,97 @@
 .app.actor.loot-sheet-npc {
     .window-content {
+        .tab.trade{
+            overflow-y: unset;
+        }
+
         .tradegrid {
             display: grid;
             grid-template-areas:
-                "TOKENINVENTORY INFO PLAYERINVENTORY"
-                "TOKENINVENTORY INFO PLAYERINVENTORY"
-                "TOKENINVENTORY INFO PLAYERINVENTORY"
+                "TOKENINVENTORY TINFO PLAYERINVENTORY"
                 "TOKENINVENTORY STAGE PLAYERINVENTORY"
-                "TOKENINVENTORY STAGE PLAYERINVENTORY"
-                "FOOTER FOOTER FOOTER";
+                "TOKENINVENTORY PINFO PLAYERINVENTORY";
 
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 200px 1fr;
             height: 100%;
             width: 100%;
 
-            --iconwidth: 44px;
+            margin-top: 0.5em;
 
             .inventory-list {
                 display: grid;
-                grid-template-columns: repeat(4,var(--iconwidth));
-                grid-template-rows: var(--iconwidth);
+                grid-template-columns: repeat(auto-fill, var(--iconwidth));
+                grid-template-rows: repeat(auto-fill, var(--iconwidth));
                 background: var(--header-background);
                 gap: 0.4em;
                 padding-top: 0.5em;
 
                 .item {
                     cursor: pointer;
-                }
-                .image{
-                    display: inline-block;
-                    align-self: flex-start;
-                    justify-self: flex-start;
                     height: var(--iconwidth);
                     width: var(--iconwidth);
-                    background-position: center;
                     background-size: contain;
-                    box-shadow: inset 0 0 0.8em rgba(0,0,0,80%);
-                    padding: 0.3em;
-                    &:hover {
-                        box-shadow: inset 0 0 0.8em rgba(243,242,242,91%);
-                    }
                 }
-                .quantity {
-                    font-family: var(--modesto);
-                    font-size: 1.8em;
-                    padding: 0.5em;
-                    line-height: 0.9em;
-                    display: block;
-                    margin-top: auto;
-                    margin-left: auto;
-                    align-self: flex-end;
-                    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-                }
+            }
+
+            .inventory-condensed {
+                --iconwidth: 16px;
             }
 
             .token-inventory {
                 grid-area: TOKENINVENTORY;
                 background: var(--avatartint);
+                background: var(--header-background);
+                margin-top: 1.2em;
+                margin-bottom: 1.2em;
             }
 
             .player-inventory {
                 grid-area: PLAYERINVENTORY;
-                background: var(--sheettint);
+                background: var(--header-background);
+                margin-top: 1.2em;
+                margin-bottom: 1.2em;
             }
+            .flairbox {
+                padding: 0.5em;
 
-            .info {
-                grid-area: INFO;
+            }
+            .token-info {
+                grid-area: TINFO;
+            }
+            .player-info {
+                grid-area: PINFO;
             }
 
             .stage {
-                background: var(--header-background);
+                background: unset;
                 grid-area: STAGE;
                 display: grid;
-                grid-auto-flow: column;
-                background: linear-gradient(90deg, var(--avatartint) 29%, transparent), linear-gradient(-90deg, var(--sheettint) 22%, transparent);
-            }
+                grid-auto-rows: auto;
 
-            .footer {
-                grid-area: FOOTER;
+                background: linear-gradient(90deg, var(--avatartint) 29%, transparent), linear-gradient(-90deg, var(--sheettint) 22%, transparent);
+
+                main {
+                    background: var(--header-background);
+                    grid-area: unset;
+
+                    &[data-group-target="sell"]{
+                        background: linear-gradient(-90deg, var(--header-background) 29%, transparent);
+                    }
+                    &[data-group-target="buy"]{
+                        background: linear-gradient(90deg, var(--header-background) 29%, transparent);
+                    }
+                }
+            }
+            .item {
+                &[data-item-quantity]:before {
+                    content: attr(data-item-quantity);
+                    display: block;
+                    font-size: 0.9em;
+                    position: absolute;
+                    color: #fff;
+                    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+                    margin-left: calc(var(--iconwidth) / 2 + 2px);
+                }
             }
         }
     }

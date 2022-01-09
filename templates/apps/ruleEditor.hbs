@@ -1,0 +1,53 @@
+<form>
+    <header>
+        <h2>Add a new filter rule</h2>
+    </header>
+    <main>
+        <header>
+            <div class="form-group">
+                <label>Rulename</label>
+                <input type="hidden" name="{{this.module}}.{{this.key}}.uuid">
+                <input type="text" name="{{this.module}}.{{this.key}}.name" placeholder="name">
+            </div>
+            <div class="form-group">
+                <label>{{localize 'Rolltable'}}</label>
+                <select name="{{this.module}}.{{this.key}}.rolltable">
+                    <option value="null"><em>Select rolltable</em></option>
+                    {{> "modules/lootsheetnpc5e/templates/partials/settings/dropdown_options.hbs" data=this.data}}
+                </select>
+            </div>
+            <div class="form-group">
+                <em>and / or </em>
+                <input type="text" name="{{this.module}}.{{this.key}}.tags"
+                      placeholder="comma seperated better-rolltable tags">
+            </div>
+        </header>
+        <fieldset>
+            <legend>Filters</legend>
+            <main>
+                {{> "modules/lootsheetnpc5e/templates/partials/settings/filters.hbs" module=this.module key=this.key index=0}}
+            </main>
+            <footer class="actions">
+                <button type="button" data-action="add" data-settings-key="{{this.key}}">
+                    <i class="fas fa-plus" style="pointer-events: none;"></i>
+                </button>
+            </footer>
+        </fieldset>
+
+    </main>
+    <footer class="sheet-footer flexrow">
+        <div class="flexcol">
+            <button type="submit" name="submit">
+                <i class="far fa-save"></i> {{localize 'SETTINGS.Save'}}
+             </button>
+            <button type="button" name="reset">
+                <i class="fas fa-undo"></i> {{localize 'SETTINGS.Reset'}}
+            </button>
+        </div>
+        <aside class="dropzone" dropzone="true">
+            <div class="form-group">
+                <label>{{localize 'Test Rule against an Actor'}}</label>
+            </div>
+        </aside>
+    </footer>
+</form>

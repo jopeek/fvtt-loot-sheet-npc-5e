@@ -2,7 +2,7 @@ import { PermissionHelper } from '../helper/PermissionHelper.js';
 import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
 import { MODULE } from '../data/moduleConstants.js';
 import { LootPopulator } from '../classes/LootPopulator.js';
-import { TableRoller } from '../classes/TableRoller.js';
+import { TableRoller } from '../classes/tableRoller.js';
 import { LootProcessor } from '../classes/LootProcessor.js';
 import { currencyHelper } from '../helper/currencyHelper.js';
 
@@ -180,7 +180,7 @@ class API {
             //LootCreator(betterResults, currencyData);
             //
             await currencyHelper.addCurrenciesToToken(token, lootProcess?.currencyData);
-            await lootProcess.addItemsToToken(token, stackSame, isTokenActor, itemLimit);
+            await lootProcess.addItemsToToken(token, options);
         }
 
         if (verboseCall)

@@ -1,13 +1,12 @@
-{{#if this.actions}}
-    {{#each this.actions as |action actionName|}}
-        {{#if (eq actionName 'new')}}
-            {{> "modules/lootsheetnpc5e/templates/settings/new_rule_form.hbs" module=../this.module key=../this.key data=action.data}}
-        {{/if}}
-    {{/each}}
-{{/if}}
-
 <div class="form-group">
     {{#if (eq this.type 'Object')}}
+            <!--- This is shitty, we should do a more propper check --->
+        <header>
+            <h3>Filterrules</h3>
+        </header>
+        <nav class="actions">
+            <button type="button" class="item" data-action="new"><i class="fas fa-new"></i> {{localize "New"}}</button>
+        </nav>
         <table>
             <thead>
                 <tr>
@@ -20,21 +19,21 @@
             </thead>
             <tbody>
                 {{#each this.value as |customRule uniquekey|}}
-                    <tr data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}">
-                        <th data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.name">{{customRule.name}}</th>
-                        <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.filters">
+                    <tr data-name="{{this.module}}.{{this.key}}.{{uniquekey}}">
+                        <th data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.name">{{customRule.name}}</th>
+                        <td data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.filters">
                             <table>
                                 {{#each customRule.filters as |filter index|}}
                                     <tr>
-                                        <td data-name="{{../../this.module}}.{{../this.key}}.{{../uniquekey}}.filters.{{index}}.filterpath">{{filter.filterpath}}</td>
-                                        <td data-name="{{../../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.comparison">{{filter.comparison}}</td>
-                                        <td data-name="{{../../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.value">{{filter.value}}</td>
+                                        <td data-name="{{../this.module}}.{{../this.key}}.{{../uniquekey}}.filters.{{index}}.filterpath">{{filter.filterpath}}</td>
+                                        <td data-name="{{../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.comparison">{{filter.comparison}}</td>
+                                        <td data-name="{{../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.value">{{filter.value}}</td>
                                     </tr>
                                 {{/each}}
                             </table>
                         </td>
 
-                        <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
+                        <td data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
                             <em class="lsnpc-document-link" data-uuid="{{customRule.rolltable}}">
                                 {{#if customRule.rolltableName}}
                                     {{truncate customRule.rolltableName 25}}
@@ -43,7 +42,7 @@
                                 {{/if}}
                             </em>
                         </td>
-                        <td data-name="{{../this.module}}.{{../this.key}}.{{uniquekey}}.tags">
+                        <td data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.tags">
                             {{#if customRule.tags}}
                                 {{customRule.tags}}
                             {{/if}}

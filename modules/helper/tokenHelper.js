@@ -126,6 +126,7 @@ export class tokenHelper {
 				shopQtyFormula: tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
 				itemQtyFormula: tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
 				itemQtyLimitFormula: tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
+				currencyFormula: tokenActor.getFlag(MODULE.ns, "currencyFormula") || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula) || "",
 				itemOnlyOnce: tokenActor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
             	reducedVerbosity: game.settings.get(MODULE.ns, "reduceUpdateVerbosity") || true
 			};

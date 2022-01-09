@@ -37,8 +37,8 @@ export class LootProcessor {
     }
 
     async buildResults(options = {}) {
-        const currencyString = options?.currencyString ?? '0';
-        this.currencyData = await currencyHelper.generateCurrency(currencyString);
+        const currencyString = options?.currencyString ?? '';
+        this._setCurrencyData(await currencyHelper.generateCurrency(currencyString));
 
         for (let i = 0; i < this.results.length; i++) {
             const betterResults = await this._parseResult(this.results[i], options);
@@ -112,7 +112,22 @@ export class LootProcessor {
      */
     _addCurrency(currencyData) {
         for (const key in currencyData) {
-            this.currencyData[key] = (this.currencyData[key] || 0) + currencyData[key]
+            this._setCurrencyData((this.currencyData[key] || 0) + currencyData[key], key);
+        }
+    }
+
+    getCurrencyData() {
+        return this.currencyData;
+    }
+
+    /**
+     * @param {object|number} item
+     */
+    _setCurrencyData(value, currency = null) {
+        if(currency) {
+            this.currencyData[currency] = Number(value);
+        } else {
+            this.currencyData = value;
         }
     }
 
@@ -184,7 +199,6 @@ export class LootProcessor {
                     const innerTableRoller = new TableRoller(table);
                     const innerTableResults = await innerTableRoller.roll(numberRolls);
 
-                    debugger;
                     // take care of nested tables
                     this.tableResults = this.tableResults.concat(innerTableResults);
                 } else if (textString) {
@@ -243,7 +257,7 @@ export class LootProcessor {
 
         const items = [];
         for (const item of this.lootResults) {
-            const newItem = await this._createLootItem(item, this.actor, options.stackSame);
+            const newItem = await this._createLootItem(item, this.actor, options);
             items.push(newItem);
         }
         return items;
@@ -256,8 +270,20 @@ export class LootProcessor {
        * @param {boolean} stackSame if true add quantity to an existing item of same name in the current actor
        * @param {number} customLimit
        *
-       * @returns {Item} the create Item (foundry item)
+
        */
+
+    /**
+     * 
+     *
+     * @param {object} item
+     * @param {Actor} actor
+     * @param {object} options
+     *
+     * @returns {Item} the created Item
+     *
+     * @private
+     */
     async _createLootItem(item, actor, options) {
         const newItem = { data: await this.buildItemData(item) },
             itemPrice = newItem.data?.data?.price || 0,
@@ -265,8 +291,8 @@ export class LootProcessor {
             originalItem = embeddedItems.find(i => i.name === newItem.data?.name && itemPrice === getProperty(i.data, 'data.price'));
 
         let itemQuantity = new Roll(options?.itemQtyFormula, actor.data).roll().total || newItem?.data?.data.quantity || 1,
-            itemLimit = new Roll(options?.itemQtyLimitFormula, actor.data).roll().total || 0;
-        originalItemQuantity = originalItem?.data?.quantity || 1,
+            itemLimit = new Roll(options?.itemQtyLimitFormula, actor.data).roll().total || 0,
+            originalItemQuantity = originalItem?.data?.quantity || 1,
             limitCheckedQuantity = this._handleLimitedQuantity(itemQuantity, originalItemQuantity, itemLimit);
 
         /** if the item is already owned by the actor (same name and same PRICE) */
@@ -414,17 +440,17 @@ export class LootProcessor {
 
     /**
      *
-     * @param {token} token
-     * @param {boolean} stackSame
-     * @param {boolean} isTokenActor
-     * @param {number} customLimit
-     * @returns
+     * @param {Token} token
+     * @param {object} options
+     *
+     * @returns {Array<Item>} Array of added items
+     *
      */
-    async addItemsToToken(token, stackSame = true, isTokenActor = false, customLimit = 0) {
+    async addItemsToToken(token, options = this.options) {
         let items = [];
         for (const item of this.lootResults) {
             // Create the item making sure to pass the token actor and not the base actor
-            const newItem = await this._createLootItem(item, token.actor, stackSame, customLimit);
+            const newItem = await this._createLootItem(item, token.actor, options);
             items.push(newItem);
         }
 

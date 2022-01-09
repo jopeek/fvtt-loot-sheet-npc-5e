@@ -50,7 +50,7 @@ export class LootsheetNPC5eHooks {
 
     static foundryInit() {
         SheetSettings.registerSettings();
-        //await LootsheetNPC5eHooks.socketListener();
+
         game.socket.on(MODULE.socket, socketListener.handleRequest);
     }
 
@@ -124,10 +124,14 @@ export class LootsheetNPC5eHooks {
         chatMsgLink.forEach(async el => {
             el.addEventListener('click', async (e) => {
                 e.preventDefault();
-                if (!e.target.dataset.uuid) return;
-                const doc = await fromUuid(e.target.dataset.uuid);
+                if (!e.currentTarget.dataset.uuid) return;
+                const doc = await fromUuid(e.currentTarget.dataset.uuid);
                 if (!doc) return;
-                await doc.sheet.render(true);
+                if(doc.collectionName == 'tokens') {
+                    await doc.actor.sheet.render(true);
+                } else {
+                    await doc.sheet.render(true);
+                }
                 e.stopPropagation();
             });
         });
@@ -146,7 +150,7 @@ export class LootsheetNPC5eHooks {
             packageName: MODULE.ns,
             sheetClasses: [
                 {
-                    name: "PopulatorSettingsConfigApp", // this _must_ be the class name of the `Application` you want it to apply to
+                    name: 'LootsheetNPCRuleEditor', // this _must_ be the class name of the `Application` you want it to apply to
                     fieldConfigs: [
                         {
                             selector: `.data-path-input`,
@@ -156,7 +160,8 @@ export class LootsheetNPC5eHooks {
                         },
                     ]
                 },
-            ]
+            ], //
+
         };
 
         // Add our config

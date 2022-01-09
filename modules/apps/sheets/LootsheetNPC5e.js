@@ -8,6 +8,7 @@ import { PermissionHelper } from '../../helper/PermissionHelper.js';
 import { tableHelper } from "../../helper/tableHelper.js";
 
 import { tokenHelper } from "../../helper/tokenHelper.js";
+import { sheetListener } from "../../hooks/sheetListener.js";
 // ⬆️ module imports
 
 /**
@@ -27,31 +28,31 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             lootsheetType = this.actor.getFlag(MODULE.ns, "lootsheettype");
 
         let templateList = [
-            MODULE.templatePath + "/sheet.hbs",
-            MODULE.templatePath + "/partials/body.hbs",
-            MODULE.templatePath + "/partials/footer.hbs",
-            MODULE.templatePath + "/partials/header.hbs",
-            MODULE.templatePath + "/partials/header/navigation.hbs",
-            MODULE.templatePath + "/partials/list/" + sheetType + ".hbs",
-            MODULE.templatePath + "/partials/list/currency.hbs",
-            MODULE.templatePath + "/partials/list/actions.hbs",
-            MODULE.templatePath + "/partials/trade/index.hbs",
-            MODULE.templatePath + "/partials/trade/inventory.hbs"
+            MODULE.templateAppsPath + "/lootsheet.hbs",
+            MODULE.templatePartialsPath + "/body.hbs",
+            MODULE.templatePartialsPath + "/footer.hbs",
+            MODULE.templatePartialsPath + "/header.hbs",
+            MODULE.templatePartialsPath + "/header/navigation.hbs",
+            MODULE.templatePartialsPath + "/list/" + sheetType + ".hbs",
+            MODULE.templatePartialsPath + "/list/currency.hbs",
+            MODULE.templatePartialsPath + "/list/actions.hbs",
+            MODULE.templatePartialsPath + "/trade/index.hbs",
+            MODULE.templatePartialsPath + "/trade/inventory.hbs"
         ];
 
         if (game.user.isGM) {
-            templateList.push(MODULE.templatePath + "/partials/gm/gm-settings.hbs");
-            templateList.push(MODULE.templatePath + "/partials/gm/inventory.hbs");
-            templateList.push(MODULE.templatePath + "/partials/gm/lootsheet-type.hbs");
-            templateList.push(MODULE.templatePath + "/partials/gm/permissions.hbs");
-            templateList.push(MODULE.templatePath + "/partials/gm/styling.hbs");
+            templateList.push(MODULE.templatePartialsPath + "/gm/gm-settings.hbs");
+            templateList.push(MODULE.templatePartialsPath + "/gm/inventory.hbs");
+            templateList.push(MODULE.templatePartialsPath + "/gm/lootsheet-type.hbs");
+            templateList.push(MODULE.templatePartialsPath + "/gm/permissions.hbs");
+            templateList.push(MODULE.templatePartialsPath + "/gm/styling.hbs");
         }
 
         loadTemplates(templateList);
 
         if (!game.user.isGM && this.actor.limited) return fallbackPath + "limited-sheet.html";
 
-        return MODULE.templatePath + "/sheet.hbs";
+        return MODULE.templateAppsPath + "/lootsheet.hbs";
     }
 
     static get defaultOptions() {
@@ -82,10 +83,19 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         let sheetType = await this.actor.getFlag(MODULE.ns, typeKey),
             priceModifier = 1.0,
-            itemContents = LootSheetNPC5eHelper.getLootableItems(sheetData.actor.items),
+            sheetDataActorItems = sheetData.actor.items,
             totalWeight = 0,
             totalPrice = 0,
             totalQuantity = 0;
+
+        //enrich with uuid
+        for (let fullItem of this.actor.getEmbeddedCollection('Item')) {
+            sheetDataActorItems.find(i => i._id == fullItem.id).uuid = fullItem.uuid;
+        }
+        /**
+         * We only care for the lootable items now.
+         */
+        sheetDataActorItems = LootSheetNPC5eHelper.getLootableItems(sheetDataActorItems)
 
         if (!sheetType) await this.actor.setFlag(MODULE.ns, typeKey, "Loot");
         sheetType = await this.actor.getFlag(MODULE.ns, typeKey);
@@ -97,26 +107,26 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             priceModifier = await this.actor.getFlag(MODULE.ns, priceModStr);
         }
 
-        itemContents.forEach((item) => totalWeight += Math.round((item.data.quantity * item.data.weight * 100) / 100));
+        sheetDataActorItems.forEach((item) => totalWeight += Math.round((item.data.quantity * item.data.weight * 100) / 100));
 
         if (game.settings.get(MODULE.ns, "includeCurrencyWeight"))
             totalWeight += (Object.values(this.actor.data.data.currency).reduce(function (accumVariable, curValue) {
                 return accumVariable + curValue
             }, 0) / 50).toNearest(0.01);
 
-        itemContents.forEach((item) => totalPrice += Math.round((item.data.quantity * item.data.price * priceModifier * 100) / 100));
-        itemContents.forEach((item) => totalQuantity += Math.round((item.data.quantity * 100) / 100));
+        sheetDataActorItems.forEach((item) => totalPrice += Math.round((item.data.quantity * item.data.price * priceModifier * 100) / 100));
+        sheetDataActorItems.forEach((item) => totalQuantity += Math.round((item.data.quantity * 100) / 100));
 
         // Booleans
         sheetData.isGM = (game.user.isGM) ? true : false;
 
         // Items
-        sheetData.items = itemContents;
+        sheetData.items = sheetDataActorItems;
 
         // rest
         sheetData.lootsheettype = sheetType;
         sheetData.isCondensedView = false; //game.settings.get(MODULE.ns, "useCondensedLootsheet");
-        sheetData.totalItems = itemContents.length;
+        sheetData.totalItems = sheetDataActorItems.length;
         sheetData.totalWeight = totalWeight.toLocaleString('en');
         sheetData.totalPrice = totalPrice.toLocaleString('en') + " gp";
         sheetData.totalQuantity = totalQuantity;
@@ -162,107 +172,32 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
             // Price Modifier
             html.find('.price-modifier').click(ev => this._priceModifier(ev));
-            html.find('.inventory-settings').change(ev => this._inventorySettingChange(ev));
-            html.find('.update-inventory').click(ev => this._inventoryUpdate(ev));
+            html.find('.inventory-settings').change(ev => sheetListener.inventorySettingChange(ev, this.actor));
+            html.find('.update-inventory').click(ev => sheetListener.inventoryUpdateListener(ev, this.actor, this.token));
         }
 
 
         let sheetActionButtons = document.querySelectorAll('.lsnpc-app .lsnpc-action-link');
 
+        let tradeableItems = document.querySelectorAll('.tradegrid .item.lsnpc-action-link');
+        //make items clickable and dragable
+        sheetListener.tradeItemEventListeners(tradeableItems);
+
         for (let actionButton of sheetActionButtons) {
+            if(actionButton.dataset.action === "stageItem") continue;
             const eventType = actionButton.nodeName === 'SELECT' ? 'change' : 'click';
             actionButton.toggleAttribute('disabled', false);
             actionButton.addEventListener(eventType, ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, ev));
         }
 
+        //document.addEventListener("DOMContentLoaded", () => {
+        //ondragstart="event.dataTransfer.setData('text/plain',null)
+        const tradeDropzone = document.querySelector('.lsnpc-app .tradegrid .dropzone');
+        tradeDropzone.addEventListener('drop', (ev) => sheetListener.onDrop(ev));
+        //});
+
         // toggle infoboxes
         html.find('.help').hover(e => e.currentTarget.nextElementSibling.classList.toggle('hidden'));
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Handle merchant settings change
-     * @private
-     */
-    async _inventorySettingChange(event, html) {
-        event.preventDefault();
-
-        // @todo get this from the settings, leverage the constants, if key exists in MODULE.
-        const expectedKeys = ["rolltable", "shopQty", "itemQty", "itemQtyLimit", "clearInventory", "itemOnlyOnce", "currencyFormula"];
-        let targetKey = event.target.name.split('.')[3];
-
-        if (!expectedKeys.includes(targetKey)) {
-            console.log(MODULE.ns + ` | Error changing stettings for "${targetKey}".`);
-            return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
-        }
-
-        if (targetKey == "clearInventory" || targetKey == "itemOnlyOnce") {
-            console.log(MODULE.ns + " | " + targetKey + " set to " + event.target.checked);
-            await this.actor.setFlag(MODULE.ns, targetKey, event.target.checked);
-            return;
-        }
-
-        console.log(MODULE.ns + " | " + targetKey + " set to " + event.target.value);
-        await this.actor.setFlag(MODULE.ns, targetKey, event.target.value);
-    }
-
-    /* -------------------------------------------- */
-
-    /**
-     * Handle inventory update
-     *
-     * @private
-     */
-    async _inventoryUpdate(event, html) {
-        event.preventDefault();
-
-        const rolltableUUID = this.actor.getFlag(MODULE.ns, "rolltable"),
-            shopQtyFormula = this.actor.getFlag(MODULE.ns, MODULE.flags.shopQty) || "1",
-            itemQtyLimitFormula = this.actor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || "0",
-            clearInventory = this.actor.getFlag(MODULE.ns, MODULE.flags.clearInventory),
-            betterRolltablesModule = {
-                ns: 'better-rolltables',
-                use: game.settings.get(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables) || false
-            };
-
-        let rolltable = await fromUuid(rolltableUUID);
-        if (!rolltable) return ui.notifications.error(`No Rollable Table found with uuid "${rolltableUUID}".`);
-
-        if (clearInventory) {
-            let currentItems = this.actor.data.items.map(i => i._id);
-            await this.actor.deleteEmbeddedDocuments("Item", currentItems);
-        }
-
-        // populate via better-rolltables if it is installed and its activated in config
-        if (
-            betterRolltablesModule.use &&
-            rolltable.getFlag(betterRolltablesModule.ns, 'table-type')
-        ) {
-            const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
-            let customRoll = new Roll(shopQtyFormula),
-                itemLimitRoll = new Roll(itemQtyLimitFormula),
-                options = {};
-
-            customRoll.roll();
-            itemLimitRoll.roll();
-
-            options.customRole = customRoll.total;
-            options.itemQtyLimit = itemLimitRoll.total;
-
-            await betterRolltablesAPI.addLootToSelectedToken(
-                rolltable,
-                this.actor.data.token,
-                options
-            );
-
-            return this.actor.sheet.render(true); //population should done, good bye 👋
-        } else {
-            // use built-in population method
-            await tokenHelper.populateWithRolltable(rolltable, this.token);
-        }
-        await this.actor.sheet.close();
-        return this.actor.sheet.render(true);
     }
 
     /**
@@ -272,59 +207,9 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     _setClasses(sheetData) {
         // sheetTint handling
 
-
         if (false && game.settings.get(MODULE.ns, "useCondensedLootsheet") || false && !sheetData.owner) {
             this.options.classes.push('lootsheet-condensed');
         }
-    }
-
-    /**
-     *
-     * @returns currently not in use, likely obsolet for now
-     */
-    _createRollTable() {
-        let type = "weapon";
-
-        game.packs.map(p => p.collection);
-
-        const pack = game.packs.find(p => p.collection === "dnd5e.items");
-        let i = 0;
-        let output = [];
-
-        pack.getIndex().then(index => index.forEach(function (arrayItem) {
-            var x = arrayItem._id;
-            //console.log(arrayItem);
-            i++;
-            pack.getEntity(arrayItem._id).then(packItem => {
-
-                if (packItem.type === type) {
-
-                    //console.log(packItem);
-
-                    let newItem = {
-                        "_id": packItem._id,
-                        "flags": {},
-                        "type": 1,
-                        "text": packItem.name,
-                        "img": packItem.img,
-                        "collection": "Item",
-                        "resultId": packItem._id,
-                        "weight": 1,
-                        "range": [
-                            i,
-                            i
-                        ],
-                        "drawn": false
-                    };
-
-                    output.push(newItem);
-
-                }
-            });
-        }));
-
-        console.log(output);
-        return;
     }
 
     /* -------------------------------------------- */
@@ -380,12 +265,28 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         //console.log("Loot Sheet | Prepare Features");
 
-        const items = duplicate(actorData.items),
-            lootableItems = LootSheetNPC5eHelper.getLootableItems(items);
+        const items = actorData.items,
+            lootableItems = LootSheetNPC5eHelper.getLootableItems(items),
+            playerCharacter = game.user.character;
+
+        //enrich with uuid
+        for (let fullItem of this.actor.getEmbeddedCollection('Item')) {
+            items.find(i => i._id == fullItem.id).uuid = fullItem.uuid;
+        }
 
         // Iterate through items, allocating to containers
         actorData.actor.actions = LootSheetNPC5eHelper.sortAndGroupItems(items);
         actorData.actor.lootableItems = LootSheetNPC5eHelper.sortAndGroupItems(lootableItems);
+
+        if (playerCharacter) {
+            let playerItems = duplicate(playerCharacter.data.items);
+            //enrich with uuid
+            for (let fullItem of playerCharacter.getEmbeddedCollection('Item')) {
+                playerItems.find(i => i._id == fullItem.id).uuid = fullItem.uuid;
+            }
+            playerItems = LootSheetNPC5eHelper.getLootableItems(playerItems);
+            actorData.actor.playerInventory = LootSheetNPC5eHelper.sortAndGroupItems(playerItems);
+        }
     }
 
 
