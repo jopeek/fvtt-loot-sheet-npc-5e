@@ -1,0 +1,229 @@
+{
+    "lsnpc": {
+        "noActiveGM": "シーンにアクティブなGMが存在しません。アイテムを購入するには、同じシーンにオンラインのGMが必要です。",
+        "sendBuyText": "購入リクエスト宛先",
+        "permissions": {
+            "0": {
+                "title": "なし",
+                "desc": "アクセス許可無し"
+            },
+            "2": {
+                "title": "観測者（Observer）",
+                "desc": "中身をを閲覧できるが、商人シートのときのみ購入が行えます。"
+            },
+            "3": {
+                "title": "所有者（Owner）",
+                "desc": "キャラの中身を閲覧可能で、編集やお金のやり取りができます。"
+            }
+        },
+        "buttons": {
+            "loot": {
+                "items": {
+                    "all": {
+                        "title": "{n}{name}全取得",
+                        "label": "全取得"
+                    },
+                    "single": {
+                        "title": "単品",
+                        "desc": "単品アイテム"
+                    }
+                },
+                "currency": {
+                    "split": {
+                        "title": "🪙お金を{n}人のパーティで分配する",
+                        "label": "資金分配"
+                    },
+                    "single": {
+                        "title": "🪙お金を取得する",
+                        "label": "🪙取得"
+                    }
+                }
+                
+            },
+            "merchant" : {
+                "buy": {
+                    "title": "購入",
+                    "label": "アイテム購入"
+                },
+                "sell": {
+                    "title": "売却",
+                    "label": "アイテム売却"
+                },
+                "gm": {
+                    "price": {
+                        "title": "値段修正",
+                        "label": "値段の修正倍率を設定します。"
+                    }
+                }
+            }
+        },
+        "infoboxes": {
+            "lootsheettype": {
+                "title": "シート種別",
+                "content": "<dl><dt>お宝</dt><dd>は資金の分配をパーティ内で許可します。</dd><dt>商人</dt><dd>はシートから直接購入することを許可します。</dd></dl>"
+            },
+            "permissions": {
+                "title": "権限",
+                "content": "⚠️ 「ユーザ設定」よりそのプレイヤーにキャラクターが設定されていることを確認してください。設定されていればここに表示されます。 ⚠️"
+            },
+            "permissions_individual":{
+                "title": "個別権限",
+                "content": "🔁 キャラにクリックして権限の設定を切り替えます。ホバーで詳細情報が閲覧できます。"
+            }
+        },
+        "sheettypes": {
+            "loot": "お宝",
+            "merchant": "商人"
+        },
+        "settings": {
+            "menu": {
+                "advancedOptions": {
+                    "name": "高度な設定",
+                    "label": "高度な設定＆デフォルト設定"
+                },
+                "populatorOptions": {
+                    "name": "お宝追加設定",
+                    "label": "お宝コマの追加設定"
+                },
+                "currency": "硬貨",
+                "defaults": "デフォルト",
+                "fallbacks": "フォールバック",
+                "moduleDefaults": "Modデフォルト",
+                "merchant": "商人",
+                "creatureTypeFallbacks": "種別",
+                "loot": "お宝",
+                "skiplist": "無視リスト",
+                "info": "?",
+                "rulesets": "ルールセット"
+            },
+            "sheet": {
+                "buyItem": {
+                    "name": "アイテム購入",
+                    "hint": "商人シートからアイテムの購入を許可しますか？"
+                },
+                "colorRarity": {
+                    "name": "レア度色",
+                    "hint": "レア度に応じてアイテムの色を変えますか？（色覚に問題のあるPLもいることに配慮してください）"
+                },
+                "convertCurrency": {
+                    "name": "硬貨の変換",
+                    "hint": "購入後、硬貨を次に大きい単位に変換しますか？(例： gp->pp)"
+                },
+                "fallbackCurrencyFormula":{
+                    "name": "デフォルト硬貨計算設定",
+                    "hint": "キャラクターなどの設定に定義されていないときのデフォルト計算式を定義します。(例： '1d6[gp], 2d6[sp], 3d6[cp]')"
+                },
+                "filterNaturalWeapons": {
+                    "name": "自然武器フィルタ",
+                    "hint": "自然武器などを表示しなくなります。"
+                },
+                "distributeCurrency": {
+                    "name": "資金分配",
+                    "hint": "パーティメンバーに資金の分配を許可します。"
+                },
+                "generateChatMessages" : {
+                    "name": "通知を作成",
+                    "hint": "お宝からアイテムを取得したときやお金のやり取りがあったとき、チャットにメッセージを表示します。"
+                },
+                "lootAll": {
+                    "name": "全取得",
+                    "hint": "プレイヤーに全取得のコマンドを使用可能にします。硬貨の場合は硬貨の設定に依存します。"
+                },
+                "includeCurrencyWeight": {
+                    "name": "硬貨の荷重",
+                    "hint": "シートの合計荷重に硬貨の重さを含めます。"
+                },
+                "lootCurrency": {
+                    "name": "硬貨取得",
+                    "hint": "プレイヤーが所持しているキャラに硬貨の取得を許可します。"
+                },
+                "lootItem": {
+                    "name": "取得",
+                    "hint": "シートからアイテムを取得する許可を与えます。"
+                },
+                "maxPriceIncrease": {
+                    "name": "最大金額",
+                    "hint": "商人シートの最大倍率(例： 200% = 100gp -> 200gp)"
+                },
+                "reduceUpdateVerbosity": {
+                    "name": "通知抑制",
+                    "hint": "所持品にアイテムが追加される度に発生する通知を抑制します。"
+                },
+                "showStackWeight": {
+                    "name": "スタックの重さ",
+                    "hint": "スタックの重さを個別のアイテムの隣に表示します。"
+                },
+                "stackBuyConfirm": {
+                    "name": "スタック購入確認",
+                    "hint": "スタックを購入する前に確認のメッセージを入れます。"
+                },
+                "sheetUpdate": {
+                    "name": "強制シート更新",
+                    "hint": "プレイヤーのクライアントの画面情報を強制的に更新します。"
+                },
+                "useCondensedLootsheet": {
+                    "name": "⚠️試験的⚠️ お宝UI縮小",
+                    "hint": "お宝シートのUIを小さくし、コンパクトにまとめるCSSを使用します。意見を募るための試験的なものです。"
+                }
+            },
+            "populator": {
+                "autoPopulateTokens": {
+                    "name": "アイテム自動生成",
+                    "hint": "お宝が所持しているアイテムを自動的に生成します。キャラにロール表やフォールバックが設定されている時のみ有効です。"
+                },
+                "adjustCurrencyWithCR": {
+                    "name": "CRで硬貨調整",
+                    "hint": "取得できる硬貨は脅威度に応じて微調整されます(ロール式 + 脅威度の切り上げ)."
+                },
+                "creatureTypeFallbacks": {
+                    "name": "クリーチャー種別フォールバック",
+                    "hint": "フォールバックが設定されていなくても、種別さえ一致していればそれを使用してお宝を自動生成します。"
+                },
+                "lootCurrencyDefault": {
+                    "name": "財産デフォルト式",
+                    "hint": "財産生成のデフォルト計算式を定義します。(例： 1d4[gp], 1d20[sp], 1d50[cp])"
+                },
+                "fallbackRolltable": {
+                    "name": "フォールバック表",
+                    "label": "キャラにお宝自動生成のためのロール表が定義されていないときのロール表です。"
+                },
+                "fallbackShopQty": {
+                    "name": "フォールバック在庫",
+                    "hint": "キャラに在庫の計算式が定義されていないときに使用されるデフォルトの在庫数です。(例：1d6)"
+                },
+                "fallbackItemQty": {
+                    "name": "フォールバック所持数",
+                    "hint": "キャラに所持数の計算式が定義されていないときに使用されるデフォルトの所持数です。(例：1d6)"
+                },
+                "fallbackItemQtyMax": {
+                    "name": "フォールバック所持数最大値",
+                    "hint": "キャラに所持数の計算式が定義されていないときに使用されるデフォルトの所持数の最大値です。(例：2d20 || 10)"
+                },
+                "generateCurrency": {
+                    "name": "硬貨生成",
+                    "hint": "お宝生成時に硬貨も自動生成します。"
+                },
+                "useRulesets": {
+                    "name": "フィルタールール",
+                    "hint": "コマを判定するためのカスタムルールです。ルールの表がマッチした場合はフォールバックより優先されて使用されます。"
+                },
+                "useSkiplist": {
+                    "name": "無視リスト",
+                    "hint": "自動生成時に無視するコマの種別です。"
+                }
+            },
+            "autoCheckUpdates": {
+                "name": "更新チェック",
+                "hint": "Modの最新更新情報をスタートアップ時に確認します。"
+            },
+            "addInterfaceButtons": {
+                "name": "UIボタン追加",
+                "hint": "UIにボタンを追加します。"
+            },
+            "useBetterRolltables": {
+                "name": "Better Rolltables使用",
+                "hint": "インストールされている場合はBetter RolltablesのModを使用します。"
+            }
+        }
+    }    
+}
