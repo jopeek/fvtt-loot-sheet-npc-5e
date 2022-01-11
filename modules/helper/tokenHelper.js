@@ -123,26 +123,23 @@ export class tokenHelper {
 	static async populateWithRolltable(rolltable, token) {
 		const tokenActor = token.actor;
 		let options = {
-				shopQtyFormula: tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
-				itemQtyFormula: tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
-				itemQtyLimitFormula: tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
-				currencyFormula: tokenActor.getFlag(MODULE.ns, "currencyFormula") || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula) || "",
+				customRole: {
+					shopQtyFormula: tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
+					itemQtyFormula: tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
+					itemQtyLimitFormula: tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
+					currencyFormula: tokenActor.getFlag(MODULE.ns, "currencyFormula") || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula) || "",
+				},
 				itemOnlyOnce: tokenActor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
+				tokenUuid: token.uuid,
             	reducedVerbosity: game.settings.get(MODULE.ns, "reduceUpdateVerbosity") || true
 			};
 
-		let shopQtyRoll = new Roll(options.shopQtyFormula);
+		let shopQtyRoll = new Roll(options.customRole.shopQtyFormula);
 		let shopRoll = await shopQtyRoll.roll();
-		let shopRollTotal = shopRoll.total;
+		options.total = shopRoll.total;
 
-		for (let i = 0; i < shopRollTotal; i++) {
-			console.log(MODULE.ns, `Populating ${shopRollTotal} items with ${rolltable.results.length} entries from ${rolltable.name}`);
-			await API.addLootToSelectedToken(token, rolltable, options);
-		}
-
+		await API.addLootToSelectedToken(token, rolltable, options);
 		token.actor.sheet.render(true);
-
-		return;
 	}
 
 	/**

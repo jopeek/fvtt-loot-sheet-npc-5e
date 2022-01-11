@@ -48,7 +48,7 @@ export class LootProcessor {
                 this.lootResults.push(r);
             }
         }
-        return this.lootResults;
+        return { results: this.lootResults, currency: this.currencyData };
     }
 
     /**
@@ -226,44 +226,6 @@ export class LootProcessor {
     }
 
     /**
-     * obsolete?
-     *
-     * @param {Actor} actor
-     * @param {object} options
-     * @returns
-     */
-    async addCurrenciesToActor(actor = this.actor, options = {}) {
-        if (!actor) return;
-        const currencyData = duplicate(this.actor.data.data.currency);
-        const lootCurrency = this.currencyData;
-
-        let currenciesToAdd = currencyHelper.addCurrenciesToToken(currencyData, lootCurrency);
-
-        if (!actor) return;
-        debugger;
-        await actor.update({ 'data.currency': currenciesToAdd });
-    }
-
-    /**
-     * Obsolete?
-     *
-     * @param {boolean} stackSame Should same items be stacked together? Default = true
-     *
-     * @returns
-     */
-    async addItemsToActor(options = { stackSame: true }) {
-        debugger;
-        // we do use this?
-
-        const items = [];
-        for (const item of this.lootResults) {
-            const newItem = await this._createLootItem(item, this.actor, options);
-            items.push(newItem);
-        }
-        return items;
-    }
-
-    /**
      *
      *
      * @param {object} item
@@ -280,13 +242,13 @@ export class LootProcessor {
             embeddedItems = [...actor.getEmbeddedCollection('Item').values()],
             originalItem = embeddedItems.find(i => i.name === newItem.data?.name && itemPrice === getProperty(i.data, 'data.price'));
 
-        let itemQuantity = new Roll(options?.itemQtyFormula, actor.data).roll().total || newItem?.data?.data.quantity || 1,
-            itemLimit = new Roll(options?.itemQtyLimitFormula, actor.data).roll().total || 0,
+        let itemQuantity = new Roll(options?.customRole.itemQtyFormula, actor.data).roll().total || newItem?.data?.data.quantity || 1,
+            itemLimit = new Roll( options?.customRole.itemQtyLimitFormula, actor.data).roll().total || 0,
             originalItemQuantity = originalItem?.data?.quantity || 1,
             limitCheckedQuantity = this._handleLimitedQuantity(itemQuantity, originalItemQuantity, itemLimit);
 
         /** if the item is already owned by the actor (same name and same PRICE) */
-        if (originalItem && stackSame) {
+        if (originalItem) {
             /** add quantity to existing item */
             let updateItem = {
                 _id: originalItem.id,
@@ -436,10 +398,11 @@ export class LootProcessor {
      * @returns {Array<Item>} Array of added items
      *
      */
-    async addItemsToToken(token, options = this.options) {
+    async addItemsToToken(token, options) {
         let items = [];
         for (const item of this.lootResults) {
             // Create the item making sure to pass the token actor and not the base actor
+
             const newItem = await this._createLootItem(item, token.actor, options);
             items.push(newItem);
         }

@@ -33,6 +33,7 @@ export const MODULE = {
         distributeCurrency: 'distributeCurrency',
         lootCurrency: 'lootCurrency',
         buyItem: 'buyItem',
+        tradeItems: 'tradeItems',
         buyAll: 'buyAll',
         sheetUpdate: 'sheetUpdate'
     },
@@ -74,6 +75,7 @@ export const MODULE = {
                 advancedOptions: 'advancedSheetOptions',
                 buyItem: 'buyItem',
                 buyAll: 'buyAll',
+                chatGracePeriod: 'chatGracePeriod',
                 colorRarity: 'colorRarity',
                 convertCurrency: 'convertCurrency',
                 distributeCurrency: 'distributeCurrency',
@@ -89,6 +91,7 @@ export const MODULE = {
                 reduceUpdateVerbosity: 'reduceUpdateVerbosity',
                 stackBuyConfirm: 'stackBuyConfirm',
                 showStackWeight: 'showStackWeight',
+                tradeItems: 'tradeItems',
                 useCondensedLootsheet: 'useCondensedLootsheet'
             },
             lootpopulator: {

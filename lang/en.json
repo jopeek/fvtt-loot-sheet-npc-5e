@@ -2,6 +2,12 @@
     "lsnpc": {
         "noActiveGM": "No active GM on your scene, a GM must be online and on the same scene to purchase an item.",
         "sendBuyText": "Sending buy request to ",
+        "chatActionMessages": {
+            "buy": " has purchased from ",
+            "sell": " has sold to ",
+            "trade": " has traded with ",
+            "loot": " has looted from "
+        },
         "permissions": {
             "0": {
                 "title": "None",
@@ -104,6 +110,10 @@
                     "name": "Buy item",
                     "hint": "Allow players to buy items from the merchant sheet?"
                 },
+                "chatGracePeriod": {
+                    "name": "Chat grace period (seconds)",
+                    "hint": "When updating the chat messages, after this grace period the module will create a new message instead of updating the old one."
+                },
                 "colorRarity": {
                     "name": "Colorize rarity?",
                     "hint": "Use slight color indication to show rarity? (Be aware that this might affect colorblind players)"
@@ -163,6 +173,10 @@
                 "sheetUpdate": {
                     "name": "Force sheet update",
                     "hint": "Send an update to the players that tells there client to refresh the sheet."
+                },
+                "tradeItems": {
+                    "name": "Trading",
+                    "hint": "Allow players to trade items with the sheet."
                 },
                 "useCondensedLootsheet": {
                     "name": "⚠️ ALPHA Testing Preview ⚠️ Condensed lootsheet",

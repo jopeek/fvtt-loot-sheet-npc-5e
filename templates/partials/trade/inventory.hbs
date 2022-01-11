@@ -1,21 +1,21 @@
 <ul class="items-list inventory-list">
     {{#each inventoryData as |section sid|}}
         {{#each section.items as |item iid|}}
-            <li class="item lsnpc-action-link rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
+            <li class="item rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
                 {{#ifeq ../../lootsheettype "Merchant"}}
                     title="{{item.name}}" data-action="stageItem" data-get-all="false"
                 {{/ifeq}}
                 {{#ifeq ../../lootsheettype "Loot"}}
-                    title="Buy Stack" data-action="lootItem" data-get-all="false"
+                    title="{{item.name}}" data-action="lootItem" data-get-all="false"
                 {{/ifeq}}
                 {{log item}}
                 data-uuid="{{item.uuid}}"
-                data-item-id="{{item._id}}"
-                data-item-quantity="{{item.data.quantity}}"
-                data-item-price="{{item.data.price}}"
-                data-item-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
-                data-item-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
-                data-item-description="{{item.description}}" data-item-name="{{item.name}}"
+                data-id="{{item._id}}"
+                data-quantity="{{item.data.quantity}}"
+                data-price="{{item.data.price}}"
+                data-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
+                data-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
+                data-description="{{item.description}}" data-name="{{item.name}}"
                 draggable="true"
                 style="background-image: url({{item.img}})">
             </li>

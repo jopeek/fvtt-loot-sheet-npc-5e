@@ -33,9 +33,8 @@ export class socketListener {
             if (action === "buyItem") {
                 ItemHelper.transaction(targetToken.actor, triggeringActor, data.targetItemId, data.quantity);
             }
-            if (action === "sellItems") {
-                const options = { sell: true };
-                ItemHelper.transaction(triggeringActor, targetToken.actor, data.targetItemId, data.quantity, options);
+            if (action === "tradeItems") {
+                ItemHelper.trade(targetToken.actor, triggeringActor, data.trades);
             }
             if (action === "lootAll") {
                 ItemHelper.lootAllItems(targetToken, triggeringActor);

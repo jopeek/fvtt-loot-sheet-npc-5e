@@ -12,6 +12,22 @@ export class SheetSettings {
      * @static
      */
     static registerSettings() {
+        /**
+         *
+         * @description Register the settings for the LootSheetNPC5e Module
+         *
+         * For sanity reasons, all settings keys are taken from the moduleConstants
+         * > This makes it easier to find the key in the codebase.
+         * > This also makes it easier to change the key if needed (instead of search an replace).
+         *
+         * > Downside is that it's an extra step to keep in mind.
+         * > If you add a key, you need to add it in the moduleConstants as well.
+         * > If you remove a key, you should remove it from the moduleConstants as well.
+         *
+         * > Keys are named in a way that a settings key always should have a related translation key.
+         *
+         */
+
 
         game.settings.registerMenu(MODULE.ns, MODULE.settings.keys.sheet.advancedOptions, {
             name: game.i18n.localize('lsnpc.settings.menu.advancedOptions.name'),
@@ -31,13 +47,29 @@ export class SheetSettings {
         });
 
         game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.sheetUpdate, {
-            name: game.i18n.localize('lsnpc.settings.sheetUpdate.name'),
-            hint: game.i18n.localize('lsnpc.settings.sheetUpdate.hint'),
+            name: game.i18n.localize('lsnpc.settings.sheet.sheetUpdate.name'),
+            hint: game.i18n.localize('lsnpc.settings.sheet.sheetUpdate.hint'),
             scope: MODULE.settings.scopes.world,
             config: true,
             default: true,
             type: Boolean,
         });
+
+        game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.chatGracePeriod, {
+                name: game.i18n.localize('lsnpc.settings.sheet.chatGracePeriod.name'),
+                hint: game.i18n.localize('lsnpc.settings.sheet.chatGracePeriod.hint'),
+                scope: MODULE.settings.scopes.world,
+                config:true,
+                default: 60,
+                range: {
+                    min: 0,
+                    max: 300,
+                    step: 5,
+                },
+                type: Number,
+            }
+        );
+
 
         game.settings.register(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables, {
             name: game.i18n.localize('lsnpc.settings.useBetterRolltables.name'),
@@ -73,6 +105,16 @@ export class SheetSettings {
             hint: game.i18n.localize('lsnpc.settings.sheet.lootItem.hint'),
             scope: MODULE.settings.scopes.world,
             group: MODULE.settings.groups.sheet.loot,
+            config: false,
+            default: true,
+            type: Boolean
+        });
+
+        game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.tradeItems, {
+            name: game.i18n.localize('lsnpc.settings.sheet.tradeItems.name'),
+            hint: game.i18n.localize('lsnpc.settings.sheet.tradeItems.hint'),
+            scope: MODULE.settings.scopes.world,
+            group: MODULE.settings.groups.sheet.moduleDefaults,
             config: false,
             default: true,
             type: Boolean

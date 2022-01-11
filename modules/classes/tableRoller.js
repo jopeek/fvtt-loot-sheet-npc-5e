@@ -11,13 +11,13 @@ export class TableRoller {
 
 	/**
 	 *
-	 * @param {number|string} rollOptions
+	 * @param {number|string} options
 	 *
 	 * @returns {array} results
 	 */
-	async roll(rollOptions = undefined) {
-		rollOptions = rollOptions || this.rollOptionDefault ;
-		this.results = await this.rollManyOnTable(rollOptions , this.table);
+	async roll(options = undefined) {
+		options = options || this.rollOptionDefault ;
+		this.results = await this.rollManyOnTable(options , this.table);
 		return this.results;
 	}
 

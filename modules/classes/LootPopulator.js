@@ -93,17 +93,18 @@ export class LootPopulator {
 					return ui.notifications.error(MODULE.ns + `: No Rollable Table found with id "${rolltableReference}".`);
 				}
 
-				let customRoll = await new Roll(shopQtyFormula, token.data).roll();
+				let customRoll = await new Roll(shopQtyFormula, currentToken.data).roll();
 
 				options = {
 					customRole: {
-						total: await customRoll.total,
+						total: customRoll.total,
 						itemQtyFormula: itemQtyFormula,
 						itemQtyLimitFormula: itemQtyLimitFormula,
 						shopQtyFormula: shopQtyFormula,
 						currencyFormula: currencyFormula || ""
 					},
-					tokenUuid: currentToken.uuid
+					tokenUuid: currentToken.uuid,
+					total: customRoll.total
 				};
 
 				// if we use betterRolltables and the table is of a brt type, let it handle the loot

@@ -154,11 +154,7 @@ class API {
      * @returns
      */
     static async addLootToSelectedToken(token = null, table = null , options = null) {
-        const isTokenActor = (options && options?.isTokenActor),
-            stackSame = (options && options?.stackSame) ? options.stackSame : true,
-            customRoll = (options && options?.customRole) ? options.customRole : undefined,
-            itemLimit = (options && options?.itemQtyLimitFormula) ? Number(options.itemQtyLimitFormula) : 0,
-            verboseCall = options?.verbose ?? false;
+        const verboseCall = options?.verbose ?? false;
 
         let tokenstack = [];
 
@@ -177,9 +173,8 @@ class API {
             const rollResults = await tableRoller.roll(options),
                 lootProcess = new LootProcessor(rollResults, token.actor, options),
                 betterResults = await lootProcess.buildResults(options);
-            //LootCreator(betterResults, currencyData);
-            //
-            await currencyHelper.addCurrenciesToToken(token, lootProcess?.currencyData);
+
+            await currencyHelper.addCurrenciesToToken(token, betterResults?.currency);
             await lootProcess.addItemsToToken(token, options);
         }
 
@@ -312,7 +307,7 @@ class API {
      * @param {Token} token
      * @param {object} options
      */
-    static async populateTokenWithOptions(token, options) {
+    static async populateTokenWithOptions(token = null, options = null) {
         await LootPopulator.populate(token, options);
     }
 

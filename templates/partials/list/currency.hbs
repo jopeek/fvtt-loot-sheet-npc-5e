@@ -1,7 +1,7 @@
 <ul class="currency flexrow">
     {{#each data.currency as |c i|}}
         <li class="coin currency-item coin-{{i}}" title="{{lookup (lookup ../config.currencies i) 'label'}}">
-            <input type="text" name="data.currency.{{i}}" value="{{c}}" data-dtype="number" />
+            <input type="number" name="data.currency.{{i}}" value="{{c}}" data-dtype="number" step="1"/>
         </li>
     {{/each}}
 </ul>

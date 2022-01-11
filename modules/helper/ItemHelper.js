@@ -1,4 +1,5 @@
 import { MODULE } from '../data/moduleConstants.js';
+import { LootsheetNPC5eHooks } from '../hooks/LootsheetNPC5eHooks.js';
 import { PermissionHelper } from './PermissionHelper.js';
 
 class ItemHelper {
@@ -14,7 +15,7 @@ class ItemHelper {
             chanceOfDamagedItems: options?.chanceOfDamagedItems | 0,
             damagedItemsMultiplier: options?.damagedItemsMultiplier | 0,
             removeDamagedItems: options?.removeDamagedItems | false,
-            filterNaturalWeapons: game.settings.get(MODULE.ns, 'filterNaturalWeapons') | true,
+            filterNaturalWeapons: game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.filterNaturalWeapons) | true,
         };
     }
 
@@ -197,18 +198,67 @@ class ItemHelper {
         // On 0 quantity skip everything to avoid error down the line
         if (quantity == 0) return ItemHelper.errorMessageToActor(buyer, `Not enought items on vendor.`);
 
-        const soldItem = seller.getEmbeddedDocument("Item", id);
+        const soldItem = seller.getEmbeddedDocument("Item", id),
+            priceModifier = parseInt(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
+
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
-        let priceModifier = parseInt(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1,
-            itemCostInGold = (Math.round(soldItem.data.data.price * priceModifier * 100) / 100) * quantity,
-            successfullTransaction = await ItemHelper.updateFunds(seller, buyer, itemCostInGold);
 
+        let itemCostInGold = (Math.round(soldItem.data.data.price * priceModifier * 100) / 100) * quantity,
+            successfullTransaction = await ItemHelper.updateFunds(seller, buyer, itemCostInGold);
         if (!successfullTransaction) return false;
         moved = await this.moveItems(seller, buyer, [{ id: id, data: { data: { quantity: quantity } } }]);
 
         if (moved || options?.chatOutPut) return ItemHelper.chatMessage(seller, buyer, moved, { type: 'buy' });
+    }
+
+    /**
+     *
+     * Handle a trade with buying and selling items
+     *
+     * @todo The looting stuff should all go to a dedicated helper at some point
+     *
+     * @param {Actor} npcActor
+     * @param {Actor} playerCharacter
+     * @param {Array} trades
+     * @param {object} options
+     *
+     * @returns void
+     */
+    static async trade(npcActor, playerCharacter, trades, options = { chatOutPut: true }) {
+        const priceModifier = parseInt(npcActor.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
+        let moved = { sell: [], buy: [] };
+
+        // for tradeType in object trades get the array
+        for (let tradetype in trades) {
+            if (!trades[tradetype].length > 0) continue;
+
+            if (tradetype === 'sell') {
+                let tradeSum = 0;
+                for (let item of trades[tradetype]) {
+                    tradeSum += (Math.round(item.data.data.price * priceModifier * 100) / 100) * item.data.data.quantity;
+                }
+                const successfullTransaction = await this.updateFunds(playerCharacter, npcActor, tradeSum);
+                if (!successfullTransaction) return false;
+
+                moved[tradetype] = await this.moveItems(playerCharacter, npcActor, trades[tradetype]);
+                if (!options.chatOutPut) return;
+                ItemHelper.chatMessage(npcActor, playerCharacter, moved[tradetype], { type: tradetype });
+            } else if (tradetype === 'buy') {
+                let tradeSum = 0;
+                for (let item of trades[tradetype]) {
+                    // get the price of the item object
+                    tradeSum += (Math.round(item.data.data.price * priceModifier * 100) / 100) * item.data.data.quantity;
+                }
+                const successfullTransaction = await this.updateFunds(npcActor, playerCharacter, tradeSum);
+                if (!successfullTransaction) return false;
+
+                moved[tradetype] = await this.moveItems(npcActor, playerCharacter, trades[tradetype]);
+                if (!options.chatOutPut) return;
+                ItemHelper.chatMessage(npcActor, playerCharacter, moved[tradetype], { type: tradetype });
+            }
+        }
     }
 
     /**
@@ -517,7 +567,7 @@ class ItemHelper {
      */
     static async chatMessage(source, destination, movedItems, options = { type: 'loot' }) {
         if (game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.generateChatMessages)) {
-            const existingMessage = ItemHelper.getItemsFromLootMessage(destination.id, source.id);
+            const existingMessage = ItemHelper.getItemsFromLootMessage(destination.id, source.id, options.type);
             let existingItems = existingMessage?.items;
 
             // cleanup lootedItems
@@ -527,12 +577,12 @@ class ItemHelper {
              */
             movedItems = movedItems.map(el => ({
                 quantity: el.quantity,
-                priceTotal: Math.floor((el.item.data.data?.price || 0 ) * el.quantity),
+                priceTotal: Math.floor((el.item.data.data?.price || 0) * el.quantity),
                 data: {
                     documentName: el.item.documentName,
                     img: el.item.img,
                     name: el.item.name,
-                    id: el.item._id,
+                    id: el.item.id,
                     uuid: el.item.uuid,
                     price: Math.floor(el.item.data.data?.price || 0),
                     rarity: el.item.data?.data?.rarity || 'common'
@@ -560,15 +610,19 @@ class ItemHelper {
                     }
                 }
             }
-
-            const message = await renderTemplate(MODULE.templatePath + '/chat/loot-chat-card.hbs', {
+            const messageData = {
                 templatePath: MODULE.templatePath,
                 colorRarity: game.settings.get(MODULE.ns, "colorRarity"),
                 source: source,
+                sourceId: (source.isLinked) ? source.data_id : source.id,
                 destination: destination,
+                flags: (source.collectionName == 'tokens') ? source.actor.data.flags : source.data.flags,
                 items: existingItems || movedItems,
-                type: options.type
-            });
+                type: options.type,
+                actionMessage: game.i18n.localize('lsnpc.chatActionMessages.' + options.type)
+            };
+
+            const message = await renderTemplate(MODULE.templatePath + '/chat/loot-chat-card.hbs', messageData);
 
             if (existingItems) {
                 ChatMessage.updateDocuments([{
@@ -590,7 +644,7 @@ class ItemHelper {
                     content: message,
                     flags: {
                         lootsheetnpc5e: {
-                            lootId: destination.id + '-' + source.id,
+                            lootId: destination.id + '-' + options.type + '-' + source.id,
                             loot: movedItems
                         }
                     }
@@ -603,14 +657,24 @@ class ItemHelper {
      * Check for messaged where a flag of `looterId-lootedId`
      * parse the html and extract the items.
      *
-     * @param {*} looterId
-     * @param {*} lootedId
+     * @param {string} looterId
+     * @param {string} lootedId
+     * @param {string} type
+     *
      */
-    static getItemsFromLootMessage(looterId, lootedId) {
+    static getItemsFromLootMessage(looterId, lootedId, type) {
         //get messages by lootId
-        let existingLootMessage = game.messages.find(m => m.data.flags?.lootsheetnpc5e?.lootId == looterId + '-' + lootedId)
+
+        let existingLootMessage = game.messages.filter(m => m.data.flags?.lootsheetnpc5e?.lootId == looterId + '-' + type + '-' + lootedId).pop();
 
         if (existingLootMessage) {
+            const stamp = existingLootMessage?.data.timestamp ?? 0,
+                timeSince = (Date.now() - stamp),
+                gracePeriod = game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.chatGracePeriod),
+                outOfGrace = timeSince > (gracePeriod*1000);
+            //if the existing message is older than the gracePeriod, ignore it
+            if (outOfGrace) return [];
+
             return { id: existingLootMessage.id, items: existingLootMessage.getFlag(MODULE.ns, 'loot') };
         }
 
@@ -631,76 +695,80 @@ class ItemHelper {
     }
 
     /**
-	 * Converts certain non lootable documents to lootable items
+     * Converts certain non lootable documents to lootable items
      *
      * @description This function is called when a document is converted to loot.
      * It checks itemData for the item type.
      *
      *  * Converts "spell" items to spellScrolls
      *  * checks the given or default conversions
-	 *  * If conversions are given for the itemType replace the given properties accordingly
+     *  * If conversions are given for the itemType replace the given properties accordingly
      *
-	 * @param {Item} itemData ~ {Item}.data
-	 * @param {string} itemType ~ {Item}.documentName
+     * @param {Item} itemData ~ {Item}.data
+     * @param {string} itemType ~ {Item}.documentName
      * @param {object} conversions
-	 * @returns
-	 */
-	static async applyItemConversions(itemData, itemType, conversions = null) {
-		if (itemData.type === "spell") {
-			itemData = await Item5e.createScrollFromSpell(itemData);
-		}
+     * @returns
+     */
+    static async applyItemConversions(itemData, itemType, conversions = null) {
+        if (itemData.type === "spell") {
+            itemData = await Item5e.createScrollFromSpell(itemData);
+        }
 
         const rarity = this.getRandomRarity(),
-            randomPriceFormula = Math.floor(twist.random() * (rarity.priceRange[1] - rarity.priceRange[0] +1)) + rarity.priceRange[0],
+            randomPriceFormula = Math.floor(twist.random() * (rarity.priceRange[1] - rarity.priceRange[0] + 1)) + rarity.priceRange[0],
             priceRoller = new Roll('1d' + randomPriceFormula),
             priceRoll = await priceRoller.roll();
 
+        /**
+         *  If we have a conversion for the itemType, use it
+         *  The defaults conversions should be moved somewhere
+         */
         const defaultConversions = {
             Actor: {
-            name: `${itemData.name} Portrait`,
-            img: itemData?.img || "icons/svg/mystery-man.svg",
-            type: 'loot',
-            data: {
-                rarity: rarity.rarity,
-                price: priceRoll.total || 0.1
-            }
-          },
-          Scene: {
-            name: 'Map of '+ itemData.name,
-            img: itemData.thumb || "icons/svg/direction.svg",
-            data: {
-                rarity: rarity.rarity,
-                price: priceRoll.total || 0.1
+                name: `${itemData.name} Portrait`,
+                img: itemData?.img || "icons/svg/mystery-man.svg",
+                type: 'loot',
+                data: {
+                    rarity: rarity.rarity,
+                    price: priceRoll.total || 0.1
+                }
             },
-            type: 'loot'
-          }
+            Scene: {
+                name: 'Map of ' + itemData.name,
+                img: itemData.thumb || "icons/svg/direction.svg",
+                data: {
+                    rarity: rarity.rarity,
+                    price: priceRoll.total || 0.1
+                },
+                type: 'loot'
+            }
         };
 
-		conversions = conversions || defaultConversions;
+        conversions = conversions || defaultConversions;
 
-		const convert = conversions[itemType] ?? false;
+        const convert = conversions[itemType] ?? false;
 
-		if (convert) {
-			for (const prop in convert) {
-				itemData[prop] = convert[prop];
-			}
-		}
+        if (convert) {
+            for (const prop in convert) {
+                itemData[prop] = convert[prop];
+            }
+        }
 
-		return itemData;
-	}
+        return itemData;
+    }
 
     /**
      * Get a random item rarity by weight
      *
      */
-    static getRandomRarity (weights = undefined) {
+    static getRandomRarity(weights = undefined) {
         const randomizerWeights = weights || [
-            { rarity: '', priceRange: [0, 49], max: 30},
-            { rarity: 'common', priceRange: [50,100], max: 60 },
-            { rarity: 'uncommon', priceRange: [101,500], max: 80 },
-            { rarity: 'rare', priceRange: [501,5000], max: 98.5 },
-            { rarity: 'veryrare',priceRange: [5001,50000], max: 99.8 },
-            { rarity: 'legendary', priceRange: [50001,1000000], max: 100}
+            { rarity: '', priceRange: [0, 49], max: 30 },
+            { rarity: 'common', priceRange: [50, 100], max: 60 },
+            { rarity: 'uncommon', priceRange: [101, 500], max: 80 },
+            { rarity: 'rare', priceRange: [501, 5000], max: 98.5 },
+            { rarity: 'veryrare', priceRange: [5001, 50000], max: 99.8 },
+            { rarity: 'legendary', priceRange: [50001, 1000000], max: 100 }
         ];
         //⬆️ @todo make this a settings changable thing in the future || game.settings.get(MODULE.ns, MODULE.settings.keys.rarityWeights);
 

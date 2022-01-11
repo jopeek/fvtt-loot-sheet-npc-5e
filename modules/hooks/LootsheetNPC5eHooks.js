@@ -7,6 +7,7 @@ import { API } from '../api/API.js';
 
 import { LootPopulator } from '../classes/LootPopulator.js';
 import { socketListener } from './socketListener.js';
+import { handlebarsHelpers } from '../helper/handlebarsHelpers.js';
 
 /**
  * @module LootSheetNPC5e.hooks
@@ -32,6 +33,7 @@ export class LootsheetNPC5eHooks {
         Hooks.on('createToken', this.onCreateToken);
         Hooks.on('getSceneControlButtons', this.attachSceneControlButtons);
         Hooks.on('renderTokenHUD', this.attachTokenHudButtons);
+        Hooks.on("renderChatMessage", (_, jq) => this.refreshChatListeners(jq[0]));
     }
 
     static foundrySetup() {
@@ -57,69 +59,22 @@ export class LootsheetNPC5eHooks {
     static foundryReady() {
         PopulatorSettings.registerSettings();
 
-        Handlebars.registerHelper('ifeq', function (a, b, options) {
-            return (a == b) ? options.fn(this) : options.inverse(this);
-        });
-
-        Handlebars.registerHelper('uneq', function (arg1, arg2, options) {
-            return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
-        });
-
-        Handlebars.registerHelper('hexToRGB', function (hex, alpha) {
-            let r = parseInt(hex.slice(1, 3), 16),
-                g = parseInt(hex.slice(3, 5), 16),
-                b = parseInt(hex.slice(5, 7), 16);
-
-            if (alpha) {
-                return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
-            } else {
-                return 'rgb(' + r + ', ' + g + ', ' + b + ')';
-            }
-        });
-
-        Handlebars.registerHelper('lootsheetprice', function (basePrice, modifier) {
-            return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en') + " gp";
-        });
-
-        Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
-            let showStackWeight = game.settings.get("lootsheetnpc5e", "showStackWeight");
-            if (showStackWeight) {
-                return `/${(weight * qty).toLocaleString('en')}`;
-            }
-
-            return "";
-        });
-
-        Handlebars.registerHelper('lootsheetweight', function (weight) {
-            return (Math.round(weight * 1e5) / 1e5).toString();
-        });
-
-        Handlebars.registerHelper('truncate', function (str, len) {
-            if (str.length > len && str.length > 0) {
-                var new_str = str + " ";
-                new_str = str.substr(0, len);
-                new_str = str.substr(0, new_str.lastIndexOf(" "));
-                new_str = (new_str.length > 0) ? new_str : str.substr(0, len);
-
-                return new Handlebars.SafeString(new_str + '...');
-            }
-            return str;
-        });
+        handlebarsHelpers.register();
 
         if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
             renderWelcomeScreen();
         }
 
-        LootsheetNPC5eHooks._activateListeners();
+        LootsheetNPC5eHooks.refreshChatListeners();
     }
 
     /**
      * Activate module eventListeners
      */
-    static _activateListeners(app = document) {
-
+    static refreshChatListeners(dom) {
+        dom = dom ?? document.getElementById("chat");
         //listen on document link clicks in loot sheet chat messages
-        const chatMsgLink = app.querySelectorAll('#chat .lsnpc-document-link');
+        const chatMsgLink = dom.querySelectorAll('.lsnpc-document-link');
 
         chatMsgLink.forEach(async el => {
             el.addEventListener('click', async (e) => {

@@ -1,27 +1,33 @@
 <div class="dnd5e lsnpc chat-card item-card loot-item-card"
     data-actor-id="{{destination.id}}"
-    data-lootsheet-loot-id="{{destination.data._id}}-{{source.data._id}}"
-    >
+    data-lootsheet-loot-id="{{destination.data._id}}-{{type}}-{{sourceId}}"
+    style="
+        --sheettint: {{hexToRGB flags.lootsheetnpc5e.sheettint.value flags.lootsheetnpc5e.sheettint.alpha}};
+        --avatartint: {{hexToRGB flags.lootsheetnpc5e.avatartint.value flags.lootsheetnpc5e.avatartint.alpha}};
+        --blendmode: {{flags.lootsheetnpc5e.sheettint.blendmode}};
+        --style: {{flags.lootsheetnpc5e.sheettint.style}};">
     <div class="loot-info flexrow" style="align-items: center; justify-content: center;">
         <a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-uuid="{{destination.uuid}}">
-            <img src="{{destination.data.img}}" class="looter-icon" title="{{destination.name}}">
-        </a><span class="action-message"> did {{type}} from </span><a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-id="{{source.data._id}}" data-uuid="{{source.uuid}}">
-            <img src="{{source.data.img}}" class="looter-icon" title="{{source.data.name}}">
+            <img src="{{destination.data.img}}" class="looter-icon character-icon" title="{{destination.name}}">
+        </a>
+        <span class="action-message"> {{actionMessage}} </span>
+        <a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-uuid="{{source.uuid}}">
+            <img src="{{source.data.img}}" class="looter-icon npc-icon" title="{{source.data.name}}">
         </a>
     </div>
 
     <header class="card-header flexrow">
-        <span class="item-name">Toggle Loot Details ↕</span>
+        <span class="item-name"> ↕ Toggle Details ↕ </span>
     </header>
 
     <div class="card-content" style="display:none">
         <ol class="loot-results item-list">
             {{#each items as |item|}}
-                <li class="table-result item flexrow {{#if ../colorRarity}}rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}{{/if}}">
+                <li class="table-result item flexrow">
                     <div class="item-quantity">
                         <strong>{{item.quantity}}&nbsp; &#xD7;</strong>
                     </div>
-                    <img class="item-image" src="{{item.data.img}}" class="rarity-{{item.data.rarity}}">
+                    <img class="item-image" src="{{item.data.img}}" class="{{#if ../colorRarity}}rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}{{/if}}">
                     <div class="item-name">
                         <a class="lsnpc-document-link" draggable="true"
                             data-entity="{{item.data.documentName}}"

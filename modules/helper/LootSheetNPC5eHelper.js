@@ -2,6 +2,7 @@ import { PermissionHelper } from "./PermissionHelper.js";
 import { MODULE } from "../data/moduleConstants.js";
 import { QuantityDialog } from "../classes/quantityDialog.js";
 import { ItemHelper } from "../helper/ItemHelper.js";
+import { socketListener } from "../hooks/socketListener.js";
 
 /**
  * @Module LootSheetNPC5e.Helpers.LootSheetNPC5eHelper
@@ -60,26 +61,53 @@ class LootSheetNPC5eHelper {
         if (!game.settings.get(MODULE.ns, event.currentTarget.dataset.action)) {
             return;
         }
-        const
-            targetGm = PermissionHelper.getTargetGM(),
+        const targetGm = PermissionHelper.getTargetGM(),
             action =  event.currentTarget.dataset.action,
             dataSet = { ...event.currentTarget.dataset, ...event.currentTarget.closest('.item')?.dataset },
             targetItemId = dataSet?.itemId,
             options = { acceptLabel: "Quantity" },
-            maxQuantity = parseInt(dataSet?.maxQuantity);
+            maxQuantity = parseInt(dataSet?.maxQuantity),
+            trades = event.currentTarget.closest('section')?.querySelectorAll('ul') || null,
+            stagedItems = { buy: [], sell: [] };
+
         let quantity = 1;
+
+        // prepare trade
+        if (trades && event.currentTarget.closest('.tradegrid')) {
+            for(let trade of trades) {
+                const type = trade.parentNode.dataset.eventTarget;
+                if (trade.children.length == 0) continue;
+                if(!type) continue;
+
+                for (let tradeItem of trade.querySelectorAll('.item')) {
+                    const item = {
+                        id: tradeItem.dataset.id,
+                        data: {
+                            id: tradeItem.dataset.id,
+                            data: {
+                                quantity: parseInt(tradeItem.dataset.quantity),
+                                price: parseInt(tradeItem.dataset.price)
+                            }
+                        },
+                    };
+
+                    stagedItems[type].push(item);
+                }
+
+            }
+        }
 
         // if (!targetGm) return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
         if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
-        if (!game.user.actorId && !game.user.isGM ) return ui.notifications.error(`No active character for user.`);
 
         const packet = {
             action: action,
-            triggerActorId: game.user.actorId || null,
+            triggerActorId: game.user.character.id || null,
             tokenUuid: token.uuid,
             processorId: targetGm.id,
             targetItemId: targetItemId || null,
-            quantity: quantity || null
+            quantity: quantity || null,
+            trades: stagedItems,
         };
 
         if (action == MODULE.settings.keys.sheet.sheetUpdate) {
@@ -89,18 +117,34 @@ class LootSheetNPC5eHelper {
 
         if (event.shiftKey && dataSet?.getAll === 'true') {
             packet.quantity = maxQuantity;
-            game.socket.emit(MODULE.socket, packet);
-        } else if(event.shiftKey) {
-            game.socket.emit(MODULE.socket, packet);
+            this.emitToSocketOrCallMethod(packet)
+        } else if(!event.shiftKey) {
+            // no shiftKey, we don't ask for the quantity
+            this.emitToSocketOrCallMethod(packet)
         } else {
+            // shiftKey, we ask for the quantity
             options.max = maxQuantity;
             const quantityDialog = new QuantityDialog((quantityCallback) => {
                 packet.quantity = quantityCallback;
-                game.socket.emit(MODULE.socket, packet);
-            },
-                options
-            );
+                this.emitToSocketOrCallMethod(packet);
+                }, options);
+
             quantityDialog.render(true);
+        }
+    }
+
+    /**
+     * This is so that a DM can call the socket method directly
+     * Socket emitions are only ever send to others not oneself.
+     * So as a GM we chave to call the method directly.
+     *
+     * @param {object} packet
+     */
+    static emitToSocketOrCallMethod(packet) {
+        if (game.user.isGM) {
+            socketListener.handleRequest(packet);
+        } else {
+            game.socket.emit(MODULE.socket, packet);
         }
     }
 

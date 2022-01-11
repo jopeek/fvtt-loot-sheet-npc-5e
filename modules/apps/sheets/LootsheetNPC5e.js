@@ -6,8 +6,6 @@ import { MODULE } from "../../data/moduleConstants.js";
 import { LootSheetNPC5eHelper } from "../../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from '../../helper/PermissionHelper.js';
 import { tableHelper } from "../../helper/tableHelper.js";
-
-import { tokenHelper } from "../../helper/tokenHelper.js";
 import { sheetListener } from "../../hooks/sheetListener.js";
 // ⬆️ module imports
 
@@ -37,6 +35,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             MODULE.templatePartialsPath + "/list/currency.hbs",
             MODULE.templatePartialsPath + "/list/actions.hbs",
             MODULE.templatePartialsPath + "/trade/index.hbs",
+            MODULE.templatePartialsPath + "/trade/currency.hbs",
             MODULE.templatePartialsPath + "/trade/inventory.hbs"
         ];
 
@@ -90,8 +89,11 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         //enrich with uuid
         for (let fullItem of this.actor.getEmbeddedCollection('Item')) {
-            sheetDataActorItems.find(i => i._id == fullItem.id).uuid = fullItem.uuid;
+            let sheetItem = sheetDataActorItems.find(i => i._id == fullItem.id);
+            if(!sheetItem) continue;
+            sheetItem.uuid = fullItem.uuid;
         }
+
         /**
          * We only care for the lootable items now.
          */
@@ -164,6 +166,10 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      */
     activateListeners(html) {
         super.activateListeners(html);
+
+        /**
+         * @todo Move to the listner
+         */
         if (this.options.editable) {
             // Change Permissions for all players
             html.find('.permission-option a').click(ev => PermissionHelper.assignPermissions(ev, this.actor));
@@ -179,12 +185,11 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         let sheetActionButtons = document.querySelectorAll('.lsnpc-app .lsnpc-action-link');
 
-        let tradeableItems = document.querySelectorAll('.tradegrid .item.lsnpc-action-link');
+        let tradeableItems = document.querySelectorAll('.tradegrid .item');
         //make items clickable and dragable
         sheetListener.tradeItemEventListeners(tradeableItems);
 
         for (let actionButton of sheetActionButtons) {
-            if(actionButton.dataset.action === "stageItem") continue;
             const eventType = actionButton.nodeName === 'SELECT' ? 'change' : 'click';
             actionButton.toggleAttribute('disabled', false);
             actionButton.addEventListener(eventType, ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, ev));

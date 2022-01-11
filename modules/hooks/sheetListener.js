@@ -4,6 +4,16 @@ import { tokenHelper } from "../helper/tokenHelper.js";
 export class sheetListener {
 
     /**
+     * Put eventListeners on the given items
+     *
+     * @note See templates/trade/index.hbs for trade tab structure
+     * This should be called on the trade tab.
+     * It expects the following structure:
+     * <main data-event-action="trade" >
+     *  [...]
+     *  <ul>
+     *      <li class="item" [data attributes] ></li>
+     *  </ul
      *
      * @param {Array} tradeableItems
      */
@@ -13,15 +23,15 @@ export class sheetListener {
                 const item = ev.currentTarget.dataset;
                 let data = {
                     uuid: item.uuid,
-                    tradeAction: ev.currentTarget.closest('section').dataset.tradeAction,
+                    eventAction: ev.currentTarget.closest('section').dataset.eventAction,
                     source: ev.currentTarget.closest('section')
                 };
                 ev.currentTarget.setData('text/plain', JSON.stringify(data));
                 //ev.target.style.opacity = .5;
             });
 
-            item.addEventListener('click', ev => this._onClickToStage(ev));
-            item.addEventListener('contextmenu', ev => this._onClickToStage(ev));
+            item.addEventListener('click', ev => this._onClick(ev));
+            item.addEventListener('contextmenu', ev => this._onClick(ev));
         }
     }
 
@@ -29,9 +39,11 @@ export class sheetListener {
      *
      * @param {Event} event
      */
-    static _onClickToStage(event) {
+    static _onClick(event) {
+        if(!event.currentTarget.dataset) return;
         event.preventDefault();
         event.stopPropagation();
+
         const item = event.currentTarget.dataset;
         let data = {
             uuid: item.uuid,
@@ -55,6 +67,12 @@ export class sheetListener {
         if (!data) return;
         this._tradeItemStagingHandler(data, event);
         // done goodbye 👋
+    }
+
+    static async makeTrade(event) {
+        const tradeSection = document.closest('section')
+              sellItems = tradeSection.querySelectorAll('main[]');
+
     }
 
     /**
@@ -82,7 +100,7 @@ export class sheetListener {
         if (!rolltable) return ui.notifications.error(`No Rollable Table found with uuid "${rolltableUUID}".`);
 
         if (clearInventory) {
-            let currentItems = actor.data.items.map(i => i._id);
+            let currentItems = actor.data.items.map(i => i.id);
             await actor.deleteEmbeddedDocuments("Item", currentItems);
         }
 
@@ -159,12 +177,12 @@ export class sheetListener {
 
         if (!item) return;
 
-        if (!existingItem && item.dataset.itemQuantity == 1) {
+        if (!existingItem && item.dataset.quantity == 1) {
             targetList.appendChild(item);
             return;
         }
 
-        let quantity = parseInt(item.dataset.itemQuantity);
+        let quantity = parseInt(item.dataset.quantity);
         const newItem = item.cloneNode();
         // handle quantity update
         quantity--;
@@ -172,16 +190,16 @@ export class sheetListener {
         if (quantity == 0){
             item.remove();
         } else {
-            item.dataset.itemQuantity = quantity;
+            item.dataset.quantity = quantity;
         }
 
-        newItem.dataset.itemQuantity = 1;
-        newItem.addEventListener('click', ev => this._onClickToStage(ev));
+        newItem.dataset.quantity = 1;
+        newItem.addEventListener('click', ev => this._onClick(ev));
 
         //check if newItem already exists in the targetList
 
         if (existingItem) {
-            existingItem.dataset.itemQuantity = parseInt(existingItem.dataset.itemQuantity) + 1;
+            existingItem.dataset.quantity = parseInt(existingItem.dataset.quantity) + 1;
         } else {
             targetList.appendChild(newItem);
         }

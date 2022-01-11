@@ -1,37 +1,46 @@
-
 <main class="tradegrid">
     <section class="token-inventory">
         <main data-event-target="token" data-event-action="buy">
-        {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems}}
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems}}
         </main>
     </section>
 
     <section class="token-info flairbox">
-        <div class="flairbox">
-            <aside sytle="float:left;">
-                <h3>{{actor.name}}</h3>
-            </aside>
-        </div>
-
+        <aside class="currency">
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/currency.hbs"}}
+        </aside>
+        <aside>
+            <h3>{{actor.name}}</h3>
+        </aside>
         <!-- a box with a dropzone to accept items -->
     </section>
     <section class="stage dropzone" dropzone="true">
         <main data-event-target="sell" data-event-action="player">
-            <header>Sell</header>
+            <header>{{#ifeq ../../lootsheettype "Merchant"}}Sell{{else}}Give{{/ifeq}}</header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
         </main>
+
+
         <main data-event-target="buy" data-event-action="token">
-            <header>Buy</header>
+            <header>{{#ifeq ../../lootsheettype "Merchant"}}Buy{{else}}Take{{/ifeq}}</header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
+            <footer>
+                <button class="lsnpc-action-link" type="button" data-action="tradeItems">
+                    {{#ifeq ../../lootsheettype "Merchant"}}Trade{{else}}Take{{/ifeq}}
+                </button>
+            </footer>
         </main>
     </section>
     <section class="player-info flairbox">
-            {{log this}}
-            <aside sytle="float:left;">
-                <h3>{{player.name}}</h3>
+        {{log game.user.character.name}}
+        <main>
+            <h3>{{player.name}}</h3>
             </aside>
+            <div class="currency">
+
+            </div>
     </section>
     <section class="player-inventory">
         <main data-event-target="player" data-event-action="sell">
