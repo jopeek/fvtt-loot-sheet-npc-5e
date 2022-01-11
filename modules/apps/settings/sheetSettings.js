@@ -235,14 +235,14 @@ export class SheetSettings {
          * UI and Themes
          */
 
-        game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.useCondensedLootsheet, {
-            name: game.i18n.localize('lsnpc.settings.sheet.useCondensedLootsheet.name'),
-            hint: game.i18n.localize('lsnpc.settings.sheet.useCondensedLootsheet.hint'),
-            scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.sheet.ui,
-            config: true,
-            default: false,
-            type: Boolean,
-        });
+        // game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.useCondensedLootsheet, {
+        //     name: game.i18n.localize('lsnpc.settings.sheet.useCondensedLootsheet.name'),
+        //     hint: game.i18n.localize('lsnpc.settings.sheet.useCondensedLootsheet.hint'),
+        //     scope: MODULE.settings.scopes.world,
+        //     group: MODULE.settings.groups.sheet.ui,
+        //     config: true,
+        //     default: false,
+        //     type: Boolean,
+        // });
     }
 }

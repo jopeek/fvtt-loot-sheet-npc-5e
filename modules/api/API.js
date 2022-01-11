@@ -210,7 +210,7 @@ class API {
             let permissions = PermissionHelper._updatedUserPermissions(token, CONST.ENTITY_PERMISSIONS.OBSERVER, players);
             tokenData.actorData.permission = permissions,
                 responseData[token.uuid] = tokenData.actorData.permission;
-            await token.update(tokenData);
+            await token.document.update(tokenData);
         }
 
         response.data = responseData;
