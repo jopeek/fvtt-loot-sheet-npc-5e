@@ -164,7 +164,7 @@
                 },
                 "showStackWeight": {
                     "name": "Show stack weight",
-                    "hint": "Show the weight of the stack next to the indicudual item weight."
+                    "hint": "Show the weight of the stack next to the individual item weight."
                 },
                 "stackBuyConfirm": {
                     "name": "Stack buy confirm",
