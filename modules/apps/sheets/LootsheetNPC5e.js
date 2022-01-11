@@ -77,7 +77,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             sheetData = super.getData(),
             gameWorldTables = await tableHelper.getGameWorldRolltables();
 
-        this._setClasses(sheetData);
+        //this._setClasses(sheetData);
         this._prepareGMSettings(sheetData.actor);
 
         let sheetType = await this.actor.getFlag(MODULE.ns, typeKey),
@@ -93,6 +93,23 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             if(!sheetItem) continue;
             sheetItem.uuid = fullItem.uuid;
         }
+
+
+        //currency check , set to 0 if null
+        let currencies = duplicate(this.actor.data.data.currency);
+        let UpdatefixedCurrency= false;
+
+        for (let c in currencies) {
+            if(!currencies[c]) {
+                UpdatefixedCurrency = true;
+                currencies[c] = 0;
+            }
+        }
+
+        if(UpdatefixedCurrency) {
+            this.actor.update({'data.currency': currencies});
+        }
+
 
         /**
          * We only care for the lootable items now.
@@ -263,6 +280,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
     /**
      * Organize and classify Items for Loot NPC sheets
+     * IDE shows it as unused, but it is used in the NPC sheet
      *
      * @private
      */

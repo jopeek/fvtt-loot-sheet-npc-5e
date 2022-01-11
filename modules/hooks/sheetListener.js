@@ -96,6 +96,8 @@ export class sheetListener {
                 use: game.settings.get(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables) || false
             };
 
+        if(!rolltableUUID) return ui.notifications.info(`No rolltable set for ${actor.name}.`);
+
         let rolltable = await fromUuid(rolltableUUID);
         if (!rolltable) return ui.notifications.error(`No Rollable Table found with uuid "${rolltableUUID}".`);
 

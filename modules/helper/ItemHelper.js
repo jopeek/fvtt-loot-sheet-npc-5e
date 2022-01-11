@@ -411,11 +411,7 @@ class ItemHelper {
             zeroCurrency = {};
 
         for (let c in lootCurrency) {
-            zeroCurrency[c] = {
-                'type': sheetCurrency[c].type,
-                'label': sheetCurrency[c].type,
-                'value': 0
-            }
+            zeroCurrency[c] = 0;
             source.update({
                 "data.currency": zeroCurrency
             });
