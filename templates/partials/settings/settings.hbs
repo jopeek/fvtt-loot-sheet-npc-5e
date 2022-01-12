@@ -19,21 +19,21 @@
             </thead>
             <tbody>
                 {{#each this.value as |customRule uniquekey|}}
-                    <tr data-name="{{this.module}}.{{this.key}}.{{uniquekey}}">
-                        <th data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.name">{{customRule.name}}</th>
-                        <td data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.filters">
+                    <tr data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}">
+                        <th data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.name">{{customRule.name}}</th>
+                        <td data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.filters">
                             <table>
                                 {{#each customRule.filters as |filter index|}}
                                     <tr>
-                                        <td data-name="{{../this.module}}.{{../this.key}}.{{../uniquekey}}.filters.{{index}}.filterpath">{{filter.filterpath}}</td>
-                                        <td data-name="{{../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.comparison">{{filter.comparison}}</td>
-                                        <td data-name="{{../this.module}}.{{../this.key}}.{{../key}}.filters.{{index}}.value">{{filter.value}}</td>
+                                        <td data-name="{{../this.namespace}}.{{../this.key}}.{{../uniquekey}}.filters.{{index}}.filterpath">{{filter.filterpath}}</td>
+                                        <td data-name="{{../this.namespace}}.{{../this.key}}.{{../key}}.filters.{{index}}.comparison">{{filter.comparison}}</td>
+                                        <td data-name="{{../this.namespace}}.{{../this.key}}.{{../key}}.filters.{{index}}.value">{{filter.value}}</td>
                                     </tr>
                                 {{/each}}
                             </table>
                         </td>
 
-                        <td data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
+                        <td data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
                             <em class="lsnpc-document-link" data-uuid="{{customRule.rolltable}}">
                                 {{#if customRule.rolltableName}}
                                     {{truncate customRule.rolltableName 25}}
@@ -42,7 +42,7 @@
                                 {{/if}}
                             </em>
                         </td>
-                        <td data-name="{{this.module}}.{{this.key}}.{{uniquekey}}.tags">
+                        <td data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.tags">
                             {{#if customRule.tags}}
                                 {{customRule.tags}}
                             {{/if}}
@@ -59,13 +59,13 @@
     {{else}}
         <label>{{this.name}}</label>
         <div class="form-fields">
-
+            {{log this}}
             {{#if this.isCheckbox}}
-            <input type="checkbox" name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" data-dtype="Boolean"
+            <input type="checkbox" name="{{this.namespace}}.{{this.key}}" data-default="{{this.default}}" data-dtype="Boolean"
                 {{checked this.value}} />
 
             {{else if this.isSelect}}
-            <select name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" data-dtype="String">
+            <select name="{{this.namespace}}.{{this.key}}" data-default="{{this.default}}" data-dtype="String">
                 {{#select this.value}}
                 <option value="0">-- Select an option --</option>
                 {{#each this.choices as |array group|}}
@@ -79,13 +79,13 @@
             </select>
 
             {{else if this.isRange}}
-            <input type="range" name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" data-dtype="Number"
+            <input type="range" name="{{this.namespace}}.{{this.key}}" data-default="{{this.default}}" data-dtype="Number"
                 value="{{ this.value }}" min="{{ this.range.min }}" max="{{ this.range.max }}"
                 step="{{ this.range.step }}" />
             <span class="range-value">{{this.value}}</span>
 
             {{else}}
-            <input type="text" name="{{this.module}}.{{this.key}}" data-default="{{this.default}}" value="{{this.value}}"
+            <input type="text" name="{{this.namespace}}.{{this.key}}" data-default="{{this.default}}" value="{{this.value}}"
                 data-dtype="{{this.type}}" />
             {{/if}}
         </div>

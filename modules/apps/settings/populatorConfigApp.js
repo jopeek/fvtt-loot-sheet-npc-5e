@@ -87,6 +87,39 @@ export class PopulatorSettingsConfigApp extends FormApplication {
     };
   }
 
+
+  async _updateObject(event, formData) {
+    event.preventDefault();
+    formData = expandObject(formData)[MODULE.ns];
+
+    /**
+     * This is very specific to customRules, to get settings with an object.
+     * Currently tailored towards a customFallback.
+     *
+     * The key could be build more generic by chaining 'name' and other fields (generic).
+     * The values should be truncated.
+     * */
+    const targets = Object.keys(formData).filter(key => typeof formData[key] === 'object');
+    for (let target of targets) {
+      if (formData[target].name.length != 0) {
+        let newObject = formData[target],
+          currentObject = game.settings.get(MODULE.ns, target),
+          key = newObject.name + '_' + newObject.rolltable + '_' + Math.random(),
+          final = {};
+        newObject.rolltableName = event.currentTarget.querySelector('select[name="' + MODULE.ns + '.customFallbacks.rolltable"] option:checked').dataset.label;
+
+        final[key] = newObject;
+
+        await game.settings.set(MODULE.ns, target, Object.assign(currentObject, final));
+      }
+      //delete the manually updated settings
+      delete formData[target];
+    }
+
+    for (let [k, v] of Object.entries(formData)) {
+      await game.settings.set(MODULE.ns, k, v);
+    }
+  }
   /* -------------------------------------------- */
   /*  Event Listeners and Handlers                */
   /* -------------------------------------------- */

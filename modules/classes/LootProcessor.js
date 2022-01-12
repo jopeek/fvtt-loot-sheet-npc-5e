@@ -416,10 +416,10 @@ export class LootProcessor {
      * @param {Item} originalItem
      * @returns
      */
-    async preItemCreationDataManipulation(itemData, originalItem) {
+    async preItemCreationDataManipulation(itemData, originalItem = null) {
         itemData = await this.createScrollFromSpell(itemData);
 
-        if (originalItem.documentName) {
+        if (originalItem && originalItem.documentName) {
             itemData = await ItemHelper.applyItemConversions(itemData, originalItem.documentName);
         }
 

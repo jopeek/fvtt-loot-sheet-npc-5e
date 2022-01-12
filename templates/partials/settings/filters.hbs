@@ -1,12 +1,12 @@
 <div class="form-group spaced">
-    <input class="data-path-input" type="text" name="{{this.module}}.{{this.key}}.filters.{{index}}.filterpath" placeholder="{{localize 'path'}}">
-        <select name="{{this.module}}.{{this.key}}.filters.{{index}}.comparison">
+    <input class="data-path-input" type="text" name="{{this.namespace}}.{{this.key}}.filters.{{index}}.filterpath" placeholder="{{localize 'path'}}">
+        <select name="{{this.namespace}}.{{this.key}}.filters.{{index}}.comparison">
             <option value="=="><span title="equals">==</span></option>
             <option value="<="><span title="smaller or equal">&lt;=</span></option>
             <option value=">="><span title="bigger or equal">&gt;=</span></option>
             <option value="!="><span title="is not">!=</span></option>
         </select>
-    <input type="text" name="{{this.module}}.{{this.key}}.filters.{{index}}.value">
+    <input type="text" name="{{this.namespace}}.{{this.key}}.filters.{{index}}.value">
     <div class="actions">
         <button data-action="delete"><i class="fas fa-trash"></i></button>
     </div>

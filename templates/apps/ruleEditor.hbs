@@ -6,19 +6,19 @@
         <header>
             <div class="form-group">
                 <label>Rulename</label>
-                <input type="hidden" name="{{this.module}}.{{this.key}}.uuid">
-                <input type="text" name="{{this.module}}.{{this.key}}.name" placeholder="name">
+                <input type="hidden" name="{{this.namespace}}.{{this.key}}.uuid">
+                <input type="text" name="{{this.namespace}}.{{this.key}}.name" placeholder="name">
             </div>
             <div class="form-group">
                 <label>{{localize 'Rolltable'}}</label>
-                <select name="{{this.module}}.{{this.key}}.rolltable">
+                <select name="{{this.namespace}}.{{this.key}}.rolltable">
                     <option value="null"><em>Select rolltable</em></option>
                     {{> "modules/lootsheetnpc5e/templates/partials/settings/dropdown_options.hbs" data=this.data}}
                 </select>
             </div>
             <div class="form-group">
                 <em>and / or </em>
-                <input type="text" name="{{this.module}}.{{this.key}}.tags"
+                <input type="text" name="{{this.namespace}}.{{this.key}}.tags"
                       placeholder="comma seperated better-rolltable tags">
             </div>
         </header>

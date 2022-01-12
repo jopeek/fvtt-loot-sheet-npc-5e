@@ -102,7 +102,7 @@ class LootSheetNPC5eHelper {
 
         const packet = {
             action: action,
-            triggerActorId: game.user.character.id || null,
+            triggerActorId: game.user.character?.id || null,
             tokenUuid: token.uuid,
             processorId: targetGm.id,
             targetItemId: targetItemId || null,
