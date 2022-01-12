@@ -100,7 +100,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             let UpdatefixedCurrency= false;
 
             for (let c in currencies) {
-                if(!currencies[c]) {
+                if(null === currencies[c]) {
                     UpdatefixedCurrency = true;
                     currencies[c] = 0;
                 }
