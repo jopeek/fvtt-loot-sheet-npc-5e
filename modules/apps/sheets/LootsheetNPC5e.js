@@ -94,20 +94,21 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             sheetItem.uuid = fullItem.uuid;
         }
 
+        if (game.user.isGM){
+            //currency check , set to 0 if null
+            let currencies = duplicate(this.actor.data.data.currency);
+            let UpdatefixedCurrency= false;
 
-        //currency check , set to 0 if null
-        let currencies = duplicate(this.actor.data.data.currency);
-        let UpdatefixedCurrency= false;
-
-        for (let c in currencies) {
-            if(!currencies[c]) {
-                UpdatefixedCurrency = true;
-                currencies[c] = 0;
+            for (let c in currencies) {
+                if(!currencies[c]) {
+                    UpdatefixedCurrency = true;
+                    currencies[c] = 0;
+                }
             }
-        }
 
-        if(UpdatefixedCurrency) {
-            this.actor.update({'data.currency': currencies});
+            if(UpdatefixedCurrency) {
+                this.actor.update({'data.currency': currencies});
+            }
         }
 
 
