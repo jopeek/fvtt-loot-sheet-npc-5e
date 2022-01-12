@@ -2,7 +2,7 @@
     <h3 class="gm-section">GM Settings</h3>
     <div class="flexrow">
         <span>This is a:</span>
-        <select class="sheet-type lsnpc-action-link" name="flags.lootsheetnpc5e.lootsheettype" data-event-type="change"
+        <select class="sheet-type{{#if this.token}} lsnpc-action-link{{/if}}" name="flags.lootsheetnpc5e.lootsheettype" data-event-type="change"
             data-action="sheetUpdate">
             {{#select data.flags.lootsheetnpc5e.lootsheettype}}
                 <option value="Loot">{{localize "lsnpc.sheettypes.loot"}}</option>

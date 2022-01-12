@@ -99,6 +99,9 @@ class LootSheetNPC5eHelper {
 
         // if (!targetGm) return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
         if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
+        if(!game.user.character?.id && action != 'sheetUpdate'){
+            return ui.notifications.info("You need to assign an actor to you user before you can do this.");
+        }
 
         const packet = {
             action: action,
