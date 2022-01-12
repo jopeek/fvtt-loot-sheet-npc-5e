@@ -215,8 +215,8 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         //document.addEventListener("DOMContentLoaded", () => {
         //ondragstart="event.dataTransfer.setData('text/plain',null)
-        const tradeDropzone = document.querySelector('.lsnpc-app .tradegrid .dropzone');
-        tradeDropzone.addEventListener('drop', (ev) => sheetListener.onDrop(ev));
+        //const tradeDropzone = document.querySelector('.lsnpc-app .tradegrid .dropzone');
+        //tradeDropzone.addEventListener('drop', (ev) => sheetListener.onDrop(ev));
         //});
 
         // toggle infoboxes
