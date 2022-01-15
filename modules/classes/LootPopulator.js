@@ -1,4 +1,4 @@
-import { currencyHelper } from "../helper/currencyHelper.js";
+import { CurrencyHelper } from "../helper/currencyHelper.js";
 import { tokenHelper } from "../helper/tokenHelper.js";
 import { MODULE } from "../data/moduleConstants.js";
 import { API } from "../api/API.js";
@@ -136,7 +136,7 @@ export class LootPopulator {
 				"adjustCurrency": game.settings.get(MODULE.ns, "adjustCurrencyWithCR")
 			};
 
-			await currencyHelper.handleCurrency(currentToken, currencyFlags);
+			await CurrencyHelper.handleCurrency(currentToken, currencyFlags);
 		}
 	}
 }

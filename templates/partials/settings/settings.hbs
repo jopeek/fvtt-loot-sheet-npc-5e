@@ -19,9 +19,9 @@
             </thead>
             <tbody>
                 {{#each this.value as |customRule uniquekey|}}
-                    <tr data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}">
-                        <th data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.name">{{customRule.name}}</th>
-                        <td data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.filters">
+                    <tr data-name="{{../this.namespace}}.{{../this.key}}.{{uniquekey}}">
+                        <th data-name="{{../this.namespace}}.{{../this.key}}.{{uniquekey}}.name">{{customRule.name}}</th>
+                        <td data-name="{{../this.namespace}}.{{../this.key}}.{{uniquekey}}.filters">
                             <table>
                                 {{#each customRule.filters as |filter index|}}
                                     <tr>
@@ -33,7 +33,7 @@
                             </table>
                         </td>
 
-                        <td data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
+                        <td data-name="{{../this.namespace}}.{{../this.key}}.{{../uniquekey}}.rolltable" data-entity-id="{{customRule.rolltable}}">
                             <em class="lsnpc-document-link" data-uuid="{{customRule.rolltable}}">
                                 {{#if customRule.rolltableName}}
                                     {{truncate customRule.rolltableName 25}}
@@ -42,7 +42,7 @@
                                 {{/if}}
                             </em>
                         </td>
-                        <td data-name="{{this.namespace}}.{{this.key}}.{{uniquekey}}.tags">
+                        <td data-name="{{../this.namespace}}.{{../this.key}}.{{uniquekey}}.tags">
                             {{#if customRule.tags}}
                                 {{customRule.tags}}
                             {{/if}}
@@ -59,7 +59,6 @@
     {{else}}
         <label>{{this.name}}</label>
         <div class="form-fields">
-            {{log this}}
             {{#if this.isCheckbox}}
             <input type="checkbox" name="{{this.namespace}}.{{this.key}}" data-default="{{this.default}}" data-dtype="Boolean"
                 {{checked this.value}} />

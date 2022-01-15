@@ -27,8 +27,12 @@
     {{/ifeq}}
     {{#if isGM}}
         {{#ifeq lootsheettype "Merchant"}}
-            <button type="button" class="price-modifier lsnpc-action-link" type="price-modifier" name="price-modifier"
-                data-action="sheetUpdate" value="">
+            <button type="button"
+                id="price-modifier"
+                class="price-modifier lsnpc-action-link"
+                name="price-modifier"
+                data-action="priceModifier"
+                value="{{actor.flags.lootsheetnpc5e.priceModifier}}">
                 <i class="fa fa-balance-scale"></i>
                 <span class="buttontext">{{localize 'lsnpc.buttons.merchant.gm.price.label'}}</span>
             </button>

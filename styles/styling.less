@@ -1,0 +1,75 @@
+.lsnpc.styled {
+        background-blend-mode: var(--blendmode);
+
+        .window-header {
+            background-blend-mode: darken;
+            background: rgba(0,0,0,0.5);
+            border-radius: 0.5em 0.5em 0 0;
+
+            &.lsnpc-dialog-header {
+                font-family: var(--modesto);
+                color: var(--sheettint);
+
+            }
+        }
+        .window-content {
+            background: none;
+
+            button {
+                border-radius: 0.5em;
+                border-color: rgba(0,0,0,0.5);
+                background: var(--background);
+            }
+        }
+
+    form {
+        &.parchment {
+            background: url(/ui/parchment.jpg);
+            background-blend-mode: var(--blendmode);
+        }
+        &.circles {
+            background: var(--sheettint);
+            opacity: 0.8;
+            background-image: radial-gradient(circle at center center, var(--sheettint), var(--avatartint)), repeating-radial-gradient(circle at center center, var(--sheettint), var(--sheettint), 11px, transparent 22px, transparent 11px);
+            background-blend-mode: var(--blendmode);
+        }
+        &.rose-petals {
+            background: var(--sheettint);
+            background-image: url("../icons/backgrounds/rose-petals.svg");
+            background-size: cover;
+            backdrop-filter: blur(130px);
+            background-blend-mode: var(--blendmode);
+        }
+        &.squares {
+            background: var(--sheettint);
+            opacity: 0.8;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, var(--sheettint) 1px, var(--avatartint) 2px), repeating-linear-gradient(135deg, transparent, transparent 1px, var(--sheettint) 1px, var(--avatartint) 2px);
+            background-blend-mode: var(--blendmode);
+        }
+
+        &.polka {
+                background-color: var(--avatartint);
+                opacity: 1;
+                background-image: radial-gradient( var(--sheettint) 0.75px, var(--avatartint) 0.75px);
+                background-size: 15px 15px;
+                background-blend-mode: var(--blendmode);
+        }
+
+        &.endless {
+            background: var(--sheettint);
+            background-image: url("../icons/backgrounds/endless.svg");
+            background-blend-mode: var(--blendmode);
+        }
+        &.triangles {
+            background: var(--sheettint);
+            background-image: url("../icons/backgrounds/large-triangles.svg");
+
+        }
+
+        &.stripes {
+            background: var(--sheettint);
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI5MCI+CjxnIHRyYW5zZm9ybT0ic2NhbGUoMSAxLjUpIj4KPHJlY3Qgd2lkdGg9Ijk5IiBoZWlnaHQ9Ijk5IiBmaWxsPSIjNmQ2OTVjIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSI0Mi40MiIgaGVpZ2h0PSI0Mi40MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAgMCkgcm90YXRlKDQ1KSIgZmlsbD0iIzYyNWY1MyI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMSIgdHJhbnNmb3JtPSJyb3RhdGUoNDUpIiBmaWxsPSIjNzE2ZjY0Ij48L3JlY3Q+CjxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDYwKSByb3RhdGUoLTQ1KSIgZmlsbD0iIzcxNmY2NCI+PC9yZWN0Pgo8L2c+Cjwvc3ZnPg==");
+            background-blend-mode: var(--blendmode);
+        }
+    }
+}

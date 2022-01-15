@@ -1,4 +1,4 @@
-import { currencyHelper } from "./currencyHelper.js";
+import { CurrencyHelper } from "./currencyHelper.js";
 
 /**
  * @description {Rolltable} related helper functions
@@ -86,5 +86,5 @@ export class tableHelper {
 		return item;
 	}
 
-	
+
 }

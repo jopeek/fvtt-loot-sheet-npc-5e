@@ -41,7 +41,7 @@ export class lootsheetSettingsConfigApp extends FormApplication {
   /* -------------------------------------------- */
 
   /** @override */
-  getData(options) {
+  getData() {
     // No user specific settings currently
     if (!game.user.isGM) return;
 

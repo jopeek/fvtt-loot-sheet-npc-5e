@@ -1,51 +1,9 @@
 <section class="gm-settings" data-group="sidebar" data-tab="gm-settings">
-    <h3 class="gm-section">GM Settings</h3>
-    <div class="flexrow">
-        <span>This is a:</span>
-        <select class="sheet-type{{#if this.token}} lsnpc-action-link{{/if}}" name="flags.lootsheetnpc5e.lootsheettype" data-event-type="change"
-            data-action="sheetUpdate">
-            {{#select data.flags.lootsheetnpc5e.lootsheettype}}
-                <option value="Loot">{{localize "lsnpc.sheettypes.loot"}}</option>
-                <option value="Merchant">{{localize "lsnpc.sheettypes.merchant"}}</option>
-            {{/select}}
-        </select>
-    </div>
-    <h3 class="gm-header">
-        <i class="fas fa-id-card"></i> {{localize "lsnpc.infoboxes.lootsheettype.title"}}
-        <aside class="infobox-wrapper">
-            <i class="fas fa-info-circle help"></i>
-            <div class="sheet-infobox hidden">
-                {{{localize "lsnpc.infoboxes.lootsheettype.content"}}}
-        </aside>
-    </h3>
     {{> "modules/lootsheetnpc5e/templates/partials/gm/lootsheet-type.hbs"}}
+    <hr />
     {{> "modules/lootsheetnpc5e/templates/partials/gm/inventory.hbs"}}
+    <hr />
     {{> "modules/lootsheetnpc5e/templates/partials/gm/permissions.hbs"}}
-
-    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Inventory Settings
-        <aside class="infobox-wrapper">
-            <i class="fas fa-info-circle help"></i>
-            <div class="sheet-infobox hidden">
-                Replace this merchant's inventory with a (random) number of items from a rolltable.
-                <dl>
-                    <dt>Rolltable</dt>
-                    <dd>The rolltable to be used.<br />
-                        This rolltable will also be used (instead of rules/defaults).</dd>
-                    <dt>Rolltable quantity formula</dt>
-                    <dd>How often will the rolltable be used to roll for items. For example <em>1d12</em>.
-                    </dd>
-                    <dt>Item quantity formula</dt>
-                    <dd>How many Items should be added to the inventory. For example <em>2d3</em>.</dd>
-                    <dt>Limit quantity formula</dt>
-                    <dd>How many <em>of each</em> Item should be added at most. For example <em>8</em> or
-                        <em>3d8</em>.
-                    </dd>
-                </dl>
-            </div>
-        </aside>
-    </h3>
-
-
-
+    <hr />
     {{> "modules/lootsheetnpc5e/templates/partials/gm/styling.hbs"}}
 </section>

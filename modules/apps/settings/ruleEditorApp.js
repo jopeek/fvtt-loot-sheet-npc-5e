@@ -56,7 +56,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
     async getData() {
         const data = super.getData();
 
-        data.module = MODULE.ns;
+        data.namespace = MODULE.ns;
         data.key = MODULE.settings.keys.lootpopulator.rulesets;
         data.data = await tableHelper.getGameWorldRolltables();
 
@@ -77,7 +77,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
          * */
         const targets = Object.keys(formData).filter(key => typeof formData[key] === 'object'),
             ruleSetsKey = MODULE.settings.keys.lootpopulator.rulesets + '.rolltable',
-            querySelector = 'select[name="' + ruleSetsKey + '.rolltable"] option:checked';
+            querySelector = 'select[name="' + MODULE.ns + '.' + ruleSetsKey + '"] option:checked';
 
         for (let target of targets) {
             if (formData[target].name.length != 0) {
@@ -114,7 +114,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
                 index: fieldset.querySelectorAll('.form-group').length
             },
             ele = await renderTemplate(template, templateOptions);
-            ;
+        ;
 
         main.insertAdjacentHTML('beforeend', ele);
         //get the newly added row and activate the listeners
@@ -127,7 +127,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
         });
 
         //get AIP API and reregister
-        if(game.modules.get("autocomplete-inline-properties").active) {
+        if (game.modules.get("autocomplete-inline-properties").active) {
             const { refreshPackageConfig } = game.modules.get("autocomplete-inline-properties").API;
             refreshPackageConfig(this);
         }

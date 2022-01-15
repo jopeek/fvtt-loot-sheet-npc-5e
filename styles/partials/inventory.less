@@ -3,9 +3,14 @@
         .inventory-filters {
             .currency {
                 li {
-                    border-radius: 0.5em;
+                    box-shadow: -1px -1px 1px var(--icon-shadow),
+                                -1px 1px 1px var(--icon-shadow),
+                                1px 1px 1px var(--icon-shadow),
+                                1px -1px 1px var(--icon-shadow);
+                    border-radius: 0.3em;
                     background: var(--faint-color);
                     text-align: right;
+
 
                     &.currency-item-header {
                         background: none;

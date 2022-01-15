@@ -6,7 +6,7 @@ import { renderWelcomeScreen } from '../apps/welcomeScreen.js';
 import { API } from '../api/API.js';
 
 import { LootPopulator } from '../classes/LootPopulator.js';
-import { socketListener } from './socketListener.js';
+import { SocketListener } from './SocketListener.js';
 import { handlebarsHelpers } from '../helper/handlebarsHelpers.js';
 
 /**
@@ -53,7 +53,7 @@ export class LootsheetNPC5eHooks {
     static foundryInit() {
         SheetSettings.registerSettings();
 
-        game.socket.on(MODULE.socket, socketListener.handleRequest);
+        game.socket.on(MODULE.socket, SocketListener.handleRequest);
     }
 
     static foundryReady() {

@@ -1,6 +1,6 @@
 import { MODULE } from "../data/moduleConstants.js";
 
-export class currencyHelper {
+export class CurrencyHelper {
 
     /**
      *
@@ -38,8 +38,23 @@ export class currencyHelper {
     }
 
     /**
-     *  @param {String} currencyString
-     *  @returns {Array}
+     * @summary Generate a currencyObject
+     * @description
+     * Generate a currencyObject `{object}` for the given currencyString `{string}`
+     *
+     * @example
+     * Input: '1d6[pp] + 1d6[gp] + 1d6[ep]+ 1d6[sp] + 1d6[cp]'
+     * Output:  `{ pp: 3, gp: 4, ep: 6, sp: 1, cp: 2 }`
+     *
+     * @param {String} currencyString
+     *
+     * @returns {object} currencyObject
+     *
+     * @author Samir <@ultrakorne>
+     * @since 3.4.5.2
+     *
+     * @inheritdoc
+     * @function
      */
     static async generateCurrency(currencyString) {
         let currenciesToAdd = {};
@@ -47,18 +62,18 @@ export class currencyHelper {
         if (currencyString) {
             const currenciesPieces = currencyString.split(",");
 
-            for (const currency of currenciesPieces) {
-                const match = /(.*)\[(.*?)\]/g.exec(currency); //capturing 2 groups, the formula and then the currency symbol in brakets []
+            for (const currencyPiece of currenciesPieces) {
+                const match = /(.*)\[(.*?)\]/g.exec(currencyPiece); //capturing 2 groups, the formula and then the currency symbol in brakets []
 
                 if (!match || match.length < 3) {
-                    ui.notifications.warn(MODULE.ns + ` | Currency loot field contain wrong formatting, currencies need to be define as "diceFormula[currencyType]" => "1d100[gp]" but was ${currency}`);
+                    ui.notifications.warn(MODULE.ns + ` | Currency loot field contain wrong formatting, currencies need to be define as "diceFormula[currencyType]" => "1d100[gp]" but was ${currencyPiece}`);
                     continue;
                 }
 
                 const rollFormula = match[1];
-                const currencyString = match[2];
-                const amount = await currencyHelper.tryRoll(rollFormula);
-                currenciesToAdd[currencyString] = (currenciesToAdd[currencyString] || 0) + amount;
+                const currency = match[2];
+                const amount = await CurrencyHelper.tryRoll(rollFormula);
+                currenciesToAdd[currency] = (currenciesToAdd[currency] || 0) + amount;
             }
         }
 
@@ -108,5 +123,25 @@ export class currencyHelper {
             console.error(MODULE.ns + ' | currencyHelper :', error);
             return 1;
         }
+    }
+
+    /**
+     * Splits the values of a type in the stack between splitBy
+     *
+     * @param {object} stack
+     * @param {number} splitBy
+     *
+     * @returns {Array<object>} Array with
+     */
+     static getSharesAndRemainder(stack, splitBy) {
+        let shares = [],
+            remainder = {};
+
+        for (let type in stack) {
+            shares[type] = Math.floor(stack[type] / splitBy);
+            remainder[type] = shares[type] % splitBy;
+        }
+
+        return [shares, remainder];
     }
 }

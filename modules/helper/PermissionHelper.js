@@ -37,7 +37,7 @@ export class PermissionHelper {
      *
      * @uses  {Array<User>} users The games users
      **/
-    static async assignPermissions(event, actor) {
+    static async bulkPermissionsUpdate(event, actor) {
         event.preventDefault();
         const actorData = actor.data,
             htmlObject = event.currentTarget,
@@ -138,5 +138,28 @@ export class PermissionHelper {
         return game.users.filter((user) => {
             return (user.role == CONST.USER_ROLES.PLAYER || user.role == CONST.USER_ROLES.TRUSTED);
         });
+    }
+
+    /**
+     * Get all players with at least observer permissions
+     *
+     * @param {Actor5e} actor
+     * @param {Array<User>} players
+     *
+     * @returns {Array<User>}
+     */
+    static getEligablePlayers(actor, players) {
+        let observers = [];
+        for (let player of players) {
+            if (
+                player != "default"
+                && this.getLootPermissionForPlayer(actor.data, player) >= 2
+            ) {
+                let eligablePlayerCharacter = game.actors.get(player.data.character);
+                if (eligablePlayerCharacter != null && (player.data.role === 1 || player.data.role === 2))
+                    observers.push(eligablePlayerCharacter);
+            }
+        }
+        return observers;
     }
 }

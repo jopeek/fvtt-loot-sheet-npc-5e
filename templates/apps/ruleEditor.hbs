@@ -5,13 +5,13 @@
     <main>
         <header>
             <div class="form-group">
-                <label>Rulename</label>
+                <label>Rulename*</label>
                 <input type="hidden" name="{{this.namespace}}.{{this.key}}.uuid">
-                <input type="text" name="{{this.namespace}}.{{this.key}}.name" placeholder="name">
+                <input type="text" name="{{this.namespace}}.{{this.key}}.name" placeholder="name" required>
             </div>
             <div class="form-group">
                 <label>{{localize 'Rolltable'}}</label>
-                <select name="{{this.namespace}}.{{this.key}}.rolltable">
+                <select class="rolltable" name="{{this.namespace}}.{{this.key}}.rolltable">
                     <option value="null"><em>Select rolltable</em></option>
                     {{> "modules/lootsheetnpc5e/templates/partials/settings/dropdown_options.hbs" data=this.data}}
                 </select>

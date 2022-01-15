@@ -1,0 +1,33 @@
+.lsnpc {
+    &.dialog-price-modifier {
+        .window-header {
+            a {
+                color: red;
+                font-size: 0.8em;
+                border: 1px solid var(--sheettint);
+            }
+        }
+        form {
+            background: var(--sheettint);
+            box-shadow: 2px 2px 2px 2px var(--avatartint);
+            .avatar {
+                position: relative;
+                border: 1px solid var(--avatartint);
+                max-width: 30%;
+                max-height: 50px;
+
+                img {
+                    position: absolute;
+                    border-radius: 50%;
+                    box-shadow: 2px 2px rgb(0 0 0);
+                    height: 50px;
+                }
+            }
+
+            .price-modifier-display {
+                background: var(--avatartint);
+                box-shadow: 2px 2px 2px 2px var(--sheettint);
+            }
+        }
+    }
+}

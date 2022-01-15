@@ -1,0 +1,33 @@
+<form class="lsn-dialog-form {{flags.lootsheetnpc5e.sheettint.style}}"
+     style="align-items: center; justify-content: center;"
+     style="
+        --sheettint: {{hexToRGB flags.lootsheetnpc5e.sheettint.value flags.lootsheetnpc5e.sheettint.alpha}};
+        --avatartint: {{hexToRGB flags.lootsheetnpc5e.avatartint.value flags.lootsheetnpc5e.avatartint.alpha}};
+        --blendmode: {{flags.lootsheetnpc5e.sheettint.blendmode}};
+        --style: {{flags.lootsheetnpc5e.sheettint.style}};"
+        >
+    <header>
+        {{localize 'lsnpc.buttons.merchant.gm.price.title'}}
+    </header>
+    <main>
+        <div class="avatar">
+            <img src="{{img}}"/>
+        </div>
+        <div class="flexrow">
+            <div class="form-input">
+                <input id="price-modifier-display" type="number" name="price-modifier-percent" min="0"
+                    max="{{this.maxModifier}}" step="1" value="{{this.currentModifier}}"
+                    style="width: 100px; border-radius: 0.5em; border: 1px solid black; text-align: center; padding: 0.5em; color: #eee; background-color: #333;"
+                    required>
+            </div>
+        </div>
+        <div class="flexrow">
+            <input class="form-control" name="price-modifier-percent" id="price-modifier-percent" type="range" min="0"
+                    max="{{this.maxModifier}}" step="1" value="{{this.currentModifier}}" class="slider" required>
+        </div>
+    </main>
+    <footer class="flexrow">
+        <button type="submit" name="submit" class="btn btn-primary">{{localize 'Update'}}</button>
+        <button type="button" name="reset" lass="btn btn-secondary" data-dismiss="modal">{{localize 'Cancel'}}</button>
+    </footer>
+</form>

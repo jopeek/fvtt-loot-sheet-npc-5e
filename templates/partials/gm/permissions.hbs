@@ -32,7 +32,6 @@
                 </aside>
             </h4>
             <ol class="permissions-list">
-                {{log actor.flags.lootsheetnpc5e}}
                 {{#each actor.flags.lootsheetnpc5e.players as |player p|}}
                     <li class="permission" data-skill="{{player.lootPermission}}">
                         <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}"

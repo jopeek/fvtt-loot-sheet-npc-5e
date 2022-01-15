@@ -1,5 +1,6 @@
 import { MODULE } from "../../data/moduleConstants.js";
 import { settingsHelper } from "../../helper/settingsHelper.js";
+import { AppSettingMixin } from "../mixins/AppSettingMixin.js";
 import { renderRuleEditor } from "./ruleEditorApp.js";
 
 /**
@@ -8,7 +9,7 @@ import { renderRuleEditor } from "./ruleEditorApp.js";
  *
  * @extends {FormApplication}
  */
-export class PopulatorSettingsConfigApp extends FormApplication {
+export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication) {
   constructor() {
     super();
     this.app = null;
@@ -29,6 +30,7 @@ export class PopulatorSettingsConfigApp extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       title: game.i18n.localize("Loot population Settings"),
+      namespace: MODULE.ns,
       id: MODULE.appIds.lootpopulatorSettings,
       template: `${MODULE.templateAppsPath}/settings.hbs`,
       width: 720,
@@ -120,9 +122,21 @@ export class PopulatorSettingsConfigApp extends FormApplication {
       await game.settings.set(MODULE.ns, k, v);
     }
   }
+
   /* -------------------------------------------- */
   /*  Event Listeners and Handlers                */
   /* -------------------------------------------- */
+
+  _onUpdateSetting (setting, changes, options, userId) {
+    if (userId !== game.user.id) return;
+    const keyparts = setting.key.split('.');
+    if (keyparts[0] === MODULE.ns) {
+      const group = keyparts[1];
+      if (group === MODULE.settings.groups.lootpopulator.rulesets) {
+        this.render();
+      }
+    }
+  }
 
   /** @override */
   async activateListeners(html) {
@@ -214,26 +228,6 @@ export class PopulatorSettingsConfigApp extends FormApplication {
     switch (event.target.dataset.action) {
       case 'new':
             renderRuleEditor();
-        break;
-      case 'add':
-        const fieldset = event.target.closest('fieldset'),
-          ele = await renderTemplate(`${MODULE.path}/templates/partials/filters.hbs`, {
-            module: MODULE.ns,
-            key: event.target.dataset.settingsKey,
-            index: fieldset.querySelectorAll('.form-group').length
-          });
-
-        fieldset.insertAdjacentHTML('beforeend', ele);
-
-        fieldset.querySelector('button[data-action="delete"').addEventListener('click', async (e) => {
-          e.preventDefault();
-          if (!e.target.dataset.action) return ui.notifications.error("No action found for the provided key");
-          this._runAction(e);
-        });
-
-        //get AIP API and reregister
-        const { refreshPackageConfig } = game.modules.get("autocomplete-inline-properties").API;
-        refreshPackageConfig(this);
         break;
       case 'delete':
         const updateSetting = event.target.dataset?.updateSetting ? true : false,
