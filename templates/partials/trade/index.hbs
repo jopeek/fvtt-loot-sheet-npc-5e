@@ -1,5 +1,6 @@
 <main class="tradegrid">
     <section class="token-inventory">
+        <h3>{{actor.name}}</h3>
         <main data-event-target="token" data-event-action="buy">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems}}
         </main>
@@ -20,8 +21,6 @@
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
         </main>
-
-
         <main data-event-target="buy" data-event-action="token">
             <header>{{#ifeq ../../lootsheettype "Merchant"}}Buy{{else}}Take{{/ifeq}}</header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
@@ -34,7 +33,6 @@
         </main>
     </section>
     <section class="player-info flairbox">
-        {{log game.user.character.name}}
         <main>
             <h3>{{player.name}}</h3>
             </aside>
@@ -43,6 +41,7 @@
             </div>
     </section>
     <section class="player-inventory">
+        <h3>{{player.name}}</h3>
         <main data-event-target="player" data-event-action="sell">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory}}
         </main>

@@ -14,8 +14,8 @@ export class PopulatorSettings {
         });
 
         game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.autoPopulateTokens, {
-            name: game.i18n.localize('lsnpc.settings.keys.populator.autoPopulateTokens.name'),
-            hint: game.i18n.localize('lsnpc.settings.keys.populator.autoPopulateTokens.hint'),
+            name: game.i18n.localize('lsnpc.settings.populator.autoPopulateTokens.name'),
+            hint: game.i18n.localize('lsnpc.settings.populator.autoPopulateTokens.hint'),
             scope: MODULE.settings.scopes.world,
             config: true,
             default: true,
@@ -24,8 +24,8 @@ export class PopulatorSettings {
 
 
         game.settings.register(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons, {
-            name: game.i18n.localize('lsnpc.settings.keys.common.addInterfaceButtons.name'),
-            hint: game.i18n.localize('lsnpc.settings.keys.common.addInterfaceButtons.hint'),
+            name: game.i18n.localize('lsnpc.settings.common.addInterfaceButtons.name'),
+            hint: game.i18n.localize('lsnpc.settings.common.addInterfaceButtons.hint'),
             scope: MODULE.settings.scopes.world,
             config: true,
             default: true,

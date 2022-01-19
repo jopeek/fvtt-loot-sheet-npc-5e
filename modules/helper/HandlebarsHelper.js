@@ -1,6 +1,19 @@
-export class handlebarsHelpers {
+/**
+ * @module LootsheetNPC5e.Helper.HandlebarsHelper
+ *
+ * @description Holds the Handlebars helper functions for the module
+ *
+ * @version 1.0.0
+ * @since 3.4.5.3
+ * @author Daniel Böttner <@DanielBoettner>
+ *
+ */
+export class HandlebarsHelper {
+
     /**
      * Register Handlebars helpers
+     *
+     * @returns {void}
      */
     static register() {
 
@@ -18,7 +31,9 @@ export class handlebarsHelpers {
         });
 
         /**
-         * If a is not equal to b
+         * @summary If a is not equal to b
+         *
+         * @description return true if **a** is __not__ equal to **b**
          *
          * @param {any} a
          * @param {any} b
@@ -26,35 +41,8 @@ export class handlebarsHelpers {
          *
          * @return {Boolean}
          */
-        Handlebars.registerHelper('uneq', function (arg1, arg2, options) {
-            return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
-        });
-
-        /**
-         * Convert a given hey string to an rgb color value
-         * If an alpha is given return an rgba value instead
-         *
-         * @example
-         * {{hexToRGB('#ff0000')}}
-         * {{hexToRGB('#ff0000', 0.5)}}
-         *
-         * @param {string} hex
-         * @param {number} alpha
-         *
-         * @return {string} a string for use in css
-         *
-         */
-        Handlebars.registerHelper('hexToRGB', function (hex, alpha) {
-            let r = parseInt(hex.slice(1, 3), 16),
-                g = parseInt(hex.slice(3, 5), 16),
-                b = parseInt(hex.slice(5, 7), 16);
-
-            if (alpha) {
-                return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
-            } else {
-                return 'rgb(' + r + ', ' + g + ', ' + b + ')';
-            }
-        });
+        Handlebars.registerHelper('uneq', (a,b, options) => this.uneq(a, b, options));
+        Handlebars.registerHelper('hexToRGB', (hex, alpha) => this.hexToRGB(hex, alpha));
 
         /**
          * @description Calculate the price of an item after applying the cost modifier
@@ -144,7 +132,7 @@ export class handlebarsHelpers {
          *
          */
         Handlebars.registerHelper('approximateNumber', function (number, decimals) {
-            if(number === 0) return 0;
+            if (number === 0) return 0;
 
             let suffix = ["", "k", "M", "B", "T", "P", "E", "Z", "Y"];
             let base = Math.floor(Math.log10(number));
@@ -153,5 +141,43 @@ export class handlebarsHelpers {
             let value = number / Math.pow(10, suffixIndex * 3);
             return parseFloat(value.toFixed(decimals)) + suffixValue;
         });
+    }
+
+    /**
+     *
+     * @param {*} a
+     * @param {*} b
+     * @param {*} options
+     * @returns
+     */
+    static uneq(a, b, options) {
+        return (a != b) ? options.fn(this) : options.inverse(this);
+    }
+
+    /**
+    * Convert a given hey string to an rgb color value
+    * If an alpha is given return an rgba value instead
+    *
+    * @example
+    * {{hexToRGB('#ff0000')}}
+    * {{hexToRGB('#ff0000', 0.5)}}
+    *
+    * @param {string} hex
+    * @param {number} alpha
+    *
+    * @return {string} a string for use in css
+    *
+    * @author Daniel Böttner <@DanielBoettner>
+    */
+    static hexToRGB(hex, alpha) {
+        let r = parseInt(hex.slice(1, 3), 16),
+            g = parseInt(hex.slice(3, 5), 16),
+            b = parseInt(hex.slice(5, 7), 16);
+
+        if (alpha) {
+            return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+        } else {
+            return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+        }
     }
 }

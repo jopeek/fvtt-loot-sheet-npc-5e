@@ -1,112 +1,7 @@
-
-.system-dnd5e, .system-pf2, .system-pf1 {
-	--modesto: "Modesto Condensed", "Palatino Linotype", serif;
-	--signika: "Signika", sans-serif;
-	--primary-font: rgba(0, 0, 0, 0.9);
-	--background: #ece9df;
-	--faintest-color: rgba(0, 0, 0, 0.05);
-	--faint-color: rgba(0, 0, 0, 0.1);
-	--light-color: rgba(0, 0, 0, 0.25);
-	--primary-color: rgba(0, 0, 0, 0.9);
-	--secondary-color: rgba(0, 0, 0, 0.65);
-	--tertiary-color: rgba(0, 0, 0, 0.4);
-	--primary-accent: #ff6400;
-	--white: #ffffff;
-	--faint-white: rgba(255, 255, 255, 0.2);
-	--linked-accent: rgba(0, 255, 0, 0.75);
-	--unlinked-accent: rgba(255, 0, 0, 0.75);
-	--linked-light: rgba(0, 255, 0, 0.4);
-	--unlinked-light: rgba(255, 0, 0, 0.4);
-	--safe-accent: rgba(0, 150, 100, 0.6);
-	--unsafe-accent: rgba(255, 0, 0, 0.6);
-	--header-background: rgba(255, 255, 255, 0.2);
-	--header-border: rgba(0, 0, 0, 0.25);
-	--stat-font: #ece9df;
-	--prepareable: #778899;
-	--prepared: rgba(50, 205, 50, 0.3);
-	--prepared-outline: #32cd32;
-	--prepared-accent: #adff2f;
-	--always-prepared: rgba(0, 0, 255, 0.15);
-	--always-prepared-outline: #4169e1;
-	--always-prepared-accent: #00bfff;
-	--magic-accent: #ffff00;
-	--faint-magic-accent: rgba(255, 255, 0, 0.6);
-	--magic-outline: #afff2f;
-	--attunement-required: #cd5c5c;
-	--icon-background: #ece9df;
-	--icon-shadow: rgba(0, 0, 0, 0.4);
-	--icon-outline: rgba(0, 0, 0, 0.4);
-	--icon-font: rgba(0, 0, 0, 0.4);
-	--exhaustion-font: rgba(0, 0, 0, 0.4);
-	--icon-hover: rgba(0, 0, 0, 0.9);
-	--pc-border: 0px;
-	--npc-border: 0px;
-	--vehicle-border: 0px;
-	--note-background: rgba(0, 0, 0, 0.9);
-	--exhaustion-lvl1: #ffe600;
-	--exhaustion-lvl2: #ff8200;
-	--exhaustion-lvl3: #ff3200;
-	--ability-accent: darkslategrey;
-	--context-outline: rgba(0, 0, 0, 0.4);
-	--context-shadow: rgba(0, 0, 0, 0.65);
-	--check-default: url(../images/check-dark-unchecked.svg);
-	--check-checked: url(../images/check-dark-checked.svg);
-	--checkbox-font: rgba(0, 0, 0, 0.9);
-	--checkbox-outline: #969696;
-	--checkbox-unchecked: #D8D7D1;
-	--checkbox-checked: rgba(0, 255, 0, 0.3);
-	--icon-size: 32px;
-	--iconwidth: 30px;
-	/**
-	* Entity rarity colors
-	*/
-	--rarity-common: rgba(255,255,255, 0.75);
-	--rarity-uncommon: rgba(30,255,0, 0.75);
-	--rarity-rare: rgba(0,112,221, 0.75);
-	--rarity-veryRare: rgba(163,53,238, 0.75);
-	--rarity-legendary: rgba(255,128,0, 0.75);
-
-	--sheet-tint: rgba(0, 0, 0, 0.2);
-	--avatar-tint: rgba(0, 0, 0, 0.2);
-}
-
-.system-dnd5e, .system-pf2, .system-pf1 {
-	.tidy5eDark {
-		--primary-font: rgba(255, 255, 255, 0.8);
-		--background: #1e1e1e;
-		--white: #000000;
-		--primary-color: rgba(255, 255, 255, 0.8);
-		--secondary-color: rgba(255, 255, 255, 0.65);
-		--tertiary-color: rgba(255, 255, 255, 0.4);
-		--light-color: rgba(255, 255, 255, 0.25);
-		--faint-color: rgba(255, 255, 255, 0.1);
-		--faintest-color: rgba(255, 255, 255, 0.05);
-		--ability-accent: darkslategrey;
-		--header-background: rgba(255, 255, 255, 0.05);
-		--header-border: rgba(255, 255, 255, 0.25);
-		--primary-accent: #ff6400;
-		--prepared: rgba(0, 250, 180, 0.3);
-		--always-prepared: rgba(0, 100, 255, 0.3);
-		--icon-background: #1e1e1e;
-		--icon-shadow: rgba(0, 0, 0, 0.4);
-		--icon-outline: rgba(0, 0, 0, 0.4);
-		--icon-font: rgba(255, 255, 255, 0.4);
-		--icon-hover: rgba(255, 255, 255, 0.8);
-		--warning-accent: rgba(255, 30, 0, 0.65);
-		--check-default: url(../images/check-dark-unchecked.svg);
-		--check-checked: url(../images/check-light-checked.svg);
-		--checkbox-font: rgba(255, 255, 255, 0.8);
-		--checkbox-outline: #323232;
-		--checkbox-unchecked: #4b4b4b;
-		--checkbox-checked: rgba(0, 255, 0, 0.5);
-	}
-}
+@import './variables.less';
 
 .rarityMixin() {
-	&[class*='rarity'] {
-		.item-name{
-			font-family: var(--modesto);
-		}
+	[class*='rarity'] {
 		&[class*='common'], &[class*='common'] .item-image {
 			box-shadow: 0 0 0.4em 0 inset var(--rarity-common);
 		}
@@ -125,7 +20,7 @@
 	}
 }
 
-.app.actor.loot-sheet-npc {
+.lsnpc.actor {
     .window-content {
         color: var(--primary-font);
         padding: 0;
@@ -149,6 +44,9 @@
 			cursor: pointer;
 			z-index: 200;
 		}
+		.tab.active {
+			border-top: 1px solid var(--color-border-dark-primary);
+		}
     }
 
 
@@ -160,7 +58,7 @@
 			"FOOTER";
 		grid-template-rows: 12em auto 2.5em;
 
-		main {
+		.sheet-body {
 			grid-area: BODY;
 		}
 
@@ -193,24 +91,6 @@
 		}
 	}
 
-	.permissiongrid {
-		display: grid;
-		grid-auto-columns: 0.2fr 0.8fr;
-		grid-template-areas: "BULK INDIVIDUAL";
-		gap: 0.2em;
-
-		.bulk {
-			grid-area: BULK;
-		}
-		.individual {
-			grid-area: INDIVIDUAL;
-		}
-
-		ul {
-			border-radius: 0.4em;
-		}
-	}
-
 	.textflex {
 		span {
 			flex: 0 max-content;
@@ -218,7 +98,7 @@
 		}
 
 		input {
-			flex: 0 3em;
+			flex: 0 10em;
 			padding: 0 0.2em;
 		}
 	}
@@ -229,57 +109,6 @@
 		width: 100%;
 		box-shadow: inset 0 0 0.5em 0 var(--sheettint);
 
-		&.styled {
-			background-blend-mode: var(--blendmode);
-			&.parchment {
-				background: url(/ui/parchment.jpg);
-				background-blend-mode: var(--blendmode);
-			}
-			&.circles {
-				background: var(--sheettint);
-				opacity: 0.8;
-				background-image: radial-gradient(circle at center center, var(--sheettint), var(--avatartint)), repeating-radial-gradient(circle at center center, var(--sheettint), var(--sheettint), 11px, transparent 22px, transparent 11px);
-				background-blend-mode: var(--blendmode);
-			}
-			&.rose-petals {
-				background: var(--sheettint);
-				background-image: url("../icons/backgrounds/rose-petals.svg");
-			    background-size: cover;
-    			backdrop-filter: blur(130px);
-				background-blend-mode: var(--blendmode);
-			}
-			&.squares {
-				background: var(--sheettint);
-				opacity: 0.8;
-				background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, var(--sheettint) 1px, var(--avatartint) 2px), repeating-linear-gradient(135deg, transparent, transparent 1px, var(--sheettint) 1px, var(--avatartint) 2px);
-				background-blend-mode: var(--blendmode);
-			}
-
-			&.polka {
-					background-color: var(--avatartint);
-					opacity: 1;
-					background-image: radial-gradient( var(--sheettint) 0.75px, var(--avatartint) 0.75px);
-					background-size: 15px 15px;
-					background-blend-mode: var(--blendmode);
-			}
-
-			&.endless {
-				background: var(--sheettint);
-				background-image: url("../icons/backgrounds/endless.svg");
-				background-blend-mode: var(--blendmode);
-			}
-			&.triangles {
-				background: var(--sheettint);
-				background-image: url("../icons/backgrounds/large-triangles.svg");
-
-			}
-
-			&.stripes {
-				background: var(--sheettint);
-				background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI5MCI+CjxnIHRyYW5zZm9ybT0ic2NhbGUoMSAxLjUpIj4KPHJlY3Qgd2lkdGg9Ijk5IiBoZWlnaHQ9Ijk5IiBmaWxsPSIjNmQ2OTVjIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSI0Mi40MiIgaGVpZ2h0PSI0Mi40MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAgMCkgcm90YXRlKDQ1KSIgZmlsbD0iIzYyNWY1MyI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMSIgdHJhbnNmb3JtPSJyb3RhdGUoNDUpIiBmaWxsPSIjNzE2ZjY0Ij48L3JlY3Q+CjxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDYwKSByb3RhdGUoLTQ1KSIgZmlsbD0iIzcxNmY2NCI+PC9yZWN0Pgo8L2c+Cjwvc3ZnPg==");
-				background-blend-mode: var(--blendmode);
-			}
-		}
 
 		header.sheet-header {
 			font-family: var(--modesto);
@@ -288,7 +117,7 @@
 			nav.sheet-navigation {
 				margin-bottom: 0;
 				.item {
-					background: var(--header-background);
+					background: var(--primary-background);
 					border: 1px solid transparent;
 					border-bottom: 1px solid var(--avatartint);
 					padding: 0 0.5em;
@@ -373,6 +202,8 @@
 		}
 
 		main.sheet-body {
+			background: var(--primary-background);
+
 			section.sheet-content.content {
 				padding: 0 0.8em 0.8em 0;
 			}
@@ -418,9 +249,9 @@
     }
 
     .items-list {
-        .item {
-			.rarityMixin();
+		.rarityMixin();
 
+        .item {
             h4 {
                 color: var(--primary-font);
             }
@@ -458,7 +289,6 @@
     input[type="number"] {
         height: calc(100% - 2px);
         border: 1px solid #7a7971;
-        background: var(--background);
         color: var(--primary-font);
         text-overflow: ellipsis;
         font-size: 0.9em;
@@ -480,7 +310,7 @@
 
 /** GM specific */
 
-.app.loot-sheet-npc {
+.app.lsnpc {
     .gm-section {
 		color: var(--primary-font);
 		font-size: 20px;
@@ -678,8 +508,11 @@ input#quantity {
 @import "partials/permissions.less";
 @import "partials/inventory.less";
 @import "partials/trade.less";
+@import "partials/dialog.less";
+@import "partials/currency.less";
 
 @import "lootchatcard.less";
 @import "settings.less";
+@import "styling.less";
 
 @import "themes/condensed.less";

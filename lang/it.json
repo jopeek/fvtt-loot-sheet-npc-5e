@@ -64,7 +64,7 @@
             },
             "permissions": {
                 "title": "Permessi",
-                "content": "⚠️ Assicurati che un personaggio sia selezionato per i giocatori attraverso la "Configurazione giocatore", così che venga mostrato qui. ⚠️"
+                "content": "⚠️ Assicurati che un personaggio sia selezionato per i giocatori attraverso la 'Configurazione giocatore', così che venga mostrato qui. ⚠️"
             },
             "permissions_individual":{
                 "title": "Permessi individuali",
@@ -191,14 +191,14 @@
                     "name": "Quantità predefinita per l'oggetto",
                     "hint": "Quantità predefinita per l'oggetto se non è stata assegnata una quantità all'attore (es. 1d6)"
                 },
-                "fallbackItemQtyMax": {
+                "fallbackItemQtyLimit": {
                     "name": "Quantità predefinita massima per l'oggetto",
                     "hint": "Quantità predefinita massima per l'oggetto da usare se nessuna quantità massima è stata assegnata all'attore. (es. 2d20 || 10)"
                 },
                 "generateCurrency": {
                     "name": "Genera valuta",
                     "hint": "Genera valuta durante il popolamento del bottino"
-                },                
+                },
                 "useRulesets": {
                     "name": "Usa regole per i filtri",
                     "hint": "Regole personalizzate da usare su un token. Es. se l'attore del token corrisponde alle regole la tabella sarà usata invece della tabella di riserva."

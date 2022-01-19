@@ -42,7 +42,7 @@ export class tokenHelper {
         let rolltable = false;
 
         for (const key in filterRules) {
-            if (this.passesFilter(token.actor, filterRules[key].filters)) {
+            if (this._passesFilter(token.actor, filterRules[key].filters)) {
                 if (!rolltable) rolltable = [];
 
                 rolltable.push(filterRules[key].rolltable);
@@ -53,13 +53,33 @@ export class tokenHelper {
     }
 
     /**
-     *
-     * @param {any} subject
-     * @param {any} filters
+	 * @summary Check if the given subject passes the given filters
+	 *
+     * @description
+	 * Applies the given _filter_**s** on the given _subject_'s data properties.
+	 * If a property defined in filters is **not present** on the _subject_,
+	 * the the subject **doesn't pass** the _filter_.
+	 *
+	 * If a property defined in the _filter_ is **present** on the _subject_,
+	 * The _subject_.property value is checked according to _filter_.comparison
+	 * againt a _filter_.value
+	 *
+	 *
+     * @param {object} subject
+     * @param {object} filters
      *
      * @returns {boolean}
+	 *
+	 * @author Daniel Böttner <@DanielBoettner>
+	 *
+	 * @version 1.0.1
+	 * @since 3.4.5.3
+	 *
+	 * @inheritdoc
+	 * @function
+	 * @static
      */
-    static passesFilter(subject, filters) {
+    static _passesFilter(subject, filters) {
         for (let filter of Object.values(filters)) {
             let prop = getProperty(subject, `data.${filter.filterpath}`) || getProperty(subject, filter.filterpath);
             if (prop === undefined) return false;
@@ -68,8 +88,9 @@ export class tokenHelper {
                 case '<=': if (prop <= filter.value) { return true; } break;
                 case '>=': if (prop >= filter.value) { return true; } break;
                 case 'includes': if (prop.includes(filter.value)) { return true; } break;
+				default:
+					return false;
             }
-            continue;
         }
 
         return false;
@@ -152,16 +173,20 @@ export class tokenHelper {
 	static async handleRerender(uuid) {
 		const token = await fromUuid(uuid);
 		if (!token?.actor?._sheet) return;
-        const sheet = token.actor.sheet,
-		 priorState = sheet._state;
-		 // Close the old sheet if it's open
-		await sheet.close();
 
-        // Deregister the old sheet class
-        token.actor._sheet = null;
-        delete token.actor.apps[sheet.appId];
-		// Re-render the sheet if it was open
-        if (priorState > 0)
-            return sheet.render(true);
+		const sheet = token.actor.sheet,
+			priorState = sheet ? sheet?._state : 0;
+
+		console.log(`${MODULE.ns} | token Helper | handleRerender | Rerendering attempt of the actor sheet for token: ${token.name}`);
+
+		if (sheet.rendered || priorState > 0) {
+			await sheet.close();
+			console.log(`${MODULE.ns} | token Helper | handleRerender | Sanity check - This state should be false: ${sheet.rendered}`);
+			// Deregister the old sheet class
+			token.actor._sheet = null;
+			delete token.actor.apps[sheet.appId];
+			await sheet.render(true, token.actor.options);
+			console.log(`${MODULE.ns} | token Helper | handleRerender | Sanity check - This state should be true: ${sheet.rendered}`);
+		}
 	}
 }

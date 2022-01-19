@@ -1,4 +1,4 @@
-<div class="inventory-filters flexrow">
+<aside class="inventory-filters flexrow">
     {{#ifeq lootsheettype "Loot"}}
         {{> "modules/lootsheetnpc5e/templates/partials/list/currency.hbs"}}
     {{/ifeq}}
@@ -12,8 +12,8 @@
         <span><label>{{localize "Weight"}}</label> <span>{{totalWeight}}</span></span>
         <span><label>{{localize "Value"}}</label> <span>{{totalPrice}}</span></span>
     </ol>
-</div>
-<div class="header-details flexrow">
+</aside>
+<main class="header-details flexrow">
     <ul class="items-list inventory-list">
         {{#each actor.lootableItems as |section sid|}}
             {{#if section.items}}
@@ -30,13 +30,13 @@
 
                 <ol class="item-list">
                     {{#each section.items as |item iid|}}
-                        <li class="item flexrow {{#if ../../colorRarity}}rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}{{/if}}"
+                        <li class="item flexrow"
                             data-item-id="{{item._id}}"
                             data-item-uuid="{{item.uuid}}"
                             data-max-quantity="{{item.data.quantity}}">
 
                             <div class="item-name flexrow rollable">
-                                <div class="item-image" style="background-image: url({{item.img}})"></div>
+                                <div class="item-image {{#if ../../colorRarity}}rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}{{/if}}" style="background-image: url({{item.img}})"></div>
                                 <h4>
                                     {{item.name}}
                                 </h4>
@@ -74,4 +74,4 @@
             {{/if}}
         {{/each}}
     </ul>
-</div>
+</main>

@@ -2,7 +2,7 @@ import { PermissionHelper } from "./PermissionHelper.js";
 import { MODULE } from "../data/moduleConstants.js";
 import { QuantityDialog } from "../classes/quantityDialog.js";
 import { ItemHelper } from "../helper/ItemHelper.js";
-import { socketListener } from "../hooks/socketListener.js";
+import { SocketListener } from "../hooks/SocketListener.js";
 
 /**
  * @Module LootSheetNPC5e.Helpers.LootSheetNPC5eHelper
@@ -28,7 +28,7 @@ class LootSheetNPC5eHelper {
         await actor.setFlag(MODULE.ns, "lootsheettype", selectedItem);
         console.log(MODULE.ns + " | " + game.user.name + ' (' + game.user.id + ') updated the sheet type for ', MODULE.ns + " event | " + event);
         // tell everyone that the sheet has changed.
-        this.sendActionToSocket(actor.token, event);
+        await this.sendActionToSocket(actor.token, event);
         actor.sheet.render(true);
     }
 
@@ -56,28 +56,75 @@ class LootSheetNPC5eHelper {
      *
      * @returns
      */
-    static sendActionToSocket(token, event) {
+    static async sendActionToSocket(token, event) {
         event.preventDefault();
-        if (!game.settings.get(MODULE.ns, event.currentTarget.dataset.action)) {
-            return;
-        }
         const targetGm = PermissionHelper.getTargetGM(),
-            action =  event.currentTarget.dataset.action,
+            action = event.currentTarget.dataset.action,
             dataSet = { ...event.currentTarget.dataset, ...event.currentTarget.closest('.item')?.dataset },
             targetItemId = dataSet?.itemId,
             options = { acceptLabel: "Quantity" },
             maxQuantity = parseInt(dataSet?.maxQuantity),
-            trades = event.currentTarget.closest('section')?.querySelectorAll('ul') || null,
-            stagedItems = { buy: [], sell: [] };
+            trades = event.currentTarget.closest('section')?.querySelectorAll('ul') || null;
 
-        let quantity = 1;
+        let quantity = 1,
+            stagedItems = (event.currentTarget.closest('.tradegrid')) ? this._handleTradeStage(trades) : null;
 
-        // prepare trade
-        if (trades && event.currentTarget.closest('.tradegrid')) {
-            for(let trade of trades) {
+        if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
+        if (!game.user.character?.id && action != 'sheetUpdate') {
+            return ui.notifications.info("You need to assign an actor to you user before you can do this.");
+        }
+
+        const packet = {
+            action: action,
+            triggerActorId: game.user.character?.id || null,
+            tokenUuid: token.uuid,
+            processorId: targetGm.id,
+            targetItemId: targetItemId || null,
+            quantity: quantity || null,
+            trades: stagedItems
+        };
+
+        if (MODULE.settings.keys.sheet.sheetUpdate) {
+            game.socket.emit(MODULE.socket, packet)
+            //return;
+        }
+
+        if (event.shiftKey && dataSet?.getAll === 'true') {
+            packet.quantity = maxQuantity;
+            await this.emitToSocketOrCallMethod(packet)
+        } else if (!event.shiftKey) {
+            // no shiftKey, we don't ask for the quantity
+            await this.emitToSocketOrCallMethod(packet)
+        } else {
+            // shiftKey, we ask for the quantity
+            options.max = maxQuantity;
+            const quantityDialog = new QuantityDialog((quantityCallback) => {
+                packet.quantity = quantityCallback;
+                this.emitToSocketOrCallMethod(packet);
+            }, options);
+
+            quantityDialog.render(true);
+        }
+       // token.actor.sheet.close();
+    }
+
+    /**
+     * @module LootSheetNPC5e.Helpers.LootSheetNPC5eHelper._handleTradeStage
+     * @description Handle the trade stage
+     *
+     * @param {event} event
+     * @param {*} trades
+     *
+     * @returns {Array<object>} stagedItems
+     */
+    static _handleTradeStage(trades) {
+        //&& event.currentTarget.closest('.tradegrid')
+        const stagedItems = { buy: [], sell: [] };
+        if (trades) {
+            for (let trade of trades) {
                 const type = trade.parentNode.dataset.eventTarget;
                 if (trade.children.length == 0) continue;
-                if(!type) continue;
+                if (!type) continue;
 
                 for (let tradeItem of trade.querySelectorAll('.item')) {
                     const item = {
@@ -97,40 +144,7 @@ class LootSheetNPC5eHelper {
             }
         }
 
-        // if (!targetGm) return ui.notifications.error("No active GM on your scene, they must be online and on the same scene to loot coins.");
-        if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
-
-        const packet = {
-            action: action,
-            triggerActorId: game.user.character.id || null,
-            tokenUuid: token.uuid,
-            processorId: targetGm.id,
-            targetItemId: targetItemId || null,
-            quantity: quantity || null,
-            trades: stagedItems,
-        };
-
-        if (action == MODULE.settings.keys.sheet.sheetUpdate) {
-                game.socket.emit(MODULE.socket, packet)
-                return;
-        }
-
-        if (event.shiftKey && dataSet?.getAll === 'true') {
-            packet.quantity = maxQuantity;
-            this.emitToSocketOrCallMethod(packet)
-        } else if(!event.shiftKey) {
-            // no shiftKey, we don't ask for the quantity
-            this.emitToSocketOrCallMethod(packet)
-        } else {
-            // shiftKey, we ask for the quantity
-            options.max = maxQuantity;
-            const quantityDialog = new QuantityDialog((quantityCallback) => {
-                packet.quantity = quantityCallback;
-                this.emitToSocketOrCallMethod(packet);
-                }, options);
-
-            quantityDialog.render(true);
-        }
+        return stagedItems;
     }
 
     /**
@@ -140,9 +154,9 @@ class LootSheetNPC5eHelper {
      *
      * @param {object} packet
      */
-    static emitToSocketOrCallMethod(packet) {
+    static async emitToSocketOrCallMethod(packet) {
         if (game.user.isGM) {
-            socketListener.handleRequest(packet);
+            await SocketListener.handleRequest(packet);
         } else {
             game.socket.emit(MODULE.socket, packet);
         }
@@ -172,29 +186,17 @@ class LootSheetNPC5eHelper {
 
         for (let i of items) {
             i.img = i.img || 'icons/svg/item-bag.svg';
-            //console.log("Loot Sheet | item", i);
 
             // if object has the propery "type" push the current item to the proper group
-            if (i.type && hasProperty(groups, i.type +'s')) {
+            if (i.type && hasProperty(groups, i.type + 's')) {
                 groups[i.type + 's'].items.push(i);
-            } else if (["container", "backpack"].includes(i.type)){
+            } else if (["container", "backpack"].includes(i.type)) {
                 groups.containers.items.push(i);
-            } else if (hasProperty(groups, i.type)){
+            } else if (hasProperty(groups, i.type)) {
                 groups[i.type].items.push(i);
             } else {
                 groups.misc.items.push(i);
             }
-
-            continue;
-            // Features
-            if (i.type === "weapon") groups.weapons.items.push(i);
-            else if (i.type === "equipment") groups.equipment.items.push(i);
-            else if (i.type === "consumable") groups.consumables.items.push(i);
-            else if (i.type === "tool") groups.tools.items.push(i);
-            else if (["container", "backpack"].includes(i.type)) groups.containers.items.push(i);
-            else if (i.type === "loot") groups.loot.items.push(i);
-            else if (i.type === "feat") groups.feat.items.push(i);
-            else groups.loot.items.push(i);
         }
 
         return groups;

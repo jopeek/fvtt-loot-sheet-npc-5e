@@ -36,7 +36,7 @@
                 },
                 "currency": {
                     "split": {
-                        "title": "Split 🪙 between {n} party members",
+                        "title": "Split 🪙 amoung {n} party members",
                         "label": "Split coins"
                     },
                     "single": {
@@ -212,7 +212,7 @@
                     "name": "Fallback item quantity",
                     "hint": "Fallback item quantity to use if no quantity is assigned to the actor. (e.g. 1d6)"
                 },
-                "fallbackItemQtyMax": {
+                "fallbackItemQtyLimit": {
                     "name": "Fallback item quantity maximum",
                     "hint": "Fallback item quantity maxmimum to use if no maxmimum quantity is assigned to the actor. (e.g. 2d20 || 10)"
                 },

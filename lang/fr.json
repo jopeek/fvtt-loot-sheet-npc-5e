@@ -186,7 +186,7 @@
 					"name": "Quantité d'objet de repli",
 					"hint": "Quantité d'objet à utiliser si aucune quantité n'est attribuée à l'acteur. (par exemple, 1d6)"
 				},
-				"fallbackItemQtyMax": {
+				"fallbackItemQtyLimit": {
 					"name": "Quantité maximale d'objet de repli",
 					"hint": "Quantité maximale d'objet à utiliser si aucune quantité maximale n'est attribuée à l'acteur. (par exemple 2d20 || 10)"
 				},

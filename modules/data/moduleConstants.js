@@ -5,6 +5,7 @@
 
 /**
  * @module lootsheetnpc5e.config.Module
+ *
  * @type {object}
  */
 export const MODULE = {

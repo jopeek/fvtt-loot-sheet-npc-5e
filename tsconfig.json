@@ -9,9 +9,9 @@
                         "es5",
                         "dom"
                 ],
-                "outDir": "dist",	
+                "outDir": "dist",
                 "rootDir": "./",
-                "sourceMap": false,
+                "sourceMap": true,
                 "experimentalDecorators": true,
                 "strict": true,
                 "strictNullChecks": true,

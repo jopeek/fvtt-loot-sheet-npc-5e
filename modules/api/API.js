@@ -4,7 +4,7 @@ import { MODULE } from '../data/moduleConstants.js';
 import { LootPopulator } from '../classes/LootPopulator.js';
 import { TableRoller } from '../classes/tableRoller.js';
 import { LootProcessor } from '../classes/LootProcessor.js';
-import { currencyHelper } from '../helper/currencyHelper.js';
+import { CurrencyHelper } from '../helper/currencyHelper.js';
 
 /**
  * @description The lootsheet API
@@ -174,7 +174,7 @@ class API {
                 lootProcess = new LootProcessor(rollResults, token.actor, options),
                 betterResults = await lootProcess.buildResults(options);
 
-            await currencyHelper.addCurrenciesToToken(token, betterResults?.currency);
+            await CurrencyHelper.addCurrenciesToToken(token, betterResults?.currency);
             await lootProcess.addItemsToToken(token, options);
         }
 

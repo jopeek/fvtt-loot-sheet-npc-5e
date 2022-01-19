@@ -9,15 +9,27 @@
         </aside>
     </h3>
     <div class="permissiongrid">
+        <aside class="filter flexrow" {{#if data.flags.lootsheetnpc5e.permissionsFilter}}style="border: 1px solid green"
+            {{/if}}>
+            <label title="{{data.flags.lootsheetnpc5e.permissionsFilter}}">Filter eligable players</label>
+            <select name="data.flags.lootsheetnpc5e.permissionsFilter" class="permissions-filter">
+                {{#select data.flags.lootsheetnpc5e.permissionsFilter}}
+                    <option value="false">No Filter</option>
+                    <option value="1">Characters of Players that view the scene.</option>
+                    <option value="2">Characters of Players that have a token in the scene.</option>
+                    <option value="3"> - " - view the scene & have a token active.</option>
+                {{/select}}
+            </select>
+        </aside>
         <main class="bulk">
             <h4>{{localize 'Bulk Update'}}</h4>
             <ul class="permissions-options">
                 {{#each actor.flags.lootsheetnpc5e.permissions as |permission key|}}
-                    <li class="permission-option {{permission.title}}-border-permission">
-                        <a data-value="{{key}}" title="{{permission.title}} : {{permission.description}}">
-                            <i class="{{permission.class}}"></i>
-                        </a>
-                    </li>
+                <li class="permission-option {{permission.title}}-border-permission">
+                    <a data-value="{{key}}" title="{{permission.title}} : {{permission.description}}">
+                        <i class="{{permission.class}}"></i>
+                    </a>
+                </li>
                 {{/each}}
             </ul>
         </main>
@@ -32,25 +44,19 @@
                 </aside>
             </h4>
             <ol class="permissions-list">
-                {{log actor.flags.lootsheetnpc5e}}
                 {{#each actor.flags.lootsheetnpc5e.players as |player p|}}
-                    <li class="permission" data-skill="{{player.lootPermission}}">
-                        <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}"
-                            data-dtype="Number" actor="{{player.actorId}}" />
-                        <a class="permission-proficiency"
-                            title="{{player.actor}} ({{player.name}}):{{player.lootPermissionDescription}}"
-                            data-player-id="{{player.playerId}}" data-player-permission="{{player.lootPermission}}">
-                            <img class="permission-player {{player.borderClass}}-border-permission"
-                                src="{{player.character.data.img}}" alt="{{player.actor}} ({{player.name}})">
-                        </a>
-                    </li>
+                <li class="permission" data-skill="{{player.lootPermission}}">
+                    <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}"
+                        data-dtype="Number" actor="{{player.actorId}}" />
+                    <a class="permission-proficiency"
+                        title="{{player.actor}} ({{player.name}}):{{player.lootPermissionDescription}}"
+                        data-player-id="{{player.playerId}}" data-player-permission="{{player.lootPermission}}">
+                        <img class="permission-player {{player.borderClass}}-border-permission"
+                            src="{{player.character.data.img}}" alt="{{player.actor}} ({{player.name}})">
+                    </a>
+                </li>
                 {{/each}}
             </ol>
         </main>
     </div>
 </section>
-
-<!-- @Daniel: not quite sure but I think this is obsolete we should check that -->
-
-<!--input type="hidden" name="actor.flags.lootsheetnpc5e.playersPermission"
-    value="{{actor.flags.lootsheetnpc5e.playersPermission}}" data-dtype="Number" /-->

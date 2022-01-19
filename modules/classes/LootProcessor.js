@@ -1,6 +1,6 @@
 import { MODULE } from '../data/moduleConstants.js';
 import { utils } from '../helper/utils.js';
-import { currencyHelper } from '../helper/currencyHelper.js';
+import { CurrencyHelper } from '../helper/currencyHelper.js';
 import { ItemHelper } from '../helper/ItemHelper.js';
 
 /**
@@ -38,7 +38,7 @@ export class LootProcessor {
 
     async buildResults(options = {}) {
         const currencyString = options?.currencyString ?? '';
-        this._setCurrencyData(await currencyHelper.generateCurrency(currencyString));
+        this._setCurrencyData(await CurrencyHelper.generateCurrency(currencyString));
 
         for (let i = 0; i < this.results.length; i++) {
             const betterResults = await this._parseResult(this.results[i], options);
@@ -416,10 +416,10 @@ export class LootProcessor {
      * @param {Item} originalItem
      * @returns
      */
-    async preItemCreationDataManipulation(itemData, originalItem) {
+    async preItemCreationDataManipulation(itemData, originalItem = null) {
         itemData = await this.createScrollFromSpell(itemData);
 
-        if (originalItem.documentName) {
+        if (originalItem && originalItem.documentName) {
             itemData = await ItemHelper.applyItemConversions(itemData, originalItem.documentName);
         }
 
