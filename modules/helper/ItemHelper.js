@@ -196,16 +196,21 @@ class ItemHelper {
 
     /**
      *
-     * @param {Actor5e} target
+     * @param {Actor5e} token
      * @param {string} message
      */
-    static errorMessageToActor(target, message) {
-        game.socket.emit(MODULE.socket, {
-            type: "error",
-            targetId: target.id,
+    static errorMessageToActor(token, message) {
+        const packet = {
+            action: "error",
+            triggerActorId: game.user.character?.id || null,
+            tokenUuid: token.uuid,
             message: message
-        });
+        };
+
+        game.socket.emit(MODULE.socket, packet);
     }
+
+
 
     /**
      * Converts certain non lootable documents to lootable items

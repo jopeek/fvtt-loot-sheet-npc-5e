@@ -7,7 +7,7 @@ import { API } from '../api/API.js';
 
 import { LootPopulator } from '../classes/LootPopulator.js';
 import { SocketListener } from './SocketListener.js';
-import { handlebarsHelpers } from '../helper/handlebarsHelpers.js';
+import { HandlebarsHelper } from '../helper/HandlebarsHelper.js';
 
 /**
  * @module LootSheetNPC5e.hooks
@@ -59,7 +59,7 @@ export class LootsheetNPC5eHooks {
     static foundryReady() {
         PopulatorSettings.registerSettings();
 
-        handlebarsHelpers.register();
+        HandlebarsHelper.register();
 
         if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
             renderWelcomeScreen();

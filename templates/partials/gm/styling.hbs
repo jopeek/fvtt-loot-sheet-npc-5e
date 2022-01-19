@@ -5,7 +5,7 @@
                 <div class="flexrow">
                     <label>Sheet tint</label>
                     <input type="color" data-dtype="String" class="avatar-tint-picker"
-                        name="data.flags.lootsheetnpc5e.sheettint.value"
+                        name="flags.lootsheetnpc5e.sheettint.value"
                         value="{{data.flags.lootsheetnpc5e.sheettint.value}}">
                 </div>
             </div>
@@ -13,7 +13,7 @@
                 <div class="flexrow">
                     <label><small>Intensity</small></label>
                     <input type="range" data-dtype="String" min="0" max="1" step="0.1" class="avatar-tint-picker"
-                        name="data.flags.lootsheetnpc5e.sheettint.alpha"
+                        name="flags.lootsheetnpc5e.sheettint.alpha"
                         value="{{data.flags.lootsheetnpc5e.sheettint.alpha}}">
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <div class="flexrow">
                     <label>Avatar tint</label>
                     <input type="color" data-dtype="String" class="avatar-tint-picker"
-                        name="data.flags.lootsheetnpc5e.avatartint.value"
+                        name="flags.lootsheetnpc5e.avatartint.value"
                         value="{{data.flags.lootsheetnpc5e.avatartint.value}}">
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="flexrow">
                     <label><small>Intensity</small></label>
                     <input type="range" data-dtype="String" min="0" max="1" step="0.1" class="avatar-tint-picker"
-                        name="data.flags.lootsheetnpc5e.avatartint.alpha"
+                        name="flags.lootsheetnpc5e.avatartint.alpha"
                         value="{{data.flags.lootsheetnpc5e.avatartint.alpha}}">
                 </div>
             </div>
@@ -39,22 +39,50 @@
         <div class="flexrow">
             <label>Background styles</label>
             {{#select data.flags.lootsheetnpc5e.sheettint.style}}
-                <select name="data.flags.lootsheetnpc5e.sheettint.style">
+                <select name="flags.lootsheetnpc5e.sheettint.style">
                     <option value="">None</option>
+                    <option value="custom">Custom Background</option>
                     <option value="squares">squares</option>
                     <option value="circles">Cirlces</option>
                     <option value="polka">PolkaDots</option>
-                    <option value="endless">Endless</option>
-                    <option value="stripes">Stripes</option>
-                    <option value="triangles">Stripes</option>
-                    <option value="rose-petals">Rose Petals</option>
+                    <option value="endless">Connections</option>
+                    <option value="checks">Checks / Diamonds</option>
+                    <option value="triangles">Triangles</option>
+                    <option value="rose-petals">Rose Petal</option>
+                    <option value="parchment">Parchment</option>
                 </select>
             {{/select}}
         </div>
         <div class="flexrow">
+            <label>Dark Mode</label>
+            {{#select data.flags.lootsheetnpc5e.darkMode}}
+                <select name="flags.lootsheetnpc5e.darkMode"
+                class="{{#if this.token}} lsnpc-action-link{{/if}}"
+                data-target="flags.lootsheetnpc5e.darkMode"
+                data-event-type="change" data-action="sheetUpdate">
+                    <option value="false">Light</option>
+                    <option value="true">Dark</option>
+                </select>
+            {{/select}}
+        </div>
+        {{#ifeq data.flags.lootsheetnpc5e.sheettint.style 'custom'}}
+
+            <div class="flexrow custom-background-picker">
+                <label> |--> Custom background</label>
+                <div class="flexrow">
+                    <button type="button" class="file-picker" data-type="imagevideo"
+                        data-target="flags.lootsheetnpc5e.custom.background" title="Browse Files" tabindex="-1">
+                        <i class="fas fa-file-import fa-fw"></i>
+                    </button>
+                    <input class="image" type="text" name="flags.lootsheetnpc5e.custom.background"
+                        placeholder="File Path" value="{{data.flags.lootsheetnpc5e.custom.background}}">
+                </div>
+            </div>
+        {{/ifeq}}
+        <div class="flexrow">
             <label>Blendmode</label>
             {{#select data.flags.lootsheetnpc5e.sheettint.blendmode}}
-                <select name="data.flags.lootsheetnpc5e.sheettint.blendmode">
+                <select name="flags.lootsheetnpc5e.sheettint.blendmode" data-event-type="change" data-action="sheetUpdate">
                     <option value="difference">difference</option>
                     <option value="lighten">lighten</option>
                     <option value="darken">darken</option>

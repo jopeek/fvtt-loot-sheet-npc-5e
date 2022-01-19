@@ -7,9 +7,9 @@
                 <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
             </button>
         {{/if}}
-        {{#if splitCurrency}}
-            <button type="button" class="split-currency lsnpc-action-link" type="split-coins" name="split-coins"
-                value="1" data-action="splitCurrency"
+        {{#if distributeCoins}}
+            <button type="button" class="split-currency lsnpc-action-link" data-action="distributeCoins" type="split-coins" name="split-coins"
+                value="1" data-action="distributeCoins"
                 title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=actor.flags.lootsheetnpc5e.observerCount }}">
                 <i class="fas fa-users"></i>
                 <i class="fas fa-hand-holding-usd"></i>

@@ -158,16 +158,15 @@ export class TradeHelper {
      */
     static distributeCoins(actor, options = { verbose: true }) {
         const actorData = actor.data,
-            players = game.users.players,
-            observers = PermissionHelper.getEligablePlayers(players, actor, observers),
+            observers = PermissionHelper.getEligablePlayerActors(actor),
             [currencyShares, npcRemainingCurrency] = CurrencyHelper.getSharesAndRemainder(actorData.data.currency, observers.length);
 
         let msg = [];
 
         if (options.verbose) {
-            let cmsg = `${MODULE.ns} | ${this.name} | ${distributeCoins.name}|`;
+            let cmsg = `${MODULE.ns} | ${distributeCoins.name}|`;
             console.log(cmsg + ' actorData:', actorData);
-            console.log(cmsg + ' players:', players);
+            console.log(cmsg + ' players:', game.users.players);
             console.log(cmsg + ' observers:', observers);
             console.log(cmsg + ' currencyShares:', currencyShares);
             console.log(cmsg + ' npcRemainingCurrency', npcRemainingCurrency);

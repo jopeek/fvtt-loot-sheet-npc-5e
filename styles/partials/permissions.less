@@ -1,7 +1,24 @@
-.app.loot-sheet-npc {
+.app.lsnpc {
     .gm-settings {
+		.permissiongrid {
+			display: grid;
+			grid-auto-columns: 0.2fr 0.8fr;
+			grid-template-areas: "FILTER FILTER" "BULK INDIVIDUAL";
+			gap: 0.2em;
+			.filter {
+				grid-area: FILTER;
+			}
+			.bulk {
+				grid-area: BULK;
+			}
+			.individual {
+				grid-area: INDIVIDUAL;
+			}
 
-		// 
+			ul {
+				border-radius: 0.4em;
+			}
+		}
         .permissions-options,
 		.permissions-list {
 			align-items: flex-start;

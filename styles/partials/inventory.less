@@ -1,67 +1,5 @@
-.app.actor.loot-sheet-npc {
+.app.actor.lsnpc {
     .window-content {
-        .inventory-filters {
-            .currency {
-                li {
-                    box-shadow: -1px -1px 1px var(--icon-shadow),
-                                -1px 1px 1px var(--icon-shadow),
-                                1px 1px 1px var(--icon-shadow),
-                                1px -1px 1px var(--icon-shadow);
-                    border-radius: 0.3em;
-                    background: var(--faint-color);
-                    text-align: right;
-
-
-                    &.currency-item-header {
-                        background: none;
-                        padding: 0.3em;
-                    }
-
-                    >* {
-                        background: none;
-                        border: none;
-                        margin: 0;
-                        color: var(--primary-font);
-                        text-overflow: ellipsis;
-                        font-size: 0.9em;
-                        height: calc(100% - 2px);
-                        padding: 1px 3px;
-                        display: inline-block;
-                    }
-                    input {
-                        text-align: right;
-                        width: 73%;
-                        border: none;
-                    }
-                    label {
-                        margin-left: 0;
-                        width: 23%;
-                        white-space: nowrap;
-                        border: none;
-                    }
-                }
-                &.inventory {
-                    span {
-                        >span {
-                            width: 40px;
-                            text-align: center;
-                            margin-left: 8px;
-                            white-space: nowrap;
-                        }
-                    }
-                }
-            }
-
-            .currency + .currency {
-                margin-top: -0.6em;
-
-                li {
-                    margin: 0;
-                    padding-bottom: 0;
-                }
-            }
-        }
-
         .inventory-list {
             .item {
                 background: var(--faintest-color);
@@ -108,7 +46,7 @@
         }
     }
 
-    &.loot-sheet-npc-gmview {
+    &.lsnpc-gmview {
         .content {
             .tab {
                 .item {

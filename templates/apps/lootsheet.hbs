@@ -7,8 +7,11 @@
     --sheettint: {{hexToRGB data.flags.lootsheetnpc5e.sheettint.value data.flags.lootsheetnpc5e.sheettint.alpha}};
     --avatartint: {{hexToRGB data.flags.lootsheetnpc5e.avatartint.value data.flags.lootsheetnpc5e.avatartint.alpha}};
     --blendmode: {{data.flags.lootsheetnpc5e.sheettint.blendmode}};
-    --style: {{data.flags.lootsheetnpc5e.sheettint.style}};"
-    {{/if}}>
+    {{#ifeq data.flags.lootsheetnpc5e.sheettint.style 'custom'}}
+    --custom-background: url(/{{data.flags.lootsheetnpc5e.custom.background}});
+    {{/ifeq}}
+    --style: {{data.flags.lootsheetnpc5e.sheettint.style}};
+    {{/if}}">
     <!-- <section class="sheet-upper"> -->
 
     <!-- HEADER -->

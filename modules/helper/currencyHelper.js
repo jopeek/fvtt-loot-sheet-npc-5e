@@ -144,4 +144,28 @@ export class CurrencyHelper {
 
         return [shares, remainder];
     }
+
+    /**
+     * @summary Get the split by observers for the given currency
+     *
+     * @description
+     * Get the actors funds. Devide each type of currency by the number of observers.
+     * If the number of observers is 1 (length o observers array is 0), the currency is not split.
+     *
+     * @param {Actor} actor
+     * @param {number} observers
+     *
+     * @returns {Array}
+     */
+    static getSplitByObservers(actor, observers = 1) {
+        let split = duplicate(actor.data.data.currency);
+        if (observers == 0) return split;
+
+        for (let currency in split) {
+                let currenSplit = split[currency]?? 0;
+                split[currency] = Math.floor(currenSplit / observers);
+        }
+
+        return split;
+    }
 }

@@ -1,4 +1,4 @@
-.app.actor.loot-sheet-npc {
+.app.actor.lsnpc {
     .window-content {
         .tab.trade{
             overflow-y: unset;
@@ -114,96 +114,6 @@
                     color: #fff;
                     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
                     margin-left: calc(var(--iconwidth) / 2 + 2px);
-                }
-            }
-        }
-
-        .trade {
-            /**
-            * Style ALL the coins
-            */
-            .coin {
-                --currencysize: 32px;
-                --currency-font-size: 1.4em;
-
-                background: none;
-                content: "";
-                width: var(--currencysize);
-                height: var(--currencysize);
-                display: inline-block;
-                position: relative;
-                border-radius: 50%;
-                z-index: 211;
-                box-shadow:  2px 2px 2px 1px rgba(0, 0, 0, .1);
-
-                span {
-                    font-style: italic;
-                    position: absolute;
-                    text-shadow: 1px 1px var(--color-border-dark);
-                    color: var(--sheettint);
-                    right: auto;
-                    width: var(--currencysize);
-                    height: var(--currencysize);
-                    z-index: 212;
-                    display: block;
-                    line-height: var(--currencysize);
-                    text-align: center;
-                }
-
-                :after {
-                    content: "";
-                    border-top: 1px solid rgba(255,255,255,0.3);
-                    border-left: 1px solid rgba(255,255,255,0.3);
-                    width: var(--currencysize);
-                    height: var(--currencysize);
-                    display: block;
-                    top: 0;
-                    left: 0;
-                    position: absolute;
-                    border-radius: 50px;
-                    z-index: -1;
-                }
-
-                &.coin-cp {  color: rgba(223,182,103,1);}
-                &.coin-sp {  color: rgba(160,160,160,1);}
-                &.coin-ep {  color: rgba(108, 118, 119, 1);}
-                &.coin-gp {  color: rgba(242,215,50,1);}
-                &.coin-pp {  color: rgba(160,160,160,1);}
-
-                &.coin-sp, &.coin-ep, &.coin-pp {
-                    :after {
-                        background: linear-gradient(45deg,  rgba(223,182,103,1) 0%,rgba(249,243,232,1) 56%,rgba(231,192,116,1) 96%);
-                        border-bottom: 1px solid rgba(209,156,53,0.3);
-                        border-right: 1px solid rgba(209,156,53,0.5);
-                        box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, .05);
-                    }
-                }
-
-                &.coin-sp, &.coin-ep, &.coin-pp {
-                    :after {
-                        background: linear-gradient(45deg,  rgba(181,181,181,1) 0%,rgba(252,252,252,1) 56%,rgba(232,232,232,1) 96%);
-                        border-bottom: 1px solid rgba(160,160,160,0.3);
-                        border-right: 1px solid rgba(160,160,160,0.5);
-                        box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
-                    }
-                }
-
-                &.coin-cp {
-                    :after{
-                        background: linear-gradient(45deg,  rgba(223,182,103,1) 0%,rgba(255,255,255,1) 56%,rgba(119, 42, 12, 1) 96%);
-                        border-bottom: 1px solid rgba(242,215,12,0.3);
-                        border-right: 1px solid rgba(242,215,12,0.3);
-                        box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
-                    }
-                }
-
-                &.coin-gp {
-                    :after{
-                        background: linear-gradient(45deg,  rgba(242,215,12,1) 0%,rgba(255,255,255,1) 56%,rgba(223,182,103,1) 96%);
-                        border-bottom: 1px solid rgba(242,215,12,0.3);
-                        border-right: 1px solid rgba(242,215,12,0.3);
-                        box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
-                    }
                 }
             }
         }

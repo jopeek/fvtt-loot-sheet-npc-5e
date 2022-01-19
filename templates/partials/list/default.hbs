@@ -1,4 +1,4 @@
-<div class="inventory-filters flexrow">
+<aside class="inventory-filters flexrow">
     {{#ifeq lootsheettype "Loot"}}
         {{> "modules/lootsheetnpc5e/templates/partials/list/currency.hbs"}}
     {{/ifeq}}
@@ -12,8 +12,8 @@
         <span><label>{{localize "Weight"}}</label> <span>{{totalWeight}}</span></span>
         <span><label>{{localize "Value"}}</label> <span>{{totalPrice}}</span></span>
     </ol>
-</div>
-<div class="header-details flexrow">
+</aside>
+<main class="header-details flexrow">
     <ul class="items-list inventory-list">
         {{#each actor.lootableItems as |section sid|}}
             {{#if section.items}}
@@ -74,4 +74,4 @@
             {{/if}}
         {{/each}}
     </ul>
-</div>
+</main>

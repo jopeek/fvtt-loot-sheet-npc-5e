@@ -7,6 +7,7 @@ import { LootSheetNPC5eHelper } from "../../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from '../../helper/PermissionHelper.js';
 import { tableHelper } from "../../helper/tableHelper.js";
 import { SheetListener } from "../../hooks/SheetListener.js";
+import { CurrencyHelper } from "../../helper/currencyHelper.js";
 
 // ⬆️ module imports
 
@@ -58,11 +59,11 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         const options = super.defaultOptions;
 
         let lsnpcOptions = {
-            classes: ["dnd5e sheet actor npc npc-sheet lsnpc loot-sheet-npc styled"],
+            classes: ["dnd5e", "sheet", "actor", "lsnpc", "npc", "npc-sheet"],
         };
 
         if (game.user.isGM) {
-            lsnpcOptions.classes[0] += " loot-sheet-npc-gmview";
+            lsnpcOptions.classes.push('lsnpc-gmview');
         }
 
         return mergeObject(options, lsnpcOptions);
@@ -74,24 +75,10 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      */
     async getData() {
         const typeKey = "lootsheettype",
-            sheetData = super.getData(),
-            gameWorldTables = await tableHelper.getGameWorldRolltables(),
             sheetType = await this._prepareSheetType(typeKey);
 
-        this._prepareGMSettings(sheetData.actor);
+        let sheetData = super.getData();
 
-        let priceModifier = 1.0,
-            sheetDataActorItems = sheetData.actor.items,
-            totalWeight = 0,
-            totalPrice = 0,
-            totalQuantity = 0;
-
-        //enrich with uuid
-        for (let fullItem of this.actor.getEmbeddedCollection('Item')) {
-            let sheetItem = sheetDataActorItems.find(i => i._id == fullItem.id);
-            if (!sheetItem) continue;
-            sheetItem.uuid = fullItem.uuid;
-        }
 
         if (game.user.isGM) {
             //currency check , set to 0 if null
@@ -108,6 +95,22 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             if (UpdatefixedCurrency) {
                 this.actor.update({ 'data.currency': currencies });
             }
+
+            // potentially some stuff should be prepared seperately when game.user is owner
+            sheetData = await this._prepareGMSettings(sheetData);
+        }
+
+        let priceModifier = 1.0,
+            sheetDataActorItems = sheetData.actor.items,
+            totalWeight = 0,
+            totalPrice = 0,
+            totalQuantity = 0;
+
+        //enrich with uuid
+        for (let fullItem of this.actor.getEmbeddedCollection('Item')) {
+            let sheetItem = sheetDataActorItems.find(i => i._id == fullItem.id);
+            if (!sheetItem) continue;
+            sheetItem.uuid = fullItem.uuid;
         }
 
         /**
@@ -120,7 +123,6 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             priceModifier = await this.actor.getFlag(MODULE.ns, priceModStr);
             if (typeof priceModifier !== 'number') await this.actor.setFlag(MODULE.ns, priceModStr, 1.0);
             priceModifier = await this.actor.getFlag(MODULE.ns, priceModStr);
-            console.log(priceModifier);
         }
 
         sheetDataActorItems.forEach((item) => totalWeight += Math.round((item.data.quantity * item.data.weight * 100) / 100));
@@ -145,14 +147,36 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         sheetData.totalWeight = totalWeight.toLocaleString('en');
         sheetData.totalPrice = totalPrice.toLocaleString('en') + " gp";
         sheetData.totalQuantity = totalQuantity;
+        sheetData.observerCount = PermissionHelper.getEligablePlayerActors(this.actor).length;
         sheetData.priceModifier = priceModifier;
-        sheetData.rolltables = gameWorldTables;
+        sheetData.distributeCoins = game.settings.get(MODULE.ns, "distributeCurrency");
         sheetData.lootCurrency = game.settings.get(MODULE.ns, "lootCurrency");
         sheetData.lootAll = game.settings.get(MODULE.ns, "lootAll");
         sheetData.colorRarity = game.settings.get(MODULE.ns, "colorRarity");
         return sheetData;
     }
 
+
+    render(force = false, options = {}) {
+        /**
+         * @type {Array<string>} appClasses
+         */
+        let appClasses = this.options.classes;
+        const sheetStyle = this.actor.getFlag(MODULE.ns,'sheettint.style'),
+            darkMode = this.actor.getFlag(MODULE.ns,'darkMode'),
+            existingStylingIndex = appClasses.findIndex(e => (e.indexOf('styled') >= 0)),
+            existingDarkModeIndex = appClasses.findIndex(e => (e.indexOf('darkMode') >= 0));
+
+        if (existingStylingIndex > 0) appClasses.splice(existingStylingIndex, 1);
+        if (existingDarkModeIndex > 0) appClasses.splice(existingDarkModeIndex, 1);
+        if (darkMode === 'true') appClasses.push("lsnpc-darkMode");
+        if (sheetStyle.length) appClasses.push('styled ' + sheetStyle);
+        
+
+        this.options.classes = [...new Set(appClasses)];
+
+        super.render(force, options);
+    }
     /**
      *
      * @param {string} typeKey
@@ -160,7 +184,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      */
     async _prepareSheetType(typeKey) {
         let type = this.actor.getFlag(MODULE.ns, typeKey)
-        if(!type){
+        if (!type) {
             type = "Loot";
             await this.actor.setFlag(MODULE.ns, typeKey, type);
         }
@@ -203,6 +227,12 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      * @param {*} sheetData
      */
     _setClasses(sheetData) {
+        const darkMode = this.actor.getFlag(MODULE.ns,'darkMode'),
+            sheetStyleBackground = this.actor.getFlag(MODULE.ns,'sheettint.style');
+
+        if(darkMode) this.options.classes.push("lsnpc-darkDmode");
+        if(!sheetStyleBackground.length) this.options.classes.push("lsnpc-styled");
+
         return;
     }
 
@@ -240,28 +270,23 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     }
 
     /**
-     * @description Prepares GM settings to be rendered by the loot sheet.
+     * @summary Prepares GM settings to be rendered by the loot sheet.
      *
-     * @param {object} actorData
+     * @param {object} sheetData
+     * @author Jan Ole Peek <@jopeek>
+     *
+     * @version 1.1.0
+     *
+     * @returns {object} sheetData
      */
-    _prepareGMSettings(actorData) {
-        const observers = [],
+    async _prepareGMSettings(sheetData) {
+        const observers = PermissionHelper.getEligablePlayerActors(this.actor),
             permissionsInfo = PermissionHelper.getPermissionInfo(),
-            [playerData, playersPermission] = this._playerPermissions(actorData)
+            [playerData, playersPermission] = this._playerPermissions(sheetData),
+            currencySplit = CurrencyHelper.getSplitByObservers(this.actor, observers.length),
+            gameWorldTables = await tableHelper.getGameWorldRolltables();
 
-        // calculate the split of coins between all observers of the sheet.
-        let currencySplit = duplicate(actorData.data.currency);
-        for (let c in currencySplit) {
-            if (observers.length) {
-                if (currencySplit[c] != null) {
-                    currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
-                } else {
-                    currencySplit[c] = 0;
-                }
-            }
-        }
-
-        let loot = {}
+        let loot = {};
         loot.players = playerData;
         loot.observerCount = observers.length;
         loot.currency = currencySplit;
@@ -269,40 +294,39 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         loot.playersPermission = playersPermission;
         loot.playersPermissionIcon = PermissionHelper.getPermissionInfo(playersPermission);
         loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(playersPermission)?.description;
-        actorData.flags.lootsheetnpc5e = loot;
+
+        sheetData.rolltables = gameWorldTables;
+        sheetData.actor.flags.lootsheetnpc5e = loot;
+
+        return sheetData;
     }
 
     /**
+     * @description
+     * Parse the sheetData and fill an array with specific player permissions.
      *
-     *
+     * @param {object} sheetData
      * @private
-     * @param {Actor|object} actorData
+     * @param {Actor|object} sheetData
      */
-     _playerPermissions(actorData) {
+    _playerPermissions(sheetData) {
+        // get all the players
         const players = game.users.players;
 
         let playerData = [],
             commonPlayersPermission = -1;
+
         for (let player of players) {
-            // get the name of the primary actor for a player
-            const actor = game.actors.get(player.data.character);
+            // get primary/active actor for a player
+            const playerActor = game.actors.get(player.data.character);
 
-            if (actor) {
-
-                player.actor = actor.data.name;
-                player.actorId = actor.data._id;
+            if (playerActor) {
+                player.actor = playerActor.data.name;
+                player.actorId = playerActor.data._id;
                 player.playerId = player.data._id;
-                player.lootPermission = PermissionHelper.getLootPermissionForPlayer(actorData, player);
-                const observers = PermissionHelper.getEligablePlayers(actor, players);
-                if (player.lootPermission >= 2 && !observers.includes(actor.data._id)) {
-                    observers.push(actor.data._id);
-                }
+                player.lootPermission = PermissionHelper.getLootPermissionForPlayer(sheetData.actor, player);
 
-                if (commonPlayersPermission < 0) {
-                    commonPlayersPermission = player.lootPermission;
-                } else if (commonPlayersPermission !== player.lootPermission) {
-                    commonPlayersPermission = 0;
-                }
+                commonPlayersPermission = (commonPlayersPermission < 0) ? player.lootPermission : commonPlayersPermission;
 
                 const lootPermissionInfo = PermissionHelper.getPermissionInfo(player.lootPermission);
 

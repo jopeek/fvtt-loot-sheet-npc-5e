@@ -36,7 +36,7 @@
                 },
                 "currency": {
                     "split": {
-                        "title": "Split 🪙 between {n} party members",
+                        "title": "Split 🪙 amoung {n} party members",
                         "label": "Split coins"
                     },
                     "single": {
