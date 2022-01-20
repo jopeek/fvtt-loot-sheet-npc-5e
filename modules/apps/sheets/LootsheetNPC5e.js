@@ -170,7 +170,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         if (existingStylingIndex > 0) appClasses.splice(existingStylingIndex, 1);
         if (existingDarkModeIndex > 0) appClasses.splice(existingDarkModeIndex, 1);
         if (darkMode === 'true') appClasses.push("lsnpc-darkMode");
-        if (sheetStyle.length) appClasses.push('styled ' + sheetStyle);
+        if (sheetStyle && sheetStyle.length) appClasses.push('styled ' + sheetStyle);
         
 
         this.options.classes = [...new Set(appClasses)];
