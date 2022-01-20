@@ -132,14 +132,12 @@ export class HandlebarsHelper {
          *
          */
         Handlebars.registerHelper('approximateNumber', function (number, decimals) {
+            const suffix = ["", "k", "M", "B", "T", "P", "E", "Z", "Y"];
             if (isNaN(number) || number === 0) return '';
 
-            let suffix = ["", "k", "M", "B", "T", "P", "E", "Z", "Y"];
             let base = Math.floor(Math.log10(number));
+            if (base < 1) base = 1;
 
-            if (base < 1) {
-                base = 1;
-            }
             let suffixIndex = Math.floor(base / 3);
             let suffixValue = suffix[suffixIndex];
             let value = number / Math.pow(10, suffixIndex * 3);

@@ -12,6 +12,7 @@
                 data-id="{{item._id}}"
                 data-quantity="{{item.data.quantity}}"
                 data-price="{{item.data.price}}"
+                data-price-label="{{approximateNumber item.data.price 1}}"
                 data-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
                 data-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
                 data-description="{{item.description}}" data-name="{{item.name}}"
