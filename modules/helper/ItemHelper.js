@@ -77,8 +77,12 @@ class ItemHelper {
          *  when items is only one item.
          **/
         for (let item of items) {
-            const sourceItem = source.getEmbeddedDocument("Item", item.id),
-                quantity = (sourceItem.data.data.quantity < item.data.data.quantity) ? parseInt(sourceItem.data.data.quantity) : parseInt(item.data.data.quantity),
+            const sourceItem = source.getEmbeddedDocument("Item", item.id);
+            if(!sourceItem){
+                ui.notifications.info(`${source.name} does not posess this ${item.name} anymore.`);
+                continue;
+            }
+            const quantity = (sourceItem.data.data.quantity < item.data.data.quantity) ? parseInt(sourceItem.data.data.quantity) : parseInt(item.data.data.quantity),
                 updatedItem = { _id: sourceItem.id, data: { quantity: sourceItem.data.data.quantity - quantity } },
                 targetItem = destination.getEmbeddedCollection('Item').find(i =>
                     sourceItem.name === i.name

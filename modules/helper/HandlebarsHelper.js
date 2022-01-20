@@ -1,3 +1,5 @@
+import { MODULE } from "../data/moduleConstants.js";
+
 /**
  * @module LootsheetNPC5e.Helper.HandlebarsHelper
  *
@@ -41,37 +43,10 @@ export class HandlebarsHelper {
          *
          * @return {Boolean}
          */
-        Handlebars.registerHelper('uneq', (a,b, options) => this.uneq(a, b, options));
+        Handlebars.registerHelper('uneq', (a, b, options) => this.uneq(a, b, options));
         Handlebars.registerHelper('hexToRGB', (hex, alpha) => this.hexToRGB(hex, alpha));
-
-        /**
-         * @description Calculate the price of an item after applying the cost modifier
-         *
-         * @param {number} cost
-         * @param {number} modifier
-         *
-         * @return {number}
-         */
-        Handlebars.registerHelper('lootsheetprice', function (basePrice, modifier = 1) {
-            return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en') + " gp";
-        });
-
-        /**
-         *  @description Calculate a stack weight using the weight of the item and the quantity
-         *
-         * @param {number} weight
-         * @param {number} quantity
-         *
-         * @return {number}
-         */
-        Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
-            let showStackWeight = game.settings.get("lootsheetnpc5e", "showStackWeight");
-            if (showStackWeight) {
-                return `/${(weight * qty).toLocaleString('en')}`;
-            }
-
-            return "";
-        });
+        Handlebars.registerHelper('lootsheetprice', (cost, modifier, currency) => this.lootsheetPrice(cost, modifier, currency));
+        Handlebars.registerHelper('lootsheetstackweight', (weight, quantity) => this.lootsheetStackWeight(weight, quantity));
 
         /**
          * @description Calculate the overall weight
@@ -131,18 +106,7 @@ export class HandlebarsHelper {
          * Change the suffix everytime another base of 10 is reached
          *
          */
-        Handlebars.registerHelper('approximateNumber', function (number, decimals) {
-            const suffix = ["", "k", "M", "B", "T", "P", "E", "Z", "Y"];
-            if (isNaN(number) || number === 0) return '';
-
-            let base = Math.floor(Math.log10(number));
-            if (base < 1) base = 1;
-
-            let suffixIndex = Math.floor(base / 3);
-            let suffixValue = suffix[suffixIndex];
-            let value = number / Math.pow(10, suffixIndex * 3);
-            return parseFloat(value.toFixed(decimals)) + suffixValue;
-        });
+        Handlebars.registerHelper('approximateNumber', (number, decimals) => this.approximateNumber(number, decimals));
     }
 
     /**
@@ -181,5 +145,50 @@ export class HandlebarsHelper {
         } else {
             return 'rgb(' + r + ', ' + g + ', ' + b + ')';
         }
+    }
+
+    static approximateNumber(number, decimals = 1) {
+        const suffix = ["", "k", "M", "B", "T", "P", "E", "Z", "Y"];
+        if (isNaN(number) || number === 0) return 0;
+
+        let base = Math.floor(Math.log10(number));
+        if (base < 1) base = 1;
+
+        let suffixIndex = Math.floor(base / 3);
+        let suffixValue = suffix[suffixIndex];
+        let value = number / Math.pow(10, suffixIndex * 3);
+        return parseFloat(value.toFixed(decimals)) + suffixValue;
+    }
+
+    /**
+     *  @description Calculate a stack weight using the weight of the item and the quantity
+     *
+     * @param {number} weight
+     * @param {number} quantity
+     *
+     * @return {number}
+     */
+    static lootsheetStackWeight(weight, qty) {
+        let showStackWeight = game.settings.get(MODULE.ns, "showStackWeight");
+        if (showStackWeight) {
+            return `/${(weight * qty).toLocaleString()}`;
+        }
+
+        return "";
+    }
+
+    /**
+     * @description Calculate the price of an item after applying the cost modifier
+     *
+     * @param {number} cost
+     * @param {number} modifier
+     *
+     * @return {number}
+     */
+    static lootsheetPrice(basePrice, modifier = 1, currency = true) {
+        const price = (Math.round(basePrice * modifier * 100) / 100),
+            suffix = currency ? " GP" : "";
+
+        return price + suffix;
     }
 }

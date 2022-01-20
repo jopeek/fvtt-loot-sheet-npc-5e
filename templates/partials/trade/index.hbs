@@ -2,7 +2,7 @@
     <section class="token-inventory">
         <h3>{{actor.name}}</h3>
         <main data-event-target="token" data-event-action="buy">
-            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems}}
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems mode="npc"}}
         </main>
     </section>
 
@@ -17,17 +17,17 @@
     </section>
     <section class="stage dropzone" dropzone="true">
         <main data-event-target="sell" data-event-action="player">
-            <header>{{#ifeq ../../lootsheettype "Merchant"}}Sell{{else}}Give{{/ifeq}}</header>
+            <header>{{#ifeq lootsheettype "Merchant"}}Sell{{else}}Give{{/ifeq}}</header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
         </main>
         <main data-event-target="buy" data-event-action="token">
-            <header>{{#ifeq ../../lootsheettype "Merchant"}}Buy{{else}}Take{{/ifeq}}</header>
+            <header>{{#ifeq lootsheettype "Merchant"}}Buy{{else}}Take{{/ifeq}}</header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
             <footer>
                 <button class="lsnpc-action-link" type="button" data-action="tradeItems">
-                    {{#ifeq ../../lootsheettype "Merchant"}}Trade{{else}}Take{{/ifeq}}
+                    {{#ifeq ../lootsheettype "Merchant"}}Trade{{else}}Take{{/ifeq}}
                 </button>
             </footer>
         </main>
@@ -43,7 +43,7 @@
     <section class="player-inventory">
         <h3>{{player.name}}</h3>
         <main data-event-target="player" data-event-action="sell">
-            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory}}
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory mode="player"}}
         </main>
     </section>
 </main>
