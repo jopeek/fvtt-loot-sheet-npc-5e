@@ -142,6 +142,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         sheetData.items = sheetDataActorItems;
 
         // rest
+        sheetData.interactingActor = game.user.character.name;
         sheetData.lootsheettype = sheetType;
         sheetData.totalItems = sheetDataActorItems.length;
         sheetData.totalWeight = totalWeight.toLocaleString('en');
@@ -171,7 +172,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         if (existingDarkModeIndex > 0) appClasses.splice(existingDarkModeIndex, 1);
         if (darkMode === 'true') appClasses.push("lsnpc-darkMode");
         if (sheetStyle && sheetStyle.length) appClasses.push('styled ' + sheetStyle);
-        
+
 
         this.options.classes = [...new Set(appClasses)];
 

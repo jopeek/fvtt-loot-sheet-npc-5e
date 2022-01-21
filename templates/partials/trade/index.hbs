@@ -1,6 +1,15 @@
 <main class="tradegrid">
     <section class="token-inventory">
         <h3>{{actor.name}}</h3>
+        {{#ifeq lootsheettype "Loot"}}
+            {{#if lootAll}}
+                <button type="button" class="loot-all lsnpc-action-link" name="loot-all" data-get-all="true"
+                    data-action="lootAll" title="{{localize 'lsnpc.buttons.loot.items.all.title' name=interactingActor}}">
+                    <i class="fas fa-gem"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
+                </button>
+            {{/if}}
+        {{/ifeq}}
         <main data-event-target="token" data-event-action="buy">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems mode="npc"}}
         </main>
@@ -41,7 +50,7 @@
             </div>
     </section>
     <section class="player-inventory">
-        <h3>{{player.name}}</h3>
+        <h3>{{interactingActor}}</h3>
         <main data-event-target="player" data-event-action="sell">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory mode="player"}}
         </main>

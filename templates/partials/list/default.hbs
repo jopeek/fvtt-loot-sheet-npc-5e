@@ -1,9 +1,7 @@
 <aside class="inventory-filters flexrow">
-    {{#ifeq lootsheettype "Loot"}}
-        {{> "modules/lootsheetnpc5e/templates/partials/list/currency.hbs"}}
-    {{/ifeq}}
+    {{> "modules/lootsheetnpc5e/templates/partials/list/currency.hbs"}}
 
-    <ol class="currency inventory flexrow">
+    <div class="currency inventory flexrow">
         <span style="flex: 0 0 60px;">
             <h3>Totals</h3>
         </span>
@@ -11,7 +9,16 @@
         <span><label>{{localize "Quantity"}}</label> <span>{{totalQuantity}}</span></span>
         <span><label>{{localize "Weight"}}</label> <span>{{totalWeight}}</span></span>
         <span><label>{{localize "Value"}}</label> <span>{{totalPrice}}</span></span>
-    </ol>
+        {{#ifeq lootsheettype "Loot"}}
+            {{#if lootAll}}
+                <button type="button" class="loot-all lsnpc-action-link" name="loot-all" data-get-all="true"
+                    data-action="lootAll" title="{{localize 'lsnpc.buttons.loot.items.all.title' name=interactingActor}}">
+                    <i class="fas fa-gem"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
+                </button>
+            {{/if}}
+        {{/ifeq}}
+    </div>
 </aside>
 <main class="header-details flexrow">
     <ul class="items-list inventory-list">

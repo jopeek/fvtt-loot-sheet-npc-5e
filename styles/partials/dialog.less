@@ -1,30 +1,31 @@
 .lsnpc {
     &.dialog-price-modifier {
-        .window-header {
-            a {
-                color: red;
-                font-size: 0.8em;
-                border: 1px solid var(--sheettint);
-            }
-        }
-        form {
-            background: var(--sheettint);
-            box-shadow: 2px 2px 2px 2px var(--avatartint);
-            .avatar {
-                position: relative;
-                border: 1px solid var(--avatartint);
-                max-width: 30%;
-                max-height: 50px;
+        border: 2px solid #ff6400;
 
-                img {
-                    position: absolute;
-                    border-radius: 50%;
-                    box-shadow: 2px 2px rgb(0 0 0);
-                    height: 50px;
+        .window-header {
+            line-height: 1.4em;
+            flex: 0 0 1.4em;
+            border-bottom: 1px solid var(--color-border-highlight);
+            a {
+                display: inline-block;
+                font-size: 0em;
+                border: 1px solid var(--sheettint);
+
+                i {
+                    font-size: initial;
                 }
             }
+        }
+        .window-content {
+            padding: 0;
+        }
+        form {
+            padding: 0.5rem;
 
-            .price-modifier-display {
+            #priceModifierDisplay {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
                 background: var(--avatartint);
                 box-shadow: 2px 2px 2px 2px var(--sheettint);
             }

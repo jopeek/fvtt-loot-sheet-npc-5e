@@ -1,7 +1,6 @@
 import Item5e from "/systems/dnd5e/module/item/entity.js";
 
 import { MODULE } from '../data/moduleConstants.js';
-import { tableHelper } from "../helper/tableHelper.js";
 import { API } from "../api/API.js";
 
 export class tokenHelper {
@@ -20,10 +19,20 @@ export class tokenHelper {
      * @returns {String|false} a RollTable.id
      */
     static getLinkedRolltableByCreatureType(creatureType) {
-        let fallback = game.settings.get(MODULE.ns, "creaturetype_default_" + creatureType + '_table');
-        if (fallback != 0) {
-            return fallback || false;
-        }
+		if(!creatureType || creatureType.length === 0 ) return false;
+
+		try {
+			const systemCreatureTypes = Object.keys(CONFIG[game.system.id.toUpperCase()]?.creatureTypes) ?? [];
+			if(systemCreatureTypes.includes(creatureType)) {
+				const creatureTypeKey = `creaturetype_default_${creatureType}_table`,
+					fallback = game.settings.get(MODULE.ns, creatureTypeKey);
+
+				if (fallback && fallback != 0) return fallback;
+			}
+		} catch (e) {
+			console.error(e);
+			return false;
+		}
 
         return false;
     }

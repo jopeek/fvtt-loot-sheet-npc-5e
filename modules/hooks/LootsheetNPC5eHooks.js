@@ -147,7 +147,7 @@ export class LootsheetNPC5eHooks {
                 title: "LSNPC | Generate Loot",
                 icon: "fas fa-gem",
                 visible: game.user.isGm,
-                onClick: async () => await LootPopulator.populate(),
+                onClick: () => LootPopulator.populate(),
                 button: true
             });
         }
