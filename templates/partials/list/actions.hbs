@@ -25,6 +25,7 @@
                                     {{item.name}}
                                 </h4>
                             </div>
+                            {{#if item.data.quantity}}
                             <div class="item-quantity">
                                 <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
                             </div>
@@ -32,6 +33,7 @@
                                 <i class="fas fa-weight-hanging" title="Weight"></i>
                                 {{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}
                             </div>
+                            {{/if}}
                             <div class="item-controls">
                                 {{#if ../../owner}}
                                     <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
