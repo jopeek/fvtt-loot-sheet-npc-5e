@@ -146,40 +146,48 @@ class API {
     }
 
     /**
-     * Roll a table an add the resulting loot to a given token.
+     *
+     * @param  {...any} args
+     *
+     * @deprecated use addLootToTarget instead
+     */
+    static async addLootToSelectedToken(...args) {
+        this.addLootToTarget(...args);
+    }
+
+    /**
+     * Roll a table an add the resulting loot to a given target.
      *
      * @param {RollTable} table
-     * @param {TokenDocument} token
+     * @param {Array<Actor|PlaceableObject>|Actor|PlaceableObject} stack
      * @param {options} object
+     *
      * @returns
      */
-    static async addLootToSelectedToken(token = null, table = null , options = null) {
-        const verboseCall = options?.verbose ?? false;
-
+    static async addLootToTarget(stack = null, table = null , options = {}) {
         let tokenstack = [];
 
-        if (null == token && (canvas.tokens.controlled.length === 0)) {
+        if (null == stack && (canvas.tokens.controlled.length === 0)) {
             return ui.notifications.error('No tokens given or selected');
         } else {
-            tokenstack = (token) ? (token.length >= 0) ? token : [token] : canvas.tokens.controlled;
+            tokenstack = (stack) ? (stack.length >= 0) ? stack : [stack] : canvas.tokens.controlled;
         }
 
-        if (verboseCall)
-            ui.notifications.info(MODULE.ns + ' | API | Loot generation started.');
+        if (options?.verbose) ui.notifications.info(MODULE.ns + ' | API | Loot generation started for.');
 
         let tableRoller = new TableRoller(table);
 
-        for (const token of tokenstack) {
+        for (let target of tokenstack) {
+            const actor = (target.actor) ? target.actor : target;
             const rollResults = await tableRoller.roll(options),
-                lootProcess = new LootProcessor(rollResults, token.actor, options),
+                lootProcess = new LootProcessor(rollResults, actor, options),
                 betterResults = await lootProcess.buildResults(options);
 
-            await CurrencyHelper.addCurrenciesToToken(token, betterResults?.currency);
-            await lootProcess.addItemsToToken(token, options);
+            await CurrencyHelper.addCurrenciesToActor(actor, betterResults?.currency);
+            lootProcess.addItemsToActor(actor, options);
         }
 
-        if (verboseCall)
-            return ui.notifications.info(MODULE.ns + ' | API | Loot generation complete.');
+        if (options?.verbose) return ui.notifications.info(MODULE.ns + ' | API | Loot generation complete.');
     }
 
     /**

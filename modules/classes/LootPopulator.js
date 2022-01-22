@@ -124,7 +124,7 @@ export class LootPopulator {
 					// better solution could be to take the currency string with the highest prio - that is if we add prio
 					brt_currencyString = brt_currencyString || rolltable.getFlag('better-rolltables', 'table-currency-string');
 				} else {
-					await API.addLootToSelectedToken(currentToken, rolltable, options);
+					await API.addLootToTarget(currentToken, rolltable, options);
 				}
 			}
 

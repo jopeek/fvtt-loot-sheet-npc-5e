@@ -61,7 +61,7 @@ export class SheetListener {
         for (let actionButton of sheetActionButtons) {
             const eventType = actionButton.nodeName === 'SELECT' ? 'change' : 'click';
             actionButton.toggleAttribute('disabled', false);
-            actionButton.addEventListener(eventType, ev => LootSheetNPC5eHelper.sendActionToSocket(this.token, ev));
+            actionButton.addEventListener(eventType, ev => LootSheetNPC5eHelper.sendActionToSocket(this.actor, ev));
         }
 
         for (let helpText of helpTexts) {
@@ -183,7 +183,7 @@ export class SheetListener {
             }
         }
 
-        await tokenHelper.populateWithRolltable(rolltable, this.token);
+        await tokenHelper.populateWithRolltable(rolltable, {actor: this.actor});
         await this.actor.sheet.close();
         return this.actor.sheet.render(true);
     }
