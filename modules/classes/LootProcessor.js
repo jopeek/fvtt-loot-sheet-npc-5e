@@ -242,9 +242,16 @@ export class LootProcessor {
             embeddedItems = [...actor.getEmbeddedCollection('Item').values()],
             originalItem = embeddedItems.find(i => i.name === newItem.data?.name && itemPrice === getProperty(i.data, 'data.price'));
 
-        let itemQuantity = new Roll(options?.customRole.itemQtyFormula, actor.data).roll().total || newItem?.data?.data.quantity || 1,
-            itemLimit = new Roll( options?.customRole.itemQtyLimitFormula, actor.data).roll().total || 0,
-            originalItemQuantity = originalItem?.data?.quantity || 1,
+            if (!newItem) console.error(`${MODULE.ns} | _createLootItem: no newItem could be generated from object:`, item);
+        let itemQuantity = newItem?.data?.data?.quantity || 1,
+            itemLimit = 0;
+
+        if(options?.customRole) {
+            itemQuantity = (await (new Roll(options?.customRole.itemQtyFormula, actor.data)).roll({ async: true })).total;
+            itemLimit = (await (new Roll(options?.customRole.itemQtyFormula, actor.data)).roll({ async: true })).total;
+        }
+
+        let originalItemQuantity = originalItem?.data?.quantity || 1,
             limitCheckedQuantity = this._handleLimitedQuantity(itemQuantity, originalItemQuantity, itemLimit);
 
         /** if the item is already owned by the actor (same name and same PRICE) */
@@ -264,7 +271,7 @@ export class LootProcessor {
             return actor.items.get(originalItem.id);
         }
 
-        /** we create a new item if we don't own already */
+        /** we create a new item if we don't own it already */
         await actor.createEmbeddedDocuments('Item', [newItem.data]);
         /** Get the new item and return it */
         return actor.items.get(newItem.data._id);
@@ -360,50 +367,17 @@ export class LootProcessor {
     }
 
     /**
-       *
-       * @param {Token|Actor} token
-       * @param {Boolean} is the token passed as the token actor instead?
-       */
-    async addCurrenciesToToken(token, isTokenActor = false) {
-        // needed for base key set in the event that a token has no currency properties
-        const currencyDataInitial = { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 };
-        let currencyData = currencyDataInitial;
-
-        if (isTokenActor) {
-            currencyData = duplicate(token.data.data.currency);
-        } else if (token.data.actorData?.data?.currency) {
-            currencyData = duplicate(token.data.actorData.data.currency);
-        }
-
-        const lootCurrency = this.currencyData;
-
-        for (const key in currencyDataInitial) {
-            const amount = Number(currencyData[key] || 0) + Number(lootCurrency[key] || 0);
-            currencyData[key] = amount;
-        }
-
-        if (isTokenActor) {
-            // @type {Actor}
-            return await token.update({ 'actorData.data.currency': currencyData });
-        } else {
-            return await token.actor.update({ 'data.currency': currencyData });
-        }
-    }
-
-    /**
      *
-     * @param {Token} token
+     * @param {Actor} actor
      * @param {object} options
      *
      * @returns {Array<Item>} Array of added items
      *
      */
-    async addItemsToToken(token, options) {
+    async addItemsToActor(actor, options) {
         let items = [];
         for (const item of this.lootResults) {
-            // Create the item making sure to pass the token actor and not the base actor
-
-            const newItem = await this._createLootItem(item, token.actor, options);
+            const newItem = await this._createLootItem(item, actor, options);
             items.push(newItem);
         }
 

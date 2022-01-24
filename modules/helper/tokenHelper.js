@@ -1,7 +1,6 @@
 import Item5e from "/systems/dnd5e/module/item/entity.js";
 
 import { MODULE } from '../data/moduleConstants.js';
-import { tableHelper } from "../helper/tableHelper.js";
 import { API } from "../api/API.js";
 
 export class tokenHelper {
@@ -20,10 +19,20 @@ export class tokenHelper {
      * @returns {String|false} a RollTable.id
      */
     static getLinkedRolltableByCreatureType(creatureType) {
-        let fallback = game.settings.get(MODULE.ns, "creaturetype_default_" + creatureType + '_table');
-        if (fallback != 0) {
-            return fallback || false;
-        }
+		if(!creatureType || creatureType.length === 0 ) return false;
+
+		try {
+			const systemCreatureTypes = Object.keys(CONFIG[game.system.id.toUpperCase()]?.creatureTypes) ?? [];
+			if(systemCreatureTypes.includes(creatureType)) {
+				const creatureTypeKey = `creaturetype_default_${creatureType}_table`,
+					fallback = game.settings.get(MODULE.ns, creatureTypeKey);
+
+				if (fallback && fallback != 0) return fallback;
+			}
+		} catch (e) {
+			console.error(e);
+			return false;
+		}
 
         return false;
     }
@@ -138,20 +147,23 @@ export class tokenHelper {
     /**
 	 *
 	 * @param {RollTableDocument} rolltable
-	 * @param {TokenDocument} token
+	 * @param {Actor|Token} target
+	 *
+	 *
+	 * @todo this should be moved to the sheetHelper or a dedicated class
 	 *
 	 */
-	static async populateWithRolltable(rolltable, token) {
-		const tokenActor = token.actor;
+	static async populateWithRolltable(rolltable, target) {
+		const actor = (!target?.actor)? target : target.actor;
 		let options = {
 				customRole: {
-					shopQtyFormula: tokenActor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
-					itemQtyFormula: tokenActor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
-					itemQtyLimitFormula: tokenActor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
-					currencyFormula: tokenActor.getFlag(MODULE.ns, "currencyFormula") || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula) || "",
+					shopQtyFormula: actor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
+					itemQtyFormula: actor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty)|| 1,
+					itemQtyLimitFormula: actor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
+					currencyFormula: actor.getFlag(MODULE.ns, "currencyFormula") || game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula) || "",
 				},
-				itemOnlyOnce: tokenActor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
-				tokenUuid: token.uuid,
+				itemOnlyOnce: actor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
+				tokenUuid: target.uuid,
             	reducedVerbosity: game.settings.get(MODULE.ns, "reduceUpdateVerbosity") || true
 			};
 
@@ -159,8 +171,8 @@ export class tokenHelper {
 		let shopRoll = await shopQtyRoll.roll();
 		options.total = shopRoll.total;
 
-		await API.addLootToSelectedToken(token, rolltable, options);
-		token.actor.sheet.render(true);
+		await API.addLootToTarget(target, rolltable, options);
+		target.actor.sheet.render(true);
 	}
 
 	/**

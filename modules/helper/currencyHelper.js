@@ -29,8 +29,8 @@ export class CurrencyHelper {
                 return;
             }
 
-            await this.addCurrenciesToToken(
-                token,
+            await this.addCurrenciesToActor(
+                token.actor,
                 this.generateCurrency(lootCurrencyString),
                 flags.adjustCurrency
             );
@@ -81,26 +81,26 @@ export class CurrencyHelper {
     }
 
     /**
-     * Expects and actor and an array
+     * Expects and actor and an an array with currency types and values
      *
-     * @param {Actor} token
-     * @param {Array<string>} lootCurrency
+     * @param {Actor} actor
+     * @param {Array} lootCurrency
      * @param {boolean} adjutsByCR
      */
-    static async addCurrenciesToToken(token, lootCurrency, adjutsByCR = false) {
+    static async addCurrenciesToActor(actor, lootCurrency, adjutsByCR = false) {
         const currencyDataInitial = { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 };
         let currencyData = currencyDataInitial;
 
         lootCurrency = lootCurrency || game.settings.get(MODULE.ns, 'lootCurrencyDefault');
 
-        if (token.data.data?.currency) {
-            currencyData = duplicate(token.data.data.currency);
+        if (actor.data.data.currency) {
+            currencyData = duplicate(actor.data.data.currency);
         }
 
         for (let key in lootCurrency) {
             if (currencyData.hasOwnProperty(key)) {
                 if (adjutsByCR) {
-                    let cr = game.actors.find(actor => actor._id === token.data.actorId).data.data.details.cr || 0;
+                    let cr = game.actors.find(a => a._id === actor.data.actorId).data.data.details.cr || 0;
                     currencyData[key] = Number(currencyData[key] || 0) + Number(Math.ceil(cr * lootCurrency[key]));
                 } else {
                     currencyData[key] = Number(currencyData[key] || 0) + Number(lootCurrency[key]);
@@ -108,7 +108,7 @@ export class CurrencyHelper {
             }
         }
 
-        await token.actor.update({ 'actorData.data.currency': currencyData });
+        await actor.update({ 'actorData.data.currency': currencyData });
     }
 
     /**

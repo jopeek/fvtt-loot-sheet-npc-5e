@@ -26,8 +26,8 @@
             "loot": {
                 "items": {
                     "all": {
-                        "title": "{n} {name} Loot all",
-                        "label": "Loot all items"
+                        "title": "Take all items to {name}'s inventory.",
+                        "label": "Take all"
                     },
                     "single": {
                         "title": "Single",

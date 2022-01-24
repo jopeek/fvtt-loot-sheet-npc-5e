@@ -33,7 +33,7 @@ export class TradeHelper {
      * @returns {Promise<boolean>}
      */
     static async tradeItems(npcActor, playerCharacter, trades, options = {}) {
-        options.priceModifier = parseInt(npcActor.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
+        options.priceModifier = parseFloat(npcActor.getFlag(MODULE.ns, MODULE.flags.priceModifier)).toPrecision(2) || 1;
 
         // for tradeType in object trades get the array
         for (let type in trades) {
@@ -133,7 +133,7 @@ export class TradeHelper {
         if (quantity == 0) return ItemHelper.errorMessageToActor(buyer, `Not enought items on vendor.`);
 
         const soldItem = seller.getEmbeddedDocument("Item", itemId),
-            priceModifier = parseInt(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
+            priceModifier = parseFloat(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
 
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
@@ -293,6 +293,7 @@ export class TradeHelper {
      * | ---  | --- |
      * | buy  | Player actor buys from a NPC |
      * | sell | Player actor sells to NPC |
+     * | loot | Player Actor loots from the NPC |
      * | --- | --- |
      *
      * @param {Array} trades
@@ -309,31 +310,49 @@ export class TradeHelper {
      *
      */
     static async _handleTradyByType(trades, playerCharacter, npcActor, options) {
+        const tradeType = options.type,
+            source = tradeType === 'sell' ? playerCharacter.items : npcActor.items,
+            freeTradeTypes = ['loot'];
         let moved = { sell: [], buy: [] },
             tradeSum = 0,
-            successfullTransaction = false;
-        // Calculate the total sum of the trade
-        for (let item of trades[options.type]) {
-            tradeSum += (Math.round(item.data.data.price * options.priceModifier * 100) / 100) * item.data.data.quantity;
-        }
+            successfullTransaction = freeTradeTypes.includes(tradeType) ? true : false,
+            items = trades[tradeType];
 
-        // Check if the target has enought funds to buy the items
+        options.verbose = true;
+        const verboseMsg = `${MODULE.ns} | ${this._handleTradyByType.name} | `;
 
-        switch (options.type) {
+            // iterate over part of the trades array with key of options.type
+        [items, tradeSum] = this._prepareTrade(source, items, tradeSum, options)
+
+        /**
+         * @description
+         * If buy or sell, check if the target has enough funds to buy the items
+         * needs a check if NPC actor always have enough funds to buy from the player.
+         * Would be the case if it represents a shop or a bank.
+         *
+         * Otherwise the GM always has to make sure thats the case. A simple checkbox would be better.
+         *
+         */
+
+        switch (tradeType) {
             case 'buy':
-                successfullTransaction = await this._updateFunds(playerCharacter, npcActor, tradeSum);
+                successfullTransaction = await this._updateFunds(npcActor, playerCharacter, tradeSum);
+                if (options?.verbose) console.log(`${verboseMsg} Transaction successfull: ${successfullTransaction}`);
                 if (!successfullTransaction) return false;
-                moved[options.type] = await ItemHelper.moveItemsToDestination(npcActor, playerCharacter, trades[options.type]);
+                moved[options.type] = await ItemHelper.moveItemsToDestination(npcActor, playerCharacter, items);
                 break;
             case 'sell':
-                successfullTransaction = await this._updateFunds(npcActor, playerCharacter, tradeSum);
-                moved[options.type] = await ItemHelper.moveItemsToDestination(playerCharacter, npcActor, trades[options.type]);
+                successfullTransaction = await this._updateFunds(playerCharacter, npcActor, tradeSum);
+                if (options?.verbose) console.log(`${verboseMsg} Transaction successfull: ${successfullTransaction}`);
+                if (!successfullTransaction) return false;
+                moved[options.type] = await ItemHelper.moveItemsToDestination(playerCharacter, npcActor, items);
                 break;
             case 'loot':
-                moved[options.type] = await ItemHelper.moveItemsToDestination(npcActor, playerCharacter, trades[options.type]);
+                if (!successfullTransaction) return false;
+                moved[options.type] = await ItemHelper.moveItemsToDestination(npcActor, playerCharacter, items);
                 break;
             default:
-                console.error(`${MODULE.ns} | ${this.name} | ${_handleTradyByType.name} | Unknown type: ${options.type}`);
+                console.error(`${verboseMsg} Unknown type: ${tradeType}`);
         }
 
         // if the chatOutPut flag is set, send the chat messages
@@ -344,7 +363,38 @@ export class TradeHelper {
     }
 
     /**
-     * @summary Check the buysers funds and transfer the funds if they are enough
+     *
+     * @description
+     * Check again if the source posses the item
+     * If the source is not in possesion of the item anymore, remove it from the items array.
+     *
+     * If the source is in possesion add its worth to the total tradesum.
+     *
+     * @param {Actor} source
+     * @param {Collection} items
+     * @param {number} tradeSum
+     * @param {object} options
+     *
+     * @returns {Array} [items, tradeSum]
+     */
+    static _prepareTrade(source, items, tradeSum = 0, options = {}) {
+        for (const [key, item] of items.entries()) {
+            if (!source.find(i => i.id == item.id)) {
+                if (options?.verbose)
+                    console.log(`${MODULE.ns} | ${this._prepareTrade.name} | Removed item "${item.name}" (id: ${item.id}) from trade. Item not found in inventory of the source actor.`);
+                delete items[key];
+                continue;
+            }
+            // Add item price to the total sum of the trade
+            tradeSum += (Math.round(item.data.data.price * options.priceModifier * 100) / 100) * item.data.data.quantity;
+            if (options?.verbose) console.log(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
+        }
+
+        return [items, tradeSum];
+    }
+
+    /**
+     * @summary Check the buyers funds and transfer the funds if they are enough
      *
      * @param {Actor5e} seller
      * @param {Actor5e} buyer
@@ -354,7 +404,7 @@ export class TradeHelper {
      *
      * @author Jan Ole Peek @jopeek
      */
-     static async _updateFunds(seller, buyer, itemCostInGold) {
+    static async _updateFunds(seller, buyer, itemCostInGold) {
         //console.log(`ItemCost: ${itemCostInGold}`)
         let buyerFunds = duplicate(buyer.data.data.currency),
             sellerFunds = duplicate(seller.data.data.currency);

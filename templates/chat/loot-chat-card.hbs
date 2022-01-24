@@ -23,6 +23,7 @@
     <div class="card-content" style="display:none">
         <ol class="loot-results item-list">
             {{#each items as |item|}}
+                {{log item}}
                 <li class="table-result item flexrow">
                     <div class="item-quantity">
                         <strong>{{item.quantity}}&nbsp; &#xD7;</strong>

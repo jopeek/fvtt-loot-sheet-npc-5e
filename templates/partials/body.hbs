@@ -17,8 +17,8 @@
             {{> "modules/lootsheetnpc5e/templates/partials/trade/index.hbs"}}
     </div>
     <div class="tab" data-tab="biography" data-group="primary">
-        {{editor content=data.details.biography.value target="data.details.biography.value" button=true
-                owner=owner editable=editable}}
+        {{editor content=data.details.biography.value target="data.details.biography.value"
+            button=true owner=owner editable=editable}}
     </div>
     {{#if isGM}}
         <div class="tab" data-tab="gm-settings" data-group="primary">

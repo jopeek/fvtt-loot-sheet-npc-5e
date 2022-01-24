@@ -19,7 +19,8 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
       `${MODULE.templatePartialsPath}/settings/actions.hbs`,
       `${MODULE.templatePartialsPath}/settings/dropdown_options.hbs`,
       `${MODULE.templatePartialsPath}/settings/filters.hbs`,
-      `${MODULE.templatePartialsPath}/settings/settings.hbs`,
+      `${MODULE.templatePartialsPath}/settings/tabContent.hbs`,
+      `${MODULE.templatePartialsPath}/settings/populatorFilters.hbs`,
       `${MODULE.templatePartialsPath}/settings/menu.hbs`,
     ]);
 
@@ -34,6 +35,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
       id: MODULE.appIds.lootpopulatorSettings,
       template: `${MODULE.templateAppsPath}/settings.hbs`,
       width: 720,
+      classes: ['lsnpc'],
       height: "auto",
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "general" }
@@ -147,7 +149,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
     super.activateListeners(html);
     this.onActionClick(this.app);
 
-    html.find('.submenu button').click(this._onClickSubmenu.bind(this));
+    //html.find('.submenu button').click(this._onClickSubmenu.bind(this));
     //html.find('.actions button').click(this._onClickAction.bind(this));
     html.find('button[name="reset"]').click(this._onResetDefaults.bind(this));
   }
@@ -155,7 +157,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
   /* -------------------------------------------- */
 
   async onActionClick(app = this.app) {
-    app.querySelectorAll('.actions button').forEach(async el => {
+    app.querySelectorAll('.lsn-action-button').forEach(async el => {
       el.addEventListener('click', async (e) => {
         e.preventDefault();
         if (!e.target.dataset.action) return ui.notifications.error("No action found for the provided key");

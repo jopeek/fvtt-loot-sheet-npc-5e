@@ -48,9 +48,17 @@
 
             .item-name {
                 font-family: var(--modesto);
-                font-size: 1.2em;
                 padding-left: 0.1em;
-                line-height: 22px;
+                line-height: fit-content;
+                a {
+                    display: block;
+                    font-size: 0.8rem;
+                    line-height: 0.8rem;
+                    &:first-line {
+                        font-size: 1rem;
+                        line-height: 1rem;
+                    }
+                }
             }
 
             .item-price {

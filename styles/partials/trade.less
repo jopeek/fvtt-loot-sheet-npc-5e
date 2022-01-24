@@ -106,14 +106,23 @@
             .item {
                 .rarityMixin();
 
+                &:after, &:before {
+                    font-size: 0.9em;
+                    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+                }
                 &[data-quantity]:before {
                     content: attr(data-quantity);
                     display: block;
-                    font-size: 0.9em;
                     position: absolute;
                     color: #fff;
-                    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
                     margin-left: calc(var(--iconwidth) / 2 + 2px);
+                }
+                &[data-price-label]:after {
+                    content: attr(data-price-label);
+                    display: block;
+                    position: absolute;
+                    color: gold;
+                    bottom: 0;
                 }
             }
         }

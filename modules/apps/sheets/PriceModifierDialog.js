@@ -21,7 +21,7 @@ export class PriceModifierDialog extends FormApplication {
         };
 
         loadTemplates([
-            `${MODULE.templatePath}/dialogs/priceModifier.hbs`
+            `${MODULE.templateAppsPath}/priceModifier.hbs`
         ]);
 
         return this;
@@ -33,7 +33,7 @@ export class PriceModifierDialog extends FormApplication {
         return mergeObject(super.defaultOptions, {
             title: game.i18n.localize("Price Modifier"),
             namespace:MODULE.ns,
-            template: `${MODULE.templatePath}/apps/priceModifier.hbs`,
+            template: `${MODULE.templateAppsPath}/priceModifier.hbs`,
             classes: classes,
             width: 400,
             jQuery: false,
@@ -61,23 +61,23 @@ export class PriceModifierDialog extends FormApplication {
             styleTag = `--sheettint: ${sheetTint}; --avatartint: ${avatarTint}; --blendmode: ${blendmode};`;
 
         app.querySelector('header').setAttribute('style', styleTag);
-
-        app.querySelector('#price-modifier-percent').addEventListener("change", ev => this._onChange(ev));
+        app.querySelector('form').setAttribute('style', styleTag);
+        app.querySelector('#priceModifierPercent').addEventListener("change", ev => this._onChange(ev));
     }
 
     _onChange(event){
         event.preventDefault();
         const app = document.querySelector('.lsnpc.dialog-price-modifier');
-        app.querySelector('#price-modifier-percent').value = Math.round(event.currentTarget.value);
-        app.querySelector('#price-modifier-display').value = Math.round(event.currentTarget.value);
-        console.log(MODULE.ns + " | "+ app.querySelector('#price-modifier-percent').value / 100);
-        this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#price-modifier-percent').value / 100);
+        app.querySelector('#priceModifierPercent').value = Math.round(event.currentTarget.value);
+        app.querySelector('#priceModifierDisplay').value = Math.round(event.currentTarget.value);
+        console.log(MODULE.ns + " | "+ app.querySelector('#priceModifierPercent').value / 100);
+        this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#priceModifierPercent').value / 100);
     }
 
     _onSubmit(event){
         event.preventDefault();
         const app = document.querySelector('.lsnpc.dialog-price-modifier');
-        this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#price-modifier-percent').value / 100);
+        this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#priceModifierPercent').value / 100);
         super.close(event)
     }
 }
