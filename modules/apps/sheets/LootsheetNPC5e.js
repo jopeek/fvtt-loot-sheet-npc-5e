@@ -219,7 +219,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     activateListeners(html) {
         super.activateListeners(html);
 
-        const listener = new SheetListener(this.token, this.actor, this.options);
+        const listener = new SheetListener(this.appId, this.token, this.actor, this.options);
         listener.activateListeners();
     }
 
