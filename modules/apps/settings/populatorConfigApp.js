@@ -97,20 +97,24 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
     formData = expandObject(formData)[MODULE.ns];
 
     /**
-     * This is very specific to customRules, to get settings with an object.
-     * Currently tailored towards a customFallback.
-     *
-     * The key could be build more generic by chaining 'name' and other fields (generic).
-     * The values should be truncated.
-     * */
-    const targets = Object.keys(formData).filter(key => typeof formData[key] === 'object');
+    * This is very specific to customRules, to get settings with an object.
+    * Currently tailored towards a customFallback.
+    *
+    * The key could be build more generic by chaining 'name' and other fields (generic).
+    * The values should be truncated.
+    **/
+    const targets = Object.keys(formData).filter(key => typeof formData[key] === 'object'),
+      ruleSetsKey = MODULE.settings.keys.lootpopulator.rulesets + '.rolltable',
+      querySelector = 'select[name="' + MODULE.ns + '.' + ruleSetsKey + '"] option:checked';
+
     for (let target of targets) {
-      if (formData[target].name.length != 0) {
+      if (formData[target].name && formData[target].name.length != 0) {
         let newObject = formData[target],
           currentObject = game.settings.get(MODULE.ns, target),
-          key = newObject.name + '_' + newObject.rolltable + '_' + Math.random(),
+          key = newObject.name + '_' + newObject.rolltable + '_' + Math.random().toString().replace('.',''),
           final = {};
-        newObject.rolltableName = event.currentTarget.querySelector('select[name="' + MODULE.ns + '.customFallbacks.rolltable"] option:checked').dataset.label;
+
+        newObject.rolltableName = event.currentTarget.querySelector(querySelector).dataset.label;
 
         final[key] = newObject;
 
@@ -129,7 +133,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
   /*  Event Listeners and Handlers                */
   /* -------------------------------------------- */
 
-  _onUpdateSetting (setting, changes, options, userId) {
+  _onUpdateSetting(setting, changes, options, userId) {
     if (userId !== game.user.id) return;
     const keyparts = setting.key.split('.');
     if (keyparts[0] === MODULE.ns) {
@@ -199,21 +203,21 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
 
   async deleteRow(event) {
     const updateSetting = event.target.dataset?.updateSetting ? true : false,
-        row = event.target.parentNode.parentNode,
-        confirm = await Dialog.confirm({
-            title: game.i18n.localize("Delete row?"),
-            content: "<p>Are you sure you want to delete this row?</p>",
-            defaultYes: false
-        });
+      row = event.target.parentNode.parentNode,
+      confirm = await Dialog.confirm({
+        title: game.i18n.localize("Delete row?"),
+        content: "<p>Are you sure you want to delete this row?</p>",
+        defaultYes: false
+      });
 
     if (!confirm) return;
 
     if (updateSetting && row.dataset.name) {
-        let [module, settingsKey, ...rowKey] = row.dataset.name.split('.'),
-            settingData = await game.settings.get(MODULE.ns, settingsKey);
+      let [module, settingsKey, ...rowKey] = row.dataset.name.split('.'),
+        settingData = await game.settings.get(MODULE.ns, settingsKey);
 
-        delete settingData[rowKey.join('.')];
-        await game.settings.set(MODULE.ns, settingsKey, settingData);
+      delete settingData[rowKey.join('.')];
+      await game.settings.set(MODULE.ns, settingsKey, settingData);
     }
 
     row.remove();
@@ -229,7 +233,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
   async _runAction(event) {
     switch (event.target.dataset.action) {
       case 'new':
-            renderRuleEditor();
+        renderRuleEditor();
         break;
       case 'delete':
         const updateSetting = event.target.dataset?.updateSetting ? true : false,

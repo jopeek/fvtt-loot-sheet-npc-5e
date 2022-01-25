@@ -9,7 +9,7 @@ export class LootPopulatorRule {
         this.rolltable = '';
         this.rolltableName = '';
         this.tags = '';
-        this.active = false;
+        this.state = false;
     }
 }
 /**

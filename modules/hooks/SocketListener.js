@@ -89,7 +89,7 @@ export class SocketListener {
                     await TradeHelper.lootItems(targetToken, triggeringActor, items, options);
                     break;
                 case "distributeCurrency":
-                    await TradeHelper.distributeCoins(targetToken.actor, options);
+                    await TradeHelper.distributeCurrency(targetToken.actor, options);
                     break;
                 case "lootCurrency":
                     await TradeHelper.lootCurrency(targetToken.actor, triggeringActor);

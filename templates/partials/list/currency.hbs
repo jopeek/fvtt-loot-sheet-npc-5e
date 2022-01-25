@@ -42,9 +42,9 @@
                 {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}<em>{{c}} {{i}}</em> {{/each}}.
             </span>
             {{#if distributeCoins}}
-                <button type="buttons" class="split-currency lsnpc-action-link" data-action="distributeCoins"
+                <button type="buttons" class="split-currency lsnpc-action-link" data-action="distributeCurrency"
                     class="button-xs"
-                    type="split-coins" name="split-coins" value="1" data-action="distributeCoins"
+                    type="split-coins" name="split-coins" value="1" data-action="distributeCurrency"
                     title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount }}">
                     <i class="fas fa-users"></i> % {{observerCount}}
                     <i class="fas fa-hand-holding-usd"></i>

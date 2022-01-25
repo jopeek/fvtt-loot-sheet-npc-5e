@@ -30,6 +30,25 @@
     		    justify-content: space-evenly;
     			text-align: end;
 			}
+
+			.data-path-input {
+				text-align: left;
+			}
+		}
+		#filters {
+			max-height: 20vh;
+			display: flex;
+			flex-direction: column;
+			overflow-x: scroll;
+
+			.form-group {
+				margin: 0;
+				font-size: 0.8rem;
+				padding: 0;
+				>* {
+					height: fit-content;
+				}
+			}
 		}
 
 		#config-tabs {
@@ -54,13 +73,16 @@
 	}
 	.actions {
 		button {
-			width: 35px;
+			width: var(--iconwidth);
+			height: unset;
+			line-height: initial;
+			padding: 0.1em;
 		}
 	}
 
 	.dropzone {
 		border-radius: 1em;
-		background: url(icons/svg/cowled.svg) var(--avatar-tint);
+		background: url(../icons/svg/cowled.svg) var(--avatar-tint);
 		background-size: contain;
 		background-repeat: no-repeat;
 		background-blend-mode: color-dodge;

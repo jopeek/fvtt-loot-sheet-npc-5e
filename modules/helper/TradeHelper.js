@@ -156,10 +156,11 @@ export class TradeHelper {
      *
      * @returns {Promise<boolean>}
      */
-    static distributeCoins(actor, options = { verbose: true }) {
+    static distributeCurrency(actor, options = { verbose: true }) {
         const actorData = actor.data,
-            observers = PermissionHelper.getEligablePlayerActors(actor),
-            [currencyShares, npcRemainingCurrency] = CurrencyHelper.getSharesAndRemainder(actorData.data.currency, observers.length);
+            eligables = PermissionHelper.getEligablePlayerActors(actor),
+            currency = CurrencyHelper.handleActorCurrency(actorData.data.currency),
+            [currencyShares, npcRemainingCurrency] = CurrencyHelper.getSharesAndRemainder(currency, eligables.length);
 
         let msg = [];
 
@@ -167,26 +168,27 @@ export class TradeHelper {
             let cmsg = `${MODULE.ns} | ${distributeCoins.name}|`;
             console.log(cmsg + ' actorData:', actorData);
             console.log(cmsg + ' players:', game.users.players);
-            console.log(cmsg + ' observers:', observers);
+            console.log(cmsg + ' observers:', eligables);
             console.log(cmsg + ' currencyShares:', currencyShares);
             console.log(cmsg + ' npcRemainingCurrency', npcRemainingCurrency);
         }
 
+        if (eligables.length === 0) return;
 
-        if (observers.length === 0) return;
-
-        for (let playerCharacter of observers) {
+        for (let player of game.users.players) {
+            let playerCharacter = player.character;
             if (playerCharacter === null) continue;
+            if (!eligables.includes(playerCharacter.id)) continue;
 
             msg = [];
-            let currency = duplicate(playerCharacter.data.data.currency),
+            let playerCurrency = duplicate(playerCharacter.data.data.currency),
                 newCurrency = duplicate(playerCharacter.data.data.currency);
 
-            for (let c in currency) {
-                if (currencySplit[c]) {
-                    msg.push(`${playerCharacter.data.name} receives:${currencySplit[c]} ${c} coins.`)
+            for (let c in playerCurrency) {
+                if (currencyShares[c]) {
+                    msg.push(`${playerCharacter.data.name} receives:${currencyShares[c]} ${c} coins.`)
                 }
-                newCurrency[c] = parseInt(currency[c] || 0) + currencySplit[c];
+                newCurrency[c] = parseInt(playerCurrency[c] || 0) + currencyShares[c];
                 playerCharacter.update({
                     'data.currency': newCurrency
                 });
@@ -199,7 +201,7 @@ export class TradeHelper {
 
 
         // Create chat message for coins received
-        let message = `The  ${currencyShares.join(', ')} coins of ${actor.name} where shared between ${observers.length} creatures.`;
+        let message = `The  ${currencyShares.join(', ')} coins of ${actor.name} where shared between ${eligables.length} creatures.`;
         if (msg.length > 0)
             message += msg.join(",");
 

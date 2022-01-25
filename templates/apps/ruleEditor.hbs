@@ -4,28 +4,38 @@
     </header>
     <main>
         <header>
-            <div class="form-group">
-                <label>Rulename*</label>
-                <input type="hidden" name="{{this.namespace}}.{{this.key}}.uuid">
-                <input type="text" name="{{this.namespace}}.{{this.key}}.name" placeholder="name" required>
+            <div class="flexrow">
+                {{log this}}
+                <div class="form-group">
+                    <label>Rulename*</label>
+                    <div class="form-fields">
+                        <input type="text" name="{{this.namespace}}.{{this.key}}.name" placeholder="name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Active</label>
+                    <input type="checkbox" name="{{this.namespace}}.{{this.key}}.state" checked={{this.state}}>
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group textrow">
                 <label>{{localize 'Rolltable'}}</label>
-                <select class="rolltable" name="{{this.namespace}}.{{this.key}}.rolltable">
-                    <option value="null"><em>Select rolltable</em></option>
-                    {{> "modules/lootsheetnpc5e/templates/partials/settings/dropdown_options.hbs" data=this.data}}
-                </select>
+                <div class="form-fields">
+                    <select class="rolltable" name="{{this.namespace}}.{{this.key}}.rolltable">
+                        <option value="null"><em>Select rolltable</em></option>
+                        {{> "modules/lootsheetnpc5e/templates/partials/settings/dropdown_options.hbs" data=this.data}}
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <em>and / or </em>
                 <input type="text" name="{{this.namespace}}.{{this.key}}.tags"
-                      placeholder="comma seperated better-rolltable tags">
+                    placeholder="comma seperated better-rolltable tags">
             </div>
         </header>
         <fieldset>
             <legend>Filters</legend>
-            <main>
-                {{> "modules/lootsheetnpc5e/templates/partials/settings/filters.hbs" module=this.module key=this.key index=0}}
+            <main id="filters">
+                {{> "modules/lootsheetnpc5e/templates/partials/settings/filters.hbs" namespace=this.namespace key=this.key index=0}}
             </main>
             <footer class="actions">
                 <button type="button" data-action="add" data-settings-key="{{this.key}}">
@@ -39,7 +49,7 @@
         <div class="flexcol">
             <button type="submit" name="submit">
                 <i class="far fa-save"></i> {{localize 'SETTINGS.Save'}}
-             </button>
+            </button>
             <button type="button" name="reset">
                 <i class="fas fa-undo"></i> {{localize 'SETTINGS.Reset'}}
             </button>
