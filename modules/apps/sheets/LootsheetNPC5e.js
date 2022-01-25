@@ -222,7 +222,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     activateListeners(html) {
         super.activateListeners(html);
 
-        const listener = new SheetListener(this.appId, this.token, this.actor, this.options);
+        const listener = new SheetListener(this.id, this.token, this.actor, this.options);
         listener.activateListeners();
     }
 
@@ -286,7 +286,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
             permissionsInfo = PermissionHelper.getPermissionInfo(),
             [playerData, playersPermission] = this._playerPermissions(sheetData),
             currencySplit = CurrencyHelper.getSplitByObservers(sheetData.data.currency, observers.length),
-            gameWorldTables = tableHelper.getGameWorldRolltables();
+            gameWorldTables = await tableHelper.getGameWorldRolltables();
 
         let loot = {};
         loot.players = playerData;

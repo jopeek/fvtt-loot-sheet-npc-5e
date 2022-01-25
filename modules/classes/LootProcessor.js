@@ -236,7 +236,7 @@ export class LootProcessor {
      *
      * @private
      */
-    async _createLootItem(item, actor, options) {
+    async _addLootItem(item, actor, options) {
         const newItem = { data: await this.buildItemData(item) },
             itemPrice = newItem.data?.data?.price || 0,
             embeddedItems = [...actor.getEmbeddedCollection('Item').values()],
@@ -268,13 +268,12 @@ export class LootProcessor {
                 await actor.updateEmbeddedDocuments('Item', [updateItem]);
             }
 
-            return actor.items.get(originalItem.id);
+            return;
         }
-
-        /** we create a new item if we don't own it already */
-        await actor.createEmbeddedDocuments('Item', [newItem.data]);
-        /** Get the new item and return it */
-        return actor.items.get(newItem.data._id);
+        if (newItem.data?.name) {
+            /** we create a new item if we don't own it already */
+            await actor.createEmbeddedDocuments('Item', [newItem.data]);
+        }
     }
 
     /**
@@ -375,13 +374,9 @@ export class LootProcessor {
      *
      */
     async addItemsToActor(actor, options) {
-        let items = [];
         for (const item of this.lootResults) {
-            const newItem = await this._createLootItem(item, actor, options);
-            items.push(newItem);
+            await this._addLootItem(item, actor, options);
         }
-
-        return items;
     }
 
     /**

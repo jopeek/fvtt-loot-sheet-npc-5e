@@ -7,13 +7,13 @@ import { tokenHelper } from "../helper/tokenHelper.js";
 export class SheetListener {
     /**
      *
-     * @param {number} appId current app id of the sheet
+     * @param {number} id current app id of the sheet
      * @param {Token} token current token of the sheet
      * @param {Actor} actor current actor of the sheet
      * @param {object} options options for the sheet
      */
-    constructor(appId, token, actor, options) {
-        this.appId = appId;
+    constructor(id, token, actor, options) {
+        this.id = id;
         this.token = token;
         this.actor = actor;
         this.options = options;
@@ -25,8 +25,9 @@ export class SheetListener {
      *
      */
     async activateListeners(options = {}) {
-        const app = document.querySelector(`.app.lsnpc[data-appid="${this.appId}"]`),
-            sheetActionButtons = app.querySelectorAll('.lsnpc-action-link'),
+        const app = document.querySelector(`#${this.id}`);
+        if (!app) return;
+        const sheetActionButtons = app.querySelectorAll('.lsnpc-action-link'),
             tradeableItems = app.querySelectorAll('.tradegrid .item'),
             helpTexts = app.querySelectorAll('.help');
 
@@ -193,7 +194,7 @@ export class SheetListener {
 
         await tokenHelper.populateWithRolltable(rolltable, {actor: this.actor});
         await this.actor.sheet.close();
-        return this.actor.sheet.render(true);
+        return await this.actor.sheet.render(true);
     }
 
     /**
