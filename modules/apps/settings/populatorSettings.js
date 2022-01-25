@@ -215,10 +215,9 @@ export class PopulatorSettings {
                         value: 1
                     }
                 ],
-                rolltable: 'rolltableid',
-                rolltableName: 'A Rolltable',
-                tags: 'lorem, ipsum',
-                active: false
+                rolltable: 'uuid_reference_to_rolltable',
+                tags: '',
+                state: false
             },
             'data.data.details.cr_>=_4': {
                 name: 'CR1',
@@ -229,10 +228,9 @@ export class PopulatorSettings {
                         value: 'Lorem'
                     }
                 ],
-                rolltable: 'A rolltable Uuid',
-                rolltableName: 'A Rolltable',
-                tags: 'lorem, ipsum',
-                active: false
+                rolltable: 'uuid_reference_to_rolltable',
+                tags: '',
+                state: false
             },
         };
     }

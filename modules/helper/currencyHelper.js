@@ -133,7 +133,7 @@ export class CurrencyHelper {
      *
      * @returns {Array<object>} Array with
      */
-     static getSharesAndRemainder(stack, splitBy) {
+    static getSharesAndRemainder(stack, splitBy) {
         let shares = [],
             remainder = {};
 
@@ -157,15 +157,35 @@ export class CurrencyHelper {
      *
      * @returns {Array}
      */
-    static getSplitByObservers(actor, observers = 1) {
-        let split = duplicate(actor.data.data.currency);
+    static getSplitByObservers(currencies, observers = 1) {
+        let split = duplicate(currencies);
         if (observers == 0) return split;
 
         for (let currency in split) {
-                let currenSplit = split[currency]?? 0;
-                split[currency] = Math.floor(currenSplit / observers);
+            let currenSplit = split[currency] ?? 0;
+            split[currency] = Math.floor(currenSplit / observers);
         }
 
         return split;
+    }
+
+    /**
+    * @description
+    * This is backwords support for currency.TYPE.value.
+    *
+    * @param {object} currencies
+    * @return {object} currencies
+    *
+    * @version 1.0.1
+    *
+    * @author Jan Ole Peek <@jopeek>
+    */
+    static handleActorCurrency(currencies) {
+        Object.entries(currencies).map(([type, currency]) => {
+            let value = currency.value ?? currency;
+            currencies[type] = Number(value);
+        });
+
+        return currencies;
     }
 }

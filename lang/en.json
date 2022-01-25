@@ -1,5 +1,6 @@
 {
     "lsnpc": {
+        "moduleTitle": "📜 LootsheetNPC 5e",
         "noActiveGM": "No active GM on your scene, a GM must be online and on the same scene to purchase an item.",
         "sendBuyText": "Sending buy request to ",
         "chatActionMessages": {
@@ -81,8 +82,11 @@
             }
         },
         "sheettypes": {
+            "account": "Account",
             "loot": "Loot",
-            "merchant": "Merchant"
+            "merchant": "Merchant",
+            "object": "Object",
+            "shop": "Shop"
         },
         "settings": {
             "menu": {

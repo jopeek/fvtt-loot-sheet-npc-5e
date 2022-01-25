@@ -40,7 +40,10 @@ export const MODULE = {
     },
     sheets: {
         loot: 'loot',
-        merchant: 'merchant'
+        merchant: 'merchant',
+        shop: 'shop',
+        account: 'account',
+        object: 'object',
     },
     settings: {
         scopes: {

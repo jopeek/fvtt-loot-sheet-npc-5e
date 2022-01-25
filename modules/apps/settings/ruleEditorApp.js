@@ -3,9 +3,16 @@ import { tableHelper } from "../../helper/tableHelper.js";
 
 class LootsheetNPCRuleEditor extends FormApplication {
 
-    constructor() {
+    /**
+     *
+     * @param {string} existingRuleId
+     * @param {object} options
+     * @returns
+     */
+    constructor(existingRuleId = null, options = {}) {
         super();
         this.app = null;
+        this.existingRule = existingRuleId ? {id: existingRuleId} : null;
 
         loadTemplates([
             `${MODULE.templateAppsPath}/ruleEditor.hbs`,
@@ -23,7 +30,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
             title: game.i18n.localize("LootsheetNPC5e Rule Editor"),
             id: MODULE.appIds.ruleEditor,
             template: `${MODULE.templateAppsPath}/ruleEditor.hbs`,
-            width: 600,
+            width: 650,
             classes: ["lsnpc-app", "rule-editor"],
             height: "auto",
 
@@ -59,6 +66,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
         data.namespace = MODULE.ns;
         data.key = MODULE.settings.keys.lootpopulator.rulesets;
         data.data = await tableHelper.getGameWorldRolltables();
+        data.edit = true;
 
         return data;
     }
@@ -66,40 +74,40 @@ class LootsheetNPCRuleEditor extends FormApplication {
     /** @override */
     async _updateObject(event, formData) {
         event.preventDefault();
-        formData = expandObject(formData)[MODULE.ns];
 
-        /**
-         * This is very specific to customRules, to get settings with an object.
-         * Currently tailored towards a customFallback.
-         *
-         * The key could be build more generic by chaining 'name' and other fields (generic).
-         * The values should be truncated.
-         * */
-        const targets = Object.keys(formData).filter(key => typeof formData[key] === 'object'),
-            ruleSetsKey = MODULE.settings.keys.lootpopulator.rulesets + '.rolltable',
-            querySelector = 'select[name="' + MODULE.ns + '.' + ruleSetsKey + '"] option:checked';
-
-        for (let target of targets) {
-            if (formData[target].name.length != 0) {
-                let newObject = formData[target],
-                    currentObject = game.settings.get(MODULE.ns, target),
-                    key = newObject.name + '_' + newObject.rolltable + '_' + Math.random(),
-                    final = {};
-
-                newObject.rolltableName = event.currentTarget.querySelector(querySelector).dataset.label;
-
-                final[key] = newObject;
-
-                await game.settings.set(MODULE.ns, target, Object.assign(currentObject, final));
-            }
-            //delete the manually updated settings
-            delete formData[target];
-        }
+        formData = await this._saveFilterRule(event, expandObject(formData)[MODULE.ns]);
 
         for (let [k, v] of Object.entries(formData)) {
             await game.settings.set(MODULE.ns, k, v);
         }
     }
+
+    /**
+     *
+     * @param {Event} event
+     * @param {object} formData
+     * @param {object} options
+     *
+     */
+    async _saveFilterRule(event, formData, options = {}) {
+        // use the filterrules propery of formData to save the rules
+
+        if (formData?.rulesets) {
+            let filterRule = formData?.rulesets,
+                currentRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets),
+                ruleObject = {};
+            const filterRuleKey = `${filterRule.name}_${randomID(filterRule.name.length)}`;
+
+            filterRule.rolltableName = event.currentTarget.querySelector(`select[name="${MODULE.ns}.${MODULE.settings.keys.lootpopulator.rulesets}.rolltable"] option:checked`).dataset.label;
+            ruleObject[filterRuleKey] = filterRule;
+
+            await game.settings.set(MODULE.ns, target, Object.assign(currentRules, ruleObject));
+            delete formData.rulesets;
+        }
+
+        return formData;
+    }
+
 
     /**
      * Add a new row in a fieldsets main
@@ -109,12 +117,11 @@ class LootsheetNPCRuleEditor extends FormApplication {
             main = fieldset.querySelector('main'),
             template = options?.template || `${MODULE.templatePartialsPath}/settings/filters.hbs`,
             templateOptions = options?.templateOptions || {
-                module: MODULE.ns,
+                namespace: MODULE.ns,
                 key: event.target.dataset.settingsKey,
                 index: fieldset.querySelectorAll('.form-group').length
             },
             ele = await renderTemplate(template, templateOptions);
-        ;
 
         main.insertAdjacentHTML('beforeend', ele);
         //get the newly added row and activate the listeners
