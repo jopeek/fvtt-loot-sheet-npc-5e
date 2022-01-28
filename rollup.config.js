@@ -2,9 +2,9 @@ import copy from "rollup-plugin-copy";
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import sourcemaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
-import replace from 'rollup-plugin-replace'
+import replace from 'rollup-plugin-replace';
 
-const staticFiles = ["templates","styles", "icons", "lang", "module.json"].map((file) => `src/${file}`);
+const staticFiles = ["templates", "libs", "fonts", "styles", "icons", "lang", "module.json"].map((file) => `src/${file}`);
 
 /**
  * @type {import('rollup').RollupOptions}

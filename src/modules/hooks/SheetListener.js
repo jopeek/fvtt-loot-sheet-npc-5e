@@ -226,7 +226,7 @@ export class SheetListener {
 
                 let item = await fromUuid(i.dataset.uuid);
                 console.info(item);
-                const content = this._buildItemHTML(item, {price: price, weight: weight, quantity: quantity});
+                const content = SheetListener._buildItemHTML(item, {price: price, weight: weight, quantity: quantity});
                 container.innerHTML = content;
 
                 instance.setContent(container);
@@ -234,7 +234,7 @@ export class SheetListener {
         });
     }
 
-    _buildItemHTML(item, overrides = {}) {
+    static _buildItemHTML(item, overrides = {}) {
         let html = '';
 
         html += `<header><h3 class="item-name">${item.data.name}</h3></header>`;
