@@ -1,0 +1,131 @@
+.app.actor.lsnpc {
+    .window-content {
+        .tab.trade{
+            overflow-y: unset;
+        }
+
+        .tradegrid {
+            align-items: center;
+            display: grid;
+            grid-template-areas:
+                "TOKENINVENTORY TINFO PLAYERINVENTORY"
+                "TOKENINVENTORY STAGE PLAYERINVENTORY"
+                "TOKENINVENTORY PINFO PLAYERINVENTORY";
+            grid-template-columns: 1fr 200px 1fr;
+            height: 100%;
+            margin-top: 0.5em;
+            width: 100%;
+
+
+            ul {
+                list-style: none;
+                padding: 0;
+
+                // no interaction with the form elements except items and buttons
+                input {
+                    user-select: none;
+                }
+            }
+
+            .inventory-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, var(--iconwidth));
+                grid-template-rows: repeat(auto-fill, var(--iconwidth));
+                gap: 0.4em;
+                padding-top: 0.5em;
+                max-height: 40vh;
+                justify-content: center;
+                padding-bottom: 0.5em;
+
+                .item {
+                    cursor: pointer;
+                    height: var(--iconwidth);
+                    width: var(--iconwidth);
+                    background-size: contain;
+                    position: relative;
+                }
+            }
+
+            .inventory-condensed {
+                --iconwidth: 16px;
+                background: var(--header-background);
+                max-height: unset;
+                min-height: unset;
+            }
+
+            .token-inventory {
+                grid-area: TOKENINVENTORY;
+                background: var(--avatartint);
+                margin-top: 1.2em;
+                margin-bottom: 1.2em;
+            }
+
+            .player-inventory {
+                grid-area: PLAYERINVENTORY;
+                background: var(--sheettint);
+                margin-top: 1.2em;
+                margin-bottom: 1.2em;
+            }
+            .flairbox {
+                padding: 0.5em;
+                background: var(--context-shadow);
+                border-radius: 0.8em;
+                margin-bottom: 0.3em;
+            }
+            .token-info {
+                grid-area: TINFO;
+                align-self: self-end;
+                box-shadow: 0px 0px 21px 3px var(--avatartint) inset;
+                background-blend-mode: var(--blendmode);
+            }
+            .player-info {
+                grid-area: PINFO;
+                align-self: self-start;
+                box-shadow: 0px 0px 21px 3px var(--sheettint) inset;
+            }
+
+            .stage {
+                background: unset;
+                grid-area: STAGE;
+                display: grid;
+                grid-auto-rows: auto;
+
+                background: linear-gradient(90deg, var(--avatartint) 29%, transparent), linear-gradient(-90deg, var(--sheettint) 22%, transparent);
+
+                main {
+                    background: var(--header-background);
+                    grid-area: unset;
+
+                    &[data-group-target="sell"]{
+                        background: linear-gradient(-90deg, var(--header-background) 29%, transparent);
+                    }
+                    &[data-group-target="buy"]{
+                        background: linear-gradient(90deg, var(--header-background) 29%, transparent);
+                    }
+                }
+            }
+            .item {
+                .rarityMixin();
+
+                &:after, &:before {
+                    font-size: 0.9em;
+                    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+                }
+                &[data-quantity]:before {
+                    content: attr(data-quantity);
+                    display: block;
+                    position: absolute;
+                    color: #fff;
+                    margin-left: calc(var(--iconwidth) / 2 + 2px);
+                }
+                &[data-price-label]:after {
+                    content: attr(data-price-label);
+                    display: block;
+                    position: absolute;
+                    color: gold;
+                    bottom: 0;
+                }
+            }
+        }
+    }
+}

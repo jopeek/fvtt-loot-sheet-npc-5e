@@ -1,0 +1,53 @@
+<main class="tradegrid">
+    <section class="token-inventory">
+        {{#ifeq lootsheettype "Loot"}}
+            {{#if lootAll}}
+                <button type="button" class="loot-all lsnpc-action-link" name="loot-all" data-get-all="true"
+                    data-action="lootAll" title="{{localize 'lsnpc.buttons.loot.items.all.title' name=interactingActor}}">
+                    <i class="fas fa-gem"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
+                </button>
+            {{/if}}
+        {{/ifeq}}
+        <main data-event-target="token" data-event-action="buy">
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems mode="npc"}}
+        </main>
+    </section>
+    <section class="token-info flairbox">
+        <h4>{{actor.name}}</h4>
+        <aside class="currency">
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/currency.hbs"}}
+        </aside>
+        <!-- a box with a dropzone to accept items -->
+    </section>
+
+    <section class="stage dropzone" dropzone="true">
+        <main data-event-target="sell" data-event-action="player">
+            <header>{{#ifeq lootsheettype "Merchant"}}Sell{{else}}Give{{/ifeq}}</header>
+            <ul class="inventory-list inventory-condensed" data-document-type="Item">
+            </ul>
+        </main>
+        <main data-event-target="buy" data-event-action="token">
+            <header>{{#ifeq lootsheettype "Merchant"}}Buy{{else}}Take{{/ifeq}}</header>
+            <ul class="inventory-list inventory-condensed" data-document-type="Item">
+            </ul>
+            <footer>
+                <button class="lsnpc-action-link" type="button" data-action="tradeItems">
+                    {{#ifeq ../lootsheettype "Merchant"}}Trade{{else}}Take{{/ifeq}}
+                </button>
+            </footer>
+        </main>
+    </section>
+    <section class="player-info flairbox">
+        <h4>{{player.name}}</h4>
+        <aside class="currency">
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/currency.hbs"}}
+        </aside>
+    </section>
+    <section class="player-inventory">
+        <h3>{{interactingActor}}</h3>
+        <main data-event-target="player" data-event-action="sell">
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory mode="player"}}
+        </main>
+    </section>
+</main>

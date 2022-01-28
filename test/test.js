@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as fs from 'fs';
 
-import { PermissionHelper } from '../modules/helper/PermissionHelper.js';
+import { PermissionHelper } from '../src/modules/helper/PermissionHelper.js';
 
 describe('Check module structure', function(){
   it('Helpers exist', function(done) {

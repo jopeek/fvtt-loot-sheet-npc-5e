@@ -1,0 +1,30 @@
+.tippy-box .tippy-lsnpc {
+    font-size: 0.8rem;
+
+    dl {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+    }
+    article {
+        max-height: 20vh;
+        overflow-x: auto;
+    }
+}
+
+.tippy-box[data-theme~=lsn-item] {
+    min-width: 20vw;
+    background-blend-mode: var(--blendmode);
+    background-size: cover;
+    border-radius: 0.4em;
+    background-clip: padding-box;
+	box-shadow: 0 4px 14px -2px var(--sheettint);
+    border-radius: 0.4em;
+    border: 2px solid var(--header-border);
+    color: var(--primary-font);
+
+	>.tippy-backdrop {
+		background: var(--background);
+	}
+}
