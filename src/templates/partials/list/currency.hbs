@@ -39,7 +39,7 @@
         <div class="currency-split flexrow">
             <span class="splittext">
                 {{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount}}. Each gets a share of
-                {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}<em>{{c}} {{i}}</em> {{/each}}.
+                {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}{{#uneq c 0}}<em>{{c}} {{i}}</em>{{/uneq}}{{/each}}.
             </span>
             {{#if distributeCoins}}
                 <button type="buttons" class="split-currency lsnpc-action-link" data-action="distributeCurrency"

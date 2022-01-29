@@ -22,6 +22,7 @@
                 data-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
                 data-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
                 data-name="{{item.name}}"
+                data-rarity="{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
                 draggable="true"
                 style="background-image: url({{item.img}})">
             </li>

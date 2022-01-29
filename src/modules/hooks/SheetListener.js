@@ -206,27 +206,28 @@ export class SheetListener {
      */
     async _itemTooltips(items) {
         tippy(items, {
+            appendTo: "parent",
             arrow: false,
             animateFill: false,
-            theme: 'light-border',
-            interactive: true,
+            theme: 'lsn-item',
+            interactive: false,
             flipOnUpdate: true,
-            followCursor: true,
             placement: 'bottom-end',
             async onShow(instance) {
-                   const i = instance.reference,
-                    name = i.dataset.name | "unknown",
-                    price = i.dataset.price | 0,
-                    weight = i.dataset.weight | '-',
-                    quantity = i.dataset.quantity | 1,
-                    rarity = i.dataset.rarity | 'common',
+                console.info(instance);
+                const i = instance.reference,
+                    name = i.dataset.name || "unknown",
+                    price = i.dataset.price || 0,
+                    weight = i.dataset.weight || '-',
+                    quantity = i.dataset.quantity || 1,
+                    rarity = i.dataset.rarity || 'common',
                     container = document.createElement('aside');
                 container.classList.add('tippy-lsnpc');
                 container.classList.add(`rarity-${rarity}`);
 
                 let item = await fromUuid(i.dataset.uuid);
                 console.info(item);
-                const content = SheetListener._buildItemHTML(item, {price: price, weight: weight, quantity: quantity});
+                const content = SheetListener._buildItemHTML(item, { price: price, weight: weight, quantity: quantity });
                 container.innerHTML = content;
 
                 instance.setContent(container);
@@ -236,26 +237,34 @@ export class SheetListener {
 
     static _buildItemHTML(item, overrides = {}) {
         let html = '';
-
-        html += `<header><h3 class="item-name">${item.data.name}</h3></header>`;
+        const icons = {
+            armor: '<i class="ra ra-vest"></i>',
+            damage: '<i class="ra ra-blaster"></i>',
+            toHit: '<i class="ra ra-on-target"></i>',
+            range: '<i class="ra ra-overhead"></i>',
+        };
+        html += `<header class="flexrow">
+                <h3 class="item-name">${item.data.name}</h3>
+                <span class="item-price">${overrides.price} 🪙 </span>
+                </header>`;
         html += `<ul class="labels">`;
         for (let [k, v] of Object.entries(item.labels)) {
-            if(v.length == 0) continue;
-            if(typeof v !== 'string') continue;
-            if(v.indexOf('undefined') >= 0) continue;
-            console.log(k,v);
-            html += `<li class="label label-${k}"></li>`;
+            if (v.length == 0) continue;
+            if (typeof v !== 'string') continue;
+            if (v.indexOf('undefined') >= 0) continue;
+            let icon = icons[k] || '';
+
+            html += `<li class="label">${icon}<small>${v} ${k}</small></li>`;
         }
         html += `</ul>`;
 
-        if(item.data.data.description.value) {
-            html+= `<article>${item.data.data.description.value}</article>`;
+        if (item.data.data.description.value) {
+            html += `<article>${item.data.data.description.value}</article>`;
         }
 
 
-        html+= `<footer class="flexrow">
-                    <span class="item-price">${overrides.price} 🪙 </span>
-                    <span class="item-weight"> ${overrides.weight} ⚖️ </span>
+        html += `<footer class="flexrow">
+                    <span class="item-weight"> ${overrides.weight} <i class="ra ra-kettlebell"></i></span>
                     <span class="item-quantity">📦×${overrides.quantity}</span>
                 </footer>`;
 
