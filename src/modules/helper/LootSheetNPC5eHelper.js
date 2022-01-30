@@ -85,16 +85,14 @@ class LootSheetNPC5eHelper {
         };
 
         if (MODULE.settings.keys.sheet.sheetUpdate) {
-            game.socket.emit(MODULE.socket, packet)
-            //return;
+            game.socket.emit(MODULE.socket, packet);
         }
 
-        if (event.shiftKey && dataSet?.getAll === 'true') {
+        if (dataSet?.getAll === 'true') {
             packet.quantity = maxQuantity;
-            await this.emitToSocketOrCallMethod(packet)
+            await this.emitToSocketOrCallMethod(packet);
         } else if (!event.shiftKey) {
-            // no shiftKey, we don't ask for the quantity
-            await this.emitToSocketOrCallMethod(packet)
+            await this.emitToSocketOrCallMethod(packet);
         } else {
             // shiftKey, we ask for the quantity
             options.max = maxQuantity;

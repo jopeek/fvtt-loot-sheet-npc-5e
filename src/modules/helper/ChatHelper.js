@@ -45,8 +45,6 @@ export class ChatHelper {
                 messageObject.flags.lootsheetnpc5e.lootId = interactionId;
                 return ChatMessage.create(messageObject);
             }
-
-            console.error(`${MODULE.ns} | ChatHelper | chatMessage | error: `, error);
         }
     }
 
@@ -96,23 +94,24 @@ export class ChatHelper {
      *
      * @returns {Array}
      */
-    static _parseMovedItems(movedItems, options = { priceModifier: 1 }) {
-        const mod = options.priceModifier;
+    static _parseMovedItems(movedItems, options = {}) {
+        const mod = options?.priceModifier || 1;
 
         return movedItems.map((el) => {
             const rawprice = el.item.data.data?.price || el.item.data?.price || 0,
-                price = Math.floor(rawprice * mod);
+                price = rawprice * mod,
+                totalPrice = price * el.quantity;
 
             return {
                 quantity: el.quantity,
-                priceTotal: Math.floor(price * el.quantity),
+                priceTotal: totalPrice.toFixed(2),
                 data: {
                     documentName: el.item.documentName,
                     img: el.item.img,
                     name: el.item.name,
                     id: el.item.id,
                     uuid: el.item.uuid,
-                    price: price,
+                    price: price.toFixed(2),
                     rarity: el.item.data?.data?.rarity || el.item.data?.rarity || 'common'
                 }
             }
@@ -142,7 +141,7 @@ export class ChatHelper {
                 }
                 if (existingItem.data.name === parsedItem.data.name) {
                     parsedItem.quantity += existingItem.quantity;
-                    parsedItem.priceTotal = Math.floor(parsedItem.priceTotal * parsedItem.quantity);
+                    parsedItem.priceTotal = Number(parsedItem.priceTotal * parsedItem.quantity).toFixed(2);
 
                     existingItem = mergeObject(existingItem, parsedItem);
                 }

@@ -66,7 +66,6 @@ export class SocketListener {
 
             // prepare the options object
             const options = {
-                priceModifier: packet.priceModifier,
                 quantity: packet.quantity,
                 verbose: packet?.verbose,
                 chatOutPut: true

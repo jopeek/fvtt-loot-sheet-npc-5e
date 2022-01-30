@@ -33,8 +33,6 @@ export class TradeHelper {
      * @returns {Promise<boolean>}
      */
     static async tradeItems(npcActor, playerCharacter, trades, options = {}) {
-        options.priceModifier = parseFloat(npcActor.getFlag(MODULE.ns, MODULE.flags.priceModifier)).toPrecision(2) || 1;
-
         // for tradeType in object trades get the array
         for (let type in trades) {
             if (!trades[type].length > 0) continue;
@@ -123,22 +121,20 @@ export class TradeHelper {
      * @returns {Promise<boolean>}
      *
      * @author Jan Ole Peek <@jopeek>
-     *
-     * @since 1.0.0
+     * @author Daniel Böttner <@DanielBoettner>
+     * @since 1.0.1
      *
      * @inheritdoc
      */
     static async transaction(seller, buyer, itemId, quantity, options = { chatOutPut: true }) {
         // On 0 quantity skip everything to avoid error down the line
-        if (quantity == 0) return ItemHelper.errorMessageToActor(buyer, `Not enought items on vendor.`);
-
         const soldItem = seller.getEmbeddedDocument("Item", itemId),
             priceModifier = parseFloat(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
 
-        if(!soldItem) return ui.notifications.error(`${seller.name} doesn't posses this item anymore.`);
+        if (!soldItem) return ItemHelper.errorMessageToActor(seller, `${seller.name} doesn't posses this item anymore.`);
 
         let moved = false;
-            quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
+        quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
         let itemCostInGold = (Math.round(soldItem.data.data.price * priceModifier * 100) / 100) * quantity,
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
@@ -325,7 +321,7 @@ export class TradeHelper {
         options.verbose = true;
         const verboseMsg = `${MODULE.ns} | ${this._handleTradyByType.name} | `;
 
-            // iterate over part of the trades array with key of options.type
+        // iterate over part of the trades array with key of options.type
         [items, tradeSum] = this._prepareTrade(source, items, tradeSum, options)
 
         /**
@@ -380,8 +376,11 @@ export class TradeHelper {
      * @param {object} options
      *
      * @returns {Array} [items, tradeSum]
+     *
+     * @author Daniel Böttner <@DanielBoettner>
      */
     static _prepareTrade(source, items, tradeSum = 0, options = {}) {
+        const priceModifier = parseFloat(source.getFlag(MODULE.ns, MODULE.flags.priceModifier)).toPrecision(2) || 1;
         for (const [key, item] of items.entries()) {
             if (!source.find(i => i.id == item.id)) {
                 if (options?.verbose)
@@ -390,7 +389,7 @@ export class TradeHelper {
                 continue;
             }
             // Add item price to the total sum of the trade
-            tradeSum += (Math.round(item.data.data.price * options.priceModifier * 100) / 100) * item.data.data.quantity;
+            tradeSum += (Math.round(item.data.data.price * priceModifier * 100) / 100) * item.data.data.quantity;
             if (options?.verbose) console.log(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
         }
 
@@ -400,106 +399,147 @@ export class TradeHelper {
     /**
      * @summary Check the buyers funds and transfer the funds if they are enough
      *
-     * @param {Actor5e} seller
-     * @param {Actor5e} buyer
+     * @param {Actor} seller
+     * @param {Actor} buyer
      * @param {number} itemCostInGold
      *
      * @returns {boolean}
      *
+     * @version 1.1.0
+     *
      * @author Jan Ole Peek @jopeek
+     * @author Daniel Böttner @DanielBoettner
+     *
      */
     static async _updateFunds(seller, buyer, itemCostInGold) {
-        //console.log(`ItemCost: ${itemCostInGold}`)
+        const rates = {
+            "pp": 1,
+            "gp": CONFIG.DND5E.currencies.gp.conversion.each,
+            "ep": CONFIG.DND5E.currencies.ep.conversion.each,
+            "sp": CONFIG.DND5E.currencies.sp.conversion.each,
+            "cp": CONFIG.DND5E.currencies.cp.conversion.each
+        };
+
         let buyerFunds = duplicate(buyer.data.data.currency),
-            sellerFunds = duplicate(seller.data.data.currency);
-
-        const compensationCurrency = { "pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp" },
-            convertCurrency = game.settings.get(MODULE.ns, "convertCurrency"),
-            rates = {
-                "pp": 1,
-                "gp": CONFIG.DND5E.currencies.gp.conversion.each,
-                "ep": CONFIG.DND5E.currencies.ep.conversion.each,
-                "sp": CONFIG.DND5E.currencies.sp.conversion.each,
-                "cp": CONFIG.DND5E.currencies.cp.conversion.each
+            sellerFunds = duplicate(seller.data.data.currency),
+            itemCost = {
+                "pp": itemCostInGold / rates.gp,
+                "gp": itemCostInGold
             },
-            itemCostInPlatinum = itemCostInGold / rates["gp"];
+            fundsAsPlatinum = {
+                "buyer": this._getFundsAsPlatinum(buyerFunds, rates),
+                "seller": this._getFundsAsPlatinum(sellerFunds, rates)
+            };
 
-        let buyerFundsAsPlatinum = buyerFunds["pp"];
-
-        buyerFundsAsPlatinum += buyerFunds["gp"] / rates["gp"];
-        buyerFundsAsPlatinum += buyerFunds["ep"] / rates["gp"] / rates["ep"];
-        buyerFundsAsPlatinum += buyerFunds["sp"] / rates["gp"] / rates["ep"] / rates["sp"];
-        buyerFundsAsPlatinum += buyerFunds["cp"] / rates["gp"] / rates["ep"] / rates["sp"] / rates["cp"];
-
-        // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
-
-        if (itemCostInPlatinum > buyerFundsAsPlatinum) {
-            ItemHelper.errorMessageToActor(buyer, buyer.name + ` doesn't have enough funds to purchase an item for ${itemCostInGold}gp.`);
+        if (itemCost.pp > fundsAsPlatinum.buyer) {
+            ItemHelper.errorMessageToActor(buyer, buyer.name + ` doesn't have enough funds to purchase an item for ${itemCost.gp}gp.`);
             return false;
         }
 
-        if (convertCurrency) {
-            buyerFundsAsPlatinum -= itemCostInPlatinum;
-
-            for (let currency in buyerFunds) {
-                buyerFunds[currency] = 0; // Remove every coin we have
-            }
-            buyerFunds["pp"] = buyerFundsAsPlatinum
-
-        } else {
-            // We just pay in partial platinum.
-            buyerFunds["pp"] -= itemCostInPlatinum
-            // Now we exchange all negative funds with coins of lower value
-
-            for (let currency in buyerFunds) {
-                let amount = buyerFunds[currency]
-                // console.log(`${currency} : ${amount}`);
-                if (amount >= 0) continue;
-
-                // If we have ever so slightly negative cp, it is likely due to floating point error
-                // We dont care and just give it to the player
-                if (currency == "cp") {
-                    buyerFunds["cp"] = 0;
-                    continue;
-                }
-
-                let compCurrency = compensationCurrency[currency]
-
-                buyerFunds[currency] = 0;
-                buyerFunds[compCurrency] += amount * rates[compCurrency]; // amount is a negative value so we add it
-                // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
-            }
-        }
-
-        // console.log(`Smoothing out`);
-        // Finally we exchange partial coins with as little change as possible
-        for (let currency in buyerFunds) {
-            let amount = buyerFunds[currency]
-
-            //console.log(`${currency} : ${amount}: ${conversionRates[currency]}`);
-
-            // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
-            // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
-            // If we would floor 15.99999999999918 everything explodes
-            let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
-            buyerFunds[currency] = newFund;
-
-            //console.log(`New Buyer funds ${currency}: ${buyerFunds[currency]}`);
-            let compCurrency = compensationCurrency[currency]
-
-            if (currency != "cp") {
-                // We calculate the amount of lower currency we get for the fraction of higher currency we have
-                let toAdd = Math.round((amount - newFund) * 1e5) / 1e5 * rates[compCurrency]
-                buyerFunds[compCurrency] += toAdd
-                //console.log(`Added ${toAdd} to ${compCurrency} it is now ${buyerFunds[compCurrency]}`);
-            }
-        }
-
-        sellerFunds.gp += itemCostInGold;
+        [buyerFunds, sellerFunds] = this._getUpdatedFunds(buyerFunds, sellerFunds, itemCost, rates, fundsAsPlatinum);
 
         await seller.update({ data: { currency: sellerFunds } });
         await buyer.update({ data: { currency: buyerFunds } });
 
         return true;
+    }
+
+    /**
+     *
+     * @param {object} buyerFunds
+     * @param {object} sellerFunds
+     * @param {object} rates
+     * @param {number} fundsAsPlatinum
+     *
+     * @returns {Array<object>} [buyerFunds, sellerFunds]
+     *
+     * @author Jan Ole Peek < @jopeek >
+     * @author Daniel Böttner < @DanielBoettner >
+     */
+    static _getUpdatedFunds(buyerFunds, sellerFunds, itemCost, rates, fundsAsPlatinum) {
+        const compensation = { "pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp" };
+
+        if (game.settings.get(MODULE.ns, "convertCurrency")) {
+            fundsAsPlatinum.buyer -= itemCost.pp;
+            fundsAsPlatinum.seller += itemCost.pp;
+            buyerFunds = this._updateConvertCurrency(buyerFunds, fundsAsPlatinum.buyer);
+            sellerFunds = this._updateConvertCurrency(sellerFunds, fundsAsPlatinum.seller);
+        } else {
+            if(buyerFunds.gp >= itemCost.gp) {
+                buyerFunds.gp -= itemCost.gp;
+                sellerFunds.gp += itemCost.gp;
+            } else {
+                buyerFunds.pp -= itemCost.pp;
+                sellerFunds.pp += itemCost.pp;
+            }
+
+            buyerFunds = this._smoothenFunds(buyerFunds, compensation, rates);
+            sellerFunds = this._smoothenFunds(sellerFunds, compensation, rates);
+        }
+        return [buyerFunds, sellerFunds];
+    }
+
+    /**
+     * @summary get the funds as platinum value
+     *
+     * @param {object} funds
+     * @returns {string}
+     *
+     * @author Jan Ole Peek < @jopeek >
+     * @version 1.0.0
+     *
+     */
+    static _getFundsAsPlatinum(funds, rates) {
+        let fundsAsPlatinum = funds["pp"];
+
+        fundsAsPlatinum += funds["gp"] / rates["gp"];
+        fundsAsPlatinum += funds["ep"] / rates["gp"] / rates["ep"];
+        fundsAsPlatinum += funds["sp"] / rates["gp"] / rates["ep"] / rates["sp"];
+        fundsAsPlatinum += funds["cp"] / rates["gp"] / rates["ep"] / rates["sp"] / rates["cp"];
+
+        return fundsAsPlatinum;
+    }
+
+    /**
+     * @param {object}
+     * @param {number} funds
+     */
+    static _updateConvertCurrency(funds, fundsAsPlatinum) {
+        for (let currency in funds) {
+            funds[currency] = 0; // Remove every coin we have
+        }
+        funds.pp = fundsAsPlatinum;
+
+        return funds;
+    }
+
+
+    /**
+     * @summary Take portions of a currency and add them as a integer to the next lower currency
+     *
+     * @param {object} funds
+     * @param {object} compensation
+     * @param {object} rates
+     *
+     * @returns {object}
+     */
+    static _smoothenFunds(funds, compensation, rates ){
+        for (let currency in funds) {
+            let current = funds[currency].toFixed(5),
+                currentPart = (current % 1).toFixed(5),
+                currentInt = Math.round(current - currentPart),
+                compCurrency = compensation[currency];
+
+            funds[currency] = (currentInt > 0) ? currentInt : 0;
+
+            if (currency != "cp") {
+                // We calculate the amount of lower currency we get for the fraction of higher currency we have
+                let change = currentPart * rates[compCurrency];
+                funds[compCurrency] += change;
+                console.log(`${MODULE.ns} | TradeHelper | updateFunds | Updated ${compCurrency} by ${change} it is now ${funds[compCurrency]}`);
+            }
+        }
+
+        return funds;
     }
 }
