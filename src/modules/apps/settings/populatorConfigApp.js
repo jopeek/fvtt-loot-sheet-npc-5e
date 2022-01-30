@@ -35,6 +35,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
       id: MODULE.appIds.lootpopulatorSettings,
       template: `${MODULE.templateAppsPath}/settings.hbs`,
       width: 720,
+      resizable: true,
       classes: ['lsnpc'],
       height: "auto",
       tabs: [
@@ -111,7 +112,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
       if (formData[target].name && formData[target].name.length != 0) {
         let newObject = formData[target],
           currentObject = game.settings.get(MODULE.ns, target),
-          key = newObject.name + '_' + newObject.rolltable + '_' + Math.random().toString().replace('.',''),
+          key = newObject.name + '_' + newObject.rolltable + '_' + Math.random().toString().replace('.', ''),
           final = {};
 
         newObject.rolltableName = event.currentTarget.querySelector(querySelector).dataset.label;
@@ -152,9 +153,8 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
 
     super.activateListeners(html);
     this.onActionClick(this.app);
+    this._onDocumentLink();
 
-    //html.find('.submenu button').click(this._onClickSubmenu.bind(this));
-    //html.find('.actions button').click(this._onClickAction.bind(this));
     html.find('button[name="reset"]').click(this._onResetDefaults.bind(this));
   }
 
@@ -166,6 +166,24 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
         e.preventDefault();
         if (!e.target.dataset.action) return ui.notifications.error("No action found for the provided key");
         this._runAction(e);
+      });
+    });
+  }
+
+  async _onDocumentLink(app = this.app) {
+    const documentLinks = app.querySelectorAll('.lsnpc-document-link');
+    documentLinks.forEach(async el => {
+      el.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (!e.currentTarget.dataset.uuid) return;
+        const doc = await fromUuid(e.currentTarget.dataset.uuid);
+        if (!doc) return;
+        if (doc.collectionName == 'tokens') {
+          await doc.actor.sheet.render(true);
+        } else {
+          await doc.sheet.render(true);
+        }
+        e.stopPropagation();
       });
     });
   }
@@ -231,12 +249,16 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
    *
    */
   async _runAction(event) {
-    switch (event.target.dataset.action) {
+    const data = event.target.dataset;
+    switch (data.action) {
       case 'new':
         renderRuleEditor();
         break;
+      case 'edit':
+        renderRuleEditor(data.ruleId);
+        break;
       case 'delete':
-        const updateSetting = event.target.dataset?.updateSetting ? true : false,
+        const updateSetting = data?.updateSetting ? true : false,
           row = event.target.parentNode.parentNode,
           confirm = await Dialog.confirm({
             title: game.i18n.localize("Delete row?"),

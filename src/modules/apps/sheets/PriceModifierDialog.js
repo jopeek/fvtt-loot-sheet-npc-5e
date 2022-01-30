@@ -32,7 +32,7 @@ export class PriceModifierDialog extends FormApplication {
 
         return mergeObject(super.defaultOptions, {
             title: game.i18n.localize("Price Modifier"),
-            namespace:MODULE.ns,
+            namespace: MODULE.ns,
             template: `${MODULE.templateAppsPath}/priceModifier.hbs`,
             classes: classes,
             width: 400,

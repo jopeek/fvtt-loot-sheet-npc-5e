@@ -1,24 +1,46 @@
 
 *[id^=lootsheetnpc5e] {
-	border: 2px solid #ff6400;
+	--settingsColor: #ff6400;
+	border: 2px solid var(--settingsColor);
 	border-radius: 5px;
 	overflow-x: hidden;
 	box-shadow: 0 0 10px rgb(0 0 0 / 75%);
 	max-height: 80vh;
 	min-height: 40vh;
-	font-size: 1em;
+	font-size: 0.9rem;
 	font-family: "Open Sans", sans-serif;
 
 	.tabs {
 		flex: none;
+		>.item {
+			padding: 0.2em;
+			border-bottom: 1px solid var(--settingsColor);
+			&.active {
+				padding-top: 0.3em;
+				border: 1px solid var(--settingsColor);
+				border-bottom: none;
+			}
+		}
+	}
+	table {
+		text-align: center;
+		thead {
+			font-family: 'system-ui';
+    		border: none;
+    		font-weight: lighter;
+		}
 	}
 	footer {
 		flex: none;
 	}
 	form {
 		.form-group {
+			margin: 0;
+			height: fit-content;
+
 			.form-fields {
 				>* {
+					height: fit-content;
 					&:last-child {
 						width: calc(100% - 2px);
 					}
@@ -90,4 +112,6 @@
 		border: 4px dashed var(--color-bg-btn-minor-inactive);
 		border-style: dashed;
 	}
+
+
 }

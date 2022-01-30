@@ -12,7 +12,8 @@ class LootsheetNPCRuleEditor extends FormApplication {
     constructor(existingRuleId = null, options = {}) {
         super();
         this.app = null;
-        this.existingRule = existingRuleId ? {id: existingRuleId} : null;
+        this.existingRuleId = existingRuleId;
+        this.rules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets);
 
         loadTemplates([
             `${MODULE.templateAppsPath}/ruleEditor.hbs`,
@@ -21,8 +22,6 @@ class LootsheetNPCRuleEditor extends FormApplication {
             `${MODULE.templatePartialsPath}/settings/tabContent.hbs`,
             `${MODULE.templatePartialsPath}/settings/menu.hbs`,
         ]);
-
-        return this;
     }
 
     static get defaultOptions() {
@@ -31,12 +30,12 @@ class LootsheetNPCRuleEditor extends FormApplication {
             id: MODULE.appIds.ruleEditor,
             template: `${MODULE.templateAppsPath}/ruleEditor.hbs`,
             width: 650,
-            classes: ["lsnpc-app", "rule-editor"],
+            classes: ["lsnpc", "rule-editor"],
             height: "auto",
-
             tabs: [
                 { navSelector: ".tabs", contentSelector: ".content", initial: "general" }
-            ]
+            ],
+            resizeable: true,
         });
     }
 
@@ -63,10 +62,15 @@ class LootsheetNPCRuleEditor extends FormApplication {
     async getData() {
         const data = super.getData();
 
+        if (this.existingRuleId != null) {
+            data.rule = this.rules[this.existingRuleId];
+            data.rule.id = this.existingRuleId;
+            data.edit = true;
+        }
+
         data.namespace = MODULE.ns;
         data.key = MODULE.settings.keys.lootpopulator.rulesets;
-        data.data = await TableHelper.getGameWorldRolltables();
-        data.edit = true;
+        data.rolltables = await TableHelper.getGameWorldRolltables();
 
         return data;
     }
@@ -94,14 +98,14 @@ class LootsheetNPCRuleEditor extends FormApplication {
 
         if (formData?.rulesets) {
             let filterRule = formData?.rulesets,
-                currentRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets),
                 ruleObject = {};
-            const filterRuleKey = `${filterRule.name}_${randomID(filterRule.name.length)}`;
+            const filterRuleKey = this.existingRuleId || `${filterRule.name}_${randomID(Number(filterRule.name.length))}`,
+                selector = `select[name="${MODULE.ns}.${MODULE.settings.keys.lootpopulator.rulesets}.rolltable"] option:checked`;
 
-            filterRule.rolltableName = event.currentTarget.querySelector(`select[name="${MODULE.ns}.${MODULE.settings.keys.lootpopulator.rulesets}.rolltable"] option:checked`).dataset.label;
+            filterRule.rolltableName = event.currentTarget.querySelector(selector).dataset.label;
             ruleObject[filterRuleKey] = filterRule;
 
-            await game.settings.set(MODULE.ns, target, Object.assign(currentRules, ruleObject));
+            await game.settings.set(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets, Object.assign(this.rules, ruleObject));
             delete formData.rulesets;
         }
 
@@ -116,10 +120,11 @@ class LootsheetNPCRuleEditor extends FormApplication {
         const fieldset = event.target.closest('fieldset'),
             main = fieldset.querySelector('main'),
             template = options?.template || `${MODULE.templatePartialsPath}/settings/filters.hbs`,
+            newIndex = this._getNewRowIndex(),
             templateOptions = options?.templateOptions || {
                 namespace: MODULE.ns,
                 key: event.target.dataset.settingsKey,
-                index: fieldset.querySelectorAll('.form-group').length
+                index: newIndex,
             },
             ele = await renderTemplate(template, templateOptions);
 
@@ -139,6 +144,22 @@ class LootsheetNPCRuleEditor extends FormApplication {
             refreshPackageConfig(this);
         }
 
+    }
+
+    /**
+     *
+     * @param {*} fieldset
+     */
+    _getNewRowIndex(parent) {
+        const totalElements = parent?.querySelectorAll('.form-group').length || 0;
+        let index = 0;
+
+        while (index < totalElements) {
+            if (!parent.querySelector(`[data-filter-index="${index}"]`)) break;
+            index++;
+        }
+
+        return index;
     }
 
     async _deleteRow(event) {
@@ -187,7 +208,11 @@ class LootsheetNPCRuleEditor extends FormApplication {
     }
 }
 
-export function renderRuleEditor(options) {
-    const ruleEditor = new LootsheetNPCRuleEditor(options);
+/**
+ *
+ * @param {string} existingRuleId
+ */
+export function renderRuleEditor(existingRuleId) {
+    const ruleEditor = new LootsheetNPCRuleEditor(existingRuleId);
     ruleEditor.render(true);
 }
