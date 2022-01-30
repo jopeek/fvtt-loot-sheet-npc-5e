@@ -135,6 +135,8 @@ export class TradeHelper {
         const soldItem = seller.getEmbeddedDocument("Item", itemId),
             priceModifier = parseFloat(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
 
+        if(!soldItem) return ui.notifications.error(`${seller.name} doesn't posses this item anymore.`);
+
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
