@@ -23,8 +23,7 @@
                             <input type="checkbox"
                                 class="rulestate-{{#if customRule.state}}active{{else}}inactive{{/if}}" type="checkbox"
                                 name="{{../this.namespace}}.{{../this.key}}.{{uniquekey}}.state"
-                                value="{{#if customRule.state}}{{customRule.state}}{{else}}false{{/if}}"
-                                data-update-setting="true">
+                                data-update-setting="true" {{#if customRule.state}}checked{{/if}}>
                         </td>
                         <th data-name="{{../this.namespace}}.{{../this.key}}.{{uniquekey}}.name">{{customRule.name}}
                         </th>

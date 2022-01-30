@@ -138,7 +138,7 @@ export class TradeHelper {
         if(!soldItem) return ui.notifications.error(`${seller.name} doesn't posses this item anymore.`);
 
         let moved = false;
-        quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
+            quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
         let itemCostInGold = (Math.round(soldItem.data.data.price * priceModifier * 100) / 100) * quantity,
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
