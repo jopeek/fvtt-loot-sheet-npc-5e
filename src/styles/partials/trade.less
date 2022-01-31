@@ -8,10 +8,12 @@
             align-items: center;
             display: grid;
             grid-template-areas:
-                "TOKENINVENTORY TINFO PLAYERINVENTORY"
                 "TOKENINVENTORY STAGE PLAYERINVENTORY"
-                "TOKENINVENTORY PINFO PLAYERINVENTORY";
+                "TOKENINVENTORY STAGE PLAYERINVENTORY"
+                "TOKENINVENTORY STAGE PLAYERINVENTORY"
+                "TINFO STAGE PINFO";
             grid-template-columns: 1fr 200px 1fr;
+            grid-template-rows: 1fr 0.3fr;
             height: 100%;
             margin-top: 0.5em;
             width: 100%;
@@ -47,25 +49,31 @@
             }
 
             .inventory-condensed {
-                --iconwidth: 16px;
+                --iconwidth: 23px;
                 background: var(--header-background);
                 max-height: unset;
                 min-height: unset;
             }
 
+            .inventory-wrapper {
+                background: url(../icons/backgrounds/dark-mosaic.webp);
+                height: 100%;
+                box-shadow: inset 0px 0px 0.6em 0.2em var(--avatartint);
+                background-blend-mode: color-burn;
+                background-size: contain;
+            }
+
             .token-inventory {
                 grid-area: TOKENINVENTORY;
-                background: var(--avatartint);
-                margin-top: 1.2em;
-                margin-bottom: 1.2em;
+                background-color: var(--avatartint);
+
             }
 
             .player-inventory {
                 grid-area: PLAYERINVENTORY;
-                background: var(--sheettint);
-                margin-top: 1.2em;
-                margin-bottom: 1.2em;
+                background-color: var(--header-background);
             }
+
             .flairbox {
                 padding: 0.5em;
                 background: var(--context-shadow);
