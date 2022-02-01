@@ -1,0 +1,31 @@
+<ul class="items-list inventory-list">
+    {{#each inventoryData as |section sid|}}
+        {{#each section.items as |item iid|}}
+            <li class="item rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
+                {{#ifeq ../../lootsheettype "Merchant"}}
+                    data-action="stageItem" data-get-all="false"
+                {{/ifeq}}
+                {{#ifeq ../../lootsheettype "Loot"}}
+                    data-action="lootItem" data-get-all="false"
+                {{/ifeq}}
+                data-uuid="{{item.uuid}}"
+                data-id="{{item._id}}"
+                data-quantity="{{item.data.quantity}}"
+                data-price="{{lootsheetprice item.data.price ../../priceModifier}}"
+                {{#ifeq ../../mode "npc" }}
+                data-price="{{lootsheetprice item.data.price ../../priceModifier}}"
+                data-price-label="{{approximateNumber (lootsheetprice item.data.price ../../priceModifier false) 2}}"
+                {{else}}
+                data-price="{{lootsheetprice item.data.price 1}}"
+                data-price-label="{{approximateNumber item.data.price 2}}"
+                {{/ifeq}}
+                data-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
+                data-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
+                data-name="{{item.name}}"
+                data-rarity="{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}"
+                draggable="true"
+                style="background-image: url({{item.img}})">
+            </li>
+        {{/each}}
+    {{/each}}
+</ul>

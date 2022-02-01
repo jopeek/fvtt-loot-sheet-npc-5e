@@ -1,0 +1,56 @@
+<section class="currency-grid">
+    <div class="currency-line flexrow">
+        <ul class="currency-list">
+            {{#each data.currency as |c i|}}
+                <li class="coin currency-item coin-{{i}}" title="{{lookup (lookup ../config.currencies i) 'label'}}">
+                    <input type="number" name="data.currency.{{i}}" value="{{c}}" data-dtype="number" step="1" />
+                    <label>{{i}}</label>
+                </li>
+            {{/each}}
+        </ul>
+        {{#ifeq lootsheettype "Loot"}}
+            {{#if lootCurrency}}
+                <button
+                    type="button"
+                    class="loot-currency lsnpc-action-link" data-action="lootCurrency"
+                    title="{{localize 'lsnpc.buttons.loot.currency.single.title'}}"
+                    class="button-xs">
+                    <i class="fas fa-user"></i>
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.single.label'}}</span>
+                </button>
+            {{/if}}
+        {{/ifeq}}
+        {{#if isGM}}
+            {{#ifeq lootsheettype "Merchant"}}
+                <button type="button"
+                    id="price-modifier"
+                    class="price-modifier lsnpc-action-link button-xs"
+                    name="price-modifier"
+                    data-action="priceModifier"
+                    value="{{actor.flags.lootsheetnpc5e.priceModifier}}">
+                    <i class="fa fa-balance-scale"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.merchant.gm.price.label'}}</span>
+                </button>
+            {{/ifeq}}
+        {{/if}}
+    </div>
+    {{#ifeq lootsheettype "Loot"}}
+        <div class="currency-split flexrow">
+            <span class="splittext">
+                {{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount}}. Each gets a share of
+                {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}{{#uneq c 0}}<em>{{c}} {{i}}</em>{{/uneq}}{{/each}}.
+            </span>
+            {{#if distributeCoins}}
+                <button type="buttons" class="split-currency lsnpc-action-link" data-action="distributeCurrency"
+                    class="button-xs"
+                    type="split-coins" name="split-coins" value="1" data-action="distributeCurrency"
+                    title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount }}">
+                    <i class="fas fa-users"></i> % {{observerCount}}
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.split.label'}}</span>
+                </button>
+            {{/if}}
+        </div>
+    {{/ifeq}}
+</section>

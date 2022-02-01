@@ -10,7 +10,7 @@
                         "dom"
                 ],
                 "outDir": "dist",
-                "rootDir": "./",
+                "rootDir": "src",
                 "sourceMap": true,
                 "experimentalDecorators": true,
                 "strict": true,

@@ -1,0 +1,86 @@
+{
+	"name": "lootsheetnpc5e",
+	"title": "📜 LootsheetNPC5e",
+	"description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers",
+	"version": "3.4.5.9",
+	"manifestPlusVersion": "1.2.0",
+	"minimumCoreVersion": "0.9.0",
+	"compatibleCoreVersion": "0.9.0",
+	"authors": [
+		{
+			"name": "Jan Ole Peek | ChalkOne",
+			"url": "https://github.com/jopeek"
+		},
+		{
+			"name": "Charles Miller | Kage",
+			"url": "https://github.com/KageJittai"
+		},
+		{
+			"name": "NonstickPanda",
+			"url": "https://github.com/Nonstick-Panda"
+		},
+		{
+			"name": "Daniel Böttner | JackPrince#0494",
+			"url": "https://github.com/DanielBoettner/",
+			"discord": "JackPrince#0494",
+			"twitter": "https://twitter.com/jackprince1983",
+			"patreon": "https://www.patreon.com/jackprince1983",
+			"paypal": "https://paypal.me/jackprince1983",
+			"ko-fi": "https://ko-fi.com/jackprince1983"
+		},
+		{
+			"name": "Kevin Brammer Striky",
+			"url": ""
+		}
+	],
+	"packs": [
+		{
+			"name": "LootsheetNPC5e Rolltables",
+			"label": "LootsheetNPC5e Rolltables",
+			"system": "dnd5e",
+			"path": "./packs/lootsheetnpc5e_rolltables.db",
+			"entity": "RollTable"
+		},
+		{
+			"name": "LootsheetNPC5e Macros",
+			"label": "LootsheetNPC5e Macros",
+			"system": "dnd5e",
+			"path": "./packs/lootsheetnpc5e_macros.db",
+			"entity": "Macro"
+		}
+	],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "./lang/en.json"
+		},
+		{
+			"lang": "de",
+			"name": "German (Deutsch)",
+			"path": "./lang/de.json"
+		},
+		{
+			"lang": "fr",
+			"name": "French (Français)",
+			"path": "./lang/fr.json"
+		},
+		{
+			"lang": "pt-BR",
+			"name": "Português (Brasil)",
+			"path": "./lang/pt.json"
+		},
+		{
+			"lang": "ja",
+			"name": "日本語",
+			"path": "./lang/ja.json"
+		}
+	],
+	"system": ["dnd5e"],
+    "esmodules": ["/lootsheetnpc5e.js"],
+	"styles": ["/libs/styles/tippy.min.css", "/libs/styles/rpg-awesome.min.css", "/styles/lootsheetNPC5e.css"],
+	"socket": true,
+	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
+	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/module.json",
+	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/latest/download/lootsheetnpc5e.zip"
+}

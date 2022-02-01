@@ -1,0 +1,71 @@
+.tippy-box[data-theme~=lsn-help]{
+    color: var(--primary-font);
+    background: var(--background);
+    border: 2px solid var(--header-border);
+    font-size: 0.9em;
+    line-height: normal;
+}
+
+.tippy-box[data-theme~=lsn-item] {
+    min-width: 20vw;
+    background: var(--background);
+    background-blend-mode: var(--blendmode);
+    background-size: cover;
+    border-radius: 0.4em;
+    background-clip: padding-box;
+    box-shadow: 0 4px 14px -2px var(--sheettint);
+    border-radius: 0.4em;
+    border: 2px solid var(--header-border);
+    color: var(--primary-font);
+
+    .tippy-lsnpc {
+        font-size: 0.8rem;
+
+        header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow:
+                0 0 2px black,
+                0 0 2px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 1px black,
+                0 0 1px black;
+
+            .item-name {
+                font-family: var(--modesto);
+                font-size: 1.4rem;
+                font-weight: bold;
+                text-transform: capitalize;
+            }
+        }
+
+        dl {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+        }
+
+        article {
+            max-height: 20vh;
+            overflow: hidden;
+            padding: 0.2em;
+        }
+
+        ul.labels {
+            font-size: 0.75rem;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.2em;
+
+            .label {
+                display: inline-block;
+                width: fit-content;
+                color: var(--light-color);
+            }
+        }
+    }
+}

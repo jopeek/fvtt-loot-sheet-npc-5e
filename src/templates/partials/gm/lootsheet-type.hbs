@@ -1,0 +1,20 @@
+<div class="flexrow" style="align-items: center;">
+    <h3 class="gm-header">
+        <i class="fas fa-id-card"></i> {{localize "lsnpc.infoboxes.lootsheettype.title"}}
+        <aside class="infobox-wrapper">
+            <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
+            <div class="sheet-infobox hidden">
+                {{{localize "lsnpc.infoboxes.lootsheettype.content"}}}
+        </aside>
+    </h3>
+    <select class="sheet-type{{#if this.token}} lsnpc-action-link{{/if}}" name="flags.lootsheetnpc5e.lootsheettype"
+        data-event-type="change" data-action="sheetUpdate">
+        {{#select data.flags.lootsheetnpc5e.lootsheettype}}
+            <option value="Loot">{{localize "lsnpc.sheettypes.loot"}}</option>
+            <option value="Merchant">{{localize "lsnpc.sheettypes.merchant"}}</option>
+            <option value="Object" title="e.g. a chest, a box, any object that can contain something">{{localize "lsnpc.sheettypes.object"}}</option>
+            <option value="Shop">{{localize "lsnpc.sheettypes.shop"}}</option>
+            <option value="Account">{{localize "lsnpc.sheettypes.account"}}</option>
+        {{/select}}
+    </select>
+</div>

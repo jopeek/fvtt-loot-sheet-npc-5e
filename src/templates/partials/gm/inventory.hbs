@@ -1,0 +1,76 @@
+<h3 class="gm-header"><i class="fas fa-balance-scale"></i> Inventory
+    <aside class="infobox-wrapper">
+        <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
+        <div class="sheet-infobox hidden">
+            Restock or replace this merchant's inventory with a items drawn from a rolltable.
+            <dl>
+                <dt>Rolltable</dt>
+                <dd>The rolltable to be used for item generation.</dd>
+                <dd>If no rolltable is chosen, the sheet will check if a matching rolltable is found in the module settings.</dd>
+                <dd>See <em>{{localize 'Configure Settings'}} - LootsheetNPC5e - Seeder settings.</em></dd>
+                <dt>Rolltable quantity formula</dt>
+                <dd>A Formula or number for how often the items are drawn from the table. <small>(e.g. <em>2d12</em> or <em>3</em></small>.</dd>
+                <dt>Item quantity formula</dt>
+                <dd>A Formula or number to determine the quantity of the drawn items. <small>(e.g. <em>1d6</em> or <em>3</em></small>.</dd>
+                <dt>Limit quantity formula</dt>
+                <dd>A Formula or number to determine the maximum quantity of the drawn items. <small>(e.g. <em>1d12</em> or <em>1</em></small>.</dd>
+            </dl>
+        </div>
+    </aside>
+</h3>
+<section class="inventory-settings">
+    <div class="textflex flexrow">
+        <span>
+            Roll on
+        </span>
+        <select class="sheet-rolltable" name="data.flags.lootsheetnpc5e.rolltable">
+            {{#select data.flags.lootsheetnpc5e.rolltable}}
+                <option value="">None selected</option>
+                {{#each rolltables as |array group|}}
+                    <optgroup label="{{group}}">
+                        {{#each array}}
+                            <option value="{{this.uuid}}" data-label="{{this.name}}">{{this.name}}</option>
+                        {{/each}}
+                    </optgroup>
+                {{/each}}
+            {{/select}}
+        </select>
+        <span> for </span>
+        <input name="data.flags.lootsheetnpc5e.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20"
+            value="{{data.flags.lootsheetnpc5e.shopQty}}" title="Rolltable Qty Formula" />
+        <span>
+            {{#uneq data.flags.lootsheetnpc5e.shopQty 1}}× times{{/uneq}}{{#ifeq data.flags.lootsheetnpc5e.shopQty
+                1}}time{{/ifeq}}.
+        </span>
+    </div>
+    <div class="textflex flexrow">
+        <span>
+            And add
+        </span>
+        <input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4"
+            value="{{data.flags.lootsheetnpc5e.itemQty}}" />
+        <span> items (max </span>
+        <input name="data.flags.lootsheetnpc5e.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10"
+            value="{{data.flags.lootsheetnpc5e.itemQtyLimit}}" />
+        <span>).</span>
+    </div>
+    <div class="textflex flexrow">
+        Also add <input name="data.flags.lootsheetnpc5e.currencyFormula" type="text" data-dtype="String"
+            placeholder="e.g.: (11d+1)*10[gp], (11d+1)*10[gp]" value="{{data.flags.lootsheetnpc5e.currencyFormula}}" />
+        currency.
+    </div>
+    <div class="flexrow">
+        <span>When updating the inventory I want it to clear</span>
+        <div>
+            <input name="data.flags.lootsheetnpc5e.clearInventory" type="checkbox" data-dtype="boolean" {{#if
+                data.flags.lootsheetnpc5e.clearInventory}}checked{{/if}} />
+            <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
+            <div class="sheet-infobox hidden">
+                ⚠️If the tokens actor is <em>not</em> a merchant you typically don't want to
+                clear the inventory.
+            </div>
+        </div>
+
+        <button type="button" class="update-inventory lsnpc-action-link" data-event-type="change" data-action="sheetUpdate"
+            type="update-inventory" name="update-inventory" value="1"><i class="lsn lsn-glover"></i> Update</button>
+</section>
