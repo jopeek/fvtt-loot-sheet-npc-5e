@@ -2,7 +2,7 @@ import { MODULE } from '../../data/moduleConstants.js';
 import { LootSeederSettingsConfigApp } from './LootSeederConfigApp.js';
 import { TableHelper } from '../../helper/TableHelper.js';
 
-export class PopulatorSettings {
+export class LootSeederSettings {
 
     static registerSettings() {
         game.settings.registerMenu(MODULE.ns, MODULE.settings.keys.lootseeder.seederOptions, {

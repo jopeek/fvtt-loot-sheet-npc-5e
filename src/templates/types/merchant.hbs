@@ -34,7 +34,7 @@
                 <h3 class="gm-header">
                     <i class="fas fa-id-card"></i> Type
                     <aside class="infobox-wrapper">
-                        <i class="fas fa-info-circle help"></i>
+                        <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
                         <div class="sheet-infobox hidden">
                             <dl>
                                 <dt>Loot</dt>
@@ -65,9 +65,13 @@
                         title="{{actor.flags.lootsheetnpc5e.playersPermissionDescription}}">{{{actor.flags.lootsheetnpc5e.playersPermissionIcon}}}</a>
                     Permissions
                     <aside class="infobox-wrapper">
-                        <i class="fas fa-info-circle help"></i>
+                        <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
                         <div class="sheet-infobox hidden">
-                            ⚠️ Ensure a character is selected for the players via the 'Player configuration'. ⚠️
+                            <p>⚠️ Ensure a character is selected for the users (player(s)/GM(s)) via the 'User configuration'. </p>
+                            <dl>
+                                <dt>Filter</dt>
+                                <dd>If a filter is chosen, it is applied on the players that have sufficiant permissions to view the sheet</dd>
+                            </p>
                         </div>
                     </aside>
                 </h3>
@@ -89,7 +93,7 @@
                 {{#if showLootConfig}}
                 <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Inventory Settings
                     <aside class="infobox-wrapper">
-                        <i class="fas fa-info-circle help"></i>
+                        <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
                         <div class="sheet-infobox hidden">
                             Replace this merchant's inventory with a (random) number of items from a rolltable.
                             <dl>
@@ -153,7 +157,7 @@
                         <div class="flexcol">
                             <h4>Clear Inventory
                                 <aside class="infobox-wrapper">
-                                    <i class="fas fa-info-circle help"></i>
+                                    <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
                                     <div class="sheet-infobox hidden">
                                         ⚠️If the tokens actor is <em>not</em> a merchant you typically don't want to
                                         clear the inventory.

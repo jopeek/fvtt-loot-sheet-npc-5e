@@ -2,24 +2,13 @@
     <h3 class="gm-header">
         {{localize 'lsnpc.infoboxes.permissions.title'}}
         <aside class="infobox-wrapper">
-            <i class="fas fa-info-circle help"></i>
+            <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
             <div class="sheet-infobox hidden">
-                {{localize lsnpc.infoboxes.permissions.content}}
+                {{localize 'lsnpc.infoboxes.permissions.content'}}
             </div>
         </aside>
     </h3>
     <div class="permissiongrid">
-        <aside class="filter flexrow" {{#if data.flags.lootsheetnpc5e.permissionsFilter}}style="border: 1px solid green"{{/if}}>
-            <label title="{{data.flags.lootsheetnpc5e.permissionsFilter}}">Filter eligable players</label>
-            <select name="data.flags.lootsheetnpc5e.permissionsFilter" class="permissions-filter">
-                {{#select data.flags.lootsheetnpc5e.permissionsFilter}}
-                    <option value="false">No Filter</option>
-                    <option value="1">Characters of Players that view the scene.</option>
-                    <option value="2">Characters of Players that have a token in the scene.</option>
-                    <option value="3"> - " - view the scene & have a token active.</option>
-                {{/select}}
-            </select>
-        </aside>
         <main class="bulk">
             <h4>{{localize 'Bulk Update'}}</h4>
             <ul class="permissions-options">
@@ -36,7 +25,7 @@
             <h4>
                 {{localize 'lsnpc.infoboxes.permissions_individual.title'}}
                 <aside class="infobox-wrapper">
-                    <i class="fas fa-info-circle help"></i>
+                    <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
                     <div class="sheet-infobox hidden">
                         {{localize 'lsnpc.infoboxes.permissions_individual.content'}}
                     </div>
@@ -57,5 +46,25 @@
                 {{/each}}
             </ol>
         </main>
+        <aside class="filter flexrow {{#if data.flags.lootsheetnpc5e.permissionsFilter}}filter-active{{/if}}">
+            <label title="{{data.flags.lootsheetnpc5e.permissionsFilter}}">
+                <i class="fas fa-filter"></i> Filter eligable players
+                <aside class="infobox-wrapper">
+                    <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
+                    <div class="sheet-infobox hidden">
+                        <p>Apply Filters to the players that have permissions to view the sheet.</p>
+                        <p>These filters are applied when currency is shared.</p>
+                        <p>In the future these filters can be applied when making a token lootable or bulk assigning permissions.</p>
+                    </div>
+            </label>
+            <select name="data.flags.lootsheetnpc5e.permissionsFilter" class="permissions-filter">
+                {{#select data.flags.lootsheetnpc5e.permissionsFilter}}
+                    <option value="false">No Filter</option>
+                    <option value="1">Characters of Players that view the scene.</option>
+                    <option value="2">Characters of Players that have a token in the scene.</option>
+                    <option value="3"> - " - view the scene & have a token active.</option>
+                {{/select}}
+            </select>
+        </aside>
     </div>
 </section>

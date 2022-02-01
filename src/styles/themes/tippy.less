@@ -1,5 +1,14 @@
+.tippy-box[data-theme~=lsn-help]{
+    color: var(--primary-font);
+    background: var(--background);
+    border: 2px solid var(--header-border);
+    font-size: 0.9em;
+    line-height: normal;
+}
+
 .tippy-box[data-theme~=lsn-item] {
     min-width: 20vw;
+    background: var(--background);
     background-blend-mode: var(--blendmode);
     background-size: cover;
     border-radius: 0.4em;
@@ -8,10 +17,6 @@
     border-radius: 0.4em;
     border: 2px solid var(--header-border);
     color: var(--primary-font);
-
-    >.tippy-backdrop {
-        background: var(--primary-background);
-    }
 
     .tippy-lsnpc {
         font-size: 0.8rem;

@@ -1,6 +1,6 @@
 import { MODULE } from '../data/moduleConstants.js';
 import { LootSheetSettings } from '../apps/settings/LootSheetSettings.js';
-import { PopulatorSettings } from '../apps/settings/LootSeederSettings.js';
+import { LootSeederSettings } from '../apps/settings/LootSeederSettings.js';
 import { VersionCheck } from '../helper/VersionCheckHelper.js';
 import { renderWelcomeScreen } from '../apps/WelcomeScreen.js';
 import { API } from '../api/API.js';
@@ -57,13 +57,15 @@ export class LootsheetNPC5eHooks {
     }
 
     static foundryReady() {
-        PopulatorSettings.registerSettings();
+        LootSeederSettings.registerSettings();
 
         HandlebarsHelper.register();
 
         if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
             renderWelcomeScreen();
         }
+
+        this._handleMigrations();
 
         LootsheetNPC5eHooks.refreshChatListeners();
     }
@@ -82,7 +84,7 @@ export class LootsheetNPC5eHooks {
                 if (!e.currentTarget.dataset.uuid) return;
                 const doc = await fromUuid(e.currentTarget.dataset.uuid);
                 if (!doc) return;
-                if(doc.collectionName == 'tokens') {
+                if (doc.collectionName == 'tokens') {
                     await doc.actor.sheet.render(true);
                 } else {
                     await doc.sheet.render(true);
@@ -168,7 +170,8 @@ export class LootsheetNPC5eHooks {
             lsnLootAllButton = document.createElement('div'),
             lsnGMButtonMakeObservable = document.createElement('div'),
             lsnLootAllImg = document.createElement('img'),
-            lsnMakeObservableImg = document.createElement('img');
+            lsnMakeObservableImg = document.createElement('img'),
+            lsnMakeObservableTitle = game.i18n.localize("LootSheetNPC5e.lootAll");
 
         lsnNav.classList.add('lsnpc5e-nav');
 
@@ -177,13 +180,14 @@ export class LootsheetNPC5eHooks {
             lsnGMButtonMakeObservable.dataset.action = "makeObservable";
             lsnGMButtonMakeObservable.addEventListener('click', async (e) => {
                 if (game.user.isGM) {
-                    const API = game.modules.get("lootsheetnpc5e").public.API;
-                    await API.makeObservable();
+                    const api = game.modules.get("lootsheetnpc5e").public.API;
+                    await api.makeObservable();
                 }
             });
 
             lsnMakeObservableImg.src = "icons/svg/eye.svg";
-            lsnMakeObservableImg.alt = game.i18n.localize("LootSheetNPC5e.lootAll");
+            lsnMakeObservableImg.alt = lsnMakeObservableTitle;
+            lsnGMButtonMakeObservable.title = lsnMakeObservableTitle;
             lsnGMButtonMakeObservable.appendChild(lsnMakeObservableImg);
 
             lsnNav.appendChild(lsnGMButtonMakeObservable);
@@ -196,5 +200,25 @@ export class LootsheetNPC5eHooks {
 
     static onDevModeReady({ registerPackageDebugFlag }) {
         registerPackageDebugFlag(MODULE.ns);
+    }
+
+    /**
+     * Handle migrations for the module
+     *
+     * @param {string} version
+     */
+    static _handleMigrations(version = '') {
+        /**
+         * Added in 3.4.5.9
+         * To handle the old class name that differed from the module name
+         * Should be removed at some point.
+         */
+        const oldClassName = 'dnd5e.LootSheet5eNPC',
+            newClassName = 'dnd5e.LootSheetNPC5e',
+            migrationActors = game.actors.filter(a => a.data.type === 'npc' && a.data.flags.core.sheetClass === oldClassName);
+
+        for (let actor of migrationActors) {
+            actor.update({ data: { flags: { core: { sheetClass: newClassName } } } });
+        }
     }
 }

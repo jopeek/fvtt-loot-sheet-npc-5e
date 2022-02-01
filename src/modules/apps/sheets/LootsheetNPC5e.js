@@ -9,8 +9,6 @@ import { TableHelper } from "../../helper/TableHelper.js";
 import { SheetListener } from "../../hooks/SheetListener.js";
 import { CurrencyHelper } from "../../helper/CurrencyHelper.js";
 
-//import tippy from "tippy.js";
-
 // ⬆️ module imports
 
 /**
@@ -21,7 +19,7 @@ import { CurrencyHelper } from "../../helper/CurrencyHelper.js";
 export class LootSheetNPC5e extends ActorSheet5eNPC {
 
     /**
-     * @module lootsheetnpc5e.LootSheet5eNPC.template
+     * @module lootsheetnpc5e.LootSheetNPC5e.template
      * @description Handle template loading for the sheet
      */
     get template() {

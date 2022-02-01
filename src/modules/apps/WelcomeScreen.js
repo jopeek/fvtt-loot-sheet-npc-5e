@@ -40,5 +40,5 @@ export class WelcomeScreen extends Application {
 }
 
 export function renderWelcomeScreen () {
-  (new WelcomeScreen()).render(true)
+  (new WelcomeScreen()).render(true);
 }

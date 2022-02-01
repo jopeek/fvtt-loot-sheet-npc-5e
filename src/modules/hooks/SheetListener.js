@@ -68,7 +68,7 @@ export class SheetListener {
          */
         this.tradeItemEventListeners(tradeableItems);
         this._itemTooltips(tradeableItems);
-
+        this._helperTooltips();
 
         for (let actionButton of sheetActionButtons) {
             const eventType = actionButton.nodeName === 'SELECT' ? 'change' : 'click';
@@ -269,6 +269,22 @@ export class SheetListener {
                 </footer>`;
 
         return html;
+    }
+
+    _helperTooltips() {
+        const app = document.querySelector(`#${this.id}`);
+        tippy(app.querySelectorAll('.infobox-wrapper .help'), {
+            appendTo: "parent",
+            arrow: false,
+            theme: 'lsn-help',
+            interactive: false,
+            flipOnUpdate: true,
+            placement: 'auto',
+            allowHTML: true,
+            content: (instance) => {
+                return instance.parentNode.querySelector('.sheet-infobox').innerHTML;
+            }
+        });
     }
 
     /**

@@ -1,21 +1,19 @@
-<h3 class="gm-header"><i class="fas fa-balance-scale"></i> Inventory Update
+<h3 class="gm-header"><i class="fas fa-balance-scale"></i> Inventory
     <aside class="infobox-wrapper">
-        <i class="fas fa-info-circle help"></i>
+        <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
         <div class="sheet-infobox hidden">
-            Replace this merchant's inventory with a (random) number of items from a rolltable.
+            Restock or replace this merchant's inventory with a items drawn from a rolltable.
             <dl>
                 <dt>Rolltable</dt>
-                <dd>The rolltable to be used.<br />
-                    This rolltable will also be used (instead of rules/defaults).</dd>
+                <dd>The rolltable to be used for item generation.</dd>
+                <dd>If no rolltable is chosen, the sheet will check if a matching rolltable is found in the module settings.</dd>
+                <dd>See <em>{{localize 'Configure Settings'}} - LootsheetNPC5e - Seeder settings.</em></dd>
                 <dt>Rolltable quantity formula</dt>
-                <dd>How often will the rolltable be used to roll for items. For example <em>1d12</em>.
-                </dd>
+                <dd>A Formula or number for how often the items are drawn from the table. <small>(e.g. <em>2d12</em> or <em>3</em></small>.</dd>
                 <dt>Item quantity formula</dt>
-                <dd>How many Items should be added to the inventory. For example <em>2d3</em>.</dd>
+                <dd>A Formula or number to determine the quantity of the drawn items. <small>(e.g. <em>1d6</em> or <em>3</em></small>.</dd>
                 <dt>Limit quantity formula</dt>
-                <dd>How many <em>of each</em> Item should be added at most. For example <em>8</em> or
-                    <em>3d8</em>.
-                </dd>
+                <dd>A Formula or number to determine the maximum quantity of the drawn items. <small>(e.g. <em>1d12</em> or <em>1</em></small>.</dd>
             </dl>
         </div>
     </aside>
@@ -66,7 +64,7 @@
         <div>
             <input name="data.flags.lootsheetnpc5e.clearInventory" type="checkbox" data-dtype="boolean" {{#if
                 data.flags.lootsheetnpc5e.clearInventory}}checked{{/if}} />
-            <i class="fas fa-info-circle help"></i>
+            <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
             <div class="sheet-infobox hidden">
                 ⚠️If the tokens actor is <em>not</em> a merchant you typically don't want to
                 clear the inventory.
