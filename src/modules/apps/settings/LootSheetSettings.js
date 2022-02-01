@@ -75,7 +75,7 @@ export class LootSheetSettings {
             name: game.i18n.localize('lsnpc.settings.useBetterRolltables.name'),
             hint: game.i18n.localize('lsnpc.settings.useBetterRolltables.hint'),
             scope: MODULE.settings.scopes.world,
-            config: true,
+            config: false,
             default: false,
             type: Boolean
         });
