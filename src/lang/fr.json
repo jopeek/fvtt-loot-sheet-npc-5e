@@ -80,7 +80,7 @@
 					"name": "Options avancées",
 					"label": "Options avancées et valeurs par défaut"
 				},
-				"populatorOptions": {
+				"seederOptions": {
 					"name": "Option de génération du butin",
 					"label": "Option de génération du butin du Token"
 				},
@@ -151,14 +151,10 @@
 				"stackBuyConfirm": {
 					"name": "Confirmer l'achat de la pile",
 					"hint": "Demander une confirmation avant d'acheter une pile ?"
-				},
-				"useCondensedLootsheet": {
-					"name": "⚠️ ALPHA ⚠️ Feuille de butin condensée",
-					"hint": "Utilisez une feuille de butin condensée et stylisée. Il s'agit de se faire une idée des possibilités de thématisation futures."
 				}
 			},
-			"populator": {
-				"autoPopulateTokens": {
+			"seeder": {
+				"autoSeedTokens": {
 					"name": "Butin automatique pour les Tokens",
 					"hint": "Jet automatique pour le butin. Si un acteur a une table aléatoire assignée, ou si des Fallbacks sont trouvés."
 				},

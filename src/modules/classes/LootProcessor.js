@@ -1,6 +1,6 @@
 import { MODULE } from '../data/moduleConstants.js';
-import { utils } from '../helper/utils.js';
-import { CurrencyHelper } from '../helper/currencyHelper.js';
+import { Utils } from '../helper/Utils.js';
+import { CurrencyHelper } from '../helper/CurrencyHelper.js';
 import { ItemHelper } from '../helper/ItemHelper.js';
 
 /**
@@ -64,7 +64,7 @@ export class LootProcessor {
 
         /** Try first to load item from compendium */
         if (item.collection) {
-            existingItem = await utils.getItemFromCompendium(item);
+            existingItem = await Utils.getItemFromCompendium(item);
         } else {
             /** if an item with this name exist we load that item data, otherwise we create a new one */
             existingItem = game.items.getName(item.text);
@@ -178,12 +178,12 @@ export class LootProcessor {
                     const innerTableName = matches[3];
 
                     if (!commandName && innerTableName) {
-                        const out = utils.separateIdCompendiumName(innerTableName);
+                        const out = Utils.separateIdCompendiumName(innerTableName);
                         const tableName = out.nameOrId;
                         const tableCompendiumName = out.compendiumName;
 
                         if (tableCompendiumName) {
-                            table = await utils.findInCompendiumByName(tableCompendiumName, tableName);
+                            table = await Utils.findInCompendiumByName(tableCompendiumName, tableName);
                         } else {
                             table = game.tables.getName(tableName);
                         }
@@ -412,7 +412,7 @@ export class LootProcessor {
     async _getRandomSpell(level) {
         const spells = this.getSpellCache().filter(spell => getProperty(spell, 'data.level') === level),
             spell = spells[Math.floor(Math.random() * spells.length)]
-        return utils.findInCompendiumById(spell.collection, spell._id)
+        return Utils.findInCompendiumById(spell.collection, spell._id)
     }
 
     /**

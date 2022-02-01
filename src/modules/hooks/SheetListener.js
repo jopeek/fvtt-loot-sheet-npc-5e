@@ -2,7 +2,7 @@ import { MODULE } from "../data/moduleConstants.js";
 import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from "../helper/PermissionHelper.js";
 import { SheetHelper } from "../helper/SheetHelper.js";
-import { TokenHelper } from "../helper/tokenHelper.js";
+import { TokenHelper } from "../helper/TokenHelper.js";
 import tippy from "tippy.js";
 
 export class SheetListener {
@@ -191,7 +191,7 @@ export class SheetListener {
                     options
                 );
 
-                return this.actor.sheet.render(true); //population should done, good bye 👋
+                return this.actor.sheet.render(true); //seeding should done, good bye 👋
             }
         }
 
@@ -212,7 +212,7 @@ export class SheetListener {
             theme: 'lsn-item',
             interactive: false,
             flipOnUpdate: true,
-            placement: 'bottom-end',
+            placement: 'bottom',
             async onShow(instance) {
                 console.info(instance);
                 const i = instance.reference,
@@ -244,8 +244,8 @@ export class SheetListener {
             range: '<i class="ra ra-overhead"></i>',
         };
         html += `<header class="flexrow">
-                <h3 class="item-name">${item.data.name}</h3>
-                <span class="item-price">${overrides.price} 🪙 </span>
+                    <h3 class="item-name">${item.data.name}</h3>
+                    <span class="item-price">${overrides.price} 🪙 </span>
                 </header>`;
         html += `<ul class="labels">`;
         for (let [k, v] of Object.entries(item.labels)) {

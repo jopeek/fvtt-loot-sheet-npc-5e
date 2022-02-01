@@ -81,7 +81,7 @@
                     "name": "Opzioni avanzate",
                     "label": "Opzioni avanzate e predefinite"
                 },
-                "populatorOptions": {
+                "seederOptions": {
                     "name": "Impostazioni di popolamento del bottino",
                     "label": "Impostazioni di popolamento del bottino per token"
                 },
@@ -156,14 +156,10 @@
                 "sheetUpdate": {
                     "name": "Forza l'aggiornamento della scheda",
                     "hint": "Invia un aggiornamento ai giocatori che dice al loro client di aggiornare la scheda."
-                },
-                "useCondensedLootsheet": {
-                    "name": "⚠️ ALPHA Testing Preview ⚠️ Scheda bottino condensata",
-                    "hint": "Usa una scheda bottino condensata. Questo è per avere un'idea di potenziali future opzioni di temi."
                 }
             },
-            "populator": {
-                "autoPopulateTokens": {
+            "seeder": {
+                "autoSeedTokens": {
                     "name": "Auto popolamento token",
                     "hint": "Tira automaticamente per il bottino. Se un attore ha una tabella assegnata o se delle riserve sono trovate"
                 },

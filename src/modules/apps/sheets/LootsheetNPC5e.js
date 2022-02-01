@@ -5,9 +5,9 @@ import ActorSheet5eNPC from "/systems/dnd5e/module/actor/sheets/npc.js";
 import { MODULE } from "../../data/moduleConstants.js";
 import { LootSheetNPC5eHelper } from "../../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from '../../helper/PermissionHelper.js';
-import { TableHelper } from "../../helper/tableHelper.js";
+import { TableHelper } from "../../helper/TableHelper.js";
 import { SheetListener } from "../../hooks/SheetListener.js";
-import { CurrencyHelper } from "../../helper/currencyHelper.js";
+import { CurrencyHelper } from "../../helper/CurrencyHelper.js";
 
 //import tippy from "tippy.js";
 
@@ -98,6 +98,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         sheetData.isGM = (game.user.isGM) ? true : false;
         sheetData.items = sheetDataActorItems;
         sheetData.interactingActor = game.user?.character?.name || "No Character";
+        sheetData.interactingActorFunds = {currency: game.user?.character.data.data.currency || [] };
         sheetData.totalItems = sheetDataActorItems.length;
         sheetData.totalWeight = totals.weight.toLocaleString('en');
         sheetData.totalPrice = totals.price.toLocaleString('en') + " gp";
@@ -263,14 +264,38 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         actorData.actor.lootableItems = LootSheetNPC5eHelper.sortAndGroupItems(lootableItems);
 
         if (playerCharacter) {
-            let playerItems = duplicate(playerCharacter.data.items);
+            const playerItems = this._getTradeablePlayerInventory(playerCharacter);
+            actorData.actor.playerInventory = LootSheetNPC5eHelper.sortAndGroupItems(playerItems);
+        }
+    }
+
+    /**
+     *
+     * @param {Actor} playerCharacter
+     * @returns
+     */
+    _getTradeablePlayerInventory(playerCharacter){
+        let playerItems = duplicate(playerCharacter.data.items);
+
+
             //enrich with uuid
             for (let fullItem of playerCharacter.getEmbeddedCollection('Item')) {
                 playerItems.find(i => i._id == fullItem.id).uuid = fullItem.uuid;
             }
-            playerItems = LootSheetNPC5eHelper.getLootableItems(playerItems);
-            actorData.actor.playerInventory = LootSheetNPC5eHelper.sortAndGroupItems(playerItems);
-        }
+
+            // filter equiped items with only 1 quantity
+            playerItems = playerItems.filter(i => {
+                if (i.data?.equipped && i.data.quantity > 1) return true;
+                if (!i.data?.equipped) return true;
+                return false;
+            });
+            // decrease quantity of equiped items by 1
+            playerItems = playerItems.map(i => {
+                if (i.data?.equipped) i.data.quantity -= 1;
+                return i;
+            });
+
+            return LootSheetNPC5eHelper.getLootableItems(playerItems);
     }
 
     /**

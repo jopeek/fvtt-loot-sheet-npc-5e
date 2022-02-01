@@ -1,6 +1,6 @@
 import { PermissionHelper } from "./PermissionHelper.js";
 import { MODULE } from "../data/moduleConstants.js";
-import { QuantityDialog } from "../classes/quantityDialog.js";
+import { QuantityDialog } from "../classes/QuantityDialog.js";
 import { ItemHelper } from "./ItemHelper.js";
 import { SocketListener } from "../hooks/SocketListener.js";
 

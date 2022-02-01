@@ -1,21 +1,21 @@
 import { MODULE } from '../../data/moduleConstants.js';
-import { PopulatorSettingsConfigApp } from './populatorConfigApp.js';
-import { TableHelper } from '../../helper/tableHelper.js';
+import { LootSeederSettingsConfigApp } from './LootSeederConfigApp.js';
+import { TableHelper } from '../../helper/TableHelper.js';
 
 export class PopulatorSettings {
 
     static registerSettings() {
-        game.settings.registerMenu(MODULE.ns, MODULE.settings.keys.lootpopulator.populatorOptions, {
-            name: game.i18n.localize('lsnpc.settings.menu.populatorOptions.name'),
-            label: game.i18n.localize('lsnpc.settings.menu.populatorOptions.label'),
+        game.settings.registerMenu(MODULE.ns, MODULE.settings.keys.lootseeder.seederOptions, {
+            name: game.i18n.localize('lsnpc.settings.menu.seederOptions.name'),
+            label: game.i18n.localize('lsnpc.settings.menu.seederOptions.label'),
             icon: "fas fa-user-cog",
-            type: PopulatorSettingsConfigApp,
+            type: LootSeederSettingsConfigApp,
             restricted: true
         });
 
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.autoPopulateTokens, {
-            name: game.i18n.localize('lsnpc.settings.populator.autoPopulateTokens.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.autoPopulateTokens.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens, {
+            name: game.i18n.localize('lsnpc.settings.seeder.autoSeedTokens.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.autoSeedTokens.hint'),
             scope: MODULE.settings.scopes.world,
             config: true,
             default: true,
@@ -44,48 +44,48 @@ export class PopulatorSettings {
        */
      static async _registerDefaultFallbacks() {
         const rolltables = await TableHelper.getGameWorldRolltables();
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackRolltable, {
-            name: game.i18n.localize('lsnpc.settings.populator.fallbackRolltable.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.fallbackRolltable.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackRolltable, {
+            name: game.i18n.localize('lsnpc.settings.seeder.fallbackRolltable.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.fallbackRolltable.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.fallbacks,
+            group: MODULE.settings.groups.lootseeder.fallbacks,
             config: false,
             default: 0,
             type: String,
             choices: rolltables
         });
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackShopQty, {
-            name: game.i18n.localize('lsnpc.settings.populator.fallbackShopQty.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.fallbackShopQty.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackShopQty, {
+            name: game.i18n.localize('lsnpc.settings.seeder.fallbackShopQty.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.fallbackShopQty.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.fallbacks,
+            group: MODULE.settings.groups.lootseeder.fallbacks,
             config: false,
             default: '1d2',
             type: String
         });
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQty, {
-            name: game.i18n.localize('lsnpc.settings.populator.fallbackItemQty.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.fallbackItemQty.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackItemQty, {
+            name: game.i18n.localize('lsnpc.settings.seeder.fallbackItemQty.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.fallbackItemQty.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.fallbacks,
+            group: MODULE.settings.groups.lootseeder.fallbacks,
             config: false,
             default: '1d2',
             type: String
         });
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackItemQtyLimit, {
-            name: game.i18n.localize('lsnpc.settings.populator.fallbackItemQtyLimit.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.fallbackItemQtyLimit.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackItemQtyLimit, {
+            name: game.i18n.localize('lsnpc.settings.seeder.fallbackItemQtyLimit.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.fallbackItemQtyLimit.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.fallbacks,
+            group: MODULE.settings.groups.lootseeder.fallbacks,
             config: false,
             default: '1d2',
             type: String
         });
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.fallbackCurrencyFormula, {
-            name: game.i18n.localize('lsnpc.settings.populator.fallbackCurrencyFormula.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.fallbackCurrencyFormula.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackCurrencyFormula, {
+            name: game.i18n.localize('lsnpc.settings.seeder.fallbackCurrencyFormula.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.fallbackCurrencyFormula.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.fallbacks,
+            group: MODULE.settings.groups.lootseeder.fallbacks,
             config: false,
             default: '1d4[gp], 1d4[sp], 1d4[cp]',
             type: String
@@ -95,11 +95,11 @@ export class PopulatorSettings {
     static async _registerCreatureTypeFallbacks() {
         const creatureTypes = this.creatureTypes;
         if (creatureTypes && creatureTypes.length > 0) {
-            game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.creatureTypeFallbacks, {
-                name: game.i18n.localize('lsnpc.settings.populator.creatureTypeFallbacks.name'),
-                hint: game.i18n.localize('lsnpc.settings.populator.creatureTypeFallbacks.hint'),
+            game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.creatureTypeFallbacks, {
+                name: game.i18n.localize('lsnpc.settings.seeder.creatureTypeFallbacks.name'),
+                hint: game.i18n.localize('lsnpc.settings.seeder.creatureTypeFallbacks.hint'),
                 scope: MODULE.settings.scopes.world,
-                group: MODULE.settings.groups.lootpopulator.creatureTypeFallbacks,
+                group: MODULE.settings.groups.lootseeder.creatureTypeFallbacks,
                 config: false,
                 default: true,
                 type: Boolean
@@ -110,7 +110,7 @@ export class PopulatorSettings {
                 game.settings.register(MODULE.ns, "creaturetype_default_" + creaturType + '_table', {
                     name:  game.i18n.localize(creaturType + 's'),
                     scope: MODULE.settings.scopes.world,
-                    group: MODULE.settings.groups.lootpopulator.creatureTypeFallbacks,
+                    group: MODULE.settings.groups.lootseeder.creatureTypeFallbacks,
                     config: false,
                     default: 0,
                     type: String,
@@ -121,11 +121,11 @@ export class PopulatorSettings {
     }
 
     static async _registerCustomFallbacks() {
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.useRulesets, {
-            name: game.i18n.localize('lsnpc.settings.populator.useRulesets.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.useRulesets.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.useRulesets, {
+            name: game.i18n.localize('lsnpc.settings.seeder.useRulesets.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.useRulesets.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.rulesets,
+            group: MODULE.settings.groups.lootseeder.rulesets,
             config: false,
             default: true,
             type: Boolean
@@ -134,10 +134,10 @@ export class PopulatorSettings {
         const rolltables = await TableHelper.getGameWorldRolltables(),
             customFallbacks = this.customFallbackDefaults;
 
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets, {
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.rulesets, {
             name: "-Rulesets-",
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.rulesets,
+            group: MODULE.settings.groups.lootseeder.rulesets,
             config: false,
             actions: {
                 new: {
@@ -150,29 +150,29 @@ export class PopulatorSettings {
     }
 
     static _registerCurrencySettings() {
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.generateCurrency, {
-            name: game.i18n.localize('lsnpc.settings.populator.generateCurrency.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.generateCurrency.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.generateCurrency, {
+            name: game.i18n.localize('lsnpc.settings.seeder.generateCurrency.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.generateCurrency.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.currency,
+            group: MODULE.settings.groups.lootseeder.currency,
             config: false,
             default: false,
             type: Boolean
         });
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.adjustCurrencyWithCR, {
-            name: game.i18n.localize('lsnpc.settings.populator.adjustCurrencyWithCR.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.adjustCurrencyWithCR.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.adjustCurrencyWithCR, {
+            name: game.i18n.localize('lsnpc.settings.seeder.adjustCurrencyWithCR.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.adjustCurrencyWithCR.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.currency,
+            group: MODULE.settings.groups.lootseeder.currency,
             config: false,
             default: false,
             type: Boolean
         });
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.lootCurrencyDefault, {
-            name: game.i18n.localize('lsnpc.settings.populator.lootCurrencyDefault.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.lootCurrencyDefault.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.lootCurrencyDefault, {
+            name: game.i18n.localize('lsnpc.settings.seeder.lootCurrencyDefault.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.lootCurrencyDefault.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.currency,
+            group: MODULE.settings.groups.lootseeder.currency,
             config: false,
             default: "1d4[gp], 1d20[sp], 1d50[cp]",
             type: String
@@ -181,11 +181,11 @@ export class PopulatorSettings {
 
     static _registerSkiplistSettings() {
         const creatureTypes = this.creatureTypes;
-        game.settings.register(MODULE.ns, MODULE.settings.keys.lootpopulator.useSkiplist, {
-            name: game.i18n.localize('lsnpc.settings.populator.useSkiplist.name'),
-            hint: game.i18n.localize('lsnpc.settings.populator.useSkiplist.hint'),
+        game.settings.register(MODULE.ns, MODULE.settings.keys.lootseeder.useSkiplist, {
+            name: game.i18n.localize('lsnpc.settings.seeder.useSkiplist.name'),
+            hint: game.i18n.localize('lsnpc.settings.seeder.useSkiplist.hint'),
             scope: MODULE.settings.scopes.world,
-            group: MODULE.settings.groups.lootpopulator.skiplist,
+            group: MODULE.settings.groups.lootseeder.skiplist,
             config: false,
             default: false,
             type: Boolean
@@ -195,7 +195,7 @@ export class PopulatorSettings {
             game.settings.register(MODULE.ns, setting, {
                 name: game.i18n.format(item),
                 label: game.i18n.format("Skiplist"),
-                group: MODULE.settings.groups.lootpopulator.skiplist,
+                group: MODULE.settings.groups.lootseeder.skiplist,
                 config: false,
                 default: false,
                 scope: MODULE.settings.scopes.world,

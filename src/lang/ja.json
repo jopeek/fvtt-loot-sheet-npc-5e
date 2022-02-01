@@ -81,7 +81,7 @@
                     "name": "高度な設定",
                     "label": "高度な設定＆デフォルト設定"
                 },
-                "populatorOptions": {
+                "seederOptions": {
                     "name": "お宝追加設定",
                     "label": "お宝コマの追加設定"
                 },
@@ -160,14 +160,10 @@
                 "sheetUpdate": {
                     "name": "強制シート更新",
                     "hint": "プレイヤーのクライアントの画面情報を強制的に更新します。"
-                },
-                "useCondensedLootsheet": {
-                    "name": "⚠️試験的⚠️ お宝UI縮小",
-                    "hint": "お宝シートのUIを小さくし、コンパクトにまとめるCSSを使用します。意見を募るための試験的なものです。"
                 }
             },
-            "populator": {
-                "autoPopulateTokens": {
+            "seeder": {
+                "autoSeedTokens": {
                     "name": "アイテム自動生成",
                     "hint": "お宝が所持しているアイテムを自動的に生成します。キャラにロール表やフォールバックが設定されている時のみ有効です。"
                 },

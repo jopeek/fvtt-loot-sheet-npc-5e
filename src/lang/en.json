@@ -37,12 +37,12 @@
                 },
                 "currency": {
                     "split": {
-                        "title": "Split 🪙 amoung {n} party members",
-                        "label": "Split coins"
+                        "title": "Split currency amoung {n} party members",
+                        "label": "Split currency"
                     },
                     "single": {
-                        "title": "Loot 🪙 from the body",
-                        "label": "Loot 🪙"
+                        "title": "Take currency from the body",
+                        "label": "Take currency"
                     }
                 }
 
@@ -94,14 +94,14 @@
                     "name": "Advanced Options",
                     "label": "Advanced Options & Defaults"
                 },
-                "populatorOptions": {
-                    "name": "Loot population Settings",
-                    "label": "Token loot population settings"
+                "seederOptions": {
+                    "name": "Seeder settings",
+                    "label": "Token seeder settings"
                 },
                 "currency": "Currency",
                 "defaults": "Defaults",
                 "fallbacks": "Fallbacks",
-                "moduleDefaults": "Modul Standards",
+                "moduleDefaults": "Modul Defaults",
                 "merchant": "Merchant",
                 "creatureTypeFallbacks": "by type",
                 "loot": "Loot",
@@ -115,8 +115,8 @@
                     "hint": "Allow players to buy items from the merchant sheet?"
                 },
                 "chatGracePeriod": {
-                    "name": "Chat grace period (seconds)",
-                    "hint": "When updating the chat messages, after this grace period the module will create a new message instead of updating the old one."
+                    "name": "Chat grace period (in seconds)",
+                    "hint": "When updating the chat messages after this grace period. The module will create a new message instead of updating the old one."
                 },
                 "colorRarity": {
                     "name": "Colorize rarity?",
@@ -127,8 +127,8 @@
                     "hint": "Convert currency to the highest denomination possible after a purchase. (e.g. gp to pp)"
                 },
                 "fallbackCurrencyFormula":{
-                    "name": "Default Currency Formula",
-                    "hint": "Formular to calculate the currency if no other formula was picked up from the actor or population settings. (e.g. '1d6[gp], 2d6[sp], 3d6[cp]')"
+                    "name": "Default currency formula",
+                    "hint": "Formula to calculate the currency if no other formula was picked up from the actor or seeder settings. (e.g. '1d6[gp], 2d6[sp], 3d6[cp]')"
                 },
                 "filterNaturalWeapons": {
                     "name": "Filter natural weapons",
@@ -139,27 +139,27 @@
                     "hint": "Allow players to split currency between the party members?"
                 },
                 "generateChatMessages" : {
-                    "name": "Generate chat messages",
-                    "hint": "Generate chat messages for looting or transactions."
+                    "name": "Chat messages",
+                    "hint": "Generate chat messages when players take, buy or sell items."
                 },
                 "lootAll": {
                     "name": "Loot all",
-                    "hint": "Allow players to loot all items from the sheet ate once. Currency will follow the currency settings."
+                    "hint": "Allow a player to take all items from a sheet at once?"
                 },
                 "includeCurrencyWeight": {
                     "name": "Include currency weight",
-                    "hint": "Include the weight of the currency in the total weight of the sheet."
+                    "hint": "Include the weight of currency in a sheet's total weight calculations?"
                 },
                 "lootCurrency": {
                     "name": "Loot currency",
-                    "hint": "Allow player to loot the currency to their own character."
+                    "hint": "Allow a player to take all currency from a sheet at once?"
                 },
                 "lootItem": {
                     "name": "Looting",
-                    "hint": "Allow players to loot items from the sheet."
+                    "hint": "Allow players to loot items from a sheet?"
                 },
                 "maxPriceIncrease": {
-                    "name": "Maximum Price Increase",
+                    "name": "Maximum price increase",
                     "hint": "Maximum price increase for the merchant sheet. (e.g. 200% = 100gp -> 200gp)"
                 },
                 "reduceUpdateVerbosity": {
@@ -168,11 +168,11 @@
                 },
                 "showStackWeight": {
                     "name": "Show stack weight",
-                    "hint": "Show the weight of the stack next to the individual item weight."
+                    "hint": "Show the weight of the entire stack next to an item's individual weight."
                 },
                 "stackBuyConfirm": {
-                    "name": "Stack buy confirm",
-                    "hint": "Ask for confirmation before purchasing a stack?"
+                    "name": "Confirm purchase of item stacks",
+                    "hint": "Ask for confirmation before purchasing a stack of items?"
                 },
                 "sheetUpdate": {
                     "name": "Force sheet update",
@@ -181,20 +181,16 @@
                 "tradeItems": {
                     "name": "Trading",
                     "hint": "Allow players to trade items with the sheet."
-                },
-                "useCondensedLootsheet": {
-                    "name": "⚠️ ALPHA Testing Preview ⚠️ Condensed lootsheet",
-                    "hint": "Use a condensed styled loothseet. This is to get an idea for potential future theming options."
                 }
             },
-            "populator": {
-                "autoPopulateTokens": {
-                    "name": "Auto Populate Tokens",
-                    "hint": "Automatically roll for loot. If an actor has a rolltable assigned to it, or if Fallbacks are found."
+            "seeder": {
+                "autoSeedTokens": {
+                    "name": "Auto seeding",
+                    "hint": "Automatically seed (non linked) npc tokens when dropped on the map. (If any table is linked/found for the token actor.)"
                 },
                 "adjustCurrencyWithCR": {
                     "name": "Adjust currency with CR",
-                    "hint": "Currency will be slightly adjusted by the CR (rollFormula + round up CR)."
+                    "hint": "Currency will be slightly adjusted by the CR (rollFormula + rounding up the creatures CR value)."
                 },
                 "creatureTypeFallbacks": {
                     "name": "Creature type fallbacks",
@@ -205,36 +201,36 @@
                     "hint": "Formula to use  for loot currency generation. (e.g. 1d4[gp], 1d20[sp], 1d50[cp])"
                 },
                 "fallbackRolltable": {
-                    "name": "Fallback Rolltable",
-                    "label": "Fallback rolltable to use if no rolltable is assigned to the actor."
+                    "name": "Seeder default rolltable",
+                    "label": "A default rolltable used by the seeder for (not skipped) tokens if no rolltable is found on/for the actor."
                 },
                 "fallbackShopQty": {
-                    "name": "Fallback shop quantity",
-                    "hint": "Fallback shop quantity to use if no shop quantity is assigned to the actor. (e.g. 1d6)"
+                    "name": "Default shop quantity",
+                    "hint": "Default shop quantity to use if no shop quantity is assigned to the actor. (e.g. 1d6)"
                 },
                 "fallbackItemQty": {
-                    "name": "Fallback item quantity",
-                    "hint": "Fallback item quantity to use if no quantity is assigned to the actor. (e.g. 1d6)"
+                    "name": "Default item quantity",
+                    "hint": "Default item quantity to use if no quantity is assigned to the actor. (e.g. 1d6)"
                 },
                 "fallbackItemQtyLimit": {
-                    "name": "Fallback item quantity maximum",
-                    "hint": "Fallback item quantity maxmimum to use if no maxmimum quantity is assigned to the actor. (e.g. 2d20 || 10)"
+                    "name": "Default item quantity maximum",
+                    "hint": "Default item quantity maxmimum to use if no maxmimum quantity is assigned to the actor. (e.g. 2d20 || 10)"
                 },
                 "generateCurrency": {
                     "name": "Generate currency",
-                    "hint": "Generate currency during loot population."
+                    "hint": "Generate currency during automatic item seeding."
                 },
                 "useRulesets": {
                     "name": "Use filter rulesets",
-                    "hint": "Custom rules to test against a token. E.g. if tokens actor matches the rules rolltable will be used instead of a fallback rolltable."
+                    "hint": "Custom rules to test against a token actor. E.g. if tokens actor matches the rules, a rolltable will be used instead of non or a default rolltable."
                 },
                 "useSkiplist": {
                     "name": "Use skiplist",
-                    "hint": "Use the skiplist to ignore tokens with checked types during population."
+                    "hint": "Use the skiplist to ignore tokens with certain types during auto seeding."
                 }
             },
             "autoCheckUpdates": {
-                "name": "Update Check",
+                "name": "Update check",
                 "hint": "Automatically check for module updates on startup"
             },
             "addInterfaceButtons": {

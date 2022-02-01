@@ -1,10 +1,10 @@
 import { PermissionHelper } from '../helper/PermissionHelper.js';
 import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
 import { MODULE } from '../data/moduleConstants.js';
-import { LootPopulator } from '../classes/LootPopulator.js';
-import { TableRoller } from '../classes/tableRoller.js';
+import { LootSeeder } from '../classes/LootSeeder.js';
+import { TableRoller } from '../classes/TableRoller.js';
 import { LootProcessor } from '../classes/LootProcessor.js';
-import { CurrencyHelper } from '../helper/currencyHelper.js';
+import { CurrencyHelper } from '../helper/CurrencyHelper.js';
 
 /**
  * @description The lootsheet API
@@ -282,21 +282,21 @@ class API {
     }
 
     static getRegisteredCustomRules() {
-        return game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.ruleset);
+        return game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.ruleset);
     }
 
     /**
-     * Update the lootpopulator custom rules
-     * Expects a {LootPopulatorRule} object
+     * Update the lootseeder custom rules
+     * Expects a {lootseederRule} object
      *
-     * @param {LootPopulatorRule} rule
+     * @param {lootseederRule} rule
      */
     static addCustomRule(rule) {
         /**
-         * @param {LootPopulatorRule} currentRules
+         * @param {lootseederRule} currentRules
          */
-        let currentRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.ruleset);
-        game.settings.set(MODULE.ns, MODULE.settings.keys.lootpopulator.ruleset, { ...currentRules, rule });
+        let currentRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.ruleset);
+        game.settings.set(MODULE.ns, MODULE.settings.keys.lootseeder.ruleset, { ...currentRules, rule });
     }
 
     /**
@@ -304,7 +304,7 @@ class API {
      * @param {boolean} state
      */
     static switchPopulatorState(state) {
-        game.settings.set(MODULE.ns, MODULE.settings.keys.lootpopulator.autoPopulateTokens, state);
+        game.settings.set(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens, state);
     }
 
     /**
@@ -316,7 +316,7 @@ class API {
      * @param {object} options
      */
     static async populateTokenWithOptions(token = null, options = null) {
-        await LootPopulator.populate(token, options);
+        await LootSeeder.seedItems(token, options);
     }
 
     /**

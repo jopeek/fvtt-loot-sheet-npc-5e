@@ -11,7 +11,7 @@
 export const MODULE = {
     appIds: {
         lootsheet: 'lootsheetnpc5e',
-        lootpopulatorSettings: 'lootsheetnpc5e-lootpopulator-settings',
+        lootseederSettings: 'lootsheetnpc5e-seeder-settings',
         lootsheetSettings: 'lootsheetnpc5e-lootsheet-settings',
         ruleEditor: 'lootsheetnpc5e-rule-editor',
     },
@@ -58,7 +58,7 @@ export const MODULE = {
                 loot: 'Loot',
                 merchant: 'Merchant'
             },
-            lootpopulator: {
+            lootseeder: {
                 fallbacks: 'fallbacks',
                 customFallbacks: 'customFallbacks',
                 creatureTypeFallbacks: 'creatureTypeFallbacks',
@@ -95,13 +95,12 @@ export const MODULE = {
                 reduceUpdateVerbosity: 'reduceUpdateVerbosity',
                 stackBuyConfirm: 'stackBuyConfirm',
                 showStackWeight: 'showStackWeight',
-                tradeItems: 'tradeItems',
-                useCondensedLootsheet: 'useCondensedLootsheet'
+                tradeItems: 'tradeItems'
             },
-            lootpopulator: {
-                populatorOptions: 'populatorOptions',
+            lootseeder: {
+                seederOptions: 'seederOptions',
                 adjustCurrencyWithCR: 'adjustCurrencyWithCR',
-                autoPopulateTokens: 'autoPopulateTokens',
+                autoSeedTokens: 'autoSeedTokens',
                 creatureTypeFallbacks: 'creatureTypeFallbacks',
                 customFallbackSwitch: 'customFallbackSwitch',
                 customFallbacks: 'customFallbacks',

@@ -1,11 +1,11 @@
 import { MODULE } from '../data/moduleConstants.js';
-import { SheetSettings } from '../apps/settings/sheetSettings.js';
-import { PopulatorSettings } from '../apps/settings/populatorSettings.js';
-import { VersionCheck } from '../helper/versionCheckHelper.js';
-import { renderWelcomeScreen } from '../apps/welcomeScreen.js';
+import { LootSheetSettings } from '../apps/settings/LootSheetSettings.js';
+import { PopulatorSettings } from '../apps/settings/LootSeederSettings.js';
+import { VersionCheck } from '../helper/VersionCheckHelper.js';
+import { renderWelcomeScreen } from '../apps/WelcomeScreen.js';
 import { API } from '../api/API.js';
 
-import { LootPopulator } from '../classes/LootPopulator.js';
+import { LootSeeder } from '../classes/LootSeeder.js';
 import { SocketListener } from './SocketListener.js';
 import { HandlebarsHelper } from '../helper/HandlebarsHelper.js';
 
@@ -51,7 +51,7 @@ export class LootsheetNPC5eHooks {
     }
 
     static foundryInit() {
-        SheetSettings.registerSettings();
+        LootSheetSettings.registerSettings();
 
         game.socket.on(MODULE.socket, SocketListener.handleRequest);
     }
@@ -124,11 +124,11 @@ export class LootsheetNPC5eHooks {
     }
 
     static async onCreateToken(token, createData, options, userId) {
-        const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.useSkiplist);
+        const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.useSkiplist);
 
         // only act on tokens dropped by the GM
         if (!game.user.isGM) return token;
-        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.autoPopulateTokens)) return token;
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens)) return token;
         // ignore linked tokens
         if (!token.actor || token.data.actorLink) return token;
         // skip if monster's creaturType is on the skiplist
@@ -136,7 +136,7 @@ export class LootsheetNPC5eHooks {
             skipThisType = creatureType ? game.settings.get(MODULE.ns, "skiplist_" + creatureType) : false;
         if (useSkiplist && skipThisType) return token;
 
-        await LootPopulator.populate(token);
+        await LootSeeder.seedItems(token);
     }
 
     static attachSceneControlButtons(buttons) {
@@ -147,7 +147,7 @@ export class LootsheetNPC5eHooks {
                 title: "LSNPC | Generate Loot",
                 icon: "fas fa-gem",
                 visible: game.user.isGm,
-                onClick: () => LootPopulator.populate(),
+                onClick: () => LootSeeder.seedItems(),
                 button: true
             });
         }

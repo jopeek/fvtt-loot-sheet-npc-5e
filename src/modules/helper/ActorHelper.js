@@ -1,3 +1,5 @@
+import { MODULE } from "../data/moduleConstants.js";
+
 /**
  *
  * @param {Actor} actor
@@ -9,15 +11,15 @@ export const getLinkedRolltable = (actor) => {
 
 /**
  *
- * @param {Token} token
+ * @param {Actor} actor
  * @returns {Array<String>|false}
  */
-export const getLinkedRolltableByFilters = (token) => {
-    const filterRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets) || false;
+export const getLinkedRolltableByFilters = (actor) => {
+    const filterRules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.rulesets) || false;
     let rolltable = false;
 
     for (const key in filterRules) {
-        if (passesFilter(token.actor, filterRules[key].filters)) {
+        if (passesFilter(actor, filterRules[key].filters)) {
             if (!rolltable) rolltable = [];
 
             rolltable.push(filterRules[key].rolltable);

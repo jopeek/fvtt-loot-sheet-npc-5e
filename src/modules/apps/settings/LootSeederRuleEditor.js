@@ -1,7 +1,7 @@
 import { MODULE } from "../../data/moduleConstants.js";
-import { TableHelper } from "../../helper/tableHelper.js";
+import { TableHelper } from "../../helper/TableHelper.js";
 
-class LootsheetNPCRuleEditor extends FormApplication {
+class LootSeederRuleEditor extends FormApplication {
 
     /**
      *
@@ -13,7 +13,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
         super();
         this.app = null;
         this.existingRuleId = existingRuleId;
-        this.rules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets);
+        this.rules = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.rulesets);
 
         loadTemplates([
             `${MODULE.templateAppsPath}/ruleEditor.hbs`,
@@ -26,7 +26,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            title: game.i18n.localize("LootsheetNPC5e Rule Editor"),
+            title: game.i18n.localize("LootsheetNPC5e seeder filterrule editor"),
             id: MODULE.appIds.ruleEditor,
             template: `${MODULE.templateAppsPath}/ruleEditor.hbs`,
             width: 650,
@@ -69,7 +69,7 @@ class LootsheetNPCRuleEditor extends FormApplication {
         }
 
         data.namespace = MODULE.ns;
-        data.key = MODULE.settings.keys.lootpopulator.rulesets;
+        data.key = MODULE.settings.keys.lootseeder.rulesets;
         data.rolltables = await TableHelper.getGameWorldRolltables();
 
         return data;
@@ -100,12 +100,12 @@ class LootsheetNPCRuleEditor extends FormApplication {
             let filterRule = formData?.rulesets,
                 ruleObject = {};
             const filterRuleKey = this.existingRuleId || `${filterRule.name}_${randomID(Number(filterRule.name.length))}`,
-                selector = `select[name="${MODULE.ns}.${MODULE.settings.keys.lootpopulator.rulesets}.rolltable"] option:checked`;
+                selector = `select[name="${MODULE.ns}.${MODULE.settings.keys.lootseeder.rulesets}.rolltable"] option:checked`;
 
             filterRule.rolltableName = event.currentTarget.querySelector(selector).dataset.label;
             ruleObject[filterRuleKey] = filterRule;
 
-            await game.settings.set(MODULE.ns, MODULE.settings.keys.lootpopulator.rulesets, Object.assign(this.rules, ruleObject));
+            await game.settings.set(MODULE.ns, MODULE.settings.keys.lootseeder.rulesets, Object.assign(this.rules, ruleObject));
             delete formData.rulesets;
         }
 
@@ -213,6 +213,6 @@ class LootsheetNPCRuleEditor extends FormApplication {
  * @param {string} existingRuleId
  */
 export function renderRuleEditor(existingRuleId) {
-    const ruleEditor = new LootsheetNPCRuleEditor(existingRuleId);
+    const ruleEditor = new LootSeederRuleEditor(existingRuleId);
     ruleEditor.render(true);
 }

@@ -1,8 +1,8 @@
 /**
- * @module lootpopulatornpc5e.classes.LootPopulatorRule
- * @class LootPopulatorRule
+ * @module lootseedernpc5e.classes.lootseederRule
+ * @class lootseederRule
  */
-export class LootPopulatorRule {
+export class lootseederRule {
     constructor() {
         this.name = '';
         this.filters = [];
@@ -13,7 +13,7 @@ export class LootPopulatorRule {
     }
 }
 /**
- * @module lootsheetnpc5e.lootpopulator.classes.RuleFilter
+ * @module lootsheetnpc5e.lootseeder.classes.RuleFilter
  * @class RuleFilter
  */
 export class RuleFilter {

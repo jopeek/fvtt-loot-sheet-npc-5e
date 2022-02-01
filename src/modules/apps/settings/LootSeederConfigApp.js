@@ -1,7 +1,7 @@
 import { MODULE } from "../../data/moduleConstants.js";
-import { settingsHelper } from "../../helper/settingsHelper.js";
+import { SettingsHelper } from "../../helper/SettingsHelper.js";
 import { AppSettingMixin } from "../mixins/AppSettingMixin.js";
-import { renderRuleEditor } from "./ruleEditorApp.js";
+import { renderRuleEditor } from "./LootSeederRuleEditor.js";
 
 /**
  * A game settings configuration application
@@ -9,7 +9,7 @@ import { renderRuleEditor } from "./ruleEditorApp.js";
  *
  * @extends {FormApplication}
  */
-export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication) {
+export class LootSeederSettingsConfigApp extends AppSettingMixin(FormApplication) {
   constructor() {
     super();
     this.app = null;
@@ -20,7 +20,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
       `${MODULE.templatePartialsPath}/settings/dropdown_options.hbs`,
       `${MODULE.templatePartialsPath}/settings/filters.hbs`,
       `${MODULE.templatePartialsPath}/settings/tabContent.hbs`,
-      `${MODULE.templatePartialsPath}/settings/populatorFilters.hbs`,
+      `${MODULE.templatePartialsPath}/settings/seederFilters.hbs`,
       `${MODULE.templatePartialsPath}/settings/menu.hbs`,
     ]);
 
@@ -30,9 +30,9 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      title: game.i18n.localize("Loot population Settings"),
+      title: game.i18n.localize("LootSeeder settings"),
       namespace: MODULE.ns,
-      id: MODULE.appIds.lootpopulatorSettings,
+      id: MODULE.appIds.lootseederSettings,
       template: `${MODULE.templateAppsPath}/settings.hbs`,
       width: 720,
       resizable: true,
@@ -58,27 +58,27 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
       hasBetterRolltables: (typeof game.betterTables !== "undefined"),
       tabs: [
         {
-          name: MODULE.settings.groups.lootpopulator.fallbacks,
+          name: MODULE.settings.groups.lootseeder.fallbacks,
           i18nName: game.i18n.localize('lsnpc.settings.menu.fallbacks'),
           class: "fas fa-cog", menus: [], settings: []
         },
         {
-          name: MODULE.settings.groups.lootpopulator.creatureTypeFallbacks,
+          name: MODULE.settings.groups.lootseeder.creatureTypeFallbacks,
           i18nName: game.i18n.localize('lsnpc.settings.menu.creatureTypeFallbacks'),
           class: "fab fa-grunt", menus: [], settings: []
         },
         {
-          name: MODULE.settings.groups.lootpopulator.currency,
+          name: MODULE.settings.groups.lootseeder.currency,
           i18nName: game.i18n.localize('lsnpc.settings.menu.currency'),
           class: "fas fa-coins", menus: [], settings: []
         },
         {
-          name: MODULE.settings.groups.lootpopulator.rulesets,
+          name: MODULE.settings.groups.lootseeder.rulesets,
           i18nName: game.i18n.localize('lsnpc.settings.menu.rulesets'),
           class: "fas fa-filter", menus: [], settings: []
         },
         {
-          name: MODULE.settings.groups.lootpopulator.skiplist,
+          name: MODULE.settings.groups.lootseeder.skiplist,
           i18nName: game.i18n.localize('lsnpc.settings.menu.skiplist'),
           class: "fas fa-ban", menus: [], settings: []
         }
@@ -88,7 +88,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
     // Return data
     return {
       systemTitle: game.system.data.title,
-      data: settingsHelper.getTabbedSettings(data, MODULE.ns)
+      data: SettingsHelper.getTabbedSettings(data, MODULE.ns)
     };
   }
 
@@ -105,7 +105,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
     * The values should be truncated.
     **/
     const targets = Object.keys(formData).filter(key => typeof formData[key] === 'object'),
-      ruleSetsKey = MODULE.settings.keys.lootpopulator.rulesets + '.rolltable',
+      ruleSetsKey = MODULE.settings.keys.lootseeder.rulesets + '.rolltable',
       querySelector = 'select[name="' + MODULE.ns + '.' + ruleSetsKey + '"] option:checked';
 
     for (let target of targets) {
@@ -139,7 +139,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
     const keyparts = setting.key.split('.');
     if (keyparts[0] === MODULE.ns) {
       const group = keyparts[1];
-      if (group === MODULE.settings.groups.lootpopulator.rulesets) {
+      if (group === MODULE.settings.groups.lootseeder.rulesets) {
         this.render();
       }
     }
@@ -148,7 +148,7 @@ export class PopulatorSettingsConfigApp extends AppSettingMixin(FormApplication)
   /** @override */
   async activateListeners(html) {
     if (!this.app) {
-      this.app = document.getElementById(MODULE.appIds.lootpopulatorSettings);
+      this.app = document.getElementById(MODULE.appIds.lootseederSettings);
     }
 
     super.activateListeners(html);

@@ -1,6 +1,6 @@
 import { MODULE } from "../data/moduleConstants.js";
 import { ChatHelper } from "./ChatHelper.js";
-import { CurrencyHelper } from "./currencyHelper.js";
+import { CurrencyHelper } from "./CurrencyHelper.js";
 import { ItemHelper } from "./ItemHelper.js";
 import { PermissionHelper } from "./PermissionHelper.js";
 

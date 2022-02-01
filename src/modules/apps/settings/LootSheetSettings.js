@@ -1,10 +1,10 @@
 import { MODULE } from '../../data/moduleConstants.js';
-import { lootsheetSettingsConfigApp } from './lootsheetConfigApp.js';
+import { LootSheetSettingsConfigApp } from './LootSheetConfigApp.js';
 
 /**
  * @module lootsheetnpc5e.ModuleSettings
  */
-export class SheetSettings {
+export class LootSheetSettings {
     /**
      * @module lootsheetnpc5e.ModuleSettings.registerSettings
      *
@@ -33,7 +33,7 @@ export class SheetSettings {
             name: game.i18n.localize('lsnpc.settings.menu.advancedOptions.name'),
             label: game.i18n.localize('lsnpc.settings.menu.advancedOptions.label'),
             icon: "fas fa-user-cog",
-            type: lootsheetSettingsConfigApp,
+            type: LootSheetSettingsConfigApp,
             restricted: true
         });
 
@@ -234,15 +234,5 @@ export class SheetSettings {
         /**
          * UI and Themes
          */
-
-        // game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.useCondensedLootsheet, {
-        //     name: game.i18n.localize('lsnpc.settings.sheet.useCondensedLootsheet.name'),
-        //     hint: game.i18n.localize('lsnpc.settings.sheet.useCondensedLootsheet.hint'),
-        //     scope: MODULE.settings.scopes.world,
-        //     group: MODULE.settings.groups.sheet.ui,
-        //     config: true,
-        //     default: false,
-        //     type: Boolean,
-        // });
     }
 }
