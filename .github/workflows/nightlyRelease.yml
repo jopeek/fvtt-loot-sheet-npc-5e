@@ -23,13 +23,13 @@ jobs:
         id: version
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'module.json'
+          path: 'src/module.json'
           prop_path: 'version'
       - name: Prepare Module Manifest
         id: sub_manifest_link_version
         uses: microsoft/variable-substitution@v1
         with:
-          files: 'module.json'
+          files: 'src/module.json'
         env:
           version: ${{steps.version.outputs.prop}}
           manifest: https://raw.githubusercontent.com/${{github.repository}}/master/module.json

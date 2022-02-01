@@ -28,7 +28,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run test --if-present
-  
+
   release:
       runs-on: ubuntu-latest
       #needs: test
@@ -44,24 +44,24 @@ jobs:
         id: version
         uses: notiz-dev/github-action-json-property@release
         with:
-          path: 'module.json'
-          prop_path: 'version'          
+          path: 'src/module.json'
+          prop_path: 'version'
       - name: Prepare Module Manifest
         id: sub_manifest_link_version
         uses: microsoft/variable-substitution@v1
         with:
-          files: 'module.json'
+          files: 'scr/module.json'
         env:
           version: ${{steps.version.outputs.prop}}
           manifest: https://raw.githubusercontent.com/${{github.repository}}/master/module.json
-          download: https://github.com/${{github.repository}}/releases/latest/download/lootsheetnpc5e.zip          
-      - run: npm ci && npm run build --if-present          
+          download: https://github.com/${{github.repository}}/releases/latest/download/lootsheetnpc5e.zip
+      - run: npm ci && npm run build --if-present
       - name: Zip files
         run: |
             cd dist
             zip -r ../lootsheetnpc5e .
       - uses: ncipollo/release-action@v1
-        with: 
+        with:
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
           tag: v${{steps.version.outputs.prop}}
