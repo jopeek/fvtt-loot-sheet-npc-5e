@@ -45,19 +45,23 @@ export class SheetListener {
                 inventorySettings = app.querySelector('.gm-settings .inventory-settings'),
                 inventoryUpdate = app.querySelector('.gm-settings .update-inventory');
 
-            for (let button of bulkPermissions) {
-                button.addEventListener('click', ev => PermissionHelper.bulkPermissionsUpdate(ev, this.actor));
-            }
+            if (game.user.isGM){
+                for (let button of bulkPermissions) {
+                    button.addEventListener('click', ev => PermissionHelper.bulkPermissionsUpdate(ev, this.actor));
+                }
 
-            for (let playerPermissionButton of individualPermissions) {
-                playerPermissionButton.addEventListener('click', ev => PermissionHelper.cyclePermissions(ev, this.actor));
-            }
+                for (let playerPermissionButton of individualPermissions) {
+                    playerPermissionButton.addEventListener('click', ev => PermissionHelper.cyclePermissions(ev, this.actor));
+                }
 
+                permissionsFilter.addEventListener('change', ev => this.actor.setFlag(MODULE.ns, 'permissionsFilter', ev.target.value));
+            }
+            
             if (priceModifierDialog) {
                 priceModifierDialog.addEventListener('click', ev => SheetHelper.renderPriceModifierDialog(ev, this.actor));
             }
 
-            permissionsFilter.addEventListener('change', ev => this.actor.setFlag(MODULE.ns, 'permissionsFilter', ev.target.value));
+
             inventorySettings.addEventListener('change', ev => this.inventorySettingChange(ev, this.actor));
             sheetStyle.addEventListener('change', (ev) => this.sheetStyleChange(ev, this.actor));
             inventoryUpdate.addEventListener('click', ev => this.inventoryUpdateListener(ev));
