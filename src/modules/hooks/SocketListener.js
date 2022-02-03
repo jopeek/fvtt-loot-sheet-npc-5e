@@ -67,7 +67,7 @@ export class SocketListener {
             // prepare the options object
             const options = {
                 quantity: packet.quantity,
-                verbose: packet?.verbose,
+                verbose: packet?.verbose || false,
                 chatOutPut: true
             };
 
@@ -78,13 +78,15 @@ export class SocketListener {
                     break;
                 case "tradeItems":
                     await TradeHelper.tradeItems(targetToken.actor, triggeringActor, packet.trades, options);
-                    return this._handleRerender(packet.tokenUuid);
+                    //return this._handleRerender(packet.tokenUuid);
+                    break;
                 case "lootAll":
-                    await TradeHelper.lootAllItems(targetToken, triggeringActor);
+                    await TradeHelper.lootAllItems(targetToken.actor, triggeringActor);
                     break;
                 case "lootItem":
                     let items = [{ id: packet.targetItemId, data: { data: { quantity: packet.quantity } } }];
-                    await TradeHelper.lootItems(targetToken, triggeringActor, items, options);
+                    options.type = 'loot';
+                    await TradeHelper.lootItems(targetToken.actor, triggeringActor, items, options);
                     break;
                 case "distributeCurrency":
                     await TradeHelper.distributeCurrency(targetToken.actor, options);

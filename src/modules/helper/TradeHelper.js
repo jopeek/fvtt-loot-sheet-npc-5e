@@ -47,20 +47,16 @@ export class TradeHelper {
      * @description Move items from one actor to another
      * Assumes that the set of items is valid and can be moved.
      *
-     * @param {Token} source
-     * @param {Actor5e} destination
+     * @param {Actor} source
+     * @param {Actor} destination
      * @param {Array<Item>} items
      *
-     * @returns {Promise<Array<Item>>}
      * @inheritdoc
      */
-    static async lootItems(source, destination, items) {
-        let movedItems = await ItemHelper.moveItemsToDestination(source.actor, destination, items);
+    static async lootItems(source, destination, items, options) {
+        let movedItems = await ItemHelper.moveItemsToDestination(source, destination, items);
+        ChatHelper.chatMessage(source, destination, movedItems, options);
 
-        if (ChatHelper.chatMessage(source, destination, movedItems, { type: 'loot' }))
-            return true;
-
-        return false;
     }
 
     /**
@@ -69,7 +65,7 @@ export class TradeHelper {
      * @description Gets the lootable subset of the items in
      * the source actor and moves this subset to the destination actor.
      *
-     * @param {Token} source
+     * @param {Actor} source
      * @param {Actor} destination
      *
      * @returns {Promise<Array<Item>>}
@@ -80,7 +76,7 @@ export class TradeHelper {
      * @author Daniel Böttner <daniel@est-in.eu>
      */
     static async lootAllItems(source, destination, options = {}) {
-        const items = ItemHelper.getLootableItems(source.actor.items).map((item) => ({
+        const items = ItemHelper.getLootableItems(source.items).map((item) => ({
             id: item.id,
             data: {
                 data: {
@@ -141,7 +137,7 @@ export class TradeHelper {
         if (!successfullTransaction) return false;
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
 
-        if (moved || options?.chatOutPut) return ChatHelper.chatMessage(seller, buyer, moved, { type: 'buy', priceModifier: priceModifier });
+        ChatHelper.chatMessage(seller, buyer, moved, { type: 'buy', priceModifier: priceModifier });
     }
 
     /**
@@ -310,56 +306,38 @@ export class TradeHelper {
      *
      */
     static async _handleTradyByType(trades, playerCharacter, npcActor, options) {
+        let moved = { sell: [], buy: [], give: [], loot: [] };
+
         const tradeType = options.type,
-            source = tradeType === 'sell' ? playerCharacter.items : npcActor.items,
-            freeTradeTypes = ['loot'];
-        let moved = { sell: [], buy: [] },
-            tradeSum = 0,
-            successfullTransaction = freeTradeTypes.includes(tradeType) ? true : false,
-            items = trades[tradeType];
+            playerActions = ['sell', 'give'],
+            source = playerActions.includes(tradeType) ? playerCharacter : npcActor,
+            destination = playerActions.includes(tradeType) ? npcActor : playerCharacter,
+            preparedTrade = this._prepareTrade(source, trades[tradeType], options),
+            successfullTransaction = await this.moneyExchange(source, destination, tradeType, preparedTrade.tradeSum);
 
-        options.verbose = true;
-        const verboseMsg = `${MODULE.ns} | ${this._handleTradyByType.name} | `;
+        if (!successfullTransaction) return false;
 
-        // iterate over part of the trades array with key of options.type
-        [items, tradeSum] = this._prepareTrade(source, items, tradeSum, options)
+        moved[tradeType] = await ItemHelper.moveItemsToDestination(source, destination, preparedTrade.items);
+        ChatHelper.chatMessage(npcActor, playerCharacter, moved[tradeType], options);
+    }
 
-        /**
-         * @description
-         * If buy or sell, check if the target has enough funds to buy the items
-         * needs a check if NPC actor always have enough funds to buy from the player.
-         * Would be the case if it represents a shop or a bank.
-         *
-         * Otherwise the GM always has to make sure thats the case. A simple checkbox would be better.
-         *
-         */
+    /**
+     * @param {Actor} source
+     * @param {Actor} destination
+     * @param {string} tradeType
+     * @param {number} tradeSum
+     *
+     * @returns {boolean} success
+     */
+    static async moneyExchange(source, destination, tradeType, tradeSum = 0){
+        const freeTradeTypes = ['loot', 'give'];
+        let successfullTransaction = true;
 
-        switch (tradeType) {
-            case 'buy':
-                successfullTransaction = await this._updateFunds(npcActor, playerCharacter, tradeSum);
-                if (options?.verbose) console.log(`${verboseMsg} Transaction successfull: ${successfullTransaction}`);
-                if (!successfullTransaction) return false;
-                moved[options.type] = await ItemHelper.moveItemsToDestination(npcActor, playerCharacter, items);
-                break;
-            case 'sell':
-                successfullTransaction = await this._updateFunds(playerCharacter, npcActor, tradeSum);
-                if (options?.verbose) console.log(`${verboseMsg} Transaction successfull: ${successfullTransaction}`);
-                if (!successfullTransaction) return false;
-                moved[options.type] = await ItemHelper.moveItemsToDestination(playerCharacter, npcActor, items);
-                break;
-            case 'loot':
-                if (!successfullTransaction) return false;
-                moved[options.type] = await ItemHelper.moveItemsToDestination(npcActor, playerCharacter, items);
-                break;
-            default:
-                console.error(`${verboseMsg} Unknown type: ${tradeType}`);
+        if(!freeTradeTypes.includes(tradeType)){
+            successfullTransaction = await this._updateFunds(source, destination, tradeSum);
         }
 
-        // if the chatOutPut flag is set, send the chat messages
-        if (!options.chatOutPut) return;
-        ChatHelper.chatMessage(npcActor, playerCharacter, moved[options.type], { type: options.type, priceModifier: options.priceModifier });
-
-        return true;
+        return successfullTransaction;
     }
 
     /**
@@ -379,10 +357,11 @@ export class TradeHelper {
      *
      * @author Daniel Böttner <@DanielBoettner>
      */
-    static _prepareTrade(source, items, tradeSum = 0, options = {}) {
-        const priceModifier = parseFloat(source.getFlag(MODULE.ns, MODULE.flags.priceModifier)).toPrecision(2) || 1;
+    static _prepareTrade(source, items, options = {}) {
+        const priceModifier = this._getPriceModifier(source);
+        let tradeSum = 0;
         for (const [key, item] of items.entries()) {
-            if (!source.find(i => i.id == item.id)) {
+            if (!source.items.find(i => i.id == item.id)) {
                 if (options?.verbose)
                     console.log(`${MODULE.ns} | ${this._prepareTrade.name} | Removed item "${item.name}" (id: ${item.id}) from trade. Item not found in inventory of the source actor.`);
                 delete items[key];
@@ -393,7 +372,19 @@ export class TradeHelper {
             if (options?.verbose) console.log(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
         }
 
-        return [items, tradeSum];
+        return {items: items, tradeSum: tradeSum};
+    }
+
+    /**
+     *
+     * @param {Actor} actor
+     *
+     * @returns {number}
+     *
+     */
+    static _getPriceModifier(actor) {
+        let priceModifier = actor.getFlag(MODULE.ns, MODULE.flags.priceModifier) || 1;
+        return parseFloat(priceModifier).toPrecision(2) || 1;
     }
 
     /**
@@ -410,6 +401,7 @@ export class TradeHelper {
      * @author Jan Ole Peek @jopeek
      * @author Daniel Böttner @DanielBoettner
      *
+     * @returns {boolean} true if the transaction was successful
      */
     static async _updateFunds(seller, buyer, itemCostInGold) {
         const rates = {

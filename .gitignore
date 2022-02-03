@@ -10,3 +10,4 @@ docs/
 wiki/
 .nyc_output/
 .DS_Store
+tsconfig.json

@@ -13,10 +13,23 @@ export class WelcomeScreen extends Application {
       resizable: true,
       width: 450,
       height: 636,
-      classes: ['lsnpc-app welcome-screen'],
-      title: game.modules.get(MODULE.ns).data.title +  ' Welcome Screen',
+      classes: ['lsnpc lsnpc-app welcome-screen'],
+      title: game.modules.get(MODULE.ns).data.title +  ' welcome screen',
     });
 
+  }
+
+  get template () {
+    loadTemplates([
+      `${MODULE.templateAppsPath}/welcomeScreen.hbs`,
+      `${MODULE.templatePartialsPath}/welcomeScreen/misc.hbs`,
+      `${MODULE.templatePartialsPath}/welcomeScreen/loot.hbs`,
+      `${MODULE.templatePartialsPath}/welcomeScreen/merchant.hbs`,
+      `${MODULE.templatePartialsPath}/welcomeScreen/seeder.hbs`,
+      `${MODULE.templatePartialsPath}/welcomeScreen/patchnotes.hbs`,
+    ]);
+
+    return `${MODULE.templateAppsPath}/welcomeScreen.hbs`;
   }
 
   getData (options) {

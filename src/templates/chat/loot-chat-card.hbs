@@ -28,12 +28,12 @@
                     <div class="item-quantity">
                         <strong>{{item.quantity}}&nbsp; &#xD7;</strong>
                     </div>
-                    <img class="item-image" src="{{item.data.img}}" class="{{#if ../colorRarity}}rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}{{/if}}">
-                    <div class="item-name">
-                        <a class="lsnpc-document-link" draggable="true"
+                    <a class="item-link lsnpc-document-link" draggable="true"
                             data-entity="{{item.data.documentName}}"
                             data-id="{{item.data.id}}"
                             data-uuid="{{item.data.uuid}}">
+                        <img class="item-image" src="{{item.data.img}}" class="{{#if ../colorRarity}}rarity-{{#if item.data.rarity}}{{item.data.rarity}}{{else}}common{{/if}}{{/if}}">
+                        <div class="item-name">
                             {{{item.data.name}}}
                         </a>
                     </div>

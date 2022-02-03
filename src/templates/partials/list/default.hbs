@@ -7,17 +7,9 @@
         </span>
         <span><label>{{localize "Items"}}</label> <span>{{totalItems}}</span></span>
         <span><label>{{localize "Quantity"}}</label> <span>{{totalQuantity}}</span></span>
-        <span><label>{{localize "Weight"}}</label> <span>{{totalWeight}}</span></span>
+        <span><label>{{localize "Weight"}}</label> <span>{{totalWeight}} {{localize 'lbs'}}</span></span>
         <span><label>{{localize "Value"}}</label> <span>{{totalPrice}}</span></span>
-        {{#ifeq lootsheettype "Loot"}}
-            {{#if lootAll}}
-                <button type="button" class="loot-all lsnpc-action-link" name="loot-all" data-get-all="true"
-                    data-action="lootAll" title="{{localize 'lsnpc.buttons.loot.items.all.title' name=interactingActor}}">
-                    <i class="fas fa-gem"></i>
-                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
-                </button>
-            {{/if}}
-        {{/ifeq}}
+        {{> 'modules/lootsheetnpc5e/templates/partials/buttons/lootAll.hbs'}}
     </div>
 </aside>
 <main class="header-details flexrow">
@@ -52,11 +44,13 @@
                                 <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
                             </div>
                             <div class="item-weight">
-                                <i class="fas fa-weight-hanging" title="Weight"></i>
                                 {{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}
+                                <i class="ra ra-kettlebell lsn-tooltip"
+                                   data-content="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"></i>
                             </div>
                             <div class="item-price">
-                                <i class="fas fa-coins" title="Price (in gp)"></i> {{lootsheetprice item.data.price ../../priceModifier }}
+                                {{lootsheetprice item.data.price ../../priceModifier }}
+                                <i class="fas fa-coins" title="Price (in gp)"></i>
                             </div>
 
                             <div class="item-controls">

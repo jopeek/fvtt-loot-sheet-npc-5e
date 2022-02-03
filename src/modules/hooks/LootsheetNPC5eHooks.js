@@ -8,6 +8,7 @@ import { API } from '../api/API.js';
 import { LootSeeder } from '../classes/LootSeeder.js';
 import { SocketListener } from './SocketListener.js';
 import { HandlebarsHelper } from '../helper/HandlebarsHelper.js';
+import { ChatListener } from './ChatListener.js';
 
 /**
  * @module LootSheetNPC5e.hooks
@@ -33,7 +34,7 @@ export class LootsheetNPC5eHooks {
         Hooks.on('createToken', this.onCreateToken);
         Hooks.on('getSceneControlButtons', this.attachSceneControlButtons);
         Hooks.on('renderTokenHUD', this.attachTokenHudButtons);
-        Hooks.on("renderChatMessage", (_, jq) => this.refreshChatListeners(jq[0]));
+        Hooks.on("renderChatMessage", (_, jq) => ChatListener.refresh(jq[0]));
     }
 
     static foundrySetup() {
@@ -58,16 +59,14 @@ export class LootsheetNPC5eHooks {
 
     static foundryReady() {
         LootSeederSettings.registerSettings();
-
         HandlebarsHelper.register();
 
         if (game.user.isGM && VersionCheck.check(MODULE.ns)) {
             renderWelcomeScreen();
         }
 
-        this._handleMigrations();
-
-        LootsheetNPC5eHooks.refreshChatListeners();
+        LootsheetNPC5eHooks._handleMigrations();
+        ChatListener.init();
     }
 
     /**

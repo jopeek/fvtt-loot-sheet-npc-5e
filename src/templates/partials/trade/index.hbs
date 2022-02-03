@@ -1,16 +1,8 @@
 <main class="tradegrid">
     <section class="token-inventory">
-        {{#ifeq lootsheettype "Loot"}}
-            {{#if lootAll}}
-                <button type="button" class="loot-all lsnpc-action-link" name="loot-all" data-get-all="true"
-                    data-action="lootAll"
-                    title="{{localize 'lsnpc.buttons.loot.items.all.title' name=interactingActor}}">
-                    <i class="fas fa-gem"></i>
-                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
-                </button>
-            {{/if}}
-        {{/ifeq}}
-        <main data-event-target="token" data-event-action="buy">
+        {{> "modules/lootsheetnpc5e/templates/partials/buttons/lootAll.hbs" }}
+
+        <main data-event-target="token" data-event-action="{{#ifeq lootsheettype "Merchant"}}buy{{else}}loot{{/ifeq}}">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems mode="npc"}}
         </main>
     </section>
@@ -23,12 +15,19 @@
     </section>
 
     <section class="stage dropzone" dropzone="true">
-        <main data-event-target="sell" data-event-action="player">
-            <header>{{#ifeq lootsheettype "Merchant"}}Sell{{else}}Give{{/ifeq}}</header>
+        <main
+            data-event-target="{{#ifeq lootsheettype "Merchant"}}sell{{else}}give{{/ifeq}}"
+            data-event-action="player">
+            <header>
+                <h3>{{#ifeq lootsheettype "Merchant"}}Sell{{else}}Give{{/ifeq}}</h3>
+            </header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
         </main>
-        <main data-event-target="buy" data-event-action="token">
+        <main
+            data-event-target="{{#ifeq lootsheettype "Merchant"}}buy{{else}}loot{{/ifeq}}"
+            data-event-action="token"
+            >
             <header>{{#ifeq lootsheettype "Merchant"}}Buy{{else}}Take{{/ifeq}}</header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
@@ -46,7 +45,7 @@
         </aside>
     </section>
     <section class="player-inventory">
-        <main data-event-target="player" data-event-action="sell">
+        <main data-event-target="player" data-event-action="{{#ifeq lootsheettype "Merchant"}}sell{{else}}give{{/ifeq}}">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory mode="player"}}
         </main>
     </section>

@@ -1,15 +1,24 @@
 {
 	"name": "lootsheetnpc5e",
 	"title": "📜 LootsheetNPC5e",
-	"description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers",
-	"version": "3.4.5.9",
+	"description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
+	"version": "3.4.5.10",
 	"manifestPlusVersion": "1.2.0",
 	"minimumCoreVersion": "0.9.0",
-	"compatibleCoreVersion": "0.9.0",
+	"compatibleCoreVersion": "9.249",
 	"authors": [
 		{
 			"name": "Jan Ole Peek | ChalkOne",
 			"url": "https://github.com/jopeek"
+		},
+		{
+			"name": "Daniel Böttner | JackPrince",
+			"url": "https://github.com/DanielBoettner/",
+			"discord": "JackPrince#0494",
+			"twitter": "https://twitter.com/jackprince1983",
+			"patreon": "https://www.patreon.com/jackprince1983",
+			"paypal": "https://paypal.me/jackprince1983",
+			"ko-fi": "https://ko-fi.com/jackprince1983"
 		},
 		{
 			"name": "Charles Miller | Kage",
@@ -20,29 +29,19 @@
 			"url": "https://github.com/Nonstick-Panda"
 		},
 		{
-			"name": "Daniel Böttner | JackPrince#0494",
-			"url": "https://github.com/DanielBoettner/",
-			"discord": "JackPrince#0494",
-			"twitter": "https://twitter.com/jackprince1983",
-			"patreon": "https://www.patreon.com/jackprince1983",
-			"paypal": "https://paypal.me/jackprince1983",
-			"ko-fi": "https://ko-fi.com/jackprince1983"
-		},
-		{
-			"name": "Kevin Brammer Striky",
-			"url": ""
+			"name": "Kevin Brammer Striky"
 		}
 	],
 	"packs": [
 		{
-			"name": "LootsheetNPC5e Rolltables",
+			"name": "lootsheetnpc5e-rolltables",
 			"label": "LootsheetNPC5e Rolltables",
 			"system": "dnd5e",
 			"path": "./packs/lootsheetnpc5e_rolltables.db",
 			"entity": "RollTable"
 		},
 		{
-			"name": "LootsheetNPC5e Macros",
+			"name": "lootsheetnpc5e-macros",
 			"label": "LootsheetNPC5e Macros",
 			"system": "dnd5e",
 			"path": "./packs/lootsheetnpc5e_macros.db",

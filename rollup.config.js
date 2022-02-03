@@ -4,7 +4,7 @@ import sourcemaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
 import replace from 'rollup-plugin-replace';
 
-const staticFiles = ["templates", "libs", "fonts", "styles", "icons", "lang", "module.json"].map((file) => `src/${file}`);
+const staticFiles = ["templates", "libs", "fonts", "styles", "icons", "lang", "packs", "module.json"].map((file) => `src/${file}`);
 
 /**
  * @type {import('rollup').RollupOptions}

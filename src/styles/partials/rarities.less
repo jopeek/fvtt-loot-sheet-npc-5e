@@ -1,6 +1,7 @@
 .rarityMixin() {
 	[class*='rarity'] {
 		&[class*='common'] {
+			--current-rarity: var(--rarity-common);
 			.item-image {
 				box-shadow: 0 0 0.4em 0 inset var(--rarity-common);
 			}
@@ -10,6 +11,7 @@
 		}
 
 		&[class*='uncommon'] {
+			--current-rarity: var(--rarity-uncommon);
 			.item-image{
 				box-shadow: 0 0 0.4em 0 inset var(--rarity-uncommon);
 			}
@@ -19,6 +21,7 @@
 		}
 
 		&[class*='rare'] {
+			--current-rarity: var(--rarity-rare);
 			.item-image{
 				box-shadow: 0 0 0.4em 0 inset var(--rarity-rare);
 			}
@@ -28,6 +31,7 @@
 		}
 
 		&[class*='veryRare'] {
+			--current-rarity: var(--rarity-veryRare);
 			.item-image{
 				box-shadow: 0 0 0.4em .2em inset var(--rarity-veryRare);
 			}
@@ -37,11 +41,22 @@
 		}
 
 		&[class*='legendary'] {
+			--current-rarity: var(--rarity-legendary);
 			.item-image{
 				box-shadow: 0 0 0.4em 0.3em inset var(--rarity-legendary);
 			}
 			.item-name {
 				color: var(--rarity-legendary);
+			}
+		}
+
+		&[class*='artifact'] {
+			--current-rarity: var(--rarity-artifact);
+			.item-image{
+				box-shadow: 0 0 0.4em 0.3em inset var(--rarity-artifact);
+			}
+			.item-name {
+				color: var(--rarity-artifact);
 			}
 		}
 	}

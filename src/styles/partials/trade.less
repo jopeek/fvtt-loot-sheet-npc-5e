@@ -22,6 +22,7 @@
             ul {
                 list-style: none;
                 padding: 0;
+                gap: .3em;
 
                 // no interaction with the form elements except items and buttons
                 input {
@@ -33,8 +34,8 @@
                 display: grid;
                 grid-template-columns: repeat(auto-fill, var(--iconwidth));
                 grid-template-rows: repeat(auto-fill, var(--iconwidth));
-                gap: 0.4em;
-                padding-top: 0.5em;
+                gap: .35em;
+                padding-top: .5em;
                 max-height: 40vh;
                 justify-content: center;
                 padding-bottom: 0.5em;
@@ -45,6 +46,11 @@
                     width: var(--iconwidth);
                     background-size: contain;
                     position: relative;
+                    box-shadow: inset 0 1px 0 rgba(var(--current-rarity),0.7),
+                    inset 1px 0 0 rgba(var(--current-rarity),0.7),
+                    inset -1px 0 0 rgba(var(--current-rarity),0.3),
+                    inset 0 -1px 0 rgba(var(--current-rarity),0.3),
+                    1px 1px 3px 0px rgba(0 0 0 / 50%);
                 }
             }
 

@@ -1,0 +1,29 @@
+<article class="tab" data-tab="seeder" data-group="ws-sections">
+    <header>
+        <h1>Feature set: item / loot seeding</h1>
+    </header>
+    <main>
+        <ul>
+            <li>The functionality of the (former) lootpoulator module is now integrated into the lootsheet module</li>
+            <li>In general it allow to automatically add loot to tokens when dropped on the map</li>
+            <li>
+                The seeder offers the use of <em>Filter rules</em>
+                <ul>
+                    <li>Create filter rules that will be tested against tokens. If a filer matches, the according
+                        rolltable will be rolled to determine the loot.</li>
+                    <li>combine multiple filters in one rule.</li>
+                    <li>soon: export import for filter rules</li>
+                </ul>
+            </li>
+            <li>Skiplist &mdash; to never add loot to certain creature types</li>
+            <li>Creature type default rolltables</li>
+            <li>A fallback/default table to be used when no other rolltable was found for a token and the creature is
+                not skipped.</li>
+            <li>Scenes and actors will be converted to loot items during inventory updates/seeding (not ignored)</li>
+            <li>A button <i class="fas fa-diamond"></i> in the left side nav token menu allows populating <em>unlinked npc</em> token(s) inventory(s).</li>
+            <li>A button <img src="icons/svg/eye.svg"
+                    style="height: 16px; width: 16px; color: #fff; border 1px solid #fff; border-radius: 0.2em;">on
+                tokens context menu allows to set the token to observable.</li>
+        </ul>
+    </main>
+</article>

@@ -8,19 +8,8 @@
                 </li>
             {{/each}}
         </ul>
-        {{#ifeq lootsheettype "Loot"}}
-            {{#if lootCurrency}}
-                <button
-                    type="button"
-                    class="loot-currency lsnpc-action-link" data-action="lootCurrency"
-                    title="{{localize 'lsnpc.buttons.loot.currency.single.title'}}"
-                    class="button-xs">
-                    <i class="fas fa-user"></i>
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.single.label'}}</span>
-                </button>
-            {{/if}}
-        {{/ifeq}}
+        {{> 'modules/lootsheetnpc5e/templates/partials/buttons/lootCurrency.hbs'}}
+
         {{#if isGM}}
             {{#ifeq lootsheettype "Merchant"}}
                 <button type="button"
@@ -37,20 +26,14 @@
     </div>
     {{#ifeq lootsheettype "Loot"}}
         <div class="currency-split flexrow">
-            <span class="splittext">
-                {{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount}}. Each gets a share of
-                {{#each actor.flags.lootsheetnpc5e.currency as |c i|}}{{#uneq c 0}}<em>{{c}} {{i}}</em>{{/uneq}}{{/each}}.
-            </span>
-            {{#if distributeCoins}}
-                <button type="buttons" class="split-currency lsnpc-action-link" data-action="distributeCurrency"
-                    class="button-xs"
-                    type="split-coins" name="split-coins" value="1" data-action="distributeCurrency"
-                    title="{{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount }}">
-                    <i class="fas fa-users"></i> % {{observerCount}}
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.split.label'}}</span>
-                </button>
-            {{/if}}
+            <p class="splittext">
+                {{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount}}.
+                {{#if data.flags.lootsheetnpc5e.permissionsFilter}}
+                    <i class="fas fa-info-circle" data-tooltip-content="This is filtered, not all players are eligable per 'Filter eligable players' setting in the GM section of the sheet."></i>
+                {{/if}}
+                <br >Each gets a share of{{#each actor.flags.lootsheetnpc5e.currency as |c i|}}{{#uneq c 0}} <em>{{c}} {{i}}</em>{{/uneq}}{{/each}}.
+            </p>
+            {{> 'modules/lootsheetnpc5e/templates/partials/buttons/splitCurrency.hbs'}}
         </div>
     {{/ifeq}}
 </section>

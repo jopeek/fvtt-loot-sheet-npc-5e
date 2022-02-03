@@ -1,26 +1,24 @@
 {
     "lsnpc": {
         "moduleTitle": "📜 LootsheetNPC 5e",
-        "noActiveGM": "No active GM on your scene, a GM must be online and on the same scene to purchase an item.",
-        "sendBuyText": "Sending buy request to ",
         "chatActionMessages": {
-            "buy": " has purchased from ",
-            "sell": " has sold to ",
-            "trade": " has traded with ",
-            "loot": " has looted from "
+            "buy": "{destination} purchased from {source}",
+            "sell": "{destination} sold to {source}",
+            "give": "{destination} gave items to {source}",
+            "loot": "{destination} took items from {source}"
         },
         "permissions": {
             "0": {
                 "title": "None",
-                "desc": "cannot access sheet"
+                "desc": "Cannot access sheet"
             },
             "2": {
                 "title": "Observer",
-                "desc": "Access to sheet but can only purchase items if merchant sheet type"
+                "desc": "Can view and interact (loot/buy/sell) with the sheet.<br />The possible interactions depend on the sheet's type and settings."
             },
             "3": {
                 "title": "Owner",
-                "desc": "Manage inventory of the actor, share coins."
+                "desc": "Can view the sheet and freely modify the inventory of the sheet's actor."
             }
         },
         "buttons": {
@@ -37,7 +35,7 @@
                 },
                 "currency": {
                     "split": {
-                        "title": "Split currency amoung {n} party members",
+                        "title": "Split currency among {n} party members",
                         "label": "Split currency"
                     },
                     "single": {

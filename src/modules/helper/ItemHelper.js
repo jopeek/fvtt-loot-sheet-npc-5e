@@ -95,6 +95,7 @@ class ItemHelper {
             } else {
                 newItem = duplicate(sourceItem);
                 newItem.data.quantity = parseInt(quantity);
+                newItem.data.equipped = false;
                 destinationAdditions.push(newItem);
             }
 

@@ -1,0 +1,9 @@
+{{#if distributeCoins}}
+    <button type="button"
+        class="split-currency lsnpc-action-link button-xs"
+        data-action="distributeCurrency"
+        data-tooltip-content="{{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount }}"
+        name="split-coins" value="1" data-action="distributeCurrency">
+        {{localize 'lsnpc.buttons.loot.currency.split.label'}}
+    </button>
+{{/if}}
