@@ -25,8 +25,8 @@ export class ChatHelper {
      * @static
      * @inheritdoc
      */
-    static async chatMessage(source, destination, movedItems, options = {}) {
-        options = mergeObject({ verbose: true }, options);
+    static async chatMessage(source, destination, movedItems, options = { chatOutPut: true, verbose: false }) {
+        if (!options.chatOutPut) return;
 
         if (game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.generateChatMessages)) {
             const interactionId = `${destination.id}-${options.type}-${source.id}`,
@@ -34,7 +34,8 @@ export class ChatHelper {
                 parsedItems = this._parseMovedItems(movedItems, options),
                 finalChatItems = this._handleExistingItems(existingItems.items, parsedItems, options);
 
-            let messageObject = await this._buildlootChatMessage(source, destination, finalChatItems, options);
+            let messageObject = await this._renderInnerLootChatMessage(source, destination, finalChatItems, options);
+
 
             if (existingItems.id) {
                 messageObject._id = existingItems.id;
@@ -54,8 +55,9 @@ export class ChatHelper {
      * @param {Actor} destination
      * @param {object} options
      *
+     * @author Daniel Böttner < @DanielBoettner >
      */
-    static async _buildlootChatMessage(source, destination, chatItems, options = { type: 'loot', verbose: true }) {
+    static async _renderInnerLootChatMessage(source, destination, chatItems, options = { type: 'loot', verbose: true }) {
         const messageData = {
             templatePath: MODULE.templatePath,
             colorRarity: game.settings.get(MODULE.ns, "colorRarity"),
@@ -65,7 +67,7 @@ export class ChatHelper {
             flags: (source.collectionName == 'tokens') ? source.actor.data.flags : source.data.flags,
             items: chatItems,
             type: options.type,
-            actionMessage: game.i18n.localize('lsnpc.chatActionMessages.' + options.type)
+            actionMessage: game.i18n.format('lsnpc.chatActionMessages.' + options.type, {source: source.name, destination: destination.name})
         };
 
         if (options.verbose) {

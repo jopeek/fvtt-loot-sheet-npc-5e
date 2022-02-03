@@ -117,7 +117,7 @@ class LootSheetNPC5eHelper {
      */
     static _handleTradeStage(trades) {
         //&& event.currentTarget.closest('.tradegrid')
-        const stagedItems = { buy: [], sell: [] };
+        const stagedItems = { buy: [], sell: [], give: [], loot: []};
         if (trades) {
             for (let trade of trades) {
                 const type = trade.parentNode.dataset.eventTarget;

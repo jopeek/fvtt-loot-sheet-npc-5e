@@ -19,11 +19,9 @@
                 "esModuleInterop": false,
                 "types": [
                         "@league-of-foundry-developers/foundry-vtt-types",
-                        "node",
+                        "node"
                 ],
-                "typeRoots": [
-                        "C:\\Users\\jackp\\AppData\\Local\\FoundryVTT\\Data\\systems\\dnd5e\\module"
-                ],
+                "typeRoots": [],
                 "resolveJsonModule": true
         },
         "include": [
@@ -34,6 +32,6 @@
                 "**/*.d.ts",
                 "rollup.config.js",
                 "test/**/*",
-                "dist/**.*",
-        ],
+                "dist/**.*"
+        ]
 }

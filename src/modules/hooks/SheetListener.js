@@ -4,6 +4,7 @@ import { PermissionHelper } from "../helper/PermissionHelper.js";
 import { SheetHelper } from "../helper/SheetHelper.js";
 import { TokenHelper } from "../helper/TokenHelper.js";
 import tippy from "tippy.js";
+import { TooltipListener } from "./TooltipListener.js";
 
 export class SheetListener {
     /**
@@ -63,12 +64,12 @@ export class SheetListener {
             // toggle infoboxes
         }
 
-        /**
-         * Listeners for all the items and actions
-         */
         this.tradeItemEventListeners(tradeableItems);
-        this._itemTooltips(tradeableItems);
-        this._helperTooltips();
+
+        let tooltipListener = new TooltipListener(this.id);
+        tooltipListener.itemTooltips(tradeableItems);
+        tooltipListener.helperTooltips();
+        tooltipListener.miscTooltips();
 
         for (let actionButton of sheetActionButtons) {
             const eventType = actionButton.nodeName === 'SELECT' ? 'change' : 'click';
@@ -198,93 +199,6 @@ export class SheetListener {
         await TokenHelper.populateWithRolltable(rolltable, { actor: this.actor });
         await this.actor.sheet.close();
         await this.actor.sheet.render(true);
-    }
-
-    /**
-     *
-     * @param {NodeList} items
-     */
-    async _itemTooltips(items) {
-        tippy(items, {
-            appendTo: "parent",
-            arrow: false,
-            animateFill: false,
-            theme: 'lsn-item',
-            interactive: false,
-            flipOnUpdate: true,
-            placement: 'bottom',
-            async onShow(instance) {
-                console.info(instance);
-                const i = instance.reference,
-                    name = i.dataset.name || "unknown",
-                    price = i.dataset.price || 0,
-                    weight = i.dataset.weight || '-',
-                    quantity = i.dataset.quantity || 1,
-                    rarity = i.dataset.rarity || 'common',
-                    container = document.createElement('aside');
-                container.classList.add('tippy-lsnpc');
-                container.classList.add(`rarity-${rarity}`);
-
-                let item = await fromUuid(i.dataset.uuid);
-                console.info(item);
-                const content = SheetListener._buildItemHTML(item, { price: price, weight: weight, quantity: quantity });
-                container.innerHTML = content;
-
-                instance.setContent(container);
-            }
-        });
-    }
-
-    static _buildItemHTML(item, overrides = {}) {
-        let html = '';
-        const icons = {
-            armor: '<i class="ra ra-vest"></i>',
-            damage: '<i class="ra ra-blaster"></i>',
-            toHit: '<i class="ra ra-on-target"></i>',
-            range: '<i class="ra ra-overhead"></i>',
-        };
-        html += `<header class="flexrow">
-                    <h3 class="item-name">${item.data.name}</h3>
-                    <span class="item-price">${overrides.price} 🪙 </span>
-                </header>`;
-        html += `<ul class="labels">`;
-        for (let [k, v] of Object.entries(item.labels)) {
-            if (v.length == 0) continue;
-            if (typeof v !== 'string') continue;
-            if (v.indexOf('undefined') >= 0) continue;
-            let icon = icons[k] || '';
-
-            html += `<li class="label">${icon}<small>${v} ${k}</small></li>`;
-        }
-        html += `</ul>`;
-
-        if (item.data.data.description.value) {
-            html += `<article>${item.data.data.description.value}</article>`;
-        }
-
-
-        html += `<footer class="flexrow">
-                    <span class="item-weight"> ${overrides.weight} <i class="ra ra-kettlebell"></i></span>
-                    <span class="item-quantity">📦×${overrides.quantity}</span>
-                </footer>`;
-
-        return html;
-    }
-
-    _helperTooltips() {
-        const app = document.querySelector(`#${this.id}`);
-        tippy(app.querySelectorAll('.infobox-wrapper .help'), {
-            appendTo: "parent",
-            arrow: false,
-            theme: 'lsn-help',
-            interactive: false,
-            flipOnUpdate: true,
-            placement: 'auto',
-            allowHTML: true,
-            content: (instance) => {
-                return instance.parentNode.querySelector('.sheet-infobox').innerHTML;
-            }
-        });
     }
 
     /**

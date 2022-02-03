@@ -24,7 +24,7 @@ export class PermissionHelper {
         const permissions = {
             0: { class: 'fas fa-ban', borderClass: 'none', description: game.i18n.localize('lsnpc.permissions.0.desc'), title: game.i18n.localize('lsnpc.permissions.0.title') },
             2: { class: 'fas fa-eye', borderClass: 'observer', description: game.i18n.localize('lsnpc.permissions.2.desc'), title: game.i18n.localize('lsnpc.permissions.2.title') },
-            3: { class: 'fas fa-check', borderClass: 'owner', description: game.i18n.localize('lsnpc.permissions.3.desc'), title: game.i18n.localize('lsnpc.permissions.3.title') },
+            3: { class: 'ra ra-player-king', borderClass: 'owner', description: game.i18n.localize('lsnpc.permissions.3.desc'), title: game.i18n.localize('lsnpc.permissions.3.title') },
         };
         return (!level && level != 0) ? permissions : permissions[parseInt(level)];
     }

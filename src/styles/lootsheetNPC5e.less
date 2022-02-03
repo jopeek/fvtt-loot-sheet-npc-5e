@@ -5,7 +5,9 @@
 #lsn-logo {
 	background-image: url(../icons/svg/lsnlogo.svg);
 }
-
+.lsnpc a img {
+	border: none;
+}
 .lsnpc form button, .lsnpc form a.lsn-action-button {
 	width: min-content;
     line-height: initial;
@@ -15,6 +17,13 @@
 	i {
 		pointer-events: none;
 		margin-right: 0;
+
+		&.ra-hand{
+			&:active {
+				cursor: grabbing;
+				color: var(--color-accent);
+			}
+		}
 	}
 }
 
@@ -218,6 +227,10 @@
 
         select {
             color: var(--primary-font);
+			background-color: var(--background);
+			option {
+				background: var(--background);
+			}
         }
         button {
             color: var(--primary-font);
@@ -225,14 +238,28 @@
 			border-radius: 0.5em;
 			border: 1px solid var(--header-border);
 			padding: 0 0.3em;
-			align-self: self-end;
+			align-self: center;
 			cursor: pointer;
 
-			:hover {
+			&:hover {
 				box-shadow: 0 0 0.3em var(--icon-shadow) inset;
 			}
         }
+		input {
+			&:hover {
+				border: none;
+			}
+		}
 
+		i {
+			//class ends with help
+			&[class*="help"] {
+				color: var(--primary-font);
+				font-size: 0.8em;
+				margin-left: 0.5em;
+				cursor: help;
+			}
+		}
     }
 
 
