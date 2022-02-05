@@ -136,8 +136,9 @@ export class TradeHelper {
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
         if (!successfullTransaction) return false;
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
-
-        ChatHelper.chatMessage(seller, buyer, moved, { type: 'buy', priceModifier: priceModifier });
+        options.type="buy";
+        options.priceModifier = priceModifier;
+        ChatHelper.chatMessage(seller, buyer, moved, options);
     }
 
     /**
