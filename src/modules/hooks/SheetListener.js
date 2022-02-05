@@ -42,7 +42,7 @@ export class SheetListener {
                 individualPermissions = app.querySelectorAll('.permission-proficiency'),
                 permissionsFilter = app.querySelector('.permissions-filter'),
                 priceModifierDialog = app.querySelector('.price-modifier'),
-                sheetStyle = app.querySelector('.gm-settings .sheet-style'),
+                sheetStylings = app.querySelector('.gm-settings .sheet-style'),
                 inventorySettings = app.querySelector('.gm-settings .inventory-settings'),
                 inventoryUpdate = app.querySelector('.gm-settings .update-inventory');
 
@@ -64,7 +64,7 @@ export class SheetListener {
 
 
             inventorySettings.addEventListener('change', ev => this.inventorySettingChange(ev, this.actor));
-            sheetStyle.addEventListener('change', (ev) => this.sheetStyleChange(ev, this.actor));
+            sheetStylings.addEventListener('change', (ev) => this.sheetStyleChange(ev, this.actor));
             inventoryUpdate.addEventListener('click', ev => this.inventoryUpdateListener(ev));
             // toggle infoboxes
         }
@@ -210,27 +210,27 @@ export class SheetListener {
      * @private
      */
     async sheetStyleChange(event, actor) {
-        event.preventDefault();
+        //actor.setFlag(MODULE.ns, event.target.name , event.target.value);
 
         // @todo get this from the settings, leverage the constants, if key exists in MODULE.
-        const expectedKeys = ["sheettint", "avatartint", "customBackground", "darkMode"];
+        const expectedKeys = ["sheettint", "avatartint", "customBackground", "blendmode", "darkMode"];
 
         let splittedName = event.target.name.split('.'),
-            targetKey = splittedName[2],
-            targetExtra = splittedName[3];
+            targetKey = splittedName[3],
+            targetExtra = splittedName[4];
 
         if (!expectedKeys.includes(targetKey)) return;
 
         if (!targetExtra) {
             const value = event.target.checked === undefined ? event.target.value : event.target.checked;
             console.log(MODULE.ns + " | " + targetKey + " set to " + value);
-            actor.setFlag(MODULE.ns, targetKey, value);
+            await actor.setFlag(MODULE.ns, targetKey, value);
         } else {
             console.log(MODULE.ns + " | " + targetKey + '.' + targetExtra + " set to " + event.target.value);
-            actor.setFlag(MODULE.ns, targetKey + '.' + targetExtra, event.target.value);
+            await actor.setFlag(MODULE.ns, targetKey + '.' + targetExtra, event.target.value);
         }
 
-        TokenHelper.handleRerender(actor.uuid);
+        //await TokenHelper.handleRerender(actor.uuid);
     }
 
     /**

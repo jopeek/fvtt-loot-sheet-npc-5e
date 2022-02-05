@@ -136,7 +136,8 @@ export class TokenHelper {
 			// Deregister the old sheet class
 			token.actor._sheet = null;
 			delete token.actor.apps[sheet.appId];
-			await sheet.render(true, token.actor.options);
+			const options = token.actor.options;
+			await sheet.render(true,options);
 			console.log(`${MODULE.ns} | token Helper | handleRerender | Sanity check - This state should be true: ${sheet.rendered}`);
 		}
 	}
