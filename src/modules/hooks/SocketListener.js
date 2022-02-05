@@ -118,7 +118,7 @@ export class SocketListener {
 
 		console.log(`${MODULE.ns} | token Helper | handleRerender | Rerendering attempt of the actor sheet for token: ${token.name}`);
 
-		if (sheet.rendered || priorState > 0) {
+		if (sheet.rendered || priorState > 0 && !game.user.isGM) {
 			await sheet.close();
 			console.log(`${MODULE.ns} | token Helper | handleRerender | Sanity check - This state should be false: ${sheet.rendered}`);
 			// Deregister the old sheet class

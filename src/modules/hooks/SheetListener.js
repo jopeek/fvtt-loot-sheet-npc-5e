@@ -5,6 +5,7 @@ import { SheetHelper } from "../helper/SheetHelper.js";
 import { TokenHelper } from "../helper/TokenHelper.js";
 import tippy from "tippy.js";
 import { TooltipListener } from "./TooltipListener.js";
+import { LootSeeder } from "../classes/LootSeeder.js";
 
 export class SheetListener {
     /**
@@ -56,7 +57,7 @@ export class SheetListener {
 
                 permissionsFilter.addEventListener('change', ev => this.actor.setFlag(MODULE.ns, 'permissionsFilter', ev.target.value));
             }
-            
+
             if (priceModifierDialog) {
                 priceModifierDialog.addEventListener('click', ev => SheetHelper.renderPriceModifierDialog(ev, this.actor));
             }
@@ -154,55 +155,14 @@ export class SheetListener {
     async inventoryUpdateListener(event) {
         event.preventDefault();
 
-        const rolltableUUID = this.actor.getFlag(MODULE.ns, "rolltable"),
-            shopQtyFormula = this.actor.getFlag(MODULE.ns, MODULE.flags.shopQty) || "1",
-            itemQtyLimitFormula = this.actor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || "0",
-            clearInventory = this.actor.getFlag(MODULE.ns, MODULE.flags.clearInventory),
-            betterRolltablesModule = {
-                ns: 'better-rolltables',
-                use: game.settings.get(MODULE.ns, MODULE.settings.keys.common.useBetterRolltables) || false
-            };
-
-        if (!rolltableUUID) return ui.notifications.info(`No rolltable set for ${this.actor.name}.`);
-
-        let rolltable = await fromUuid(rolltableUUID);
-        if (!rolltable) return ui.notifications.error(`No Rollable Table found with uuid "${rolltableUUID}".`);
+        const clearInventory = this.actor.getFlag(MODULE.ns, MODULE.flags.clearInventory);
 
         if (clearInventory) {
             let currentItems = this.actor.data.items.map(i => i.id);
             await this.actor.deleteEmbeddedDocuments("Item", currentItems);
         }
 
-        // populate via better-rolltables if it is installed and its activated in config
-        if (
-            betterRolltablesModule.use &&
-            rolltable.getFlag(betterRolltablesModule.ns, 'table-type')
-        ) {
-            const betterRolltablesAPI = game.modules.get(betterRolltablesModule.ns).public.API;
-            let customRoll = new Roll(shopQtyFormula, this.actor.data),
-                itemLimitRoll = new Roll(itemQtyLimitFormula, this.actor.data),
-                options = {};
-
-            await customRoll.roll({ async: true });
-            await itemLimitRoll.roll({ async: true });
-
-            options.customRoll = customRoll.total;
-            options.itemQtyLimit = itemLimitRoll.total;
-
-            if (betterRolltablesAPI) {
-                await betterRolltablesAPI.addLootToSelectedToken(
-                    rolltable,
-                    this.actor.data.token,
-                    options
-                );
-
-                return this.actor.sheet.render(true); //seeding should done, good bye 👋
-            }
-        }
-
-        await TokenHelper.populateWithRolltable(rolltable, { actor: this.actor });
-        await this.actor.sheet.close();
-        await this.actor.sheet.render(true);
+        await LootSeeder.seedItemsToActors([this.actor], {force: true});
     }
 
     /**

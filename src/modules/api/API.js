@@ -164,7 +164,7 @@ class API {
      *
      * @returns
      */
-    static async addLootToTarget(stack = null, table = null , options = {}) {
+    static async addLootToTarget(stack = null, table = null, options = {}) {
         let tokenstack = [];
 
         if (null == stack && (canvas.tokens.controlled.length === 0)) {
@@ -308,15 +308,16 @@ class API {
     }
 
     /**
-     * Populate a token with given options
+     * @description Seed items to a given token (or the selected tokens)
      *
      * @module lootsheetnpc5e.API.populateTokenWithOptions
      *
      * @param {Token} token
      * @param {object} options
      */
-    static async populateTokenWithOptions(token = null, options = null) {
-        await LootSeeder.seedItems(token, options);
+    static async seedItemsToTokens(token = null, options = null) {
+        const actors = (token) ? [token.actor] : canvas.tokens.controlled.map(t => t.actor);
+        await LootSeeder.seedItemsToActors(actors, options);
     }
 
     /**

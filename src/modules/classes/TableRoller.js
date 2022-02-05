@@ -13,11 +13,11 @@ export class TableRoller {
 	 *
 	 * @param {number|string} options
 	 *
-	 * @returns {array} results
+	 * @returns {Array} results
 	 */
-	async roll(options = undefined) {
-		options = options || this.rollOptionDefault ;
-		this.results = await this.rollManyOnTable(options , this.table);
+	async roll(options = false) {
+		options = options || this.rollOptionDefault;
+		this.results = await this.rollManyOnTable(options, this.table);
 		return this.results;
 	}
 
@@ -30,77 +30,114 @@ export class TableRoller {
 	 *  Collect the results in an array.
 	 *
 	 *	@param {RollTable} table
-	 *	@param {number} rollOptions
+	 *	@param {object} rollOptions
 	 *	@param {object} options
-	 *	@returns {array}
+	 *	@returns {Array}
 	 */
+
 	async rollManyOnTable(rollOptions, table, { _depth = 0 } = {}) {
 		const maxRecursions = 5;
 
 		let amountToRoll = rollOptions?.total || 1;
+		let drawnResults = [];
 
 		// Prevent infinite recursion
 		if (_depth > maxRecursions) {
-			let msg = `maxRecursions: ${maxRecursions} reached with table ${table.id}`;
+			let msg = `maxRecursions:  reached with table ${table.id}`;
 			throw new Error(MODULE.ns + " | " + msg);
 		}
 
-		let drawnResults = [];
+		if (!table.data.formula) return console.log(MODULE.ns + ` | tableRoller | Error: No Forumla found for table: ${table.name}`);
 
 		while (amountToRoll > 0) {
-			let resultToDraw = amountToRoll;
-			/** if we draw without replacement we need to reset the table once all entries are drawn */
-			if (!table.data.replacement) {
-				const resultsLeft = table.data.results.reduce(function (n, r) { return n + (!r.drawn) }, 0)
+			const resultsLeft = await this.checkResultsLeft(table, amountToRoll);
+			if (!resultsLeft) continue;
 
-				if (resultsLeft === 0) {
-					await table.reset();
-					continue;
-				}
+			const resultToDraw = Math.min(resultsLeft, amountToRoll),
+				drawResult = await table.drawMany(resultToDraw, { displayChat: false, recursive: false });
 
-				resultToDraw = Math.min(resultsLeft, amountToRoll);
-			}
-
-			if (!table.data.formula) {
-				console.log(MODULE.ns + ` | tableRoller | Error: No Forumla found for table: ${table.name}`);
-				return;
-			}
-
-			const draw = await table.drawMany(resultToDraw, { displayChat: false, recursive: false });
-			if (!this.mainRoll) {
-				this.mainRoll = draw.roll;
-			}
-
-			for (const entry of draw.results) {
-				const formulaAmount = getProperty(entry, `data.flags.better-tables.brt-result-formula.formula`) || "1";
-				const entryAmount = await this.tryRoll(formulaAmount);
-
-				let innerTable;
-				if (entry.data.type === CONST.TABLE_RESULT_TYPES.ENTITY && entry.data.collection === 'RollTable') {
-					innerTable = game.tables.get(entry.data.resultId);
-				} else if (entry.data.type === CONST.TABLE_RESULT_TYPES.COMPENDIUM) {
-					const entityInCompendium = await Utils.findInCompendiumByName(entry.data.collection, 'RollTable');
-
-					if ((entityInCompendium !== undefined) && entityInCompendium.documentName === 'RollTable') {
-						innerTable = entityInCompendium;
-					}
-				}
-
-				if (innerTable) {
-					const innerResults = await this.rollManyOnTable(entryAmount, innerTable, { _depth: _depth + 1 });
-					drawnResults = drawnResults.concat(innerResults);
-				} else {
-					for (let i = 0; i < entryAmount; i++) {
-						drawnResults.push(entry);
-					}
-				}
-			}
+			drawnResults = await this._updateDrawnResults(drawResult, drawnResults, _depth, rollOptions)
 			amountToRoll -= resultToDraw;
 		}
 
 		return drawnResults;
 	}
 
+	/**
+	 *
+	 * @param {Array} drawnResults
+	 * @param {number} depth
+	 * @param {object} options
+	 *
+	 * @returns {Array} drawnResults
+	 */
+	async _updateDrawnResults(drawResult, drawnResults, depth, options) {
+		for (const result of drawResult.results) {
+			const quantityFormula = options.customRoll.itemQtyFormula || "1",
+				resultQuantity = await this.tryRoll(quantityFormula),
+				innerTable = this._getInnerTable(result);
+
+			if (innerTable) {
+				options.total = resultQuantity;
+				const innerResults = await this.rollManyOnTable(options, innerTable, { _depth: depth + 1 });
+				drawnResults = drawnResults.concat(innerResults);
+			} else {
+				for (let i = 0; i < resultQuantity; i++) {
+					drawnResults.push(result);
+				}
+			}
+		}
+
+		return drawnResults;
+	}
+
+	/**
+	 *
+	 * @param {*} result
+	 * @returns
+	 */
+	_getInnerTable(result) {
+		const returnByType = {
+			[CONST.TABLE_RESULT_TYPES.DOCUMENT]: this._handleDocumentResult,
+			[CONST.TABLE_RESULT_TYPES.COMPENDIUM]: this._getRollTableFromCompendium
+		};
+
+		if (Object.keys(returnByType).includes(result.data.type)) return returnByType[result.data.type](result);
+	}
+
+	_handleDocumentResult(result) {
+		if (result.data.collection === 'RollTable') {
+			return game.tables.get(result.data.resultId);
+		}
+	}
+
+	_getRollTableFromCompendium(result) {
+		const rolltableFromCompendium = Utils.findInCompendiumByName(result.data.collection, 'RollTable');
+
+		if ((rolltableFromCompendium !== undefined) && rolltableFromCompendium.documentName === 'RollTable') {
+			return rolltableFromCompendium;
+		}
+	}
+
+	/**
+	 *
+	 * @param {RollTable} table
+	 * @param {number} amountToRoll
+	 *
+	 * @returns {number}
+	 */
+	async checkResultsLeft(table, amountToRoll) {
+		if (!table.data.replacement) {
+			const resultsLeft = table.data.results.reduce(function (n, r) { return n + (!r.drawn) }, 0)
+
+			if (resultsLeft === 0) {
+				await table.reset();
+				return false;
+			}
+		}
+
+		return amountToRoll;
+	}
 
 	/**
 	 *
