@@ -136,6 +136,7 @@ export class HandlebarsHelper {
     * @author Daniel Böttner <@DanielBoettner>
     */
     static hexToRGB(hex, alpha) {
+        if(!hex) return 'rgba(0,0,0,0)';
         let r = parseInt(hex.slice(1, 3), 16),
             g = parseInt(hex.slice(3, 5), 16),
             b = parseInt(hex.slice(5, 7), 16);
