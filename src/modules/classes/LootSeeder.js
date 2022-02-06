@@ -1,12 +1,11 @@
 import { CurrencyHelper } from "../helper/CurrencyHelper.js";
-import { getLinkedRolltable , getLinkedRolltableByFilters } from "../helper/ActorHelper.js";
-import { getLinkedRolltableByCreatureType } from "../helper/TableHelper.js";
+import { ActorHelper } from "../helper/ActorHelper.js";
 import { TokenHelper } from "../helper/TokenHelper.js";
 import { MODULE } from "../data/moduleConstants.js";
 
 export class LootSeeder {
 	/**
-	 * @summary Seed items to the given token(s) inventory.
+	 * @summary Seed items to the given actor(s) inventory.
 	 *
 	 * @description
 	 * T
@@ -17,58 +16,48 @@ export class LootSeeder {
 	 * @param {object} options
 	 * @returns
 	 */
-	static async seedItems(token = null, options = {}) {
-		const tokenstack = (token) ? (token.length >= 0) ? token : [token] : canvas.tokens.controlled,
-			fallbackShopQty = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackShopQty);
-		for (const currentToken of tokenstack) {
-			const tokenActor = currentToken.actor,
-				shopQtyFormula = tokenActor.getFlag(MODULE.ns, MODULE.flags.shopQty) || fallbackShopQty || "1";
+	static async seedItemsToActors(actors = null, options = {force: false}) {
+		if (!actors.length) return;
 
-
-			let rolltableReferences = this._getRollTables(tokenActor);
-
+		for (const currentActor of actors) {
 			//skip linked tokens
-			if (!tokenActor || currentToken.data.actorLink) continue;
-			if (!rolltableReferences) return;
+			if (!currentActor || (currentActor.data.actorLink && options.force)) continue;
 
-			let brt_currencyString = '';
+			const rolltableReferences = ActorHelper.getRollTables(currentActor);
 
-			if (Array.isArray(rolltableReferences)) {
-				for (let rolltableUuid of rolltableReferences) {
-					let rolltable = await fromUuid(rolltableUuid);
-					if (!rolltable) {
-						ui.notifications.error(MODULE.ns + `: No Rollable Table found with id "${rolltableReferences}".`);
-						continue;
-					}
-					let customRoll = await new Roll(shopQtyFormula, currentToken.data).roll();
-
-					options = this._prepareOptions(options, this._getFormulas(tokenActor), customRoll.total, currentToken.uuid);
-					await TokenHelper.addLootToTarget(currentToken, rolltable, options);
-				}
-			} else {
-				let rolltable = await fromUuid(rolltableReferences);
-
+			for (let rolltableUuid of rolltableReferences) {
+				let rolltable = await fromUuid(rolltableUuid);
 				if (!rolltable) {
-					return ui.notifications.error(MODULE.ns + `: No Rollable Table found with id "${rolltableReferences}".`);
+					ui.notifications.error(MODULE.ns + `: No Rollable Table found with id "${rolltableReferences}".`);
+					continue;
 				}
+				let customRoll = await new Roll(this._getShopQtyFormula(currentActor), currentActor.data).roll({ async: true });
 
-				let customRoll = await new Roll(shopQtyFormula, currentToken.data).roll();
-
-				options = this._prepareOptions(options, this._getFormulas(tokenActor), customRoll.total, currentToken.uuid);
-
-				await TokenHelper.addLootToTarget(currentToken, rolltable, options);
+				options = this._prepareOptions(options, this._getFormulas(currentActor), customRoll.total, currentActor.uuid);
+				await ActorHelper.addLootToTarget(currentActor, rolltable, options);
 			}
+
 
 			let currencyFlags = {
 				"generateCurrency": game.settings.get(MODULE.ns, 'generateCurrency'),
 				"currencyFormula": game.settings.get(MODULE.ns, 'lootCurrencyDefault'),
 				"useBetterRolltables": game.settings.get(MODULE.ns, "useBetterRolltables"),
-				"brt_rt_tcs": brt_currencyString,
+				"brt_rt_tcs": '',
 				"adjustCurrency": game.settings.get(MODULE.ns, "adjustCurrencyWithCR")
 			};
 
-			await CurrencyHelper.handleCurrency(currentToken, currencyFlags);
+			await CurrencyHelper.handleCurrency(currentActor, currencyFlags);
 		}
+	}
+
+	/**
+	 *
+	 * @param {Actor} actor
+	 * @returns
+	 */
+	static _getShopQtyFormula(actor) {
+		const fallbackShopQty = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackShopQty);
+		return actor.getFlag(MODULE.ns, MODULE.flags.shopQty) || fallbackShopQty || "1";
 	}
 
 	/**
@@ -93,17 +82,11 @@ export class LootSeeder {
 
 	static _getRollTables(actor) {
 		const creatureType = actor.data.data.details.type.value,
-			rolltableFromActor = getLinkedRolltable(actor),
-			rolltableByCreature = getLinkedRolltableByCreatureType(creatureType),
-			rolltableByFilters = getLinkedRolltableByFilters(actor),
+			rolltableFromActor = ActorHelper.getLinkedRolltable(actor),
+			rolltableByCreature = ActorHelper.getLinkedRolltableByCreatureType(creatureType),
+			rolltableByFilters = ActorHelper.getLinkedRolltableByFilters(actor),
 			rolltableDefault = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackRolltable) || false;
 
-		/**
-		* Todo: Method to detect how many rolltables by filter we have an if we want to use them all.
-		* if we use more than one how do we prioratise? Does a rule terminate?
-
-		* Config can hold more switches to detect if we want more than the first table.
-		*/
 		return rolltableFromActor || rolltableByFilters || rolltableByCreature || rolltableDefault;
 	}
 
@@ -120,9 +103,12 @@ export class LootSeeder {
 		const shopQtyFormula = actor.getFlag(MODULE.ns, MODULE.flags.shopQty) || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
 			itemQtyFormula = actor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, "fallbackItemQty") || "1",
 			itemQtyLimitFormula = actor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
-			currencyFormula = actor.getFlag(MODULE.ns, MODULE.flags.currencyFormula) || game.settings.get(MODULE.ns, "fallbackCurrencyFormula") || "1d3[gp]";
+			currencyFormula = actor.getFlag(MODULE.ns, MODULE.flags.currencyFormula) || game.settings.get(MODULE.ns, "fallbackCurrencyFormula") || "1d3[gp]",
+			formulas = { itemQtyFormula: itemQtyFormula, itemQtyLimitFormula: itemQtyLimitFormula, shopQtyFormula: shopQtyFormula, currencyFormula: currencyFormula };
 
-		return { itemQtyFormula: itemQtyFormula, itemQtyLimitFormula: itemQtyLimitFormula, shopQtyFormula: shopQtyFormula, currencyFormula: currencyFormula };
+			console.log(formulas);
+
+			return formulas;
 	}
 
 }

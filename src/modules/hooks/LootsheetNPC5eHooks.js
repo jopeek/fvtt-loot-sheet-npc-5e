@@ -9,6 +9,7 @@ import { LootSeeder } from '../classes/LootSeeder.js';
 import { SocketListener } from './SocketListener.js';
 import { HandlebarsHelper } from '../helper/HandlebarsHelper.js';
 import { ChatListener } from './ChatListener.js';
+import { ActorHelper, getActorStack } from '../helper/ActorHelper.js';
 
 /**
  * @module LootSheetNPC5e.hooks
@@ -106,7 +107,7 @@ export class LootsheetNPC5eHooks {
             packageName: MODULE.ns,
             sheetClasses: [
                 {
-                    name: 'LootsheetNPCRuleEditor', // this _must_ be the class name of the `Application` you want it to apply to
+                    name: 'lootsheetnpc5e-rule-editor', // this _must_ be the class name of the `Application` you want it to apply to
                     fieldConfigs: [
                         {
                             selector: `.data-path-input`,
@@ -124,36 +125,47 @@ export class LootsheetNPC5eHooks {
         api.PACKAGE_CONFIG.push(config);
     }
 
+    /**
+     *
+     * @param {Token} token
+     * @param {object} createData
+     * @param {object} options
+     * @param {string} userId
+     *
+     */
     static async onCreateToken(token, createData, options, userId) {
-        const useSkiplist = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.useSkiplist);
-
-        // only act on tokens dropped by the GM
-        if (!game.user.isGM) return token;
+        if (!game.user.isGM);
         if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens)) return token;
-        // ignore linked tokens
-        if (!token.actor || token.data.actorLink) return token;
-        // skip if monster's creaturType is on the skiplist
-        let creatureType = token.actor.data.data.details.type.value,
-            skipThisType = creatureType ? game.settings.get(MODULE.ns, "skiplist_" + creatureType) : false;
-        if (useSkiplist && skipThisType) return token;
+        if (!token.actor || token.data.actorLink) return; // ignore linked tokens
+        const actor = token.actor;
 
-        await LootSeeder.seedItems(token);
+        if(ActorHelper.skipByCreatureType(actor)) return;
+        await LootSeeder.seedItemsToActors([actor]);
     }
 
+    /**
+     *
+     * @param {*} buttons
+     */
     static attachSceneControlButtons(buttons) {
         let tokenButton = buttons.find(b => b.name == "token");
         if (tokenButton) {
             tokenButton.tools.push({
-                name: "lsnpc5e-populate-loot",
-                title: "LSNPC | Generate Loot",
+                name: "lsnpc-loot-seeder",
+                title: "Generate Loot for selected token(s)",
                 icon: "fas fa-gem",
                 visible: game.user.isGm,
-                onClick: () => LootSeeder.seedItems(),
+                onClick: () => LootSeeder.seedItemsToActors(getActorStack()),
                 button: true
             });
         }
     }
 
+    /**
+     *
+     * @param {*} hud
+     * @returns
+     */
     static attachTokenHudButtons(hud) {
         if (!game.settings.get(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons)) return;
 
@@ -170,7 +182,7 @@ export class LootsheetNPC5eHooks {
             lsnGMButtonMakeObservable = document.createElement('div'),
             lsnLootAllImg = document.createElement('img'),
             lsnMakeObservableImg = document.createElement('img'),
-            lsnMakeObservableTitle = game.i18n.localize("LootSheetNPC5e.lootAll");
+            lsnMakeObservableTitle = game.i18n.localize("Make Lootable");
 
         lsnNav.classList.add('lsnpc5e-nav');
 
@@ -220,4 +232,20 @@ export class LootsheetNPC5eHooks {
             actor.update({ data: { flags: { core: { sheetClass: newClassName } } } });
         }
     }
+
+    /**
+     *
+     * @param {Token} token
+     * @returns {boolean}
+     *
+     */
+    static _skipTokenByType(token) {
+        if(!game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.useSkiplist)) return false;
+
+        const creatureType = token.actor.data.data.details.type.value;
+        if(!Object.keys(CONFIG.DND5E.creatureTypes).includes(creatureType)) return false;
+
+        return game.settings.get(MODULE.ns, "skiplist_" + creatureType);
+    }
+
 }

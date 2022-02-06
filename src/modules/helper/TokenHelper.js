@@ -110,7 +110,7 @@ export class TokenHelper {
 		let shopRoll = await shopQtyRoll.roll();
 		options.total = shopRoll.total;
 
-		await this.addLootToTarget(target, rolltable, options);
+		await this.addLootToTarget(actor, rolltable, options);
 		target.actor.sheet.render(true);
 	}
 
@@ -136,13 +136,14 @@ export class TokenHelper {
 			// Deregister the old sheet class
 			token.actor._sheet = null;
 			delete token.actor.apps[sheet.appId];
-			await sheet.render(true, token.actor.options);
+			const options = token.actor.options;
+			await sheet.render(true,options);
 			console.log(`${MODULE.ns} | token Helper | handleRerender | Sanity check - This state should be true: ${sheet.rendered}`);
 		}
 	}
 
 	/**
-	 * Roll a table an add the resulting loot to a given target.
+	 * Roll a table an add the resulting loot to given target(s).
 	 *
 	 * @param {RollTable} table
 	 * @param {Array<Actor|PlaceableObject>|Actor|PlaceableObject} stack
@@ -151,19 +152,12 @@ export class TokenHelper {
 	 * @returns
 	 */
 	static async addLootToTarget(stack = null, table = null, options = {}) {
-		let tokenstack = [];
-
-		if (null == stack && (canvas.tokens.controlled.length === 0)) {
-			return ui.notifications.error('No tokens given or selected');
-		} else {
-			tokenstack = (stack) ? (stack.length >= 0) ? stack : [stack] : canvas.tokens.controlled;
-		}
-
-		if (options?.verbose) ui.notifications.info(MODULE.ns + ' | API | Loot generation started for.');
+		stack = this._getDocumentStack(stack);
+		if (options?.verbose) ui.notifications.info(MODULE.ns + ' | TokenHelper | Loot generation started for.');
 
 		let tableRoller = new TableRoller(table);
 
-		for (let target of tokenstack) {
+		for (let target of stack) {
 			const actor = (target.actor) ? target.actor : target;
 			const rollResults = await tableRoller.roll(options),
 				lootProcess = new LootProcessor(rollResults, actor, options),
@@ -173,7 +167,35 @@ export class TokenHelper {
 			lootProcess.addItemsToActor(actor, options);
 		}
 
-		if (options?.verbose) return ui.notifications.info(MODULE.ns + ' | API | Loot generation complete.');
+		if (options?.verbose) return ui.notifications.info(MODULE.ns + ' | TokenHelper | Loot generation complete.');
+	}
+
+	/**
+	 * @summary return an Array of actors or tokens
+	 *
+	 * @description
+	 * This function will return a tokenstack based on the given argument
+	 * - If the argument is a token, it will return an array with that token
+	 * - If the argument is an array, it will return the array
+	 * - If no argument is given, it will return the currently selected tokens
+	 *
+	 * @param {Token|Array<Token>} token
+	 *
+	 * @returns {Array<Array>}
+	 */
+	static _getDocumentStack(token = null) {
+		let stack = [];
+		if (token) {
+			if (Array.isArray(token)) {
+				stack = token;
+			} else {
+				stack.push(token);
+			}
+		} else {
+			stack = canvas.tokens.controlled;
+		}
+
+		return stack;
 	}
 }
 

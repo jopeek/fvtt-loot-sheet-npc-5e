@@ -65,19 +65,19 @@ export class PriceModifierDialog extends FormApplication {
         app.querySelector('#priceModifierPercent').addEventListener("change", ev => this._onChange(ev));
     }
 
-    _onChange(event){
+    async _onChange(event){
         event.preventDefault();
         const app = document.querySelector('.lsnpc.dialog-price-modifier');
         app.querySelector('#priceModifierPercent').value = Math.round(event.currentTarget.value);
         app.querySelector('#priceModifierDisplay').value = Math.round(event.currentTarget.value);
         console.log(MODULE.ns + " | "+ app.querySelector('#priceModifierPercent').value / 100);
-        this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#priceModifierPercent').value / 100);
+        await this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#priceModifierPercent').value / 100);
     }
 
-    _onSubmit(event){
+    async _onSubmit(event){
         event.preventDefault();
         const app = document.querySelector('.lsnpc.dialog-price-modifier');
-        this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#priceModifierPercent').value / 100);
+        await this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#priceModifierPercent').value / 100);
         super.close(event)
     }
 }

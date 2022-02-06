@@ -176,14 +176,19 @@ export class CurrencyHelper {
     * @param {object} currencies
     * @return {object} currencies
     *
-    * @version 1.0.1
+    * @version 1.0.2
     *
     * @author Jan Ole Peek <@jopeek>
     */
     static handleActorCurrency(currencies) {
         Object.entries(currencies).map(([type, currency]) => {
-            let value = currency.value ?? currency;
-            currencies[type] = Number(value);
+            let val = 0;
+            if (currency?.value) {
+                val = currency.value || val;
+            } else {
+                val = currency || val;
+            }
+            currencies[type] = Number(val) || 0;
         });
 
         return currencies;

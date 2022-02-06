@@ -98,8 +98,8 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         sheetData.isGM = (game.user.isGM) ? true : false;
         sheetData.items = sheetDataActorItems;
-        sheetData.interactingActor = game.user?.character?.name || "No Character";
-        sheetData.interactingActorFunds = {currency: game.user?.character.data.data.currency || [] };
+        sheetData.interactingActor = game.user?.character?.name || "No Character selected";
+        sheetData.interactingActorFunds = {currency: game.user?.character?.data?.data?.currency || [] };
         sheetData.totalItems = sheetDataActorItems.length;
         sheetData.totalWeight = totals.weight.toLocaleString('en');
         sheetData.totalPrice = totals.price.toLocaleString('en') + " gp";
@@ -228,18 +228,6 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         const listener = new SheetListener(this.id, this.token, this.actor, this.options);
         listener.activateListeners();
-    }
-
-    /**
-     *
-     * @param {*} sheetData
-     */
-    _setClasses(sheetData) {
-        const darkMode = this.actor.getFlag(MODULE.ns, 'darkMode'),
-            sheetStyleBackground = this.actor.getFlag(MODULE.ns, 'sheettint.style');
-
-        if (darkMode) this.options.classes.push("lsnpc-darkDmode");
-        if (!sheetStyleBackground.length) this.options.classes.push("lsnpc-styled");
     }
 
     /* -------------------------------------------- */

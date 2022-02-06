@@ -237,7 +237,7 @@ class ItemHelper {
         const rarity = this.getRandomRarity(),
             randomPriceFormula = Math.floor(twist.random() * (rarity.priceRange[1] - rarity.priceRange[0] + 1)) + rarity.priceRange[0],
             priceRoller = new Roll('1d' + randomPriceFormula),
-            priceRoll = await priceRoller.roll();
+            priceRoll = await priceRoller.roll({async: true});
 
         /**
          *  If we have a conversion for the itemType, use it
