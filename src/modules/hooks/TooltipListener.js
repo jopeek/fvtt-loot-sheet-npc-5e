@@ -22,6 +22,7 @@ export class TooltipListener {
         flipOnUpdate: false,
         placement: 'top',
         touch: ['hold', 500],
+        delay: [300, 0],
         content: (instance) => { return instance.dataset.tooltipContent; },
         };
     }
@@ -34,7 +35,7 @@ export class TooltipListener {
         const methodDefaults = {
             theme: 'lsn-item',
             flipOnUpdate: true,
-            placement: 'bottom',
+            placement: 'bottom-end',
             onShow: (instance) => this._onShowItemTooltip(instance),
         };
 

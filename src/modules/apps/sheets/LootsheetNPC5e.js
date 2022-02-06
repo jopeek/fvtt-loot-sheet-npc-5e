@@ -230,18 +230,6 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         listener.activateListeners();
     }
 
-    /**
-     *
-     * @param {*} sheetData
-     */
-    _setClasses(sheetData) {
-        const darkMode = this.actor.getFlag(MODULE.ns, 'darkMode'),
-            sheetStyleBackground = this.actor.getFlag(MODULE.ns, 'sheettint.style');
-
-        if (darkMode) this.options.classes.push("lsnpc-darkDmode");
-        if (!sheetStyleBackground.length) this.options.classes.push("lsnpc-styled");
-    }
-
     /* -------------------------------------------- */
 
     /**

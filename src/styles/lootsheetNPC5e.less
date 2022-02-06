@@ -55,9 +55,6 @@
 			cursor: pointer;
 			z-index: 200;
 		}
-		.tab.active {
-			border-top: 1px solid var(--color-border-dark-primary);
-		}
     }
 
 	.rarityMixin();
@@ -129,7 +126,7 @@
 			nav.sheet-navigation {
 				margin-bottom: 0;
 				.item {
-					background: var(--primary-background);
+					background: transparent;
 					border: 0;
 					border-bottom: 1px solid var(--avatartint);
 					padding: 0 0.5em;
@@ -155,7 +152,7 @@
 					&:last-child {
 						border-right: 0;
 					}
-					background: transparent;
+					background: var(--primary-background);
 					text-shadow: 0.2em 0.2em var(--sheettint);
 					background-blend-mode: var(--blendmode);
 					border-bottom-color: transparent;
@@ -223,6 +220,7 @@
 
 		footer.sheet-footer {
 			display: flex;
+			background: var(--primary-background);
 		}
 
         select {
@@ -280,6 +278,10 @@
 
     .items-list {
         .item {
+			> [class*="item-"] {
+				border: none;
+			}
+
             h4 {
                 color: var(--primary-font);
             }
@@ -298,7 +300,7 @@
             flex: 0 0 22px;
             font-size: 12px;
             text-align: center;
-            color: var(--tertiary-color);
+            color: var(--primary-color);
             &:hover {
                 color: var(--secondary-color);
             }
