@@ -71,7 +71,7 @@ class LootSheetNPC5eHelper {
 
         if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
         if (!game.user.character?.id && action != 'sheetUpdate') {
-            return ui.notifications.info("You need to assign an actor to you user before you can do this.");
+            return ui.notifications.info("You need to assign an actor to your user before you can do this.");
         }
 
         const packet = {

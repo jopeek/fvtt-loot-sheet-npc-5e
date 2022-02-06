@@ -156,14 +156,14 @@ export class PermissionHelper {
 
         switch (permissionsFilter) {
             case "1": // filter out those that do not view the scene
-                eligables = this.filterByPlayerViewingScene(eligables);
+                eligables = this.filterByPlayerViewingScene(eligables, actor);
                 break;
             case "2": // filter out those thats do not have a token in the scene
                 eligables = this.filterByTokenInScene(eligables);
                 console.log(`${MODULE.ns} |  \\-->  | Filtered for players with a token in the tokens scene. ${eligables.length} players with eligable characters.`);
                 break;
             case "3": // filter both
-                eligables = this.filterByPlayerViewingScene(eligables);
+                eligables = this.filterByPlayerViewingScene(eligables, actor);
                 console.log(`${MODULE.ns} |  \\-->  | Filtered for players that view the scene. ${eligables.length} players with eligable characters.`);
                 eligables = this.filterByTokenInScene(eligables);
                 console.log(`${MODULE.ns} |  \\-->  | Filtered for players with a token in the tokens scene. ${eligables.length} players with eligable characters.`);
@@ -229,6 +229,7 @@ export class PermissionHelper {
      * does not view the scene by the time of the check.
      *
      * @param {Array<string>} eligables
+     * @param {Actor} actor
      *
      * @returns {Array<string>} eligables
      *
@@ -237,7 +238,7 @@ export class PermissionHelper {
      * @version 1.0.0
      * @since 3.4.5.3
      */
-    static filterByPlayerViewingScene(eligables) {
+    static filterByPlayerViewingScene(eligables, actor) {
         const playersInScene = game.users.players.filter((player) => player.viewedScene == actor.parent.parent.id).map(p => p.id);
         eligables = eligables.filter(playerId => playersInScene.includes(playerId));
         console.log(`${MODULE.ns} |  \\-->  | Filtered for players that view the scene. ${eligables.length} players with eligable characters.`);

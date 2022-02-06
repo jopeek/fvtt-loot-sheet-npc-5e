@@ -1,22 +1,20 @@
 <section class="ls-gm-section sheet-style">
     <div class="flexrow">
         <label>
-            <i class="ra ra-moon-sun"></i> Light/Dark theme
+            <i class="ra ra-moon-sun"></i> Dark theme
             <aside class="infobox-wrapper">
                 <i class="fas fa-info-circle help" data-theme="lsn-help"></i>
                 <div class="sheet-infobox hidden">
-                    <p>Enable light/dark mode for the sheet.</p>
-                    <p>This will apply a dark/light mode to the sheet background. And a light/dark color to the text.</p>
+                    <p>Enable dark mode for the sheet.</p>
+                    <p>This will apply a dark mode to the sheet background. And a light color to the text.</p>
                 </div>
             </aside>
         </label>
-        {{#select data.flags.lootsheetnpc5e.darkMode}}
-            <select name="flags.lootsheetnpc5e.darkMode" class="{{#if this.token}} lsnpc-action-link{{/if}}"
-                data-target="flags.lootsheetnpc5e.darkMode" data-event-type="change" data-action="sheetUpdate">
-                <option value="false">Light</option>
-                <option value="true">Dark</option>
-            </select>
-        {{/select}}
+
+            <input type="checkbox" name="data.flags.lootsheetnpc5e.darkMode" class="{{#if this.token}} lsnpc-action-link{{/if}}"
+                data-target="flags.lootsheetnpc5e.darkMode" data-event-type="change" data-actions="sheetUpdate"
+                {{#if data.flags.lootsheetnpc5e.darkMode}}checked{{/if}} />
+
     </div>
 
     <div class="flexcol">
@@ -34,7 +32,7 @@
                         </aside>
                     </label>
                     <input type="color" data-dtype="String" class="avatar-tint-picker"
-                        name="flags.lootsheetnpc5e.sheettint.value"
+                        name="data.flags.lootsheetnpc5e.sheettint.value"
                         value="{{data.flags.lootsheetnpc5e.sheettint.value}}">
                 </div>
             </div>
@@ -51,7 +49,7 @@
                         </aside>
                     </label>
                     <input type="range" data-dtype="String" min="0" max="1" step="0.1" class="avatar-tint-picker"
-                        name="flags.lootsheetnpc5e.sheettint.alpha"
+                        name="data.flags.lootsheetnpc5e.sheettint.alpha"
                         value="{{data.flags.lootsheetnpc5e.sheettint.alpha}}">
                 </div>
             </div>
@@ -70,7 +68,7 @@
                         </aside>
                     </label>
                     <input type="color" data-dtype="String" class="avatar-tint-picker"
-                        name="flags.lootsheetnpc5e.avatartint.value"
+                        name="data.flags.lootsheetnpc5e.avatartint.value"
                         value="{{data.flags.lootsheetnpc5e.avatartint.value}}">
                 </div>
             </div>
@@ -81,7 +79,7 @@
                         <i class="fas fa-info-circle help" data-tooltip-content="<h4>Intensity</h4><p>The intensity/opacity of the color.</p>" data-theme="lsn-help"></i>
                     </label>
                     <input type="range" data-dtype="String" min="0" max="1" step="0.1" class="avatar-tint-picker"
-                        name="flags.lootsheetnpc5e.avatartint.alpha"
+                        name="data.flags.lootsheetnpc5e.avatartint.alpha"
                         value="{{data.flags.lootsheetnpc5e.avatartint.alpha}}">
                 </div>
             </div>
@@ -97,7 +95,7 @@
                 </aside>
             </label>
             {{#select data.flags.lootsheetnpc5e.sheettint.style}}
-                <select name="flags.lootsheetnpc5e.sheettint.style">
+                <select name="data.flags.lootsheetnpc5e.sheettint.style">
                     <option value="">None</option>
                     <option value="custom">Custom Background</option>
                     <option value="squares">Squares</option>
@@ -118,10 +116,10 @@
                 </label>
                 <div class="flexrow">
                     <button type="button" class="file-picker" data-type="imagevideo"
-                        data-target="flags.lootsheetnpc5e.custom.background" title="Browse Files" tabindex="-1">
+                        data-target="data.flags.lootsheetnpc5e.custom.background" title="Browse Files" tabindex="-1">
                         <i class="fas fa-file-import fa-fw"></i>
                     </button>
-                    <input class="image" type="text" name="flags.lootsheetnpc5e.custom.background"
+                    <input class="image" type="text" name="data.flags.lootsheetnpc5e.custom.background"
                         placeholder="File Path" value="{{data.flags.lootsheetnpc5e.custom.background}}">
                 </div>
             </div>
@@ -129,7 +127,7 @@
         <div class="flexrow">
             <label>Blendmode</label>
             {{#select data.flags.lootsheetnpc5e.sheettint.blendmode}}
-                <select name="flags.lootsheetnpc5e.sheettint.blendmode" data-event-type="change"
+                <select name="data.flags.lootsheetnpc5e.sheettint.blendmode" data-event-type="change"
                     data-action="sheetUpdate">
                     <option value="difference">difference</option>
                     <option value="lighten">lighten</option>

@@ -108,7 +108,7 @@ export class LootProcessor {
     /**
      * Add given currency to existing currency
      *
-     * @param {array} currencyData
+     * @param {Array} currencyData
      */
     _addCurrency(currencyData) {
         for (const key in currencyData) {
@@ -148,80 +148,9 @@ export class LootProcessor {
     * @returns {Array} Array of results
     */
     async _parseResult(result, options = {}) {
-        const betterResults = []
+        let betterResults = [];
         if (result.data.type === CONST.TABLE_RESULT_TYPES.TEXT) {
-            const textResults = result.data.text.split('|');
-
-            for (let t of textResults) {
-                // if the text is a currency, we process that first
-                t = await this._processTextAsCurrency(t);
-                t = await this._rollInlineDice(t);
-
-                // eslint-disable-next-line no-useless-escape
-                const regex = /(\s*[^\[@]*)@*(\w+)*\[([\w.,*+-\/\(\)]+)\]/g;
-                let textString = t;
-                const commands = [];
-                let table;
-                const betterResult = {};
-                let matches;
-
-                while ((matches = regex.exec(t)) !== null) {
-                    // matches[1] is undefined in case we are matching [tablename]
-                    // if we are matching @command[string] then matches[2] is the command and [3] is the arg inside []
-                    // console.log(`match 0: ${matches[0]}, 1: ${matches[1]}, 2: ${matches[2]}, 3: ${matches[3]}`);
-
-                    if (matches[1] !== undefined && matches[1].trim() !== '') {
-                        textString = matches[1];
-                    }
-                    // textString = matches[1] || textString; //the first match is the text outside [], a rollformula
-                    const commandName = matches[2];
-                    const innerTableName = matches[3];
-
-                    if (!commandName && innerTableName) {
-                        const out = Utils.separateIdCompendiumName(innerTableName);
-                        const tableName = out.nameOrId;
-                        const tableCompendiumName = out.compendiumName;
-
-                        if (tableCompendiumName) {
-                            table = await Utils.findInCompendiumByName(tableCompendiumName, tableName);
-                        } else {
-                            table = game.tables.getName(tableName);
-                        }
-
-                        if (!table) {
-                            msg = `not table with name ${tableName} found in pack ${tableCompendiumName}`;//game.i18n.format(NotTableByNameInPack, { tableName: tableName, packName: tableCompendiumName });
-                            ui.notifications.warn(MODULE.ns + ' | ' + msg);
-                        }
-                        break
-                    } else if (commandName) {
-                        commands.push({ command: commandName.toLowerCase(), arg: matches[3] });
-                        if (commandName.toLowerCase() === 'compendium') {
-                            betterResult.collection = matches[3];
-                        }
-                    }
-                }
-
-                // if a table definition is found, the textString is the rollFormula to be rolled on that table
-                if (table) {
-                    const numberRolls = await this.tryRoll(textString);
-                    const innerTableRoller = new TableRoller(table);
-                    const innerTableResults = await innerTableRoller.roll(numberRolls);
-
-                    // take care of nested tables
-                    this.tableResults = this.tableResults.concat(innerTableResults);
-                } else if (textString) {
-                    // if no table definition is found, the textString is the item name
-                    console.log(`results text ${textString.trim()} and commands ${commands}`);
-                    betterResult.img = result.data.img;
-                    betterResult.text = textString.trim();
-                    // if there is command, then it's not a pure text but a generated item
-                    if (!commands || commands.length === 0) {
-                        betterResult.type = CONST.TABLE_RESULT_TYPES.TEXT;
-                    }
-                    betterResult.commands = commands;
-                    betterResults.push(betterResult);
-                }
-            }
+            betterResults = await this._parseTextResult(result, options);
         } else {
             const betterResult = {};
             betterResult.img = result.data.img;
@@ -233,6 +162,88 @@ export class LootProcessor {
         return betterResults;
     }
 
+    async _parseTextResults(result, options = {}) {
+        const textResults = result.data.text.split('|');
+        let betterResults = [];
+
+        for (let textResult of textResults) {
+            // if the text is a currency, we process that first
+            textResult = await this._processTextAsCurrency(textResult);
+            textResult = await this._rollInlineDice(textResult);
+
+            let parsedTextResult = this._getTextResult(textResult);
+
+            // if a table definition is found, the textString is the rollFormula to be rolled on that table
+            if (parsedTextResult.table) {
+                const numberRolls = await this.tryRoll(textResult);
+                const innerTableRoller = new TableRoller(table);
+                const innerTableResults = await innerTableRoller.roll(numberRolls);
+
+                // take care of nested tables
+                this.tableResults = this.tableResults.concat(innerTableResults);
+            } else if (parsedTextResult.textString) {
+                if (parsedTextResult.collection){
+                    betterResult.collection = parsedTextResult.collection;
+                }
+                // if no table definition is found, the textString is the item name
+                console.log(`results text ${textString.trim()} and commands ${parsedTextResult.commands}`);
+                betterResult.img = result.data.img;
+                betterResult.text = parsedTextResult.textString.trim();
+                // if there is command, then it's not a pure text but a generated item
+                if (parsedTextResult.commands.length === 0) {
+                    betterResult.type = CONST.TABLE_RESULT_TYPES.TEXT;
+                }
+                betterResult.commands = commands;
+                betterResults.push(betterResult);
+            }
+        }
+
+        return betterResults;
+    }
+
+
+    async _getTextResult(textString) {
+        // eslint-disable-next-line no-useless-escape
+        const regex = /(\s*[^\[@]*)@*(\w+)*\[([\w.,*+-\/\(\)]+)\]/g;
+
+        let result = { table: false, textString: false, commands: [], collection: false };
+        let matches;
+
+        while ((matches = regex.exec(textString)) !== null) {
+            // matches[1] is undefined in case we are matching [tablename]
+            // if we are matching @command[string] then matches[2] is the command and [3] is the arg inside []
+            // console.log(`match 0: ${matches[0]}, 1: ${matches[1]}, 2: ${matches[2]}, 3: ${matches[3]}`);
+
+            if (matches[1] !== undefined && matches[1].trim() !== '') {
+                result.textString = matches[1];
+            }
+
+            const commandName = matches[2],
+                innerTableName = matches[3];
+
+            if (!commandName && innerTableName) {
+                const out = Utils.separateIdCompendiumName(innerTableName);
+                const tableName = out.nameOrId;
+                const tableCompendiumName = out.compendiumName;
+
+                if (tableCompendiumName) {
+                    result.table = await Utils.findInCompendiumByName(tableCompendiumName, tableName);
+                } else {
+                    result.table = game.tables.getName(tableName);
+                }
+
+                if (!result.table) ui.notifications.warn(`${MODULE.ns} | no table with name ${tableName} found in compendium pack ${tableCompendiumName}`);
+                break;
+            } else if (commandName) {
+                result.commands.push({ command: commandName.toLowerCase(), arg: matches[3] });
+                if (commandName.toLowerCase() === 'compendium') {
+                    result.collection = matches[3];
+                }
+            }
+        }
+
+        return result;
+    }
     /**
      *
      *
@@ -256,7 +267,7 @@ export class LootProcessor {
 
         if (options?.customRoll) {
             itemQuantity = (await (new Roll(options?.customRoll.itemQtyFormula, actor.data)).roll({ async: true })).total;
-            itemLimit = (await (new Roll(options?.customRoll.itemQtyFormula, actor.data)).roll({ async: true })).total;
+            itemLimit = (await (new Roll(options?.customRoll.itemQtyLimitFormula, actor.data)).roll({ async: true })).total;
         }
 
         let originalItemQuantity = originalItem?.data?.quantity || 1,
@@ -279,6 +290,7 @@ export class LootProcessor {
             return;
         }
         if (newItem.data?.name) {
+            newItem.data.data.quantity = limitCheckedQuantity;
             /** we create a new item if we don't own it already */
             await actor.createEmbeddedDocuments('Item', [newItem.data]);
         }
