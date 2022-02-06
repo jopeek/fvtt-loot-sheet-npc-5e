@@ -3,7 +3,7 @@ import { LootSheetSettings } from '../apps/settings/LootSheetSettings.js';
 import { LootSeederSettings } from '../apps/settings/LootSeederSettings.js';
 import { VersionCheck } from '../helper/VersionCheckHelper.js';
 import { renderWelcomeScreen } from '../apps/WelcomeScreen.js';
-import { API } from '../api/API.js';
+import { API } from '../API.js';
 
 import { LootSeeder } from '../classes/LootSeeder.js';
 import { SocketListener } from './SocketListener.js';
@@ -178,9 +178,7 @@ export class LootsheetNPC5eHooks {
 
         const HUD_left = document.querySelector('#token-hud .left');
         let lsnNav = document.createElement('nav'),
-            lsnLootAllButton = document.createElement('div'),
             lsnGMButtonMakeObservable = document.createElement('div'),
-            lsnLootAllImg = document.createElement('img'),
             lsnMakeObservableImg = document.createElement('img'),
             lsnMakeObservableTitle = game.i18n.localize("Make Lootable");
 

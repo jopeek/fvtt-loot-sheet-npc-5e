@@ -174,7 +174,7 @@
                 },
                 "sheetUpdate": {
                     "name": "Force sheet update",
-                    "hint": "Send an update to the players that tells there client to refresh the sheet."
+                    "hint": "This setting will try to send a signal to players when something changes in the sheet. Telling their FoundryVTT client to rerender the sheet."
                 },
                 "tradeItems": {
                     "name": "Trading",
@@ -227,13 +227,9 @@
                     "hint": "Use the skiplist to ignore tokens with certain types during auto seeding."
                 }
             },
-            "autoCheckUpdates": {
-                "name": "Update check",
-                "hint": "Automatically check for module updates on startup"
-            },
             "addInterfaceButtons": {
                 "name": "Add interface buttons",
-                "hint": "Add buttons to the interface"
+                "hint": "Adds a button to the left hand side to add loot to a sheet. Adds a button to the token hud to change the permissions to observers."
             },
             "useBetterRolltables": {
                 "name": "Use better rolltables",

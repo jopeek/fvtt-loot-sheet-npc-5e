@@ -70,7 +70,7 @@ class LootSheetNPC5eHelper {
             stagedItems = (event.currentTarget.closest('.tradegrid')) ? this._handleTradeStage(trades) : null;
 
         if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
-        if (!game.user.character?.id && action != 'sheetUpdate') {
+        if (!game.user?.character?.id && action != 'sheetUpdate') {
             return ui.notifications.info("You need to assign an actor to your user before you can do this.");
         }
 

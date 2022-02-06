@@ -241,7 +241,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     _prepareItems(actorData) {
         const items = actorData.items,
             lootableItems = LootSheetNPC5eHelper.getLootableItems(items),
-            playerCharacter = game.user.character;
+            playerCharacter = game.user?.character;
 
         //enrich with uuid
         for (let fullItem of this.actor.getEmbeddedCollection('Item')) {

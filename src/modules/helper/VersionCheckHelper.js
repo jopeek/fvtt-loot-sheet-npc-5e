@@ -36,7 +36,6 @@ export class VersionCheck {
   }
 
   static checkForUpdate (mN) {
-    if(game.settings.get(mN,'autoCheckUpdates')){
       if (!this._r) this._reg(mN)
 
       const mV = game.modules.get(mN).data.version,
@@ -68,8 +67,6 @@ export class VersionCheck {
           ui.notifications.info(MODULE.ns + ' | ' + data.version + ' is available. Please update to the latest version.');
         }
       });
-
-    }
 
     // eslint-disable-next-line no-undef
     return isNewerVersion(mV, oV)

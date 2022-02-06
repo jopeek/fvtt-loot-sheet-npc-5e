@@ -37,15 +37,6 @@ export class LootSheetSettings {
             restricted: true
         });
 
-        game.settings.register(MODULE.ns, MODULE.settings.keys.common.autoCheckUpdates, {
-            name: game.i18n.localize('lsnpc.settings.autoCheckUpdates.name'),
-            hint: game.i18n.localize('lsnpc.settings.autoCheckUpdates.hint'),
-            scope: MODULE.settings.scopes.world,
-            config: true,
-            default: true,
-            type: Boolean,
-        });
-
         game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.sheetUpdate, {
             name: game.i18n.localize('lsnpc.settings.sheet.sheetUpdate.name'),
             hint: game.i18n.localize('lsnpc.settings.sheet.sheetUpdate.hint'),

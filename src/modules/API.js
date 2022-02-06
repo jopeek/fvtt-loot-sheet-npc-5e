@@ -1,10 +1,10 @@
-import { PermissionHelper } from '../helper/PermissionHelper.js';
-import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
-import { MODULE } from '../data/moduleConstants.js';
-import { LootSeeder } from '../classes/LootSeeder.js';
-import { TableRoller } from '../classes/TableRoller.js';
-import { LootProcessor } from '../classes/LootProcessor.js';
-import { CurrencyHelper } from '../helper/CurrencyHelper.js';
+import { PermissionHelper } from './helper/PermissionHelper.js';
+import { LootSheetNPC5eHelper } from "./helper/LootSheetNPC5eHelper.js";
+import { MODULE } from './data/moduleConstants.js';
+import { LootSeeder } from './classes/LootSeeder.js';
+import { TableRoller } from './classes/TableRoller.js';
+import { LootProcessor } from './classes/LootProcessor.js';
+import { CurrencyHelper } from './helper/CurrencyHelper.js';
 
 /**
  * @description The lootsheet API
