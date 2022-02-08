@@ -1,7 +1,6 @@
 <main class="tradegrid">
     <section class="token-inventory">
-        <main class="inventory-wrapper" data-event-target="token" data-event-action="{{#ifeq lootsheettype "
-            Merchant"}}buy{{else}}loot{{/ifeq}}">
+        <main class="inventory-wrapper" data-event-target="token" data-event-action="{{#ifeq lootsheettype "Merchant"}}buy{{else}}loot{{/ifeq}}">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.lootableItems mode="npc"}}
         </main>
     </section>
@@ -14,21 +13,20 @@
     </section>
 
     <section class="stage dropzone" dropzone="true">
-        <main data-event-target="{{#ifeq lootsheettype " Merchant"}}sell{{else}}give{{/ifeq}}"
-            data-event-action="player">
+        <main data-event-target="{{#ifeq lootsheettype "Merchant"}}sell{{else}}give{{/ifeq}}" data-event-action="player">
             <header>
                 <h3>{{#ifeq lootsheettype "Merchant"}}Sell{{else}}Give{{/ifeq}}</h3>
             </header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
         </main>
-        <main data-event-target="{{#ifeq lootsheettype " Merchant"}}buy{{else}}loot{{/ifeq}}" data-event-action="token">
+        <main data-event-target="{{#ifeq lootsheettype "Merchant"}}buy{{else}}loot{{/ifeq}}" data-event-action="token">
             <header>{{#ifeq lootsheettype "Merchant"}}Buy{{else}}Take{{/ifeq}}</header>
             <ul class="inventory-list inventory-condensed" data-document-type="Item">
             </ul>
             <footer>
                 <button class="lsnpc-action-link" type="button" data-action="tradeItems">
-                    {{#ifeq ../lootsheettype "Merchant"}}Trade{{else}}Confirm{{/ifeq}}
+                    {{#ifeq lootsheettype "Merchant"}}Trade{{else}}Confirm{{/ifeq}}
                 </button>
             </footer>
         </main>
@@ -43,8 +41,7 @@
         </aside>
     </section>
     <section class="player-inventory">
-        <main class="inventory-wrapper" data-event-target="player" data-event-action="{{#ifeq lootsheettype "
-            Merchant"}}sell{{else}}give{{/ifeq}}">
+        <main class="inventory-wrapper" data-event-target="player" data-event-action="{{#ifeq lootsheettype "Merchant"}}sell{{else}}give{{/ifeq}}">
             {{> "modules/lootsheetnpc5e/templates/partials/trade/inventory.hbs" inventoryData=actor.playerInventory mode="player"}}
         </main>
     </section>
