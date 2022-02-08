@@ -56,8 +56,11 @@ class LootSheetNPC5eHelper {
      *
      * @returns
      */
-    static async sendActionToSocket(token, event) {
+    static async sendActionToSocket(target, event) {
         event.preventDefault();
+
+        if (target === null) return ui.notifications.error("No target given to send action to socket");
+
         const targetGm = PermissionHelper.getTargetGM(),
             action = event.currentTarget.dataset.action,
             dataSet = { ...event.currentTarget.dataset, ...event.currentTarget.closest('.item')?.dataset },
@@ -66,11 +69,9 @@ class LootSheetNPC5eHelper {
             maxQuantity = parseInt(dataSet?.maxQuantity),
             trades = event.currentTarget.closest('section')?.querySelectorAll('ul') || null;
 
-        let quantity = 1,
+        let quantity = (dataSet?.getAll === 'true') ? maxQuantity : 1,
             stagedItems = (event.currentTarget.closest('.tradegrid')) ? this._handleTradeStage(trades) : null;
-
-        if (token === null) return ui.notifications.error("You must `" + action + "` from a token.");
-
+            
         if (!game.user?.character?.id && action != 'sheetUpdate') {
             return ui.notifications.info("You need to assign an actor to your user before you can do this.");
         }
@@ -78,10 +79,10 @@ class LootSheetNPC5eHelper {
         const packet = {
             action: action,
             triggerActorId: game.user.character?.id || null,
-            tokenUuid: token.uuid,
+            tokenUuid: target.uuid,
             processorId: targetGm.id,
             targetItemId: targetItemId || null,
-            quantity: quantity || null,
+            quantity: quantity,
             trades: stagedItems
         };
 
@@ -89,10 +90,7 @@ class LootSheetNPC5eHelper {
             game.socket.emit(MODULE.socket, packet);
         }
 
-        if (dataSet?.getAll === 'true') {
-            packet.quantity = maxQuantity;
-            await this.emitToSocketOrCallMethod(packet);
-        } else if (!event.shiftKey) {
+        if (!event.shiftKey) {
             await this.emitToSocketOrCallMethod(packet);
         } else {
             // shiftKey, we ask for the quantity

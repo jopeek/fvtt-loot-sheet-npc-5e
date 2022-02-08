@@ -347,7 +347,7 @@ export class TradeHelper {
      * Check again if the source posses the item
      * If the source is not in possesion of the item anymore, remove it from the items array.
      *
-     * If the source is in possesion add its worth to the total tradesum.
+     * If the source is in possession add its worth to the total tradesum.
      *
      * @param {Actor} source
      * @param {Collection} items

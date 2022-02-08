@@ -1,6 +1,5 @@
 import { CurrencyHelper } from "../helper/CurrencyHelper.js";
 import { ActorHelper } from "../helper/ActorHelper.js";
-import { TokenHelper } from "../helper/TokenHelper.js";
 import { MODULE } from "../data/moduleConstants.js";
 
 export class LootSeeder {

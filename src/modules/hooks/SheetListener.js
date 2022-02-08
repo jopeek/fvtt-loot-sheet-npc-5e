@@ -24,7 +24,7 @@ export class SheetListener {
 
     /**
      *
-     * @description activate the sheets main listeners for interface interaction
+     * @description activate the sheets main listeners for UI interaction
      *
      */
     async activateListeners(options = {}) {
@@ -35,38 +35,7 @@ export class SheetListener {
             helpTexts = app.querySelectorAll('.help');
 
         if (this.options.editable) {
-            /**
-             * GM or owner only
-             */
-            const bulkPermissions = app.querySelectorAll('.permission-option a'),
-                individualPermissions = app.querySelectorAll('.permission-proficiency'),
-                permissionsFilter = app.querySelector('.permissions-filter'),
-                priceModifierDialog = app.querySelector('.price-modifier'),
-                sheetStylings = app.querySelector('.gm-settings .sheet-style'),
-                inventorySettings = app.querySelector('.gm-settings .inventory-settings'),
-                inventoryUpdate = app.querySelector('.gm-settings .update-inventory');
-
-            if (game.user.isGM){
-                for (let button of bulkPermissions) {
-                    button.addEventListener('click', ev => PermissionHelper.bulkPermissionsUpdate(ev, this.actor));
-                }
-
-                for (let playerPermissionButton of individualPermissions) {
-                    playerPermissionButton.addEventListener('click', ev => PermissionHelper.cyclePermissions(ev, this.actor));
-                }
-
-                permissionsFilter.addEventListener('change', ev => this.actor.setFlag(MODULE.ns, 'permissionsFilter', ev.target.value));
-            }
-
-            if (priceModifierDialog) {
-                priceModifierDialog.addEventListener('click', ev => SheetHelper.renderPriceModifierDialog(ev, this.actor));
-            }
-
-
-            inventorySettings.addEventListener('change', ev => this.inventorySettingChange(ev, this.actor));
-            sheetStylings.addEventListener('change', (ev) => this.sheetStyleChange(ev, this.actor));
-            inventoryUpdate.addEventListener('click', ev => this.inventoryUpdateListener(ev));
-            // toggle infoboxes
+            this._activateOwnerGMListeners(app);
         }
 
         this.tradeItemEventListeners(tradeableItems);
@@ -87,6 +56,41 @@ export class SheetListener {
         }
 
         if (options && options?.verbose) console.log(`${MODULE.ns} | Sheet | Listeners activated`);
+    }
+
+
+    /**
+    * GM or owner only
+    */
+    _activateOwnerGMListeners(app) {
+        const bulkPermissions = app.querySelectorAll('.permission-option a'),
+            individualPermissions = app.querySelectorAll('.permission-proficiency'),
+            permissionsFilter = app.querySelector('.permissions-filter'),
+            priceModifierDialog = app.querySelector('.price-modifier'),
+            sheetStylings = app.querySelector('.gm-settings .sheet-style'),
+            inventorySettings = app.querySelector('.gm-settings .inventory-settings'),
+            inventoryUpdate = app.querySelector('.gm-settings .update-inventory');
+
+        if (game.user.isGM) {
+            for (let button of bulkPermissions) {
+                button.addEventListener('click', ev => PermissionHelper.bulkPermissionsUpdate(ev, this.actor));
+            }
+
+            for (let playerPermissionButton of individualPermissions) {
+                playerPermissionButton.addEventListener('click', ev => PermissionHelper.cyclePermissions(ev, this.actor));
+            }
+
+            permissionsFilter.addEventListener('change', ev => this.actor.setFlag(MODULE.ns, 'permissionsFilter', ev.target.value));
+        }
+
+        if (priceModifierDialog) {
+            priceModifierDialog.addEventListener('click', ev => SheetHelper.renderPriceModifierDialog(ev, this.actor));
+        }
+
+        inventorySettings.addEventListener('change', ev => this.inventorySettingChange(ev, this.actor));
+        sheetStylings.addEventListener('change', (ev) => this.sheetStyleChange(ev, this.actor));
+        inventoryUpdate.addEventListener('click', ev => this.inventoryUpdateListener(ev));
+        // toggle infoboxes
     }
 
     /**
@@ -162,7 +166,7 @@ export class SheetListener {
             await this.actor.deleteEmbeddedDocuments("Item", currentItems);
         }
 
-        await LootSeeder.seedItemsToActors([this.actor], {force: true});
+        await LootSeeder.seedItemsToActors([this.actor], { force: true });
     }
 
     /**
@@ -210,8 +214,6 @@ export class SheetListener {
      * @private
      */
     async sheetStyleChange(event, actor) {
-        //actor.setFlag(MODULE.ns, event.target.name , event.target.value);
-
         // @todo get this from the settings, leverage the constants, if key exists in MODULE.
         const expectedKeys = ["sheettint", "avatartint", "customBackground", "blendmode", "darkMode"];
 
@@ -248,30 +250,32 @@ export class SheetListener {
             existingItem = targetList.querySelector('.item[data-uuid="' + data.uuid + '"]');
 
         if (!item) return;
+        let quantity = parseInt(item.dataset.quantity);
 
-        if (!existingItem && item.dataset.quantity == 1) {
+
+        if (!existingItem && quantity == 1) {
             targetList.appendChild(item);
             return;
         }
 
-        let quantity = parseInt(item.dataset.quantity);
         const newItem = item.cloneNode();
         // handle quantity update
-        quantity--;
 
-        if (quantity == 0) {
+        if ((quantity - 1) === 0 || event.type == 'contextmenu') {
             item.remove();
         } else {
+            quantity--;
             item.dataset.quantity = quantity;
         }
 
-        newItem.dataset.quantity = 1;
+        newItem.dataset.quantity = (event.type === 'contextmenu')? quantity : 1;
         newItem.addEventListener('click', ev => this._onClick(ev));
+        newItem.addEventListener('contextmenu', ev => this._onClick(ev));
 
         //check if newItem already exists in the targetList
 
         if (existingItem) {
-            existingItem.dataset.quantity = parseInt(existingItem.dataset.quantity) + 1;
+            existingItem.dataset.quantity = parseInt(existingItem.dataset.quantity) + quantity;
         } else {
             targetList.appendChild(newItem);
         }
