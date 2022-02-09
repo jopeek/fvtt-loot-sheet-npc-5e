@@ -89,10 +89,12 @@ export class SocketListener {
                     await TradeHelper.lootItems(targetToken.actor, triggeringActor, items, options);
                     break;
                 case "distributeCurrency":
-                    await TradeHelper.distributeCurrency(targetToken.actor, options);
+                    options.type = 'distributeCurrency';
+                    await TradeHelper.distributeCurrency(targetToken.actor, triggeringActor, options);
                     break;
                 case "lootCurrency":
-                    await TradeHelper.lootCurrency(targetToken.actor, triggeringActor);
+                    options.type = 'lootCurrency';
+                    await TradeHelper.lootCurrency(targetToken.actor, triggeringActor, options);
                     break;
                 case 'sheetUpdate':                //re render the sheet for the token.
                     return this._handleRerender(packet.tokenUuid);
