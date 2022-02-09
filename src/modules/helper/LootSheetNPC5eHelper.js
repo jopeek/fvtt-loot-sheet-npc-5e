@@ -71,7 +71,7 @@ class LootSheetNPC5eHelper {
 
         let quantity = (dataSet?.getAll === 'true') ? maxQuantity : 1,
             stagedItems = (event.currentTarget.closest('.tradegrid')) ? this._handleTradeStage(trades) : null;
-            
+
         if (!game.user?.character?.id && action != 'sheetUpdate') {
             return ui.notifications.info("You need to assign an actor to your user before you can do this.");
         }
@@ -86,8 +86,9 @@ class LootSheetNPC5eHelper {
             trades: stagedItems
         };
 
-        if (MODULE.settings.keys.sheet.sheetUpdate) {
-            game.socket.emit(MODULE.socket, packet);
+        if (action === MODULE.settings.keys.sheet.sheetUpdate) {
+            await this.emitToSocketOrCallMethod(packet);
+            return;
         }
 
         if (!event.shiftKey) {
