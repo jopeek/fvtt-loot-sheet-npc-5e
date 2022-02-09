@@ -149,27 +149,29 @@ export class PermissionHelper {
      *
      * @returns {Array<User>} Array of users
      */
-    static getEligablePlayerActors(actor, permissionLevel = CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER) {
-        let eligables = this.getEligableIdsByLevel(actor);
+    static getEligableActors(actor, permissionLevel = CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER) {
+        let eligibleUsers = this.getEligableIdsByLevel(actor),
+            eligibles = game.users.filter(u => eligibleUsers.includes(u.id) && u.character).map(u => u.id);
+
         const permissionsFilter = actor.getFlag(MODULE.ns, 'permissionsFilter');
-        console.log(`${MODULE.ns} | PermissionsHelper | getEligablePlayerActors | ${eligables.length} players with eligable characters found.`);
+        console.log(`${MODULE.ns} | PermissionsHelper | getEligablePlayerActors | ${eligibles.length} players with eligable characters found.`);
 
         switch (permissionsFilter) {
             case "1": // filter out those that do not view the scene
-                eligables = this.filterByPlayerViewingScene(eligables, actor);
+                eligibles = this.filterByPlayerViewingScene(eligibles, actor);
                 break;
             case "2": // filter out those thats do not have a token in the scene
-                eligables = this.filterByTokenInScene(eligables);
-                console.log(`${MODULE.ns} |  \\-->  | Filtered for players with a token in the tokens scene. ${eligables.length} players with eligable characters.`);
+                eligibles = this.filterByTokenInScene(eligibles);
+                console.log(`${MODULE.ns} |  \\-->  | Filtered for players with a token in the tokens scene. ${eligibles.length} players with eligable characters.`);
                 break;
             case "3": // filter both
-                eligables = this.filterByPlayerViewingScene(eligables, actor);
-                console.log(`${MODULE.ns} |  \\-->  | Filtered for players that view the scene. ${eligables.length} players with eligable characters.`);
-                eligables = this.filterByTokenInScene(eligables);
-                console.log(`${MODULE.ns} |  \\-->  | Filtered for players with a token in the tokens scene. ${eligables.length} players with eligable characters.`);
+                eligibles = this.filterByPlayerViewingScene(eligibles, actor);
+                console.log(`${MODULE.ns} |  \\-->  | Filtered for players that view the scene. ${eligibles.length} players with eligable characters.`);
+                eligibles = this.filterByTokenInScene(eligibles);
+                console.log(`${MODULE.ns} |  \\-->  | Filtered for players with a token in the tokens scene. ${eligibles.length} players with eligable characters.`);
         }
 
-        return eligables;
+        return eligibles;
     }
 
     /**

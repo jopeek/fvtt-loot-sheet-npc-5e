@@ -104,7 +104,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         sheetData.totalWeight = totals.weight.toLocaleString('en');
         sheetData.totalPrice = totals.price.toLocaleString('en') + " gp";
         sheetData.totalQuantity = totals.quantity;
-        sheetData.observerCount = PermissionHelper.getEligablePlayerActors(this.actor).length;
+        sheetData.observerCount = PermissionHelper.getEligableActors(this.actor).length;
         sheetData.distributeCoins = game.settings.get(MODULE.ns, "distributeCurrency");
         sheetData.lootCurrency = game.settings.get(MODULE.ns, "lootCurrency");
         sheetData.lootAll = game.settings.get(MODULE.ns, "lootAll");
@@ -298,20 +298,20 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      * @returns {object} sheetData
      */
     async _prepareGMSettings(sheetData) {
-        const observers = PermissionHelper.getEligablePlayerActors(this.actor),
+        const observers = PermissionHelper.getEligableActors(this.actor),
             permissionsInfo = PermissionHelper.getPermissionInfo(),
-            [playerData, playersPermission] = this._playerPermissions(sheetData),
+            permissions = this._playerPermissions(sheetData),
             currencySplit = CurrencyHelper.getSplitByObservers(sheetData.data.currency, observers.length),
             gameWorldTables = await TableHelper.getGameWorldRolltables();
 
         let loot = {};
-        loot.players = playerData;
+        loot.players = permissions.playerData;
         loot.observerCount = observers.length;
         loot.currency = currencySplit;
         loot.permissions = permissionsInfo;
-        loot.playersPermission = playersPermission;
-        loot.playersPermissionIcon = PermissionHelper.getPermissionInfo(playersPermission);
-        loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(playersPermission)?.description;
+        loot.playersPermission = permissions.playersPermission;
+        loot.playersPermissionIcon = PermissionHelper.getPermissionInfo(permissions.playersPermission);
+        loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(permissions.playersPermission)?.description;
 
         sheetData.rolltables = gameWorldTables;
         sheetData.actor.flags.lootsheetnpc5e = loot;
@@ -330,7 +330,9 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
     _playerPermissions(sheetData) {
         // get all the players
         const players = game.users.players;
-
+        if(game.user.isGM && game.user.character){
+            players.push(game.user);
+        }
         let playerData = [],
             commonPlayersPermission = -1;
 
@@ -354,6 +356,8 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
                 playerData.push(player);
             }
         }
-        return [playerData, commonPlayersPermission];
+
+
+        return {playerData: playerData, commonPlayersPermission: commonPlayersPermission};
     }
 }
