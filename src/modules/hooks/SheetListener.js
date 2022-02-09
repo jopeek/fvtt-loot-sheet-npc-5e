@@ -2,8 +2,6 @@ import { MODULE } from "../data/moduleConstants.js";
 import { LootSheetNPC5eHelper } from "../helper/LootSheetNPC5eHelper.js";
 import { PermissionHelper } from "../helper/PermissionHelper.js";
 import { SheetHelper } from "../helper/SheetHelper.js";
-import { TokenHelper } from "../helper/TokenHelper.js";
-import tippy from "tippy.js";
 import { TooltipListener } from "./TooltipListener.js";
 import { LootSeeder } from "../classes/LootSeeder.js";
 
@@ -247,36 +245,30 @@ export class SheetListener {
             sourceList = document.querySelector(sourceSelector),
             targetList = document.querySelector(targetSelector),
             item = sourceList.querySelector('.item[data-uuid="' + data.uuid + '"]'),
-            existingItem = targetList.querySelector('.item[data-uuid="' + data.uuid + '"]');
+            targetItem = targetList.querySelector('.item[data-uuid="' + data.uuid + '"]');
 
         if (!item) return;
-        let quantity = parseInt(item.dataset.quantity);
+        let quantity = (event.type == 'contextmenu') ? parseInt(item.dataset.quantity) : 1;
 
-
-        if (!existingItem && quantity == 1) {
+        /* if (!targetItem && parseInt(item.dataset.quantity) === 1) {
             targetList.appendChild(item);
             return;
-        }
+        } */
 
         const newItem = item.cloneNode();
-        // handle quantity update
 
-        if ((quantity - 1) === 0 || event.type == 'contextmenu') {
+        if ((parseInt(item.dataset.quantity) - 1) === 0 || event.type == 'contextmenu') {
             item.remove();
         } else {
-            quantity--;
-            item.dataset.quantity = quantity;
+            item.dataset.quantity = parseInt(item.dataset.quantity) - quantity;
         }
 
-        newItem.dataset.quantity = (event.type === 'contextmenu')? quantity : 1;
-        newItem.addEventListener('click', ev => this._onClick(ev));
-        newItem.addEventListener('contextmenu', ev => this._onClick(ev));
-
-        //check if newItem already exists in the targetList
-
-        if (existingItem) {
-            existingItem.dataset.quantity = parseInt(existingItem.dataset.quantity) + quantity;
+        if (targetItem) {
+            targetItem.dataset.quantity = parseInt(targetItem.dataset.quantity) + quantity;
         } else {
+            newItem.dataset.quantity = quantity;
+            newItem.addEventListener('click', ev => this._onClick(ev));
+            newItem.addEventListener('contextmenu', ev => this._onClick(ev));
             targetList.appendChild(newItem);
         }
 
