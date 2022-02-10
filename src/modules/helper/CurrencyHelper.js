@@ -134,7 +134,7 @@ export class CurrencyHelper {
      * @returns {Array<object>} Array with
      */
     static getSharesAndRemainder(stack, splitBy) {
-        let shares = [],
+        let shares = {},
             remainder = {};
 
         for (let type in stack) {
@@ -142,7 +142,7 @@ export class CurrencyHelper {
             remainder[type] = shares[type] % splitBy;
         }
 
-        return [shares, remainder];
+        return {currencyShares: shares, remainder: remainder};
     }
 
     /**

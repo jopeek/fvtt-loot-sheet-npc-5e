@@ -5,7 +5,9 @@
             "buy": "{destination} purchased from {source}",
             "sell": "{destination} sold to {source}",
             "give": "{destination} gave items to {source}",
-            "loot": "{destination} took items from {source}"
+            "loot": "{destination} took items from {source}",
+            "lootCurrency": "{destination} took currency from {source}",
+            "distributeCurrency": "{destination} apportioned currency from {source}"
         },
         "permissions": {
             "0": {

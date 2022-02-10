@@ -55,12 +55,12 @@ export class TradeHelper {
      */
     static async lootItems(source, destination, items, options) {
         let movedItems = await ItemHelper.moveItemsToDestination(source, destination, items);
-        ChatHelper.chatMessage(source, destination, movedItems, options);
+        ChatHelper.tradeChatMessage(source, destination, movedItems, options);
 
     }
 
     /**
-     * @summary -- 👽☠️🏴‍☠️All ya Items belong to us 🏴‍☠️☠️👽  --
+     * @summary -- 👽☠️🏴‍☠️ All ya Items belong to us 🏴‍☠️☠️👽  --
      *
      * @description Gets the lootable subset of the items in
      * the source actor and moves this subset to the destination actor.
@@ -73,7 +73,7 @@ export class TradeHelper {
      * @function
      *
      * @since 3.4.5.3
-     * @author Daniel Böttner <daniel@est-in.eu>
+     * @author Daniel Böttner < @DanielBoettner >
      */
     static async lootAllItems(source, destination, options = {}) {
         const items = ItemHelper.getLootableItems(source.items).map((item) => ({
@@ -85,8 +85,8 @@ export class TradeHelper {
             }
         }));
 
-        this.lootItems(source, destination, items);
-        this.lootCurrency(source, destination);
+        this.lootItems(source, destination, items, options);
+        this.lootCurrency(source, destination, options);
     }
 
     /**
@@ -116,8 +116,8 @@ export class TradeHelper {
      *
      * @returns {Promise<boolean>}
      *
-     * @author Jan Ole Peek <@jopeek>
-     * @author Daniel Böttner <@DanielBoettner>
+     * @author Jan Ole Peek < @jopeek >
+     * @author Daniel Böttner < @DanielBoettner >
      * @since 1.0.1
      *
      * @inheritdoc
@@ -138,7 +138,7 @@ export class TradeHelper {
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
         options.type="buy";
         options.priceModifier = priceModifier;
-        ChatHelper.chatMessage(seller, buyer, moved, options);
+        ChatHelper.tradeChatMessage(seller, buyer, moved, options);
     }
 
     /**
@@ -146,69 +146,51 @@ export class TradeHelper {
      *
      * @description Split the currency of an actor between multiple eligable player actors
      *
-     * @param {Actor} actor
+     * @param {Actor} source
      * @param {options} options
      *
      * @returns {Promise<boolean>}
      */
-    static distributeCurrency(actor, options = { verbose: true }) {
-        const actorData = actor.data,
-            eligables = PermissionHelper.getEligablePlayerActors(actor),
-            currency = CurrencyHelper.handleActorCurrency(actorData.data.currency),
-            [currencyShares, npcRemainingCurrency] = CurrencyHelper.getSharesAndRemainder(currency, eligables.length);
+     static async distributeCurrency(source, destination, options = { verbose: true }) {
+        const eligables = PermissionHelper.getEligableActors(source),
+            currency = CurrencyHelper.handleActorCurrency(source.data.data.currency),
+            shares = CurrencyHelper.getSharesAndRemainder(currency, eligables.length);
 
-        let msg = [];
+        let splits = {shares: shares.currencyShares, receivers : []};
 
         if (options.verbose) {
-            let cmsg = `${MODULE.ns} | ${distributeCoins.name}|`;
-            console.log(cmsg + ' actorData:', actorData);
+            let cmsg = `${MODULE.ns} | distributeCurrency |`;
+            console.log(cmsg + ' actorData:', source.data);
             console.log(cmsg + ' players:', game.users.players);
             console.log(cmsg + ' observers:', eligables);
-            console.log(cmsg + ' currencyShares:', currencyShares);
-            console.log(cmsg + ' npcRemainingCurrency', npcRemainingCurrency);
+            console.log(cmsg + ' currencyShares:', shares.currencyShares);
+            console.log(cmsg + ' npcRemainingCurrency', shares.remainder);
         }
 
         if (eligables.length === 0) return;
 
         for (let player of game.users.players) {
             let playerCharacter = player.character;
-            if (playerCharacter === null) continue;
-            if (!eligables.includes(playerCharacter.id)) continue;
+            if (!playerCharacter || !eligables.includes(player.id)) continue;
 
-            msg = [];
             let playerCurrency = duplicate(playerCharacter.data.data.currency),
                 newCurrency = duplicate(playerCharacter.data.data.currency);
 
+            splits.receivers.push(playerCharacter.data.name);
+            console.log(splits);
             for (let c in playerCurrency) {
-                if (currencyShares[c]) {
-                    msg.push(`${playerCharacter.data.name} receives:${currencyShares[c]} ${c} coins.`)
-                }
-                newCurrency[c] = parseInt(playerCurrency[c] || 0) + currencyShares[c];
-                playerCharacter.update({
-                    'data.currency': newCurrency
-                });
+                newCurrency[c] = parseInt(playerCurrency[c] || 0) + shares.currencyShares[c];
             }
+
+            await playerCharacter.update({'data.currency': newCurrency});
         }
 
-        actor.update({
-            "data.currency": npcRemainingCurrency
-        });
+        // set source funds to 0
+        source.update({"data.currency": { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 }});
 
-
-        // Create chat message for coins received
-        let message = `The  ${currencyShares.join(', ')} coins of ${actor.name} where shared between ${eligables.length} creatures.`;
-        if (msg.length > 0)
-            message += msg.join(",");
-
-
-        ChatMessage.create({
-            user: game.user.id,
-            speaker: {
-                actor: actor,
-                alias: actor.name
-            },
-            content: message
-        });
+        // update the chat
+        if (!options.chatOutPut) return;
+        ChatHelper.renderLootCurrencyMessage(source, destination, splits, options);
     }
 
     /**
@@ -217,69 +199,41 @@ export class TradeHelper {
      *
      * @description move the funds from one actor to another
      *
-     * @todo maybe refactor to use the Currencyhelper and the ChatHelper
      *
      * @param {Actor5e} source
      * @param {User} destination
+     * @param {object} options
      *
      * @returns {Promise<boolean>}
      * @author Jan Ole Peek <@jopeek>
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @inheritdoc
      */
-    static async lootCurrency(source, destination) {
+    static async lootCurrency(source, destination, options = {chatOutPut: true}) {
         const actorData = source.data;
-        let sheetCurrency = duplicate(actorData.data.currency);
-        let msg = [];
-        let currency = duplicate(destination.data.data.currency),
-            newCurrency = duplicate(destination.data.data.currency);
+        let sheetCurrency = duplicate(actorData.data.currency),
+            originalCurrency = duplicate(destination.data.data.currency),
+            newCurrency = duplicate(destination.data.data.currency),
+            movedFunds = {};
 
-        for (let c in currency) {
-            if (sheetCurrency[c]) {
-                msg.push(` ${sheetCurrency[c]} ${c} coins`)
-            }
+        // calculate the new currency
+        for (let c in originalCurrency) {
             if (sheetCurrency[c] != null) {
-                newCurrency[c] = parseInt(currency[c] || 0) + parseInt(sheetCurrency[c]);
-                destination.update({
-                    'data.currency': newCurrency
-                });
+                newCurrency[c] = parseInt(originalCurrency[c] || 0) + parseInt(sheetCurrency[c]);
+                movedFunds[c] = sheetCurrency[c];
             }
         }
 
-        // Remove currency from loot actor.
-        let lootCurrency = duplicate(source.data.data.currency),
-            zeroCurrency = {};
+        // set the destination currency to the new currency
+        destination.update({'data.currency': newCurrency});
 
-        for (let c in lootCurrency) {
-            zeroCurrency[c] = 0;
-            source.update({
-                "data.currency": zeroCurrency
-            });
-        }
+        // set source funds to 0
+        source.update({"data.currency": { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 }});
 
-        /**
-         * Could likely be handled by the ChatHelper.chatMessage function
-         */
-        // Create chat message for coins received
-        if (msg.length != 0) {
-            let message = `${destination.data.name} receives: `;
-            message += msg.join(",");
-            ChatMessage.create({
-                user: game.user._id,
-                speaker: {
-                    actor: source,
-                    alias: source.name
-                },
-                content: message,
-                flags: {
-                    lootsheetnpc5e: {
-                        type: 'loot',
-                        lootedCurrency: lootCurrency
-                    }
-                }
-            });
-        }
+        // update the chat
+        if (!options.chatOutPut) return;
+        ChatHelper.renderLootCurrencyMessage(source, destination, movedFunds, options);
     }
 
     /**
@@ -319,7 +273,7 @@ export class TradeHelper {
         if (!successfullTransaction) return false;
 
         moved[tradeType] = await ItemHelper.moveItemsToDestination(source, destination, preparedTrade.items);
-        ChatHelper.chatMessage(npcActor, playerCharacter, moved[tradeType], options);
+        ChatHelper.tradeChatMessage(npcActor, playerCharacter, moved[tradeType], options);
     }
 
     /**
@@ -429,10 +383,10 @@ export class TradeHelper {
             return false;
         }
 
-        [buyerFunds, sellerFunds] = this._getUpdatedFunds(buyerFunds, sellerFunds, itemCost, rates, fundsAsPlatinum);
+        let updatedFunds = this._getUpdatedFunds(buyerFunds, sellerFunds, itemCost, rates, fundsAsPlatinum);
 
-        await seller.update({ data: { currency: sellerFunds } });
-        await buyer.update({ data: { currency: buyerFunds } });
+        await seller.update({ data: { currency: updatedFunds.sellerFunds } });
+        await buyer.update({ data: { currency: updatedFunds.buyerFunds } });
 
         return true;
     }
@@ -469,7 +423,7 @@ export class TradeHelper {
             buyerFunds = this._smoothenFunds(buyerFunds, compensation, rates);
             sellerFunds = this._smoothenFunds(sellerFunds, compensation, rates);
         }
-        return [buyerFunds, sellerFunds];
+        return {buyerFunds: buyerFunds, sellerFunds: sellerFunds};
     }
 
     /**

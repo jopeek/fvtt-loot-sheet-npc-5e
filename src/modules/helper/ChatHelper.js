@@ -12,8 +12,8 @@ export class ChatHelper {
     /**
      * @description Create a chat messaage with the given data
      *
-     * @param {Token} source
-     * @param {Actor5e} destination
+     * @param {Actor} source
+     * @param {Actor} destination
      * @param {Item5e} movedItems
      * @param {object} options
      *
@@ -25,27 +25,24 @@ export class ChatHelper {
      * @static
      * @inheritdoc
      */
-    static async chatMessage(source, destination, movedItems, options = { chatOutPut: true, verbose: false }) {
-        if (!options.chatOutPut) return;
+    static async tradeChatMessage(source, destination, movedItems, options = { chatOutPut: true, verbose: false }) {
+        if (!options.chatOutPut || !game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.generateChatMessages)) return;
 
-        if (game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.generateChatMessages)) {
-            const interactionId = `${destination.id}-${options.type}-${source.id}`,
-                existingItems = this._getItemsFromLootMessage(interactionId, options),
-                parsedItems = this._parseMovedItems(movedItems, options),
-                finalChatItems = this._handleExistingItems(existingItems.items, parsedItems, options);
+        const interactionId = `${destination.id}-${options.type}-${source.id}`,
+            existingItems = this._getItemsFromLootMessage(interactionId, options),
+            parsedItems = this._parseMovedItems(movedItems, options),
+            finalChatItems = this._handleExistingItems(existingItems.items, parsedItems, options);
 
-            let messageObject = await this._renderInnerLootChatMessage(source, destination, finalChatItems, options);
+        let messageObject = await this._renderInnerLootChatMessage(source, destination, finalChatItems, options);
 
-
-            if (existingItems.id) {
-                messageObject._id = existingItems.id;
-                return ChatMessage.updateDocuments([messageObject]);
-            } else {
-                messageObject.user = game.user.id;
-                messageObject.speaker = { actor: destination, alias: destination.name };
-                messageObject.flags.lootsheetnpc5e.lootId = interactionId;
-                return ChatMessage.create(messageObject);
-            }
+        if (existingItems.id) {
+            messageObject._id = existingItems.id;
+            return ChatMessage.updateDocuments([messageObject]);
+        } else {
+            messageObject.user = game.user.id;
+            messageObject.speaker = { actor: destination, alias: destination.name };
+            messageObject.flags.lootsheetnpc5e.lootId = interactionId;
+            return ChatMessage.create(messageObject);
         }
     }
 
@@ -67,7 +64,7 @@ export class ChatHelper {
             flags: (source.collectionName == 'tokens') ? source.actor.data.flags : source.data.flags,
             items: chatItems,
             type: options.type,
-            actionMessage: game.i18n.format('lsnpc.chatActionMessages.' + options.type, {source: source.name, destination: destination.name})
+            actionMessage: game.i18n.format('lsnpc.chatActionMessages.' + options.type, { source: source.name, destination: destination.name })
         };
 
         if (options.verbose) {
@@ -200,5 +197,53 @@ export class ChatHelper {
         existingItems = { id: lootMessage.id, items: lootMessage.getFlag(MODULE.ns, 'loot') };
 
         return existingItems;
+    }
+
+    /**
+     *
+     * @param {Actor} source
+     * @param {Actor} destination
+     * @param {object} movedFunds
+     * @param {object} options
+     */
+    static async renderLootCurrencyMessage(source, destination, movedFunds, options = {}) {
+        const messageData = this._getCurrencyMessageData(source, destination, movedFunds, options);
+
+        ChatMessage.create({
+            user: game.user._id,
+            speaker: {
+                actor: destination,
+                alias: destination.name
+            },
+            content: await renderTemplate(MODULE.templatePath + '/chat/currency-chat-card.hbs', messageData),
+            flags: {
+                lootsheetnpc5e: {
+                    type: options.type,
+                    lootedCurrency: (options.type === 'lootCurrency') ? movedFunds : movedFunds.shares
+                }
+            }
+        });
+
+    }
+
+    static _getCurrencyMessageData(source, destination, movedFunds, options = {}) {
+        let messageData = {
+            source: source,
+            destination: destination,
+            flags: (source.collectionName == 'tokens') ? source.actor.data.flags : source.data.flags,
+            actionMessage: game.i18n.format(`lsnpc.chatActionMessages.${options.type}`, { source: source.name, destination: destination.name }),
+            movedFunds: false,
+            shares: false,
+            receivers: false,
+        };
+
+        if (options.type === 'lootCurrency'){
+            messageData.movedFunds = movedFunds;
+        } else {
+            messageData.receivers = movedFunds.receivers;
+            messageData.shares = movedFunds.shares;
+        }
+
+        return messageData;
     }
 }

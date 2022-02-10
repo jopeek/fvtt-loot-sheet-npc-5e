@@ -248,13 +248,8 @@ export class SheetListener {
             targetItem = targetList.querySelector('.item[data-uuid="' + data.uuid + '"]');
 
         if (!item) return;
+
         let quantity = (event.type == 'contextmenu') ? parseInt(item.dataset.quantity) : 1;
-
-        /* if (!targetItem && parseInt(item.dataset.quantity) === 1) {
-            targetList.appendChild(item);
-            return;
-        } */
-
         const newItem = item.cloneNode();
 
         if ((parseInt(item.dataset.quantity) - 1) === 0 || event.type == 'contextmenu') {
