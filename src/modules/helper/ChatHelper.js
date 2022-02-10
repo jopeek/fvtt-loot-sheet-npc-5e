@@ -140,7 +140,7 @@ export class ChatHelper {
                 }
                 if (existingItem.data.name === parsedItem.data.name) {
                     parsedItem.quantity += existingItem.quantity;
-                    parsedItem.priceTotal = Number(parsedItem.priceTotal * parsedItem.quantity).toFixed(2);
+                    parsedItem.priceTotal = Number(parsedItem.data.price * parsedItem.quantity).toFixed(2);
 
                     existingItem = mergeObject(existingItem, parsedItem);
                 }

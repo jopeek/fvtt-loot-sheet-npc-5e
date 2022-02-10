@@ -132,7 +132,7 @@ export class TradeHelper {
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
-        let itemCostInGold = (Math.round(soldItem.data.data.price * priceModifier * 100) / 100) * quantity,
+        let itemCostInGold = Math.round(((soldItem.data.data.price * priceModifier * 100) / 100) * quantity),
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
         if (!successfullTransaction) return false;
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
@@ -268,7 +268,7 @@ export class TradeHelper {
             source = playerActions.includes(tradeType) ? playerCharacter : npcActor,
             destination = playerActions.includes(tradeType) ? npcActor : playerCharacter,
             preparedTrade = this._prepareTrade(source, trades[tradeType], options),
-            successfullTransaction = await this.moneyExchange(source, destination, tradeType, preparedTrade.tradeSum);
+            successfullTransaction = await this.moneyExchange(source, destination, tradeType, preparedTrade.tradeSum, options);
 
         if (!successfullTransaction) return false;
 
@@ -284,12 +284,12 @@ export class TradeHelper {
      *
      * @returns {boolean} success
      */
-    static async moneyExchange(source, destination, tradeType, tradeSum = 0){
+    static async moneyExchange(source, destination, tradeType, tradeSum = 0, options = {}) {
         const freeTradeTypes = ['loot', 'give'];
         let successfullTransaction = true;
 
         if(!freeTradeTypes.includes(tradeType)){
-            successfullTransaction = await this._updateFunds(source, destination, tradeSum);
+            successfullTransaction = await this._updateFunds(source, destination, tradeSum, options);
         }
 
         return successfullTransaction;
@@ -323,7 +323,7 @@ export class TradeHelper {
                 continue;
             }
             // Add item price to the total sum of the trade
-            tradeSum += (Math.round(item.data.data.price * priceModifier * 100) / 100) * item.data.data.quantity;
+            tradeSum += Math.round(((item.data.data.price * priceModifier * 100) / 100) * item.data.data.quantity);
             if (options?.verbose) console.log(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
         }
 
