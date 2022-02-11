@@ -2,7 +2,7 @@
 	"name": "lootsheetnpc5e",
 	"title": "LootsheetNPC5e",
 	"description": "This module adds an additional NPC sheet. It can be used for loot containers such as chests or shopkeepers.",
-	"version": "3.5.1",
+	"version": "3.5.2",
 	"manifestPlusVersion": "1.2.0",
 	"minimumCoreVersion": "0.9.0",
 	"compatibleCoreVersion": "9.249",
@@ -81,5 +81,5 @@
 	"socket": true,
 	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
 	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/src/module.json",
-	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/download/v3.5.0/lootsheetnpc5e.zip"
+	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/download/v3.5.2/lootsheetnpc5e.zip"
 }
