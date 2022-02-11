@@ -1,6 +1,6 @@
 {
 	"name": "lootsheetnpc5e",
-	"title": "📜 LootsheetNPC5e",
+	"title": "LootsheetNPC5e",
 	"description": "This module adds an additional NPC sheet. It can be used for loot containers such as chests or shopkeepers.",
 	"version": "3.5.0",
 	"manifestPlusVersion": "1.2.0",
