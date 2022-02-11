@@ -119,7 +119,7 @@ Dragging of spells into the sheet will automatically turn them into scrolls.
 To install a module, follow these instructions:
 
 1. Start FVTT and browse to the Game Modules tab in the Configuration and Setup menu
-2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/module.json
+2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/src/module.json
 3. Click Install and wait for installation to complete
 
 ### History
