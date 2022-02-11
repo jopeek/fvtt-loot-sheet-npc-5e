@@ -1,5 +1,6 @@
 {
         "compilerOptions": {
+                "allowJs": true,
                 "module": "es2020",
                 "moduleResolution": "node",
                 "target": "es2020",
@@ -9,9 +10,9 @@
                         "es5",
                         "dom"
                 ],
-                "outDir": "dist",	
-                "rootDir": "./",
-                "sourceMap": false,
+                "outDir": "./dist",
+                "rootDir": "./src",
+                "sourceMap": true,
                 "experimentalDecorators": true,
                 "strict": true,
                 "strictNullChecks": true,
@@ -23,7 +24,16 @@
                 "typeRoots": [
                         "C:\\Users\\jackp\\AppData\\Local\\FoundryVTT\\Data\\systems\\dnd5e\\module"
                 ],
-                "allowJs": true,
                 "resolveJsonModule": true
-        }
+        },
+        "include": [
+                "./**/*"
+        ],
+        "exclude": [
+                "node_modules",
+                "**/*.d.ts",
+                "rollup.config.js",
+                "test/**/*",
+                "dist/**.*",
+        ],
 }

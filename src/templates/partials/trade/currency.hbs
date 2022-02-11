@@ -1,0 +1,8 @@
+
+<ul class="currency flexrow">
+    {{#each data.currency as |c i|}}
+        <li class="coin currency-item coin-{{i}}" title="{{c}} {{lookup (lookup ../config.currencies i) 'label'}}">
+            <span style="--currency-font-size: {{dynamicFontSize c '13' 'em'}};">{{approximateNumber c '1'}}</span>
+        </li>
+    {{/each}}
+</ul>

@@ -1,0 +1,51 @@
+<div class="dnd5e lsnpc chat-card item-card loot-item-card" data-actor-id="{{destination.id}}"
+    data-lootsheet-loot-id="{{destination.data._id}}-{{type}}-{{sourceId}}" style="
+        --sheettint: {{hexToRGB flags.lootsheetnpc5e.sheettint.value flags.lootsheetnpc5e.sheettint.alpha}};
+        --avatartint: {{hexToRGB flags.lootsheetnpc5e.avatartint.value flags.lootsheetnpc5e.avatartint.alpha}};
+        --blendmode: {{flags.lootsheetnpc5e.sheettint.blendmode}};
+        --style: {{flags.lootsheetnpc5e.sheettint.style}};">
+    <div class="loot-info flexrow" style="align-items: center; justify-content: center;">
+        <a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-uuid="{{destination.uuid}}">
+            <img src="{{destination.data.img}}" class="looter-icon character-icon" title="{{destination.name}}">
+        </a>
+        <span class="action-message"> {{actionMessage}} </span>
+        <a class="lsnpc-document-link" draggable="true" data-entity="Actor" data-uuid="{{source.uuid}}">
+            <img src="{{source.data.img}}" class="looter-icon npc-icon" title="{{source.data.name}}">
+        </a>
+    </div>
+
+    <header class="card-header flexrow">
+        <span class="item-name"> ↕ Toggle Details ↕ </span>
+    </header>
+
+    <div class="card-content" style="display:none">
+        {{#if movedFunds}}
+            <ul class="currency flexrow">
+                {{#each movedFunds as |c i|}}
+                    <li class="currency-item">
+                        <span>{{c}}{{i}}</span>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/if}}
+
+        {{#if receivers}}
+            <ul>
+                {{#each receivers as |receiver|}}
+                    <li>{{receiver}}</li>
+                {{/each}}
+            </ul>
+            <p>each received a share of: </p>
+            <ul class="currency flexrow">
+                {{#each shares as |c i|}}
+                    {{#uneq c 0}}
+                        <li class="currency-item">
+                            <span>{{c}}<em>{{i}}</em></span>
+                        </li>
+                    {{/uneq}}
+                {{/each}}
+            </ul>
+        {{/if}}
+
+    </div>
+</div>

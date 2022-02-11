@@ -1,0 +1,12 @@
+{{#ifeq lootsheettype "Loot"}}
+    {{#if lootCurrency}}
+        <button type="button"
+            class="loot-currency lsnpc-action-link button-xs"
+            data-action="lootCurrency"
+            data-tooltip-content="{{localize 'lsnpc.buttons.loot.currency.single.title'}}">
+            <i class="fas fa-user"></i>
+            <i class="fas fa-hand-holding-usd"></i>
+            <span class="buttontext">{{localize 'lsnpc.buttons.loot.currency.single.label'}}</span>
+        </button>
+    {{/if}}
+{{/ifeq}}

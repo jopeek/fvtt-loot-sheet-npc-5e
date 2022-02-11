@@ -1,0 +1,216 @@
+{
+	"lsnpc": {
+		"noActiveGM": "Aucun MJ actif sur votre scène, un MJ doit être en ligne et sur la même scène pour acheter un objet.",
+		"sendBuyText": "Envoyer une demande d'achat à",
+		"permissions": {
+			"0": {
+				"title": "Aucun",
+				"desc": " ne peut accéder à la feuille"
+			},
+			"2": {
+				"title": "Observateur",
+				"desc": " Accès à la feuille mais ne peut acheter des articles que si le type de feuille est marchand."
+			},
+			"3": {
+				"title": "Propriétaire",
+				"desc": " Gérer l'inventaire de l'acteur, partager les pièces."
+			}
+		},
+		"buttons": {
+			"loot": {
+				"items": {
+					"all": {
+						"title": "{n} {name} Récupérer tout",
+						"label": "Récupérer tous"
+					},
+					"single": {
+						"title": "Un seul",
+						"desc": "Un seul article"
+					}
+				},
+				"currency": {
+					"split": {
+						"title": "Diviser 🪙 entre {n} membres du groupe",
+						"label": "Diviser les pièces"
+					},
+					"single": {
+						"title": "Récupérer 🪙 du corps",
+						"label": "Récupérer 🪙"
+					}
+				}
+			},
+			"merchant": {
+				"buy": {
+					"title": "Acheter",
+					"label": "Acheter un article"
+				},
+				"sell": {
+					"title": "Vendre",
+					"label": "Vendre un article"
+				},
+				"gm": {
+					"price": {
+						"title": "Modificateur de prix",
+						"label": "Définir le modificateur de prix"
+					}
+				}
+			}
+		},
+		"infoboxes": {
+			"lootsheettype": {
+				"title": "Type de feuille",
+				"content": "<dl><dt>Butin</dt><dd>Permet de répartir les pièces entre les joueurs</dd><dt>Marchand</dt><dd>Permet aux joueurs d'acheter des articles directement à partir de la feuille.</dd></dl>"
+			},
+			"permissions": {
+				"title": "Permissions",
+				"content": "⚠️ Assurez-vous qu'un personnage est sélectionné pour les joueurs via la 'Configuration des joueurs'. Ils seront donc affichés ici . ⚠️"
+			},
+			"permissions_individual": {
+				"title": "Autorisations individuelles",
+				"content": "🔁 Cliquez sur un personnage pour faire défiler les autorisations des joueurs. Passez la souris pour voir les informations."
+			}
+		},
+		"sheettypes": {
+			"loot": "Butin",
+			"merchant": "Marchand"
+		},
+		"settings": {
+			"menu": {
+				"advancedOptions": {
+					"name": "Options avancées",
+					"label": "Options avancées et valeurs par défaut"
+				},
+				"seederOptions": {
+					"name": "Option de génération du butin",
+					"label": "Option de génération du butin du Token"
+				},
+				"currency": "Devise",
+				"defaults": "Valeurs par défaut",
+				"fallbacks": "Paramètres de replis",
+				"moduleDefaults": "Module",
+				"merchant": "Marchand",
+				"creatureTypeFallbacks": "par type",
+				"loot": "Butin",
+				"skiplist": "Liste noire",
+				"info": " ?",
+				"rulesets": "Règlements"
+			},
+			"sheet": {
+				"buyItem": {
+					"name": "Acheter un article",
+					"hint": "Permettre aux joueurs d'acheter des objets à partir de la feuille du marchand ?"
+				},
+				"colorRarity": {
+					"name": "Coloriser la rareté ?",
+					"hint": "Utiliser une légère indication de couleur pour montrer la rareté ? (Sachez que cela peut affecter les joueurs daltoniens)"
+				},
+				"convertCurrency": {
+					"name": "Convertir la monnaie",
+					"hint": "Convertir la monnaie dans la plus grande devise possible après un achat. (par exemple, po en pp)"
+				},
+				"filterNaturalWeapons": {
+					"name": "Filtrer les armes naturelles",
+					"hint": "Filtrer les armes naturelles de l'inventaire ?"
+				},
+				"generateChatMessages": {
+					"name": "Générer des messages de chat",
+					"hint": "Générer des messages de chat pour la récupération ou les transactions."
+				},
+				"lootAll": {
+					"name": "Tout récupérer",
+					"hint": "Permet aux joueurs de récupérer tous les objets de la feuille en une seule fois. La monnaie  suivra les paramètres de la monnaie."
+				},
+				"includeCurrencyWeight": {
+					"name": "Inclure le poids de la monnaie",
+					"hint": "Incluez le poids de la monnaie dans le poids total de la feuille."
+				},
+				"lootCurrency": {
+					"name": "Récupérer la monnaie",
+					"hint": "Permettre au joueur d'attribuer la monnaie à son propre personnage."
+				},
+				"lootItem": {
+					"name": "Récupérer",
+					"hint": "Permettre aux joueurs de récupérer les objets de la feuille."
+				},
+				"maxPriceIncrease": {
+					"name": "Augmentation maximale des prix",
+					"hint": "Augmentation maximale du prix de la feuille du marchand. (par exemple, 200% = 100po -> 200po)"
+				},
+				"reduceUpdateVerbosity": {
+					"name": "Réduire la verbosité des mises à jour",
+					"hint": "Aucune notification ne sera créée chaque fois qu'un article est ajouté à l'inventaire."
+				},
+				"sheetUpdate": {
+					"name": "Forcer la mise à jour de la feuille",
+					"hint": "Envoyez une mise à jour aux joueurs qui indique à leur client de rafraîchir la feuille."
+				},
+				"showStackWeight": {
+					"name": "Afficher le poids de la pile",
+					"hint": "Afficher le poids de la pile à côté du poids de l'article indiqué."
+				},
+				"stackBuyConfirm": {
+					"name": "Confirmer l'achat de la pile",
+					"hint": "Demander une confirmation avant d'acheter une pile ?"
+				}
+			},
+			"seeder": {
+				"autoSeedTokens": {
+					"name": "Butin automatique pour les Tokens",
+					"hint": "Jet automatique pour le butin. Si un acteur a une table aléatoire assignée, ou si des Fallbacks sont trouvés."
+				},
+				"adjustCurrencyWithCR": {
+					"name": "Ajuster la monnaie via le CR",
+					"hint": "La devise sera légèrement ajustée par le CR (rollFormula + round up CR)."
+				},
+				"creatureTypeFallbacks": {
+					"name": "Types de créatures de repli",
+					"hint": "Table aléatoire de repli à utiliser si aucune table aléatoire n'est assigné à l'acteur mais que ce dernier incarne ce type de créature."
+				},
+				"lootCurrencyDefault": {
+					"name": "Formule par défaut de la devise",
+					"hint": "Formule à utiliser pour la génération de la monnaie du butin. (par exemple 1d4 [po], 1d20 [pa], 1d50 [pc])"
+				},
+				"fallbackRolltable": {
+					"name": "Table aléatoire de repli",
+					"label": "Table aléatoire à utiliser si aucune table aléatoire n'est assignée à l'acteur."
+				},
+				"fallbackShopQty": {
+					"name": "Quantité du magasin de repli",
+					"hint": "Quantité d'objet à utiliser si aucune quantité d'objet n'est attribuée à l'acteur. (par exemple, 1d6)"
+				},
+				"fallbackItemQty": {
+					"name": "Quantité d'objet de repli",
+					"hint": "Quantité d'objet à utiliser si aucune quantité n'est attribuée à l'acteur. (par exemple, 1d6)"
+				},
+				"fallbackItemQtyLimit": {
+					"name": "Quantité maximale d'objet de repli",
+					"hint": "Quantité maximale d'objet à utiliser si aucune quantité maximale n'est attribuée à l'acteur. (par exemple 2d20 || 10)"
+				},
+				"generateCurrency": {
+					"name": "Générer de la monnaie",
+					"hint": "Générer de la monnaie pendant la génération du butin."
+				},
+				"useRulesets": {
+					"name": "Utiliser les règles de filtrage",
+					"hint": "Règles personnalisées à tester contre un token. Par exemple, si l'acteur tokens correspond aux règles, la table aléatoire sera utilisée au lieu d'une table aléatoire de repli."
+				},
+				"useSkiplist": {
+					"name": "Utiliser la liste noire",
+					"hint": "Utilisez la liste noire pour ignorer les token dont les types sont cochés pendant la génération."
+				}
+			},
+			"autoCheckUpdates": {
+				"name": "Vérification de la mise à jour",
+				"hint": "Vérifier automatiquement les mises à jour du modules au démarrage"
+			},
+			"addInterfaceButtons": {
+				"name": "Ajout de boutons d'interface",
+				"hint": "Ajout de boutons à l'interface"
+			},
+			"useBetterRolltables": {
+				"name": "Utiliser \"Better Rolltables\"",
+				"hint": "S'il est installé, utiliser \"Better Rolltables\" pour mettre à jour l'inventaire ?"
+			}
+		}
+	}
+}

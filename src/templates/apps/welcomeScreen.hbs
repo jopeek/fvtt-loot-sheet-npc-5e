@@ -1,0 +1,62 @@
+<!--
+/**
+ * Based on https://github.com/Moerill/mess
+ */
+-->
+<style>
+    .welcome-screen a[href] {
+        color: #4a52ca;
+    }
+    .welcome-screen .window-content {
+        background: var(--background);
+        color: var(--primary-color)
+    }
+
+    .welcome-screen .window-content > * {
+        flex: 0;
+    }
+
+    .welcome-screen .window-content p {
+        padding-left: 1em;
+    }
+
+    .welcome-screen .window-content .hideinfo {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 1em;
+        background: var(--header-background);
+        border: 1px solid var(--header-border);
+        padding: 0.5em;
+    }
+    .welcome-screen .window-content .hideinfo > * {
+        flex: 1;
+    }
+
+    .welcome-screen .window-content .hideinfo .input {
+        flex: 0;
+        align-self: flex-end;
+        padding-right: 1em;
+    }
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<nav class="tabs" data-group="ws-sections">
+    <a class="item active" data-tab="misc"><i class="fas fa-cog"></i> Hi {{game.user.name}}</a>
+    <a class="item" data-tab="loot"><i class="ra ra-diamond"></i> Loot</a>
+    <a class="item" data-tab="merchant"><i class="fas fa-dice-d20"></i> Merchant</a>
+    <a class="item" data-tab="seeder"><i class="fas fa-seedling"></i> Seeder</a>
+    <a class="item" data-tab="patchnotes"><i class="fas fa-filter"></i> Patchnotes</a>
+</nav>
+<section class="content">
+    {{> 'modules/lootsheetnpc5e/templates/partials/welcomeScreen/misc.hbs' }}
+    {{> 'modules/lootsheetnpc5e/templates/partials/welcomeScreen/loot.hbs' }}
+    {{> 'modules/lootsheetnpc5e/templates/partials/welcomeScreen/merchant.hbs' }}
+    {{> 'modules/lootsheetnpc5e/templates/partials/welcomeScreen/seeder.hbs' }}
+    {{> 'modules/lootsheetnpc5e/templates/partials/welcomeScreen/patchnotes.hbs' }}
+</section>
+
+

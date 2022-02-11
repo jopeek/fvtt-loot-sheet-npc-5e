@@ -1,0 +1,63 @@
+.app.actor.lsnpc {
+    .window-content {
+        .inventory-list {
+            .item {
+                background: var(--faintest-color);
+                margin: 1px 0;
+                border-radius: 0.5em;
+                overflow: hidden;
+                .item-price {
+                    flex: 0 0 75px;
+                    color: var(--tertiary-color);
+                    font-size: 10px;
+                }
+                .item-quantity {
+                    flex: 0 0 75px;
+                    color: var(--tertiary-color);
+                    font-size: 10px;
+                }
+                .item-weight {
+                    flex: 0 0 75px;
+                    color: var(--tertiary-color);
+                    font-size: 10px;
+                }
+                .item-controls {
+                    flex: 0 0 100px !important;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: flex-start;
+                    justify-content: flex-end;
+                }
+            }
+            .inventory-header {
+                border: 1px solid var(--faint-color);
+                .item-controls {
+                    a.item-create {
+                        flex: initial;
+                    }
+                }
+            }
+            .item-summary {
+                color: var(--primary-font);
+                .secret {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.lsnpc-gmview {
+        .content {
+            .tab {
+                .item {
+                    .item-summary {
+                        .secret {
+                            display: initial;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+.lsnpc {
+    &.dialog-price-modifier {
+        border: 2px solid #ff6400;
+
+        .window-header {
+            line-height: 1.4em;
+            flex: 0 0 1.4em;
+            border-bottom: 1px solid var(--color-border-highlight);
+            a {
+                display: inline-block;
+                font-size: 0em;
+                border: 1px solid var(--sheettint);
+
+                i {
+                    font-size: initial;
+                }
+            }
+        }
+        .window-content {
+            padding: 0;
+        }
+        form {
+            padding: 0.5rem;
+
+            #priceModifierDisplay {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                background: var(--avatartint);
+                box-shadow: 2px 2px 2px 2px var(--sheettint);
+            }
+        }
+    }
+}

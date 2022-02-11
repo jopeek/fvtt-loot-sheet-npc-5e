@@ -1,0 +1,10 @@
+{{#ifeq lootsheettype "Loot"}}
+    {{#if lootAll}}
+        <button type="button" class="loot-all lsnpc-action-link" name="loot-all" data-get-all="true"
+            data-action="lootAll"
+            data-tooltip-content="{{localize 'lsnpc.buttons.loot.items.all.title' name=interactingActor}}">
+            <i class="fas fa-gem"></i>
+            <span class="buttontext">{{localize 'lsnpc.buttons.loot.items.all.label'}}</span>
+        </button>
+    {{/if}}
+{{/ifeq}}
