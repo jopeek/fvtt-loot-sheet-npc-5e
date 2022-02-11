@@ -107,7 +107,8 @@
                 "loot": "Loot",
                 "skiplist": "Skiplist",
                 "info": "?",
-                "rulesets": "Rulesets"
+                "rulesets": "Rulesets",
+                "ui": "UI"
             },
             "sheet": {
                 "buyItem": {

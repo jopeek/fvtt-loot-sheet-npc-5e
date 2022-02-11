@@ -58,7 +58,7 @@ export class LootSheetSettingsConfigApp extends FormApplication {
         },
         {
           name: MODULE.settings.groups.sheet.ui,
-          i18nName: game.i18n.localize('lsnpc.settings.menu.loot'),
+          i18nName: game.i18n.localize('lsnpc.settings.menu.ui'),
           class: "fas fa-bag", menus: [], settings: []
         },
         {

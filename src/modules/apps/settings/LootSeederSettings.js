@@ -24,8 +24,8 @@ export class LootSeederSettings {
 
 
         game.settings.register(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons, {
-            name: game.i18n.localize('lsnpc.settings.common.addInterfaceButtons.name'),
-            hint: game.i18n.localize('lsnpc.settings.common.addInterfaceButtons.hint'),
+            name: game.i18n.localize('lsnpc.settings.addInterfaceButtons.name'),
+            hint: game.i18n.localize('lsnpc.settings.addInterfaceButtons.hint'),
             scope: MODULE.settings.scopes.world,
             config: true,
             default: true,
@@ -207,7 +207,7 @@ export class LootSeederSettings {
     static get customFallbackDefaults() {
         return {
             'data.data.details.cr_<=_1': {
-                name: 'CR1',
+                name: 'Example_CR1',
                 filters: [
                     {
                         path: 'data.data.details.cr',
@@ -220,7 +220,7 @@ export class LootSeederSettings {
                 state: false
             },
             'data.data.details.cr_>=_4': {
-                name: 'CR1',
+                name: 'Example_CR_4_or_higher',
                 filters: [
                     {
                         path: 'actor.labels.name',
