@@ -80,6 +80,6 @@
 	"styles": ["/libs/styles/tippy.min.css", "/libs/styles/rpg-awesome.min.css", "/styles/lootsheetNPC5e.css"],
 	"socket": true,
 	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
-	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/module.json",
-	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/latest/download/lootsheetnpc5e.zip"
+	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/src/module.json",
+	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/v3.5.0/download/lootsheetnpc5e.zip"
 }
