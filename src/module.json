@@ -81,5 +81,5 @@
 	"socket": true,
 	"url": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e",
 	"manifest": "https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/src/module.json",
-	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/v3.5.0/download/lootsheetnpc5e.zip"
+	"download": "https://github.com/jopeek/fvtt-loot-sheet-npc-5e/releases/download/v3.5.0/lootsheetnpc5e.zip"
 }
