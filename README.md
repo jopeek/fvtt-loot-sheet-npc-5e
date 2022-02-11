@@ -46,6 +46,10 @@ More features detailed below.
 In the GM section of the sheet items can be added.
 This allows a GM to quickly create varied inventories for their merchants. A couple of rollable tables are included and can be imported via standard rollable table methods.
 It is also compatible with rollable table collections such as https://foundryvtt.com/packages/foundry_community_tables.
+
+
+![image](https://user-images.githubusercontent.com/21986545/153590133-23c75ab4-cbf9-4540-974b-9034e8fb3c47.png)
+
 ## Permissions
 LootSheetNPC5e comes with a permission system that allows observers to interact with the sheet.
 
@@ -57,34 +61,58 @@ loot or ourchase actions which will automatically process the item transaction, 
 
 Permissions can be set in the sheet for each player and range from no access (cannot open sheet) to observer (view sheet and contents and utilize loot or buy buttons) to owner (view sheet and add/remove items and configure sheet).
 
-![demo_permissions](https://thumbs.gfycat.com/CaringWildKoi-size_restricted.gif)
+![image](https://user-images.githubusercontent.com/21986545/153590572-ce0734bc-8ffc-4988-b253-e8c9af1b96c9.png)
+![image](https://user-images.githubusercontent.com/21986545/153590618-152b8c51-9969-452a-913e-f08cddcf57e0.png)
+![image](https://user-images.githubusercontent.com/21986545/153592423-c0c610eb-7440-4612-ad03-f21290ffd439.png)
 
 ## Merchant /Shopkeeper Sheet
 Can be used to create an inventory of a shopkeeper to allow players to peruse their inventory. Prices are listed next to each item.
 
-![demo_inventory](https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/images/demo_inventory.jpg)
+### Inventory
+![image](https://user-images.githubusercontent.com/21986545/153590843-cdc4c0fc-5222-4d30-a20f-ddd0bfc110a4.png)
+![image](https://user-images.githubusercontent.com/21986545/153590910-d09f10a4-382d-423f-b771-2284b3397efb.png)
+
+### Trade Screen
+![image](https://user-images.githubusercontent.com/21986545/153590732-a1086023-0c86-4e51-8fd9-91b517e74c5c.png)
+![image](https://user-images.githubusercontent.com/21986545/153591076-d5dd9afc-3f74-490a-ad9b-3b3e3146998b.png)
 
 ##### Price Modifier
 Prices can be adjusted by percentage for all owned items.
 
-![price_modifier](https://thumbs.gfycat.com/WelloffFortunateInganue-size_restricted.gif)
+![image](https://user-images.githubusercontent.com/21986545/153591112-0562c6e1-1c40-4445-90bd-89b59aaa6cae.png)
 
 A Biography tab is also available.
 
-![demo_biography](https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/images/demo_biography.jpg)
+![image](https://user-images.githubusercontent.com/21986545/153591184-65f96687-ac47-4848-9af4-813e643ba0b4.png)
 
 ##### Coin Distribution
-Any coins in the sheet can easily be split evenly across all players with owner access. The math and distribution is done for you via a single click if you're the GM.
-
-![demo_splitcoins](https://thumbs.gfycat.com/ElementaryDependentGalapagosdove-size_restricted.gif)
+![image](https://user-images.githubusercontent.com/21986545/153592360-f3a49d93-e0c1-49bf-97ef-789b11be92fe.png)
 
 ##### Create Spell Scrolls
 Dragging of spells into the sheet will automatically turn them into scrolls.
 
 ![demo_scrolls](https://thumbs.gfycat.com/LividAccurateFluke-size_restricted.gif)
 
-### Compatibility:
-- Tested with FVTT v9 (Build 245) and DND5e version ^1.5.6
+## Seeder
+### Loot generation per creature type
+![image](https://user-images.githubusercontent.com/21986545/153592056-f380b4b1-d1d1-4e5d-b274-25da980ecfaa.png)
+
+### Skiplist
+![image](https://user-images.githubusercontent.com/21986545/153591315-bcf8fae6-8dbc-493c-8606-2f5d3201186c.png)
+
+## Chat messages for interactions
+![image](https://user-images.githubusercontent.com/21986545/153592298-50bd1a44-2a65-4f90-9298-c586ab97058b.png)
+
+## Interface integration
+### Make token(s) lootable (access by players)
+![image](https://user-images.githubusercontent.com/21986545/153592641-a89e4c2f-385e-403c-a445-97689f730ab7.png)
+
+### Add loot to token(s)
+![image](https://user-images.githubusercontent.com/21986545/153592811-78e27692-8b6b-4f23-b518-1224f4dd59c5.png)
+
+
+## Compatibility:
+- Tested with FVTT v9 (Build 249) and DND5e version ^1.5.7
 
 ### Installation Instructions
 
