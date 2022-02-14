@@ -107,7 +107,7 @@ export class LootsheetNPC5eHooks {
             packageName: MODULE.ns,
             sheetClasses: [
                 {
-                    name: 'lootsheetnpc5e-rule-editor', // this _must_ be the class name of the `Application` you want it to apply to
+                    name: 'LootSeederRuleEditor', // this _must_ be the class name of the `Application` you want it to apply to
                     fieldConfigs: [
                         {
                             selector: `.data-path-input`,
