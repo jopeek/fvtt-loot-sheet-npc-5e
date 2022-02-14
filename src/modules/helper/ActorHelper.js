@@ -12,7 +12,7 @@ export class ActorHelper {
      * @returns {Array<string>} a list of RollTable.uuids
      *
      */
-     static getRollTables(actor) {
+    static getRollTables(actor) {
         const creatureType = actor.data.data.details.type.value,
             rolltableFromActor = this.getLinkedRolltable(actor),
             rolltableByCreature = this.getLinkedRolltableByCreatureType(creatureType),
@@ -23,7 +23,7 @@ export class ActorHelper {
         if (rolltableFromActor) {
             rolltables.push(rolltableFromActor);
         } else if (rolltableByFilters) {
-            rolltables.push(rolltableByFilters);
+            rolltables = rolltables.concat(...rolltableByFilters);
         } else if (rolltableByCreature) {
             rolltables.push(rolltableByCreature);
         } else {
