@@ -37,7 +37,7 @@ export class LootSeeder {
 			}
 
 
-			let currencyFlags = {
+			/* let currencyFlags = {
 				"generateCurrency": game.settings.get(MODULE.ns, 'generateCurrency'),
 				"currencyFormula": game.settings.get(MODULE.ns, 'lootCurrencyDefault'),
 				"useBetterRolltables": game.settings.get(MODULE.ns, "useBetterRolltables"),
@@ -45,7 +45,7 @@ export class LootSeeder {
 				"adjustCurrency": game.settings.get(MODULE.ns, "adjustCurrencyWithCR")
 			};
 
-			await CurrencyHelper.handleCurrency(currentActor, currencyFlags);
+			await CurrencyHelper.handleCurrency(currentActor, currencyFlags); */
 		}
 	}
 
