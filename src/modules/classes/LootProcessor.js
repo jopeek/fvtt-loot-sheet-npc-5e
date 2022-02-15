@@ -37,7 +37,7 @@ export class LootProcessor {
     }
 
     async buildResults(options = {}) {
-        const currencyString = options?.currencyString ?? '';
+        const currencyString = options?.customRoll.currencyFormula ?? '';
         this._setCurrencyData(await CurrencyHelper.generateCurrency(currencyString));
 
         for (let i = 0; i < this.results.length; i++) {

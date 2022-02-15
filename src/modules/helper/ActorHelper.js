@@ -174,7 +174,7 @@ export class ActorHelper {
             lootProcess.addItemsToActor(actor, options);
         }
 
-        if (options?.verbose) return ui.notifications.info(MODULE.ns + ' | ACtorHelper | Loot generation complete.');
+        if (options?.verbose) return ui.notifications.info(MODULE.ns + ' | ActorHelper | Loot generation complete.');
     }
 
     /**

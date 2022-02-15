@@ -8,30 +8,19 @@ export class CurrencyHelper {
      * @param rolltable
      * @param flags
      * @param generateCurrency
-     * @param lootCurrencyDefault
+     * @param currencyFormula
      * @param useBTR
      */
     static async handleCurrency(
-        token,
+        actor,
         flags
     ) {
-        if (flags.generateCurrency && flags.lootCurrencyDefault) {
-            let lootCurrencyString = flags.lootCurrencyDefault;
-
-            /**
-            * If we use betterRolltable and the currencyString of BRT is not empty
-            * the currency was already populated.
-            */
-            if (
-                flags.useBetterRolltables &&
-                (flags.brt_rt_tcs !== undefined || flags.brt_rt_tcs?.length > 0)
-            ) {
-                return;
-            }
+        if (flags.generateCurrency && flags.currencyFormula) {
+            let lootCurrencyString = flags.currencyFormula;
 
             await this.addCurrenciesToActor(
-                token.actor,
-                this.generateCurrency(lootCurrencyString),
+                actor,
+                await this.generateCurrency(lootCurrencyString),
                 flags.adjustCurrency
             );
         }
@@ -108,7 +97,7 @@ export class CurrencyHelper {
             }
         }
 
-        await actor.update({ 'actorData.data.currency': currencyData });
+        await actor.update({ 'data.currency': currencyData });
     }
 
     /**
