@@ -148,6 +148,7 @@ export class LootsheetNPC5eHooks {
      * @param {*} buttons
      */
     static attachSceneControlButtons(buttons) {
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.common.addInterfaceButtons)) return;
         let tokenButton = buttons.find(b => b.name == "token");
         if (tokenButton) {
             tokenButton.tools.push({
