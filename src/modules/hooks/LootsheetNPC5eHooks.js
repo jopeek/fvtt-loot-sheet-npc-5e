@@ -134,8 +134,8 @@ export class LootsheetNPC5eHooks {
      *
      */
     static async onCreateToken(token, createData, options, userId) {
-        if (!game.user.isGM);
-        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens)) return token;
+        if (!game.user.isGM) return;
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens)) return;
         if (!token.actor || token.data.actorLink) return; // ignore linked tokens
         const actor = token.actor;
 
