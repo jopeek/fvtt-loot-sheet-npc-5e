@@ -224,7 +224,7 @@ export class LootsheetNPC5eHooks {
          */
         const oldClassName = 'dnd5e.LootSheet5eNPC',
             newClassName = 'dnd5e.LootSheetNPC5e',
-            migrationActors = game.actors.filter(a => a.data.type === 'npc' && a.data.flags.core.sheetClass === oldClassName);
+            migrationActors = game.actors.filter(a => a.data.type === 'npc' && a?.data?.flags?.core?.sheetClass === oldClassName);
 
         for (let actor of migrationActors) {
             actor.update({ data: { flags: { core: { sheetClass: newClassName } } } });
