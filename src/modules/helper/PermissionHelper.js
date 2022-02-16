@@ -100,7 +100,7 @@ export class PermissionHelper {
      */
     static _updatedUserPermissions(
         token = canvas.tokens.controlled[0],
-        level = CONST.ENTITY_PERMISSIONS.OBSERVER || 0,
+        level = CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER || 0,
         lootingUsers = this.getPlayers()
     ) {
         let currentPermissions = duplicate(token.actor.data.permission);

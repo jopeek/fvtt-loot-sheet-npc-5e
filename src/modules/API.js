@@ -95,7 +95,7 @@ class API {
                 actor: {
                     flags: {
                         lootsheetnpc5e: {
-                            playersPermission: CONST.ENTITY_PERMISSIONS.OBSERVER,
+                            playersPermission: CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER,
                         },
                     },
                 },
@@ -133,7 +133,7 @@ class API {
         options = {},
         verbose = false
     ) {
-        const tokenstack = (tokens) ? (tokens.length >= 0) ? tokens : [tokens] : canvas.tokens.controlled;
+        const tokenstack = (tokens) ? (tokens.length > 0) ? tokens : [tokens] : canvas.tokens.controlled;
 
         let response = API._response(200, 'success');
 
@@ -207,7 +207,7 @@ class API {
     ) {
         if (!game.user.isGM) return;
 
-        const tokenstack = (tokens) ? (tokens.length >= 0) ? tokens : [tokens] : canvas.tokens.controlled;
+        const tokenstack = (tokens) ? (tokens.length > 0) ? tokens : [tokens] : canvas.tokens.controlled;
 
         let permissions = false,
             response = API._response(200, 'success'),
@@ -215,7 +215,7 @@ class API {
             tokenData = { actorData: { permission: {} } };
 
         for (let token of tokenstack) {
-            let permissions = PermissionHelper._updatedUserPermissions(token, CONST.ENTITY_PERMISSIONS.OBSERVER, players);
+            let permissions = PermissionHelper._updatedUserPermissions(token, CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER, players);
             tokenData.actorData.permission = permissions,
                 responseData[token.uuid] = tokenData.actorData.permission;
             await token.document.update(tokenData);
@@ -259,7 +259,7 @@ class API {
     /**
      * Use the PermissionHelper to update the users permissions for the token
      *
-     * @param {Token5e} token
+     * @param {Token} token
      * @param {number|null} permission enum
      *
      * @return {object} reponse object
@@ -281,12 +281,17 @@ class API {
         return response;
     }
 
+    /**
+     * @summary get the filter rules that exist for the loot sheet seeder
+     * @returns {object}
+     */
     static getRegisteredCustomRules() {
         return game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.ruleset);
     }
 
     /**
      * Update the lootseeder custom rules
+     *
      * Expects a {lootseederRule} object
      *
      * @param {lootseederRule} rule
@@ -302,9 +307,26 @@ class API {
     /**
      *
      * @param {boolean} state
+     * @deprecated use toggleSeederState instead
      */
-    static switchPopulatorState(state) {
+    static switchPopulatorState(state = null) {
+        return this.toggleSeederState(state);
+    }
+
+    /**
+     * @param {boolean} state
+     *
+     *
+     * @returns {boolean}
+     */
+    static toggleSeederState(state = null) {
+        if (state === null) {
+            state = !game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens);
+        }
+
         game.settings.set(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens, state);
+
+        return game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.autoSeedTokens);
     }
 
     /**
@@ -328,7 +350,7 @@ class API {
      * @private
      */
     static _verbose(data = '') {
-        console.log('|--- ' + MODULE.ns + ' API (verbose output) ---|', data, '|--- ' + MODULE.ns + ' API (/verbose output)---|');
+        console.log(`${MODULE.ns} | API (verbose output) | data, '|--- ' + MODULE.ns + ' API (/verbose output)---|`);
     }
 
     static _response(code, msg = '', data = {}, error = false) {

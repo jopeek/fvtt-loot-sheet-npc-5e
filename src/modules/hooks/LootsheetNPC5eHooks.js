@@ -190,8 +190,9 @@ export class LootsheetNPC5eHooks {
             lsnGMButtonMakeObservable.dataset.action = "makeObservable";
             lsnGMButtonMakeObservable.addEventListener('click', async (e) => {
                 if (game.user.isGM) {
+                    ui.notifications.info(`Lootsheet: Converting token(s) to lootable.`);
                     const api = game.modules.get("lootsheetnpc5e").public.API;
-                    await api.makeObservable();
+                    await api.convertTokens();
                 }
             });
 
