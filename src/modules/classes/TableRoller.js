@@ -1,5 +1,4 @@
 import { MODULE } from '../data/moduleConstants.js';
-import { Utils } from "../helper/Utils.js";
 
 export class TableRoller {
 
@@ -15,9 +14,9 @@ export class TableRoller {
 	 *
 	 * @returns {Array} results
 	 */
-	async roll(options = false) {
+	async roll(options = {}) {
 		options = options || this.rollOptionDefault;
-		this.results = await this.rollManyOnTable(options, this.table);
+		this.results = await this.rollManyOnTable(this.table, 0, options.total, options);
 		return this.results;
 	}
 
@@ -30,19 +29,18 @@ export class TableRoller {
 	 *  Collect the results in an array.
 	 *
 	 *	@param {RollTable} table
-	 *	@param {object} rollOptions
+	 *	@param {number} depth
+	 *	@param {number} amountToRoll
 	 *	@param {object} options
-	 *	@returns {Array}
+	 *
+	 *	@returns {Array} drawnResults
 	 */
-
-	async rollManyOnTable(rollOptions, table, { _depth = 0 } = {}) {
+	async rollManyOnTable(table, depth = 0, amountToRoll = 1, options = {}) {
 		const maxRecursions = 5;
-
-		let amountToRoll = rollOptions?.total || 1;
 		let drawnResults = [];
 
 		// Prevent infinite recursion
-		if (_depth > maxRecursions) {
+		if (depth > maxRecursions) {
 			let msg = `maxRecursions:  reached with table ${table.id}`;
 			throw new Error(MODULE.ns + " | " + msg);
 		}
@@ -56,8 +54,8 @@ export class TableRoller {
 			const resultToDraw = Math.min(resultsLeft, amountToRoll),
 				drawResult = await table.drawMany(resultToDraw, { displayChat: false, recursive: false });
 
-			drawnResults = await this._updateDrawnResults(drawResult, drawnResults, _depth, rollOptions)
-			amountToRoll -= resultToDraw;
+				drawnResults = await this._updateDrawnResults(drawResult, drawnResults, depth, options);
+				amountToRoll -= resultToDraw;
 		}
 
 		return drawnResults;
@@ -65,6 +63,7 @@ export class TableRoller {
 
 	/**
 	 *
+	 * @param {Array} drawResult
 	 * @param {Array} drawnResults
 	 * @param {number} depth
 	 * @param {object} options
@@ -75,11 +74,12 @@ export class TableRoller {
 		for (const result of drawResult.results) {
 			const quantityFormula = options.customRoll.itemQtyFormula || "1",
 				resultQuantity = await this.tryRoll(quantityFormula),
-				innerTable = this._getInnerTable(result);
+				innerTable = await this._getInnerTableOrFalse(result);
 
 			if (innerTable) {
 				options.total = resultQuantity;
-				const innerResults = await this.rollManyOnTable(options, innerTable, { _depth: depth + 1 });
+				let innerdepth = depth + 1;
+				const innerResults = await this.rollManyOnTable(innerTable, innerdepth, 1, options);
 				drawnResults = drawnResults.concat(innerResults);
 			} else {
 				for (let i = 0; i < resultQuantity; i++) {
@@ -92,31 +92,54 @@ export class TableRoller {
 	}
 
 	/**
+	 * @summary Get the inner table or false if not found
 	 *
-	 * @param {*} result
-	 * @returns
+	 * @param {TableResult} result
+	 *
+	 * @returns {Promise<RollTable|false>}
 	 */
-	_getInnerTable(result) {
-		const returnByType = {
-			[CONST.TABLE_RESULT_TYPES.DOCUMENT]: this._handleDocumentResult,
-			[CONST.TABLE_RESULT_TYPES.COMPENDIUM]: this._getRollTableFromCompendium
-		};
+	async _getInnerTableOrFalse(result) {
+		let rolltable = false;
 
-		if (Object.keys(returnByType).includes(result.data.type)) return returnByType[result.data.type](result);
+		if(result.data.type === CONST.TABLE_RESULT_TYPES.DOCUMENT){
+			rolltable = this._getRolltableFromGameWorld(result);
+		} else if (result.data.type === CONST.TABLE_RESULT_TYPES.COMPENDIUM) {
+			rolltable = await this._getRollTableFromCompendium(result);
+		}
+
+		return rolltable;
 	}
 
-	_handleDocumentResult(result) {
+	/**
+	 *
+	 * @param {TableResult} result
+	 *
+	 * @returns {Promise<RollTable|false>} rolltable
+	 */
+	_getRolltableFromGameWorld(result) {
 		if (result.data.collection === 'RollTable') {
 			return game.tables.get(result.data.resultId);
 		}
+		return false;
 	}
 
-	_getRollTableFromCompendium(result) {
-		const rolltableFromCompendium = Utils.findInCompendiumByName(result.data.collection, 'RollTable');
+	/**
+	 *
+	 * @param {TableResult} result
+	 *
+	 * @returns {Promise<RollTable>|false} rolltable
+	 */
+	async _getRollTableFromCompendium(result) {
+		let uuidString = `Compendium.${result.data.collection}.${result.data.resultId}`,
+		rolltable = await fromUuid(uuidString);
 
-		if ((rolltableFromCompendium !== undefined) && rolltableFromCompendium.documentName === 'RollTable') {
-			return rolltableFromCompendium;
+		if (!rolltable) {
+			console.error(MODULE.ns + ' | tableRoller :', `Could not find document with uuid: ${uuidString}`);
+			return false;
 		}
+
+		if(rolltable.documentName === 'RollTable') return rolltable;
+		return false;
 	}
 
 	/**
@@ -150,33 +173,6 @@ export class TableRoller {
 		} catch (error) {
 			console.error(MODULE.ns + ' | tableRoller :', error);
 			return 1;
-		}
-	}
-
-	/**
-	 *
-	 * @param {string} compendiumName
-	 * @param {string} entityName
-	 *
-	 * @returns {Item}
-	 */
-	static async findInCompendiumByName(compendiumName, entityName) {
-		const compendium = game.packs.get(compendiumName)
-		if (compendium) {
-			const entry = compendium.index.getName(entityName)
-			if (entry) {
-				return await compendium.getDocument(entry._id)
-			}
-		} else {
-			switch (compendiumName) {
-				case 'RollTable': return game.tables.getName(entityName)
-				case 'Actor': return game.actors.getName(entityName)
-				case 'Item': return game.items.getName(entityName)
-				case 'JournalEntry': return game.journal.getName(entityName)
-				case 'Playlist': return game.playlists.getName(entityName)
-				case 'Scene': return game.scenes.getName(entityName)
-				case 'Macro': return game.macros.getName(entityName)
-			}
 		}
 	}
 }

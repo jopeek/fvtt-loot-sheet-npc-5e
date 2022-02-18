@@ -131,7 +131,7 @@ class LootSheetNPC5eHelper {
                             id: tradeItem.dataset.id,
                             data: {
                                 quantity: parseInt(tradeItem.dataset.quantity),
-                                price: parseInt(tradeItem.dataset.price)
+                                price: parseFloat(tradeItem.dataset.price)
                             }
                         },
                     };

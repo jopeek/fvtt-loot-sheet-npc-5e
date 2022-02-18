@@ -132,11 +132,11 @@ export class TradeHelper {
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
-        let itemCostInGold = Math.round(((soldItem.data.data.price * priceModifier * 100) / 100) * quantity),
+        let itemCostInGold = this._getItemPriceInGold(soldItem, priceModifier),
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
         if (!successfullTransaction) return false;
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
-        options.type="buy";
+        options.type = "buy";
         options.priceModifier = priceModifier;
         ChatHelper.tradeChatMessage(seller, buyer, moved, options);
     }
@@ -151,12 +151,12 @@ export class TradeHelper {
      *
      * @returns {Promise<boolean>}
      */
-     static async distributeCurrency(source, destination, options = { verbose: true }) {
+    static async distributeCurrency(source, destination, options = { verbose: true }) {
         const eligables = PermissionHelper.getEligableActors(source),
             currency = CurrencyHelper.handleActorCurrency(source.data.data.currency),
             shares = CurrencyHelper.getSharesAndRemainder(currency, eligables.length);
 
-        let splits = {shares: shares.currencyShares, receivers : []};
+        let splits = { shares: shares.currencyShares, receivers: [] };
 
         if (options.verbose) {
             let cmsg = `${MODULE.ns} | distributeCurrency |`;
@@ -182,11 +182,11 @@ export class TradeHelper {
                 newCurrency[c] = parseInt(playerCurrency[c] || 0) + shares.currencyShares[c];
             }
 
-            await playerCharacter.update({'data.currency': newCurrency});
+            await playerCharacter.update({ 'data.currency': newCurrency });
         }
 
         // set source funds to 0
-        source.update({"data.currency": { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 }});
+        source.update({ "data.currency": { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 } });
 
         // update the chat
         if (!options.chatOutPut) return;
@@ -210,7 +210,7 @@ export class TradeHelper {
      * @since 1.0.1
      * @inheritdoc
      */
-    static async lootCurrency(source, destination, options = {chatOutPut: true}) {
+    static async lootCurrency(source, destination, options = { chatOutPut: true }) {
         const actorData = source.data;
         let sheetCurrency = duplicate(actorData.data.currency),
             originalCurrency = duplicate(destination.data.data.currency),
@@ -226,10 +226,10 @@ export class TradeHelper {
         }
 
         // set the destination currency to the new currency
-        destination.update({'data.currency': newCurrency});
+        destination.update({ 'data.currency': newCurrency });
 
         // set source funds to 0
-        source.update({"data.currency": { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 }});
+        source.update({ "data.currency": { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 } });
 
         // update the chat
         if (!options.chatOutPut) return;
@@ -288,7 +288,7 @@ export class TradeHelper {
         const freeTradeTypes = ['loot', 'give'];
         let successfullTransaction = true;
 
-        if(!freeTradeTypes.includes(tradeType)){
+        if (!freeTradeTypes.includes(tradeType)) {
             successfullTransaction = await this._updateFunds(source, destination, tradeSum, options);
         }
 
@@ -318,16 +318,28 @@ export class TradeHelper {
         for (const [key, item] of items.entries()) {
             if (!source.items.find(i => i.id == item.id)) {
                 if (options?.verbose)
-                    console.log(`${MODULE.ns} | ${this._prepareTrade.name} | Removed item "${item.name}" (id: ${item.id}) from trade. Item not found in inventory of the source actor.`);
+                    console.log(`${MODULE.ns} | _prepareTrade | Removed item "${item.name}" (id: ${item.id}) from trade. Item not found in inventory of the source actor.`);
                 delete items[key];
                 continue;
             }
             // Add item price to the total sum of the trade
-            tradeSum += Math.round(((item.data.data.price * priceModifier * 100) / 100) * item.data.data.quantity);
+            tradeSum += this._getItemPrice(item, priceModifier);
             if (options?.verbose) console.log(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
         }
 
-        return {items: items, tradeSum: tradeSum};
+        return { items: items, tradeSum: tradeSum };
+    }
+
+    /**
+     * @summary Get the items price in gold
+     *
+     * @param {Item} item
+     * @param {number} priceModifier
+     *
+     * @returns {number} price - a float with 5 decimals
+     */
+    static _getItemPriceInGold(item, priceModifier) {
+        return parseFloat(((item.data.data.price * priceModifier * 1000) / 1000 * item.data.data.quantity).toFixed(5));
     }
 
     /**
@@ -367,8 +379,8 @@ export class TradeHelper {
             "cp": CONFIG.DND5E.currencies.cp.conversion.each
         };
 
-        let buyerFunds = duplicate(buyer.data.data.currency),
-            sellerFunds = duplicate(seller.data.data.currency),
+        let buyerFunds = CurrencyHelper.handleActorCurrency(buyer.data.data.currency),
+            sellerFunds = CurrencyHelper.handleActorCurrency(seller.data.data.currency),
             itemCost = {
                 "pp": itemCostInGold / rates.gp,
                 "gp": itemCostInGold
@@ -412,7 +424,7 @@ export class TradeHelper {
             buyerFunds = this._updateConvertCurrency(buyerFunds, fundsAsPlatinum.buyer);
             sellerFunds = this._updateConvertCurrency(sellerFunds, fundsAsPlatinum.seller);
         } else {
-            if(buyerFunds.gp >= itemCost.gp) {
+            if (buyerFunds.gp >= itemCost.gp) {
                 buyerFunds.gp -= itemCost.gp;
                 sellerFunds.gp += itemCost.gp;
             } else {
@@ -423,7 +435,7 @@ export class TradeHelper {
             buyerFunds = this._smoothenFunds(buyerFunds, compensation, rates);
             sellerFunds = this._smoothenFunds(sellerFunds, compensation, rates);
         }
-        return {buyerFunds: buyerFunds, sellerFunds: sellerFunds};
+        return { buyerFunds: buyerFunds, sellerFunds: sellerFunds };
     }
 
     /**
@@ -470,10 +482,10 @@ export class TradeHelper {
      *
      * @returns {object}
      */
-    static _smoothenFunds(funds, compensation, rates ){
+    static _smoothenFunds(funds, compensation, rates) {
         for (let currency in funds) {
-            let current = funds[currency].toFixed(5),
-                currentPart = (current % 1).toFixed(5),
+            let current = funds[currency].toFixed(8),
+                currentPart = (current % 1).toFixed(8),
                 currentInt = Math.round(current - currentPart),
                 compCurrency = compensation[currency];
 
