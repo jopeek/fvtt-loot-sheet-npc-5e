@@ -182,12 +182,12 @@ export class HandlebarsHelper {
      * @description Calculate the price of an item after applying the cost modifier
      *
      * @param {number} cost
-     * @param {number} modifier
+     * @param {number} priceModifier
      *
      * @return {number}
      */
-    static lootsheetPrice(basePrice, modifier = 1, currency = true) {
-        const price = (Math.round(basePrice * modifier * 100) / 100),
+    static lootsheetPrice(basePrice, priceModifier = 1, currency = true) {
+        const price = parseFloat(((basePrice * priceModifier * 1000) / 1000).toFixed(5)),
             suffix = currency ? " GP" : "";
 
         return price + suffix;
