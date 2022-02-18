@@ -367,8 +367,8 @@ export class TradeHelper {
             "cp": CONFIG.DND5E.currencies.cp.conversion.each
         };
 
-        let buyerFunds = duplicate(buyer.data.data.currency),
-            sellerFunds = duplicate(seller.data.data.currency),
+        let buyerFunds = CurrencyHelper.handleActorCurrency(buyer.data.data.currency),
+            sellerFunds = CurrencyHelper.handleActorCurrency(seller.data.data.currency),
             itemCost = {
                 "pp": itemCostInGold / rates.gp,
                 "gp": itemCostInGold
