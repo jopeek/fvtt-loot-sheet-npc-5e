@@ -99,7 +99,11 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         sheetData.isGM = (game.user.isGM) ? true : false;
         sheetData.items = sheetDataActorItems;
         sheetData.interactingActor = game.user?.character?.name || "No Character selected";
-        sheetData.interactingActorFunds = {currency: CurrencyHelper.handleActorCurrency(game.user?.character?.data?.data?.currency) || [] };
+        if (game.user?.character?.data?.data?.currency) {
+            sheetData.interactingActorFunds = {currency: CurrencyHelper.handleActorCurrency(game.user?.character?.data?.data?.currency)};
+        } else {
+            sheetData.interactingActorFunds = {currency: [] };
+        }
         sheetData.totalItems = sheetDataActorItems.length;
         sheetData.totalWeight = totals.weight.toLocaleString('en');
         sheetData.totalPrice = totals.price.toLocaleString('en') + " gp";
