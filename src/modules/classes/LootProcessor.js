@@ -23,7 +23,7 @@ export class LootProcessor {
          * @type {Actor}
          */
         this.actor = actor || this._getLootActor(actor);
-        this.results = results;
+        this.rawResults = results;
         this.lootResults = [];
         this.currencyData = actor.data.data?.currency || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
         this.defaultConversions = {};
@@ -40,14 +40,14 @@ export class LootProcessor {
         const currencyString = options?.customRoll.currencyFormula ?? '';
         this._setCurrencyData(await CurrencyHelper.generateCurrency(currencyString));
 
-        for (let i = 0; i < this.results.length; i++) {
-            const betterResults = await this._parseResult(this.results[i], options);
-            // if a inner table is rolled, the result returned is undefined but the array this.lootResults is extended with the new results
+        for (const result of this.rawResults) {
+            const betterResults = await this._parseResult(result, options);
 
             for (const r of betterResults) {
                 this.lootResults.push(r);
             }
         }
+
         return { results: this.lootResults, currency: this.currencyData };
     }
 
@@ -63,15 +63,18 @@ export class LootProcessor {
             existingItem = false;
 
         /** Try first to load item from compendium */
-        if (item.collection) {
-            existingItem = await Utils.getItemFromCompendium(item);
-        } else {
-            /** if an item with this name exist we load that item data, otherwise we create a new one */
-            existingItem = game.items.getName(item.text);
+
+        if (item.uuid) {
+            existingItem = await fromUuid(item.uuid);
         }
 
         if (existingItem) {
             itemData = duplicate(existingItem.data);
+        } else if (item.collection) {
+            existingItem = await Utils.getItemFromCompendium(item);
+        } else {
+            /** if an item with this name exist we load that item data, otherwise we create a new one */
+            existingItem = game.items.getName(item.text);
         }
 
         if (Object.getOwnPropertyDescriptor(item, 'commands') && item.commands) {
@@ -156,6 +159,12 @@ export class LootProcessor {
             betterResult.img = result.data.img;
             betterResult.collection = result.data.collection;
             betterResult.text = result.data.text;
+            if(result.data.type === CONST.TABLE_RESULT_TYPES.COMPENDIUM) {
+                betterResult.uuid = `Compendium.${result.data.collection}.${result.data.resultId}`;
+            } else {
+                betterResult.uuid = `${result.data.collection}.${result.data.resultId}`;
+            }
+
             betterResults.push(betterResult);
         }
 
@@ -255,7 +264,7 @@ export class LootProcessor {
      *
      * @private
      */
-    async _addLootItem(item, actor, options) {
+    async _addLootItem(actor, item, options) {
         const newItem = { data: await this.buildItemData(item) },
             itemPrice = newItem.data?.data?.price || 0,
             embeddedItems = [...actor.getEmbeddedCollection('Item').values()],
@@ -394,8 +403,20 @@ export class LootProcessor {
      *
      */
     async addItemsToActor(actor, options) {
-        for (const item of this.lootResults) {
-            await this._addLootItem(item, actor, options);
+
+        const uniqueItems = this.lootResults.reduce((acc, e) => {
+                const found = acc.find(x => e.text === x.text && e.collection === x.collection);
+                if (found) {
+                    let quantity = found.quantity || 1;
+                    found.quantity = quantity + 1;
+                } else{
+                    acc.push(e);
+                }
+                return acc
+              }, []);
+
+        for (const item of uniqueItems) {
+            await this._addLootItem(actor, item, options);
         }
     }
 
