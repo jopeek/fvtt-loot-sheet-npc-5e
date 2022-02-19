@@ -323,7 +323,7 @@ export class TradeHelper {
                 continue;
             }
             // Add item price to the total sum of the trade
-            tradeSum += this._getItemPriceInGold(item, priceModifier);
+            tradeSum += this._getItemPriceInGold(item, priceModifier, item.data.data.quantity);
             if (options?.verbose) console.log(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
         }
 
@@ -335,11 +335,11 @@ export class TradeHelper {
      *
      * @param {Item} item
      * @param {number} priceModifier
-     *
+     * @param {number} quantity - defaults to 1
      * @returns {number} price - a float with 5 decimals
      */
-    static _getItemPriceInGold(item, priceModifier) {
-        return parseFloat(((item.data.data.price * priceModifier * 1000) / 1000).toFixed(5));
+    static _getItemPriceInGold(item, priceModifier, quantity = 1) {
+        return parseFloat(((item.data.data.price * priceModifier * 1000) / 1000 * quantity).toFixed(5));
     }
 
     /**
