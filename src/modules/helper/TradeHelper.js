@@ -132,7 +132,7 @@ export class TradeHelper {
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
 
-        let itemCostInGold = this._getItemPriceInGold(soldItem, priceModifier),
+        let itemCostInGold = this._getItemPriceInGold(soldItem, priceModifier, quantity),
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
         if (!successfullTransaction) return false;
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
