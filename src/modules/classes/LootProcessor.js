@@ -153,7 +153,7 @@ export class LootProcessor {
     async _parseResult(result, options = {}) {
         let betterResults = [];
         if (result.data.type === CONST.TABLE_RESULT_TYPES.TEXT) {
-            betterResults = await this._parseTextResult(result, options);
+            betterResults = await this._parseTextResults(result, options);
         } else {
             const betterResult = {};
             betterResult.img = result.data.img;
