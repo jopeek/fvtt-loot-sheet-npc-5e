@@ -153,13 +153,13 @@ export class LootProcessor {
     async _parseResult(result, options = {}) {
         let betterResults = [];
         if (result.data.type === CONST.TABLE_RESULT_TYPES.TEXT) {
-            betterResults = await this._parseTextResult(result, options);
+            betterResults = await this._parseTextResults(result, options);
         } else {
             const betterResult = {};
             betterResult.img = result.data.img;
             betterResult.collection = result.data.collection;
             betterResult.text = result.data.text;
-            if(result.data.type === CONST.TABLE_RESULT_TYPES.COMPENDIUM) {
+            if (result.data.type === CONST.TABLE_RESULT_TYPES.COMPENDIUM) {
                 betterResult.uuid = `Compendium.${result.data.collection}.${result.data.resultId}`;
             } else {
                 betterResult.uuid = `${result.data.collection}.${result.data.resultId}`;
@@ -191,7 +191,7 @@ export class LootProcessor {
                 // take care of nested tables
                 this.tableResults = this.tableResults.concat(innerTableResults);
             } else if (parsedTextResult.textString) {
-                if (parsedTextResult.collection){
+                if (parsedTextResult.collection) {
                     betterResult.collection = parsedTextResult.collection;
                 }
                 // if no table definition is found, the textString is the item name
@@ -253,6 +253,7 @@ export class LootProcessor {
 
         return result;
     }
+
     /**
      *
      *
@@ -266,9 +267,8 @@ export class LootProcessor {
      */
     async _addLootItem(actor, item, options) {
         const newItem = { data: await this.buildItemData(item) },
-            itemPrice = newItem.data?.data?.price || 0,
             embeddedItems = [...actor.getEmbeddedCollection('Item').values()],
-            originalItem = embeddedItems.find(i => i.name === newItem.data?.name && itemPrice === getProperty(i.data, 'data.price'));
+            originalItem = embeddedItems.find(i => i.name === newItem.data?.name);
 
         if (!newItem) console.error(`${MODULE.ns} | _createLootItem: no newItem could be generated from object:`, item);
         let itemQuantity = newItem?.data?.data?.quantity || 1,
@@ -405,15 +405,15 @@ export class LootProcessor {
     async addItemsToActor(actor, options) {
 
         const uniqueItems = this.lootResults.reduce((acc, e) => {
-                const found = acc.find(x => e.text === x.text && e.collection === x.collection);
-                if (found) {
-                    let quantity = found.quantity || 1;
-                    found.quantity = quantity + 1;
-                } else{
-                    acc.push(e);
-                }
-                return acc
-              }, []);
+            const found = acc.find(x => e.text === x.text && e.collection === x.collection);
+            if (found) {
+                let quantity = found.quantity || 1;
+                found.quantity = quantity + 1;
+            } else {
+                acc.push(e);
+            }
+            return acc
+        }, []);
 
         for (const item of uniqueItems) {
             await this._addLootItem(actor, item, options);

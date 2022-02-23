@@ -336,6 +336,7 @@ export class TradeHelper {
      * @param {Item} item
      * @param {number} priceModifier
      * @param {number} quantity - defaults to 1
+
      * @returns {number} price - a float with 5 decimals
      */
     static _getItemPriceInGold(item, priceModifier, quantity = 1) {
@@ -371,20 +372,17 @@ export class TradeHelper {
      * @returns {boolean} true if the transaction was successful
      */
     static async _updateFunds(seller, buyer, itemCostInGold) {
-        const rates = {
-            "pp": 1,
-            "gp": CONFIG.DND5E.currencies.gp.conversion.each,
-            "ep": CONFIG.DND5E.currencies.ep.conversion.each,
-            "sp": CONFIG.DND5E.currencies.sp.conversion.each,
-            "cp": CONFIG.DND5E.currencies.cp.conversion.each
-        };
+        const rates = CurrencyHelper.getRates(),
+            itemCost = {
+                "pp": itemCostInGold * rates.pp,
+                "gp": itemCostInGold,
+                "ep": itemCostInGold * rates.ep,
+                "sp": itemCostInGold * rates.sp,
+                "cp": itemCostInGold * rates.cp
+            };
 
         let buyerFunds = CurrencyHelper.handleActorCurrency(buyer.data.data.currency),
             sellerFunds = CurrencyHelper.handleActorCurrency(seller.data.data.currency),
-            itemCost = {
-                "pp": itemCostInGold / rates.gp,
-                "gp": itemCostInGold
-            },
             fundsAsPlatinum = {
                 "buyer": this._getFundsAsPlatinum(buyerFunds, rates),
                 "seller": this._getFundsAsPlatinum(sellerFunds, rates)
@@ -416,8 +414,6 @@ export class TradeHelper {
      * @author Daniel Böttner < @DanielBoettner >
      */
     static _getUpdatedFunds(buyerFunds, sellerFunds, itemCost, rates, fundsAsPlatinum) {
-        const compensation = { "pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp" };
-
         if (game.settings.get(MODULE.ns, "convertCurrency")) {
             fundsAsPlatinum.buyer -= itemCost.pp;
             fundsAsPlatinum.seller += itemCost.pp;
@@ -432,10 +428,27 @@ export class TradeHelper {
                 sellerFunds.pp += itemCost.pp;
             }
 
-            buyerFunds = this._smoothenFunds(buyerFunds, compensation, rates);
-            sellerFunds = this._smoothenFunds(sellerFunds, compensation, rates);
+            buyerFunds = this._smoothenFunds(buyerFunds, rates);
+            sellerFunds = this._smoothenFunds(sellerFunds, rates);
         }
+      
         return { buyerFunds: buyerFunds, sellerFunds: sellerFunds };
+    }
+
+    /**
+     *
+     * @param {object} itemCost
+     *
+     * @returns
+     */
+    findSmallestChange(itemCost) {
+        let smallestChange = [];
+        for (const [key, value] of Object.entries(itemCost)) {
+            if (Number.isInteger(value)) {
+                smallestChange[value] = key;
+            }
+        }
+        return smallestChange.filter(x=>x!==undefined);
     }
 
     /**
@@ -449,12 +462,12 @@ export class TradeHelper {
      *
      */
     static _getFundsAsPlatinum(funds, rates) {
-        let fundsAsPlatinum = funds["pp"];
+        let fundsAsPlatinum = funds.pp;
 
-        fundsAsPlatinum += funds["gp"] / rates["gp"];
-        fundsAsPlatinum += funds["ep"] / rates["gp"] / rates["ep"];
-        fundsAsPlatinum += funds["sp"] / rates["gp"] / rates["ep"] / rates["sp"];
-        fundsAsPlatinum += funds["cp"] / rates["gp"] / rates["ep"] / rates["sp"] / rates["cp"];
+        fundsAsPlatinum += funds.gp / rates.pp;
+        fundsAsPlatinum += (funds.ep / rates.gp) / rates.pp;
+        fundsAsPlatinum += (funds.sp / rates.gp) / rates.pp;
+        fundsAsPlatinum += (funds.cp / rates.gp) / rates.pp;
 
         return fundsAsPlatinum;
     }
@@ -482,20 +495,20 @@ export class TradeHelper {
      *
      * @returns {object}
      */
-    static _smoothenFunds(funds, compensation, rates) {
+    static _smoothenFunds(funds, rates) {
+        const compensation = { "pp": "gp", "gp": "ep", "ep": "sp", "sp": "cp" };
+
         for (let currency in funds) {
-            let current = funds[currency].toFixed(8),
-                currentPart = (current % 1).toFixed(8),
-                currentInt = Math.round(current - currentPart),
-                compCurrency = compensation[currency];
+            let current = parseFloat(funds[currency].toFixed(5)),
+                currentPart = parseFloat((current % 1).toFixed(5)),
+                currentInt = ~~(Math.abs(current));
 
             funds[currency] = (currentInt > 0) ? currentInt : 0;
 
             if (currency != "cp") {
                 // We calculate the amount of lower currency we get for the fraction of higher currency we have
-                let change = currentPart * rates[compCurrency];
-                funds[compCurrency] += change;
-                console.log(`${MODULE.ns} | TradeHelper | updateFunds | Updated ${compCurrency} by ${change} it is now ${funds[compCurrency]}`);
+                let change = (currency === 'pp') ? currentPart / rates[currency] : currentPart * rates[compensation[currency]];
+                funds[compensation[currency]] += change;
             }
         }
 

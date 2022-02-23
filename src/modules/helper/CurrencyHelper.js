@@ -182,4 +182,27 @@ export class CurrencyHelper {
 
         return currencies;
     }
+
+    /**
+     *
+     * @param {object} priceInBaseCurrency
+     **/
+    static getCostObject(priceInBaseCurrency){
+        const rates = this.getRates();
+        let costObject = {};
+        for (const [currency, rate] of Object.entries(rates)) {
+            if(!Number.isInteger(priceInBaseCurrency * rate)) continue;
+            costObject[currency] = Math.floor(priceInBaseCurrency * rate);
+        }
+
+        return costObject;
+    }
+
+    /**
+     *
+     * @returns {object} rates
+     */
+    static getRates() {
+        return { "pp": 0.1, "gp": 1, "ep": 2, "sp": 10, "cp": 100 };
+    }
 }

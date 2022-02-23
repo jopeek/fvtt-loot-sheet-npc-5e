@@ -24,6 +24,7 @@ export class LootSeeder {
 
 			const rolltableReferences = ActorHelper.getRollTables(currentActor);
 			if (!rolltableReferences || rolltableReferences.length === 0) continue;
+
 			for (let rolltableUuid of rolltableReferences) {
 				let rolltable = await fromUuid(rolltableUuid);
 				if (!rolltable) {
