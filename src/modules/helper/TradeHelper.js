@@ -335,7 +335,8 @@ export class TradeHelper {
      *
      * @param {Item} item
      * @param {number} priceModifier
-     *
+     * @param {number} quantity - defaults to 1
+
      * @returns {number} price - a float with 5 decimals
      */
     static _getItemPriceInGold(item, priceModifier, quantity = 1) {
@@ -430,6 +431,7 @@ export class TradeHelper {
             buyerFunds = this._smoothenFunds(buyerFunds, rates);
             sellerFunds = this._smoothenFunds(sellerFunds, rates);
         }
+      
         return { buyerFunds: buyerFunds, sellerFunds: sellerFunds };
     }
 
