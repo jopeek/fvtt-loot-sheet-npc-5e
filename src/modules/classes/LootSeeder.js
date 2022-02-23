@@ -23,6 +23,7 @@ export class LootSeeder {
 			if (!currentActor || (currentActor.data.actorLink && options.force)) continue;
 
 			const rolltableReferences = ActorHelper.getRollTables(currentActor);
+			if (!rolltableReferences || rolltableReferences.length === 0) continue;
 
 			for (let rolltableUuid of rolltableReferences) {
 				let rolltable = await fromUuid(rolltableUuid);
@@ -35,17 +36,6 @@ export class LootSeeder {
 				options = this._prepareOptions(options, this._getFormulas(currentActor), customRoll.total, currentActor.uuid);
 				await ActorHelper.addLootToTarget(currentActor, rolltable, options);
 			}
-
-
-			/* let currencyFlags = {
-				"generateCurrency": game.settings.get(MODULE.ns, 'generateCurrency'),
-				"currencyFormula": game.settings.get(MODULE.ns, 'lootCurrencyDefault'),
-				"useBetterRolltables": game.settings.get(MODULE.ns, "useBetterRolltables"),
-				"brt_rt_tcs": '',
-				"adjustCurrency": game.settings.get(MODULE.ns, "adjustCurrencyWithCR")
-			};
-
-			await CurrencyHelper.handleCurrency(currentActor, currencyFlags); */
 		}
 	}
 
