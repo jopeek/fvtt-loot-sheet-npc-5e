@@ -1,0 +1,293 @@
+.app.lsnpc.lsnpc-condensed {
+    background: none;
+    box-shadow: none;
+    min-width: 20vw;
+    max-width: 25vw;
+
+    --iconwidth: 52px;
+
+    &.actor.npc{
+        min-width: 22vw;
+    }
+    .window-header {
+        flex-direction: column;
+        align-items: center;
+        align-self: center;
+        z-index: 200;
+        height: 48px;
+        width: 100%;
+        border: none;
+        margin-bottom: -1em;
+
+        &:hover{
+            border-radius: 0.5em;
+            background: var(--header-background);
+        }
+
+        > * {
+            display: none;
+        }
+
+        .close{
+            display: block;
+            font-size: 0;
+            border-radius: 50%;
+            background: var(--exhaustion-lvl3);
+            i {
+                font-size: 32px;
+            }
+        }
+    }
+
+    .window-content {
+        background: url(/ui/parchment.jpg) repeat, rgba(77,49,20,85%);
+        background-blend-mode: color-burn;
+        border-radius: 0.8em;
+        box-shadow: 3px 3px 4px var(--iconshadow);
+
+        form {
+            background: none;
+            padding-top: 3.5em;
+            width: 100%;
+            border: 1em solid var(--header-background);
+        }
+    }
+
+    header.sheet-header {
+        display: grid;
+        grid-template-columns: 110px;
+        grid-template-rows: 0.8fr 0.2fr;
+        background: none;
+        grid-template-areas:
+            "Portrait"
+            "Name";
+        align-items: center;
+        position: absolute;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: -8.5em;
+        width: 100%;
+
+        .sheet-profile-img {
+            grid-area: Portrait;
+            width: 11em;
+            height: 11em;
+            position: relative;
+            z-index: 220;
+
+            img {
+                width: 95px;
+                height: 95px;
+            }
+        }
+        .sheet-buttons {
+            grid-area: Portrait;
+            background-size: cover;
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas:
+            "PTL PTC PTR"
+            "PCL PCC PCR"
+            "PBL PBC PBR";
+            width: 110px;
+            height: 110px;
+            position: relative;
+            z-index: 220;
+            overflow: visible;
+
+            button {
+                width: 20px;
+                height: 20px;
+                background: var(--header-background);
+                border: none;
+                margin: none;
+                padding: none;
+                z-index: 221;
+                border-radius: 25%;
+                cursor: pointer;
+
+                .fa-stack { font-size: 0.5em; }
+                i { vertical-align: unset; }
+            }
+            .split-currency {
+                grid-area: PCR;
+            }
+            .loot-currency {
+                grid-area: PBR;
+            }
+            .loot-all {
+                grid-area: PBL;
+            }
+        }
+
+        .charname {
+            text-align: center;
+            margin-top: -0.6em;
+            z-index: 221;
+            .name {
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            }
+        }
+    }
+
+    .sheet-navigation {
+        margin-top: 1em;
+    }
+
+    .inventory-filters .currency li {
+        background: none;
+        margin: none;
+        padding: none;
+    }
+    .inventory-filters .currency input[type=text] {
+        height: auto;
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: inherit;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    }
+
+    .items-list {
+        display: grid;
+        gap: 1em 1em;
+        grid-template-columns: repeat(5, var(--iconwidth));
+        grid-auto-rows: var(--iconwidth);
+
+        .item {
+            border-radius: 0.5em;
+            color: #fff;
+            cursor: pointer;
+
+            &.rarity-uncommon .image{
+                //  box-shadow: inset 0 0 0.8em rgba(126, 125, 125, 0.425);
+              }
+            &.rarity-common .image{
+              //  box-shadow: inset 0 0 0.8em rgba(126, 125, 125, 0.425);
+            }
+            &.rarity-rare .image{
+                box-shadow: inset 0 0 0.8em #0070dd;
+            }
+            &.rarity-veryRare .image{
+                box-shadow: inset 0 0 0.8em #a335ee;
+            }
+            &.rarity-legendary .image{
+                box-shadow: inset 0 0 0.8em #a335ee;
+            }
+            &.rarity-legendary .image{
+                box-shadow: inset 0 0 0.8em #e6cc80;
+            }
+            &.rarity-heirloom .image{
+                box-shadow: inset 0 0 0.8em #00ccff;
+            }
+
+            .quantity {
+                font-family: var(--modesto);
+                font-size: 1.8em;
+                padding: 0.5em;
+                line-height: 0.9em;
+                display: block;
+                margin-top: auto;
+                margin-left: auto;
+                align-self: flex-end;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            }
+            .image{
+                display: flex;
+                height: var(--iconwidth);
+                width: var(--iconwidth);
+                background-position: center;
+                background-size: contain;
+                box-shadow: inset 0 0 0.8em rgba(0,0,0,80%);
+                padding: 0.3em;
+                &:hover {
+                    box-shadow: inset 0 0 0.8em rgba(243,242,242,91%);
+                }
+            }
+        }
+    }
+
+    /**
+    * Style ALL the coins
+    */
+    .coin input{
+        font-style: italic;
+        position: relative;
+        font-size: 16px;
+        z-index: 221;
+        top: 30%;
+        left: 18%;
+        text-shadow: 2px 2px var(--iconshadow);
+    }
+
+    .coin.coin-cp input{  color: rgba(223,182,103,1);}
+    .coin.coin-sp input{  color: rgba(160,160,160,1);}
+    .coin.coin-ep input{  color: rgba(108, 118, 119, 1);}
+    .coin.coin-gp input{  color: rgba(242,215,50,1);}
+    .coin.coin-pp input{  color: rgba(160,160,160,1);}
+
+    .coin {
+      background: none;
+      content: "";
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      position: relative;
+      border-radius: 50%;
+      z-index: 220;
+      box-shadow:  2px 2px 2px 1px rgba(0, 0, 0, .1);
+    }
+
+    .coin:after{
+      content: "";
+      width: 24px;
+      height: 24px;
+      display: block;
+      top: 4px;
+      left: 4px;
+      position: absolute;
+      border-radius: 50px;
+      z-index: 210;
+    }
+
+      .coin.coin-sp:after,
+      .coin.coin-ep:after,
+      .coin.coin-pp:after {
+          background: linear-gradient(45deg,  rgba(223,182,103,1) 0%,rgba(249,243,232,1) 56%,rgba(231,192,116,1) 96%);
+          border-top: 1px solid rgba(255,255,255,0.3);
+          border-left: 1px solid rgba(255,255,255,0.3);
+          border-bottom: 1px solid rgba(209,156,53,0.3);
+          border-right: 1px solid rgba(209,156,53,0.5);
+          box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, .05);
+      }
+
+      .coin.coin-sp:after,
+      .coin.coin-ep:after,
+      .coin.coin-pp:after{
+          background: linear-gradient(45deg,  rgba(181,181,181,1) 0%,rgba(252,252,252,1) 56%,rgba(232,232,232,1) 96%);
+          border-top: 1px solid rgba(255,255,255,0.3);
+          border-left: 1px solid rgba(255,255,255,0.3);
+          border-bottom: 1px solid rgba(160,160,160,0.3);
+          border-right: 1px solid rgba(160,160,160,0.5);
+          box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
+      }
+      .coin.coin-cp:after{
+        background: linear-gradient(45deg,  rgba(223,182,103,1) 0%,rgba(255,255,255,1) 56%,rgba(119, 42, 12, 1) 96%);
+        border-top: 1px solid rgba(255,255,255,0.3);
+        border-left: 1px solid rgba(255,255,255,0.3);
+        border-bottom: 1px solid rgba(242,215,12,0.3);
+        border-right: 1px solid rgba(242,215,12,0.3);
+        box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
+    }
+
+      .coin.coin-gp:after{
+          background: linear-gradient(45deg,  rgba(242,215,12,1) 0%,rgba(255,255,255,1) 56%,rgba(223,182,103,1) 96%);
+          border-top: 1px solid rgba(255,255,255,0.3);
+          border-left: 1px solid rgba(255,255,255,0.3);
+          border-bottom: 1px solid rgba(242,215,12,0.3);
+          border-right: 1px solid rgba(242,215,12,0.3);
+          box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
+      }
+}

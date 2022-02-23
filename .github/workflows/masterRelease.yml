@@ -1,0 +1,72 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Build and Release master branch
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  test:
+    if: ${{ false }}  # disable for now
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run test --if-present
+
+  release:
+      runs-on: ubuntu-latest
+      #needs: test
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Get JSON Version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'src/module.json'
+          prop_path: 'version'
+      - name: Prepare Module Manifest
+        id: sub_manifest_link_version
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'src/module.json'
+        env:
+          version: ${{steps.version.outputs.prop}}
+          manifest: https://raw.githubusercontent.com/${{github.repository}}/master/src/module.json
+          download: https://github.com/${{github.repository}}/releases/download/v${{steps.version.outputs.prop}}/lootsheetnpc5e.zip
+      - run: npm ci && npm run build --if-present
+      - name: Zip files
+        run: |
+            cd dist
+            zip -r ../lootsheetnpc5e .
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          tag: v${{steps.version.outputs.prop}}
+          name: v${{steps.version.outputs.prop}}
+          artifacts: 'lootsheetnpc5e.zip'
+          draft: false
+          prerelease: false
+          generateReleaseNotes: true

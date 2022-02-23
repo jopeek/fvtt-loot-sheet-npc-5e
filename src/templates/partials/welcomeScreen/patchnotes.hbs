@@ -1,0 +1,88 @@
+<article class="tab" data-tab="patchnotes" data-group="ws-sections">
+    <header>
+        <h1>Patchnotes</h1>
+    </header>
+    <h2>3.5.10</h2>
+    <ul style="list-style: none;">
+        <li>Optimised currency handling, also fixing trading for low price items.</li>
+        <li>Fallback handling for actors with old currency format.</li>
+        <li>Fixed a bug when rolling on tables with text results.</li>
+        <li>replaced some deprecated references.</li>
+    </ul>
+    <h2>3.5.8</h2>
+    <ul style="list-style: none;">
+        <li>Currency
+            <ul style="list-style: none;">
+                <li>Fixed: items with a low gold price like 0.01 are no longer traded for free.</li>
+                <li>Fixed: A string like <pre>1d20[gp],3d4[sp]</pre> will now propperly generate currency.</li>
+                <li>Fixed: prices in the inventory will no longer cut small numbers.</li>
+            </ul>
+        </li>
+        <li>Handling for player actors with old currency</li>
+        <li>Fixes handling for rolltables in rolltables</li>
+        <li>Reduced the number of updates to the actors inventory when adding multiple quantities of an item.</li>
+        <li>change the token HUD interface button to make lootable and not only observable</li>
+        <li>replaced depreceated `ENTITY_PERMISSIONS` references</li>
+        <li>Fixed a check that previously caused errors for players</li>
+        <li>Optimized vertical sizing for trade/loot tab inventories.</li>
+        <li>Fixed webfont paths</li>
+    </ul>
+    <h2 id="v3.4.5">v3.4.10</h2>
+    <ul style="list-style: none;">
+        <li>
+            <header>Feature set: Sheet / Loot</header>
+            <main>
+                <ul>
+                    <li>
+                        It should now be possible to loot from with "player" and GM being in different scenes.
+                        <small>Good by "noGMactive"</small>
+                    </li>
+                    <li>Scenes and Actors will now be converted to loot items during inventory updates/seeding (not
+                        ignored) whtn rolled on in a roltlable.</li>
+                    <li>experimental: A setting allows to force a refresh of the sheet on the player side. After the
+                        sheet was changed. Feedback if this helps with sync issues are appreciated.</li>
+                </ul>
+            </main>
+        </li>
+        <li>
+            <header>Feature: Better chat cards</header>
+            <main>
+                <ul>
+                    <li>Loot from the same NPC will automatically update the existing chat card.</li>
+                    <li>Loot chat cards are automatically collapsed and can be extended to view the items.</li>
+                    <li>With given permissions, all things are linked (items, actor, token)</li>
+                </ul>
+            </main>
+        </li>
+        <li>
+            <header>Feature set: item / loot seeding</header>
+            <main>
+                <ul>
+                    <li>The functionality of the lootpoulator module was included into this module</li>
+                    <li>Scenes and Actors will be converted to loot items during inventory updates/seeding (not ignored)
+                    </li>
+                    <li>A button in the left side nav token menu allows populating <em>unlinked npc</em> token(s)
+                        inventory(s).</li>
+                    <li>A button on tokens context menu allows to set the token to observable.</li>
+                </ul>
+            </main>
+        </li>
+        <li>
+            <header>Feature: rarity colors / API</header>
+            <main>
+                <ul>
+                    <li>When the feature is active, item icons will be colored in the lootsheet and lootsheet chatcards.
+                    </li>
+                    <li>The API was updated @todo more infos</li>
+                </ul>
+            </main>
+            <footer>
+                <ul>
+                    <li class="">
+                        <a href="https://github.com/DanielBoettner/"><i class="fab fa-github"></i></a>
+                    </li>
+                </ul>
+            </footer>
+        </li>
+    </ul>
+</article>

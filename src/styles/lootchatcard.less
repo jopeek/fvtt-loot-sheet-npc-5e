@@ -1,0 +1,77 @@
+.lsnpc {
+    &.loot-item-card {
+        .loot-info {
+            background: linear-gradient(270deg, var(--sheettint), transparent);
+            margin-bottom: 0.1em;
+
+            .action-message {
+                text-align: center;
+            }
+
+            .lsnpc-document-link {
+                flex: 0 0 22px;
+                padding: 0;
+                height: 22px;
+
+                .looter-icon {
+                    width: 100%;
+                    height: 100%;
+                }
+                .npc-icon{
+                    img {
+                        box-shadow: 0 0 2px 1px var(--avatartint);
+                    }
+                }
+            }
+        }
+
+        .card-header {
+            cursor: pointer;
+        }
+
+        .item {
+            .rarityMixin();
+            .item-quantity {
+                flex: 0 0 22px;
+                font-size: 0.8em;
+                line-height: 22px;
+            }
+            .item-amount {
+                flex: 0 0 22px;
+            }
+
+            .item-link {
+                flex: 0 0 22px;
+            }
+
+            .item-image {
+                width: 22px;
+                height: 22px;
+            }
+
+            .item-name {
+                font-family: var(--modesto);
+                padding-left: 0.1em;
+                line-height: fit-content;
+                a {
+                    display: block;
+                    font-size: 0.8rem;
+                    line-height: 0.8rem;
+                    &:first-line {
+                        font-size: 1rem;
+                        line-height: 1rem;
+                    }
+                }
+            }
+
+            .item-price {
+               cursor: help;
+            }
+
+            span {
+                line-height: 2em;
+                padding: 0.1em;
+            }
+        }
+    }
+}

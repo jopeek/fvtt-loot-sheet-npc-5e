@@ -1,0 +1,28 @@
+<main class="sheet-body content">
+    <div class="tab active" data-tab="inventory" data-group="primary">
+        <!-- FEATURES -->
+        <div class="features" data-group="primary" data-tab="features">
+            {{#if isCondensedView}}
+                {{> "modules/lootsheetnpc5e/templates/partials/list/condensed.hbs"}}
+            {{else}}
+                {{> "modules/lootsheetnpc5e/templates/partials/list/default.hbs"}}
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="tab" data-tab="actions" data-group="primary">
+        {{> "modules/lootsheetnpc5e/templates/partials/list/actions.hbs"}}
+    </div>
+        <div class="tab trade" data-tab="trade" data-group="primary">
+            {{> "modules/lootsheetnpc5e/templates/partials/trade/index.hbs"}}
+    </div>
+    <div class="tab" data-tab="biography" data-group="primary">
+        {{editor content=data.details.biography.value target="data.details.biography.value"
+            button=true owner=owner editable=editable}}
+    </div>
+    {{#if isGM}}
+        <div class="tab" data-tab="gm-settings" data-group="primary">
+            {{> "modules/lootsheetnpc5e/templates/partials/gm/gm-settings.hbs"}}
+        </div>
+    {{/if}}
+</main>
