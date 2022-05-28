@@ -36,15 +36,25 @@ export class SocketListener {
      * @returns {Promise<void>}
      */
     static async handleRequest(packet) {
-        const triggeringActor = game.actors.get(packet.triggerActorId),
+        let triggeringActor = game.actors.get(packet.triggerActorId),
             action = packet.action || packet;
 
         console.log(`${MODULE.ns} | {this.name} | data`, packet);
 
+        if (game.user.isGM && !triggeringActor) {
+            triggeringActor = {
+                name: game.user.name,
+                data: {
+                    img: game.user.avatar
+                }
+            };
+            console.log(triggeringActor);
+        }
+
         if (action === "error") {
             const msg = packet.message || " | socketListener | InvalidData ";
             ui.notifications.error(MODULE.ns + ' | ' + msg);
-            console.log(`${MODULE.ns} | ${handleRequest.name} | Transaction Error: `, packet);
+            console.log(`${MODULE.ns} | handleRequest | Transaction Error: `, packet);
             return;
         }
 
@@ -53,9 +63,9 @@ export class SocketListener {
             return this._handleRerender(packet.tokenUuid);
         }
 
-        if (!triggeringActor) {
-            ui.notifications.error(`${MODULE.ns} | ${handleRequest.name} | Exception | Could not get triggering user character. See console. (F12)`);
-            console.error(`${MODULE.ns} | ${handleRequest.name} | Exception | Could not get triggering game.user`, packet);
+        if (!triggeringActor && !game.user.isGM) {
+            ui.notifications.error(`${MODULE.ns} | handleRequest | Exception | Could not get triggering user character. See console. (F12)`);
+            console.error(`${MODULE.ns} | handleRequest | Exception | Could not get triggering game.user`, packet);
             return;
         }
 
