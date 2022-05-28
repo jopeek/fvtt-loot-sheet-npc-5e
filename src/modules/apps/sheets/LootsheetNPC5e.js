@@ -319,7 +319,6 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         sheetData.rolltables = gameWorldTables;
         sheetData.actor.flags.lootsheetnpc5e = {...this.actor.data.flags?.lootsheetnpc5e, ...loot};
-        console.log('GM SETTINGS', sheetData);
         return sheetData;
     }
 
