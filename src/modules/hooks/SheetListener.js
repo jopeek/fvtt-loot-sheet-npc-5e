@@ -86,7 +86,7 @@ export class SheetListener {
         }
 
         inventorySettings.addEventListener('change', ev => this.inventorySettingChange(ev, this.actor));
-        sheetStylings.addEventListener('change', (ev) => this.sheetStyleChange(ev, this.actor));
+        sheetStylings.addEventListener('change', ev => this.sheetStyleChange(ev, this.actor));
         inventoryUpdate.addEventListener('click', ev => this.inventoryUpdateListener(ev));
         // toggle infoboxes
     }
@@ -156,6 +156,7 @@ export class SheetListener {
      */
     async inventoryUpdateListener(event) {
         event.preventDefault();
+        event.stopPropagation();
 
         const clearInventory = this.actor.getFlag(MODULE.ns, MODULE.flags.clearInventory);
 
@@ -172,7 +173,9 @@ export class SheetListener {
      * @private
      */
     async inventorySettingChange(event, actor) {
+        return;
         event.preventDefault();
+        event.stopPropagation();
 
         // @todo get this from the settings, leverage the constants, if key exists in MODULE.
         const expectedKeys = [
@@ -188,6 +191,8 @@ export class SheetListener {
 
         let targetKey = event.target.name.split('.')[3];
 
+        console.log('key check' , expectedKeys.includes(targetKey));
+
         if (!expectedKeys.includes(targetKey)) {
             console.log(MODULE.ns + ` | Error changing stettings for "${targetKey}".`);
             return ui.notifications.error(`Error changing stettings for "${targetKey}".`);
@@ -199,8 +204,8 @@ export class SheetListener {
             return;
         }
 
-        console.log(MODULE.ns + " | " + targetKey + " set to " + event.target.value);
         await actor.setFlag(MODULE.ns, targetKey, event.target.value);
+        console.log(MODULE.ns + " | " + targetKey + " set to " + event.target.value);
     }
 
     /**
@@ -212,13 +217,17 @@ export class SheetListener {
      * @private
      */
     async sheetStyleChange(event, actor) {
+        event.preventDefault();
+        event.stopPropagation();
+
         // @todo get this from the settings, leverage the constants, if key exists in MODULE.
         const expectedKeys = ["sheettint", "avatartint", "customBackground", "blendmode", "darkMode"];
 
         let splittedName = event.target.name.split('.'),
-            targetKey = splittedName[3],
-            targetExtra = splittedName[4];
+            targetKey = splittedName[2],
+            targetExtra = splittedName[3];
 
+            console.log(MODULE.ns + " | key check" , event.target.name, expectedKeys.includes(targetKey));
         if (!expectedKeys.includes(targetKey)) return;
 
         if (!targetExtra) {

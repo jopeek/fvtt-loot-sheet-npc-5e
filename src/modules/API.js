@@ -66,7 +66,7 @@ class API {
         };
 
         if (type && type.toLowerCase() === 'merchant') {
-            newActorData.flags.lootsheetnpc5e.lootsheettype = 'Merchant';
+            newActoractor.flags.lootsheetnpc5e.lootsheettype = 'Merchant';
             lootIcon = 'icons/svg/coins.svg';
         }
 

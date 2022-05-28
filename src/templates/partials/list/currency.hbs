@@ -28,7 +28,7 @@
         <div class="currency-split flexrow">
             <p class="splittext">
                 {{localize 'lsnpc.buttons.loot.currency.split.title' n=observerCount}}.
-                {{#if data.flags.lootsheetnpc5e.permissionsFilter}}
+                {{#if actor.flags.lootsheetnpc5e.permissionsFilter}}
                     <i class="fas fa-info-circle" data-tooltip-content="This is filtered, not all players are eligable per 'Filter eligable players' setting in the GM section of the sheet."></i>
                 {{/if}}
                 <br >Each gets a share of{{#each actor.flags.lootsheetnpc5e.currency as |c i|}}{{#uneq c 0}} <em>{{c}} {{i}}</em>{{/uneq}}{{/each}}.

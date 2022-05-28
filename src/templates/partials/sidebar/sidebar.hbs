@@ -21,7 +21,7 @@
                      name="flags.lootsheetnpc5e.lootsheettype"
                      data-event-type="change"
                      data-action="sheetUpdate">
-                        {{#select data.flags.lootsheetnpc5e.lootsheettype}}
+                        {{#select actor.flags.lootsheetnpc5e.lootsheettype}}
                             <option value="Loot">{{localize "lsnpc.sheettypes.loot"}}</option>
                             <option value="Merchant">{{localize "lsnpc.sheettypes.merchant"}}</option>
                         {{/select}}
@@ -60,8 +60,8 @@
                     <h4>Rolltable:</h4>
                 </div>
                 <div class="flexcol">
-                    <select class="sheet-rolltable" name="data.flags.lootsheetnpc5e.rolltable">
-                        {{#select data.flags.lootsheetnpc5e.rolltable}}
+                    <select class="sheet-rolltable" name="flags.lootsheetnpc5e.rolltable">
+                        {{#select actor.flags.lootsheetnpc5e.rolltable}}
                             <option value="">None selected</option>
                             {{#each rolltables as |array group|}}
                                 <optgroup label="{{group}}">
@@ -78,22 +78,22 @@
                 <div class="flexcol">
                     <h4>Rolltable Qty Formula: </h4>
                 </div>
-                <div class="flexcol"><input name="data.flags.lootsheetnpc5e.shopQty" type="text" data-dtype="String"
-                        placeholder="e.g. 1d20" value="{{data.flags.lootsheetnpc5e.shopQty}}" /></div>
+                <div class="flexcol"><input name="flags.lootsheetnpc5e.shopQty" type="text" data-dtype="String"
+                        placeholder="e.g. 1d20" value="{{actor.flags.lootsheetnpc5e.shopQty}}" /></div>
             </div>
             <div class="flexrow">
                 <div class="flexcol">
                     <h4>Item Qty Formula: </h4>
                 </div>
-                <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String"
-                        placeholder="e.g. 1d4" value="{{data.flags.lootsheetnpc5e.itemQty}}" /></div>
+                <div class="flexcol"><input name="flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String"
+                        placeholder="e.g. 1d4" value="{{actor.flags.lootsheetnpc5e.itemQty}}" /></div>
             </div>
             <div class="flexrow">
                 <div class="flexcol">
                     <h4>Limit Qty Formula: </h4>
                 </div>
-                <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQtyLimit" type="text"
-                        data-dtype="String" placeholder="e.g. 10" value="{{data.flags.lootsheetnpc5e.itemQtyLimit}}" />
+                <div class="flexcol"><input name="flags.lootsheetnpc5e.itemQtyLimit" type="text"
+                        data-dtype="String" placeholder="e.g. 10" value="{{actor.flags.lootsheetnpc5e.itemQtyLimit}}" />
                 </div>
             </div>
             <div class="flexrow">
@@ -108,8 +108,8 @@
                         </aside>
                     </h4>
                 </div>
-                <div class="flexcol"><input name="data.flags.lootsheetnpc5e.clearInventory" type="checkbox"
-                        data-dtype="boolean" {{#if data.flags.lootsheetnpc5e.clearInventory}}checked{{/if}} />
+                <div class="flexcol"><input name="flags.lootsheetnpc5e.clearInventory" type="checkbox"
+                        data-dtype="boolean" {{#if actor.flags.lootsheetnpc5e.clearInventory}}checked{{/if}} />
                 </div>
             </div>
         </div>

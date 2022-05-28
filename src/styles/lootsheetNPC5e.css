@@ -1,0 +1,1711 @@
+.system-dnd5e .lsnpc,
+.system-pf2 .lsnpc,
+.system-pf1 .lsnpc {
+  --modesto: "Modesto Condensed", "Palatino Linotype", serif;
+  --signika: "Signika", sans-serif;
+  --primary-font: rgba(0, 0, 0, 0.9);
+  --background: #ece9df;
+  --faintest-color: rgba(0, 0, 0, 0.05);
+  --faint-color: rgba(0, 0, 0, 0.1);
+  --light-color: rgba(0, 0, 0, 0.25);
+  --primary-color: rgba(0, 0, 0, 0.9);
+  --primary-background: rgba(255, 255, 255, 0.3);
+  --secondary-color: rgba(0, 0, 0, 0.65);
+  --tertiary-color: rgba(0, 0, 0, 0.4);
+  --primary-accent: #ff6400;
+  --white: #ffffff;
+  --faint-white: rgba(255, 255, 255, 0.2);
+  --linked-accent: rgba(0, 255, 0, 0.75);
+  --unlinked-accent: rgba(255, 0, 0, 0.75);
+  --linked-light: rgba(0, 255, 0, 0.4);
+  --unlinked-light: rgba(255, 0, 0, 0.4);
+  --safe-accent: rgba(0, 150, 100, 0.6);
+  --unsafe-accent: rgba(255, 0, 0, 0.6);
+  --header-background: rgba(255, 255, 255, 0.2);
+  --header-border: rgba(0, 0, 0, 0.25);
+  --stat-font: #ece9df;
+  --prepareable: #778899;
+  --prepared: rgba(50, 205, 50, 0.3);
+  --prepared-outline: #32cd32;
+  --prepared-accent: #adff2f;
+  --always-prepared: rgba(0, 0, 255, 0.15);
+  --always-prepared-outline: #4169e1;
+  --always-prepared-accent: #00bfff;
+  --magic-accent: #ffff00;
+  --faint-magic-accent: rgba(255, 255, 0, 0.6);
+  --magic-outline: #afff2f;
+  --attunement-required: #cd5c5c;
+  --icon-background: #ece9df;
+  --icon-shadow: rgba(0, 0, 0, 0.4);
+  --icon-outline: rgba(0, 0, 0, 0.4);
+  --icon-font: rgba(0, 0, 0, 0.4);
+  --exhaustion-font: rgba(0, 0, 0, 0.4);
+  --icon-hover: rgba(0, 0, 0, 0.9);
+  --pc-border: 0px;
+  --npc-border: 0px;
+  --vehicle-border: 0px;
+  --note-background: rgba(0, 0, 0, 0.9);
+  --exhaustion-lvl1: #ffe600;
+  --exhaustion-lvl2: #ff8200;
+  --exhaustion-lvl3: #ff3200;
+  --ability-accent: darkslategrey;
+  --context-outline: rgba(0, 0, 0, 0.4);
+  --context-shadow: rgba(0, 0, 0, 0.65);
+  --check-default: url(../images/check-dark-unchecked.svg);
+  --check-checked: url(../images/check-dark-checked.svg);
+  --checkbox-font: rgba(0, 0, 0, 0.9);
+  --checkbox-outline: #969696;
+  --checkbox-unchecked: #D8D7D1;
+  --checkbox-checked: rgba(0, 255, 0, 0.3);
+  --icon-size: 32px;
+  --iconwidth: 32px;
+  /**
+		* Entity rarity colors
+		*/
+  --rarity-common: #ffffff;
+  --rarity-uncommon: #1eff00;
+  --rarity-rare: #0070dd;
+  --rarity-veryRare: #a335ee;
+  --rarity-legendary: #ff8000;
+  --current-rarity: var(--rarity-common);
+  --sheettint: rgba(0, 0, 0, 0.2);
+  --avatartint: rgba(0, 0, 0, 0.2);
+}
+.system-dnd5e .lsnpc .darkMode,
+.system-pf2 .lsnpc .darkMode,
+.system-pf1 .lsnpc .darkMode {
+  --primary-font: rgba(255, 255, 255, 0.8);
+  --primary-background: rgba(0, 0, 0, 0.3);
+  --background: #1e1e1e;
+  --white: #000000;
+  --primary-color: rgba(255, 255, 255, 0.8);
+  --secondary-color: rgba(255, 255, 255, 0.65);
+  --tertiary-color: rgba(255, 255, 255, 0.4);
+  --light-color: rgba(255, 255, 255, 0.25);
+  --faint-color: rgba(255, 255, 255, 0.1);
+  --faintest-color: rgba(255, 255, 255, 0.05);
+  --ability-accent: darkslategrey;
+  --header-background: rgba(255, 255, 255, 0.05);
+  --header-border: rgba(255, 255, 255, 0.25);
+  --primary-accent: #ff6400;
+  --prepared: rgba(0, 250, 180, 0.3);
+  --always-prepared: rgba(0, 100, 255, 0.3);
+  --icon-background: #1e1e1e;
+  --icon-shadow: rgba(0, 0, 0, 0.4);
+  --icon-outline: rgba(0, 0, 0, 0.4);
+  --icon-font: rgba(255, 255, 255, 0.4);
+  --icon-hover: rgba(255, 255, 255, 0.8);
+  --warning-accent: rgba(255, 30, 0, 0.65);
+  --check-default: url(../images/check-dark-unchecked.svg);
+  --check-checked: url(../images/check-light-checked.svg);
+  --checkbox-font: rgba(255, 255, 255, 0.8);
+  --checkbox-outline: #323232;
+  --checkbox-unchecked: #4b4b4b;
+  --checkbox-checked: rgba(0, 255, 0, 0.5);
+}
+.tippy-box[data-theme~=lsn-help] {
+  color: var(--primary-font);
+  background: var(--background);
+  border: 2px solid var(--header-border);
+  font-size: 0.9em;
+  line-height: normal;
+}
+.tippy-box[data-theme~=lsn-item] {
+  min-width: 20vw;
+  background: var(--background);
+  background-blend-mode: var(--blendmode);
+  background-size: cover;
+  background-clip: padding-box;
+  box-shadow: 0 4px 14px -2px var(--sheettint);
+  border-radius: 0.4em;
+  border: 2px solid var(--header-border);
+  color: var(--primary-font);
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc {
+  font-size: 0.8rem;
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 2px var(--primary-background), 0 0 2px var(--primary-background), 0 0 3px var(--primary-background), 0 0 3px var(--primary-background), 0 0 1px var(--primary-background), 0 0 1px var(--primary-background);
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc header .item-name {
+  font-family: var(--modesto);
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  padding-left: 0.2em;
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc header .item-price {
+  vertical-align: text-top;
+  text-align: right;
+  padding-right: 0.2em;
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc dl {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc article {
+  max-height: 20vh;
+  overflow: hidden;
+  padding: 0.2em;
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc ul.labels {
+  font-size: 0.75rem;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.2em;
+}
+.tippy-box[data-theme~=lsn-item] .tippy-lsnpc ul.labels .label {
+  display: inline-block;
+  width: fit-content;
+  color: var(--light-color);
+}
+#lsn-logo {
+  background-image: url(../icons/svg/lsnlogo.svg);
+}
+.lsnpc a img {
+  border: none;
+}
+.lsnpc form button,
+.lsnpc form a.lsn-action-button {
+  width: min-content;
+  line-height: initial;
+  padding: 0.2em;
+  cursor: pointer;
+}
+.lsnpc form button i,
+.lsnpc form a.lsn-action-button i {
+  pointer-events: none;
+  margin-right: 0;
+}
+.lsnpc form button i.ra-hand:active,
+.lsnpc form a.lsn-action-button i.ra-hand:active {
+  cursor: grabbing;
+  color: var(--color-accent);
+}
+.lsnpc-document-link {
+  cursor: pointer;
+}
+.lsnpc.actor .window-content {
+  color: var(--primary-font);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  background: var(--faintest-color);
+}
+.lsnpc.actor .window-content .hidden {
+  display: none;
+}
+.lsnpc.actor .window-content .collapser {
+  position: relative;
+  float: left;
+  flex: none;
+  border: 1px solid var(--faint-white);
+  background: var(--safe-accent);
+  height: fit-content;
+  padding: 0.3em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  border-left: none;
+  cursor: pointer;
+  z-index: 200;
+}
+.lsnpc.actor [class*='rarity'][class*='common'] {
+  --current-rarity: var(--rarity-common);
+}
+.lsnpc.actor [class*='rarity'][class*='common'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-common);
+}
+.lsnpc.actor [class*='rarity'][class*='common'] .item-name {
+  color: var(--rarity-common);
+}
+.lsnpc.actor [class*='rarity'][class*='uncommon'] {
+  --current-rarity: var(--rarity-uncommon);
+}
+.lsnpc.actor [class*='rarity'][class*='uncommon'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-uncommon);
+}
+.lsnpc.actor [class*='rarity'][class*='uncommon'] .item-name {
+  color: var(--rarity-uncommon);
+}
+.lsnpc.actor [class*='rarity'][class*='rare'] {
+  --current-rarity: var(--rarity-rare);
+}
+.lsnpc.actor [class*='rarity'][class*='rare'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-rare);
+}
+.lsnpc.actor [class*='rarity'][class*='rare'] .item-name {
+  color: var(--rarity-rare);
+}
+.lsnpc.actor [class*='rarity'][class*='veryRare'] {
+  --current-rarity: var(--rarity-veryRare);
+}
+.lsnpc.actor [class*='rarity'][class*='veryRare'] .item-image {
+  box-shadow: 0 0 0.4em 0.2em inset var(--rarity-veryRare);
+}
+.lsnpc.actor [class*='rarity'][class*='veryRare'] .item-name {
+  color: var(--rarity-veryRare);
+}
+.lsnpc.actor [class*='rarity'][class*='legendary'] {
+  --current-rarity: var(--rarity-legendary);
+}
+.lsnpc.actor [class*='rarity'][class*='legendary'] .item-image {
+  box-shadow: 0 0 0.4em 0.3em inset var(--rarity-legendary);
+}
+.lsnpc.actor [class*='rarity'][class*='legendary'] .item-name {
+  color: var(--rarity-legendary);
+}
+.lsnpc.actor [class*='rarity'][class*='artifact'] {
+  --current-rarity: var(--rarity-artifact);
+}
+.lsnpc.actor [class*='rarity'][class*='artifact'] .item-image {
+  box-shadow: 0 0 0.4em 0.3em inset var(--rarity-artifact);
+}
+.lsnpc.actor [class*='rarity'][class*='artifact'] .item-name {
+  color: var(--rarity-artifact);
+}
+.lsnpc.actor .sheetgrid {
+  display: grid;
+  grid-template-areas: "HEADER" "BODY" "FOOTER";
+  grid-template-rows: 12em auto 1.6em;
+}
+.lsnpc.actor .sheetgrid .sheet-body {
+  grid-area: BODY;
+}
+.lsnpc.actor .sheetgrid footer {
+  grid-area: FOOTER;
+}
+.lsnpc.actor .sheetgrid > header {
+  display: grid;
+  grid-area: HEADER;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 9em auto;
+  gap: 0px 0px;
+  grid-template-areas: "PORTRAIT NAME" "NAVIGATION NAVIGATION";
+}
+.lsnpc.actor .sheetgrid > header .sheet-profile-img {
+  grid-area: PORTRAIT;
+  align-self: center;
+  justify-self: center;
+}
+.lsnpc.actor .sheetgrid > header .charname {
+  grid-area: NAME;
+}
+.lsnpc.actor .sheetgrid > header > nav {
+  grid-area: NAVIGATION;
+  align-self: self-end;
+}
+.lsnpc.actor .textflex span {
+  flex: 0 max-content;
+  padding: 0 0.2em;
+}
+.lsnpc.actor .textflex input {
+  flex: 0 10em;
+  padding: 0 0.2em;
+}
+.lsnpc.actor form {
+  overflow-y: auto !important;
+  background: var(--background);
+  width: 100%;
+  box-shadow: inset 0 0 0.5em 0 var(--sheettint);
+  color: var(--primary-font);
+}
+.lsnpc.actor form header.sheet-header {
+  font-family: var(--modesto);
+  border-bottom: 0;
+}
+.lsnpc.actor form header.sheet-header nav.sheet-navigation {
+  margin-bottom: 0;
+}
+.lsnpc.actor form header.sheet-header nav.sheet-navigation .item {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--avatartint);
+  padding: 0 0.5em;
+  margin: 0;
+}
+.lsnpc.actor form header.sheet-header nav.sheet-navigation .item i.lsn {
+  background-blend-mode: var(--blendmode);
+  background-color: var(--sheettint);
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+}
+.lsnpc.actor form header.sheet-header nav.sheet-navigation .item i.lsn.trade {
+  background: url(../icons/svg/icon-scale.svg);
+}
+.lsnpc.actor form header.sheet-header nav.sheet-navigation .item.active {
+  border: 1px solid var(--avatartint);
+  background: var(--primary-background);
+  background-blend-mode: var(--blendmode);
+  border-bottom-color: transparent;
+  font-weight: 700;
+  cursor: default;
+}
+.lsnpc.actor form header.sheet-header nav.sheet-navigation .item.active:first-child {
+  border-left: 0;
+}
+.lsnpc.actor form header.sheet-header nav.sheet-navigation .item.active:last-child {
+  border-right: 0;
+}
+.lsnpc.actor form header.sheet-header > * {
+  flex: none;
+}
+.lsnpc.actor form header.sheet-header .sheet-profile-img {
+  border: 1px solid var(--icon-outline);
+  box-shadow: inset 0 0 0.5em 0 var(--avatartint), 0 0 0.5em 0 var(--sheettint);
+  background-blend-mode: var(--blendmode);
+  border-radius: 50%;
+  max-height: 12vh;
+  max-width: 12vh;
+  overflow: hidden;
+}
+.lsnpc.actor form header.sheet-header .sheet-profile-img img.sheet-profile {
+  background-color: var(--sheettint);
+  background-blend-mode: var(--blendmode);
+  border: none;
+  box-shadow: inset 0 0 0.5em 0 var(--avatartint);
+  height: initial;
+  object-fit: cover;
+  object-position: top;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex: none;
+  width: 100%;
+  height: 100%;
+  max-width: 220px;
+  max-height: 220px;
+}
+.lsnpc.actor form header.sheet-header .charname input {
+  border: none;
+  background: none;
+}
+.lsnpc.actor form header.sheet-header .charbuttons {
+  grid-area: Actions;
+  margin: auto;
+  text-align: right;
+}
+.lsnpc.actor form header.sheet-header h1 input {
+  margin: 0px;
+}
+.lsnpc.actor form main.sheet-body {
+  background: var(--primary-background);
+}
+.lsnpc.actor form main.sheet-body section.sheet-content.content {
+  padding: 0 0.8em 0.8em 0;
+}
+.lsnpc.actor form footer.sheet-footer {
+  display: flex;
+  background: var(--primary-background);
+}
+.lsnpc.actor form select {
+  color: var(--primary-font);
+  background-color: var(--background);
+}
+.lsnpc.actor form select option {
+  background: var(--background);
+}
+.lsnpc.actor form button {
+  color: var(--primary-font);
+  width: fit-content;
+  border-radius: 0.5em;
+  border: 1px solid var(--header-border);
+  padding: 0 0.3em;
+  align-self: center;
+  cursor: pointer;
+}
+.lsnpc.actor form button:hover {
+  box-shadow: 0 0 0.3em var(--icon-shadow) inset;
+}
+.lsnpc.actor form input:hover {
+  border: none;
+}
+.lsnpc.actor form i[class*="help"] {
+  color: var(--primary-font);
+  font-size: 0.8em;
+  margin-left: 0.5em;
+  cursor: help;
+}
+.lsnpc.actor .editor {
+  height: 600px;
+}
+.lsnpc.actor .items-header {
+  color: var(--primary-color);
+}
+.lsnpc.actor .items-header > * {
+  margin: 5px;
+}
+.lsnpc.actor .items-header .item-controls {
+  display: flex;
+}
+.lsnpc.actor .items-list .item > [class*="item-"] {
+  border: none;
+}
+.lsnpc.actor .items-list .item h4 {
+  color: var(--primary-font);
+}
+.lsnpc.actor .item-controls {
+  flex: 0 0 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  justify-content: flex-end;
+}
+.lsnpc.actor .item-controls a {
+  flex: 0 0 22px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--primary-color);
+}
+.lsnpc.actor .item-controls a:hover {
+  color: var(--secondary-color);
+}
+.lsnpc.actor input[type="text"] {
+  height: calc(100% - 2px);
+  border: 1px solid #7a7971;
+  background: var(--background);
+  color: var(--primary-font);
+  text-overflow: ellipsis;
+  font-size: 0.9em;
+}
+.lsnpc.actor input[type="number"] {
+  height: calc(100% - 2px);
+  border: 1px solid #7a7971;
+  color: var(--primary-font);
+  text-overflow: ellipsis;
+  font-size: 0.9em;
+}
+.lsnpc.actor select {
+  height: calc(100% - 2px);
+  border: 1px solid #7a7971;
+  background: var(--background);
+  color: var(--primary-font);
+  text-overflow: ellipsis;
+  font-size: 0.9em;
+}
+.lsnpc.actor select option {
+  min-height: initial;
+  height: 1.1em;
+}
+/** GM specific */
+.app.lsnpc .gm-section {
+  color: var(--primary-font);
+  margin-top: 0.5rem;
+  text-align: center;
+  border-top: 1px solid #CCC;
+  border-bottom: 1px solid #CCC;
+  font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
+  font-size: 20px;
+  font-size: 18px;
+}
+.app.lsnpc .gm-header {
+  margin-top: 0.5rem;
+}
+.app.lsnpc .gm-settings {
+  padding: 0.3em;
+}
+.app.lsnpc .gm-settings .coin-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app.lsnpc .gm-settings .sheet-types {
+  margin-right: 10px;
+}
+.app.lsnpc .gm-settings .inventory-settings {
+  margin-right: 10px;
+  margin-left: 24px;
+}
+.app.lsnpc .gm-settings .inventory-settings .flexrow {
+  border-bottom: 1px solid var(--faint-color);
+  margin-bottom: 5px;
+}
+.app.lsnpc .gm-settings .inventory-settings .flexrow h4 {
+  margin: 2px 0 0 0;
+}
+.app.lsnpc .gm-settings .coins-list {
+  padding-left: 24px;
+}
+.app.lsnpc .gm-settings h4.sheet-name {
+  flex: 1;
+  margin: 0 0 0 24px;
+  line-height: 22px;
+}
+.app.lsnpc .gm-settings .denomination {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  height: 21px;
+  line-height: 21px;
+  border-bottom: 1px solid #CCC;
+  font-size: 13px;
+}
+.app.lsnpc .gm-settings .denomination > * {
+  flex: 1;
+  flex-wrap: inherit;
+  height: auto;
+}
+.app.lsnpc .gm-settings .sheet-type-info {
+  display: block;
+  position: absolute;
+  background: var(--background);
+  color: var(--primary-font);
+  box-shadow: 0px 0px 4px var(--context-shadow);
+  border-radius: 0.3em;
+  padding: 0.3em;
+  max-width: 15vw;
+  z-index: 1000;
+}
+.app.lsnpc .gm-settings .inventory-clear-settings-info {
+  display: block;
+  position: absolute;
+  background: var(--background);
+  color: var(--primary-font);
+  box-shadow: 0px 0px 4px var(--context-shadow);
+  border-radius: 0.3em;
+  padding: 0.3em;
+  max-width: 15vw;
+}
+.app.lsnpc .gm-settings .help {
+  color: var(--primary-font);
+  font-size: 13px;
+  display: inline-block;
+}
+.app.lsnpc .gm-settings .split-coins {
+  width: 95%;
+}
+.app.lsnpc select.sheet-rolltable {
+  max-width: 125px;
+}
+.app.lsnpc li.item.flexrow.inventory-header {
+  padding: 8px 8px 0 0;
+}
+.app.lsnpc .infobox-wrapper {
+  display: inline-block;
+}
+.app.lsnpc .itemsource-info {
+  display: block;
+  position: absolute;
+  background: var(--background);
+  color: var(--primary-font);
+  box-shadow: 0px 0px 4px var(--context-shadow);
+  border-radius: 0.3em;
+  padding: 0.3em;
+  max-width: 15vw;
+}
+.app.lsnpc .sheet-infobox {
+  display: block;
+  position: absolute;
+  background: var(--background);
+  color: var(--primary-font);
+  box-shadow: 0px 0px 4px var(--context-shadow);
+  border-radius: 0.3em;
+  padding: 0.3em;
+  min-width: 25vw;
+  max-width: 40vw;
+  margin-top: -12%;
+  margin-left: 1.6em;
+}
+.app.lsnpc .sheet-infobox dl {
+  display: flex;
+}
+.app.lsnpc .sheet-infobox dl > * {
+  border: 0;
+  padding: 0;
+  width: 50%;
+}
+.app.lsnpc .sheet-infobox dl dt {
+  width: 25%;
+}
+.app.lsnpc .sheet-infobox dl dd {
+  width: 75%;
+}
+.app.lsnpc section.sheet-sidebar.sidebar {
+  position: absolute;
+  background: url(/ui/parchment.jpg) repeat;
+  background-color: var(--background);
+  background-blend-mode: soft-light;
+  border: 1px solid var(--header-border);
+  border-left: 0;
+  box-shadow: 1px 1px 4px var(--context-shadow);
+  flex: 0 0 auto;
+  justify-content: center;
+  border-bottom-right-radius: 0.5em;
+  border-radius: 0 0.5em 0.5em 0;
+  min-width: fit-content;
+  max-width: 310px;
+  opacity: 1;
+  transition: all 0.75s ease;
+  z-index: 200;
+}
+.app.lsnpc section.sheet-sidebar.sidebar.hidden {
+  width: 0px;
+  opacity: 0;
+}
+button.price-modifier {
+  width: auto;
+  padding: 1px 10px;
+  margin-right: 5px;
+}
+input#price-modifier-percent-display {
+  background: none;
+  border: 1px solid transparent;
+  width: 50px;
+}
+input#price-modifier-percent-display:hover {
+  border: 1px solid var(--context-outline);
+  box-shadow: 0 0 8px red;
+}
+input#price-modifier-percent-display:focus {
+  border: 1px solid var(--context-outline);
+  box-shadow: 0 0 8px red;
+}
+input#quantity:hover {
+  border: 1px solid var(--context-outline);
+  box-shadow: 0 0 8px red;
+}
+input#quantity:focus {
+  border: 1px solid var(--context-outline);
+  box-shadow: 0 0 8px red;
+}
+.app.lsnpc .gm-settings .permissiongrid {
+  display: grid;
+  grid-auto-columns: 0.2fr 0.8fr;
+  grid-template-areas: "BULK INDIVIDUAL" "FILTER FILTER";
+  gap: 0.2em;
+}
+.app.lsnpc .gm-settings .permissiongrid .filter {
+  grid-area: FILTER;
+}
+.app.lsnpc .gm-settings .permissiongrid .bulk {
+  grid-area: BULK;
+}
+.app.lsnpc .gm-settings .permissiongrid .individual {
+  grid-area: INDIVIDUAL;
+}
+.app.lsnpc .gm-settings .permissiongrid ul {
+  border-radius: 0.4em;
+}
+.app.lsnpc .gm-settings .permissions-options,
+.app.lsnpc .gm-settings .permissions-list {
+  align-items: flex-start;
+  background: var(--header-background);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  list-style: none;
+  gap: 0.5em;
+  padding: 0.2em;
+  margin: 0;
+  overflow-x: auto;
+  max-width: 301px;
+}
+.app.lsnpc .gm-settings .permissions-options a,
+.app.lsnpc .gm-settings .permissions-list a {
+  background: var(--faint-color);
+  display: block;
+  min-height: 1.6em;
+  min-width: 1.6em;
+  border-radius: 0.5em;
+  text-align: center;
+}
+.app.lsnpc .gm-settings .permissions-options a:hover,
+.app.lsnpc .gm-settings .permissions-list a:hover {
+  border-color: var(--secondary-color);
+  text-shadow: 0 0 8px var(--secondary-color);
+}
+.app.lsnpc .gm-settings .permissions-options a i,
+.app.lsnpc .gm-settings .permissions-list a i {
+  line-height: 1.6em;
+  text-align: center;
+  width: 100%;
+}
+.app.lsnpc .gm-settings .permissions-options .none-border-permission,
+.app.lsnpc .gm-settings .permissions-list .none-border-permission {
+  color: var(--primary-accent);
+  border-color: var(--primary-accent);
+}
+.app.lsnpc .gm-settings .permissions-options .observer-border-permission,
+.app.lsnpc .gm-settings .permissions-list .observer-border-permission {
+  color: var(--prepared);
+  border-color: var(--prepared);
+}
+.app.lsnpc .gm-settings .permissions-options .owner-border-permission,
+.app.lsnpc .gm-settings .permissions-list .owner-border-permission {
+  color: var(--checkbox-checked);
+  border-color: var(--checkbox-checked);
+}
+.app.lsnpc .gm-settings .permissions-options .permission,
+.app.lsnpc .gm-settings .permissions-list .permission {
+  flex: 0 0 var(--icon-size);
+  position: relative;
+}
+.app.lsnpc .gm-settings .permissions-options .permission .permission-proficiency,
+.app.lsnpc .gm-settings .permissions-list .permission .permission-proficiency {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background: var(--faint-color);
+  display: block;
+}
+.app.lsnpc .gm-settings .permissions-options .permission .permission-proficiency > *,
+.app.lsnpc .gm-settings .permissions-list .permission .permission-proficiency > * {
+  position: absolute;
+  display: block;
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+.app.lsnpc .gm-settings .permissions-options .permission .permission-proficiency img,
+.app.lsnpc .gm-settings .permissions-list .permission .permission-proficiency img {
+  z-index: 1;
+  border: 1px solid;
+}
+.app.lsnpc .gm-settings .permissions-options .permission .permission-proficiency i,
+.app.lsnpc .gm-settings .permissions-list .permission .permission-proficiency i {
+  line-height: var(--icon-size);
+  text-align: center;
+  z-index: 2;
+  font-weight: bolder;
+  font-size: 1.8em;
+  color: var(--icon-hover);
+  text-shadow: 0 0 var(--icon-background);
+}
+.app.actor.lsnpc .window-content .inventory-list .item {
+  background: var(--faintest-color);
+  margin: 1px 0;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+.app.actor.lsnpc .window-content .inventory-list .item .item-price {
+  flex: 0 0 75px;
+  color: var(--tertiary-color);
+  font-size: 10px;
+}
+.app.actor.lsnpc .window-content .inventory-list .item .item-quantity {
+  flex: 0 0 75px;
+  color: var(--tertiary-color);
+  font-size: 10px;
+}
+.app.actor.lsnpc .window-content .inventory-list .item .item-weight {
+  flex: 0 0 75px;
+  color: var(--tertiary-color);
+  font-size: 10px;
+}
+.app.actor.lsnpc .window-content .inventory-list .item .item-controls {
+  flex: 0 0 100px !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  justify-content: flex-end;
+}
+.app.actor.lsnpc .window-content .inventory-list .inventory-header {
+  border: 1px solid var(--faint-color);
+}
+.app.actor.lsnpc .window-content .inventory-list .inventory-header .item-controls a.item-create {
+  flex: initial;
+}
+.app.actor.lsnpc .window-content .inventory-list .item-summary {
+  color: var(--primary-font);
+}
+.app.actor.lsnpc .window-content .inventory-list .item-summary .secret {
+  display: none;
+}
+.app.actor.lsnpc.lsnpc-gmview .content .tab .item .item-summary .secret {
+  display: initial;
+}
+.app.actor.lsnpc .window-content .tab.trade {
+  overflow-y: unset;
+}
+.app.actor.lsnpc .window-content .tradegrid {
+  align-items: center;
+  display: grid;
+  grid-template-areas: "TOKENINVENTORY STAGE PLAYERINVENTORY" "TINFO ACTIONS PINFO";
+  grid-template-columns: 1fr 200px 1fr;
+  grid-template-rows: 42vh 11vh;
+  margin-top: 0.1em;
+  width: 100%;
+  align-items: start;
+}
+.app.actor.lsnpc .window-content .tradegrid ul {
+  list-style: none;
+  padding: 0;
+  gap: 0.3em;
+}
+.app.actor.lsnpc .window-content .tradegrid ul input {
+  user-select: none;
+}
+.app.actor.lsnpc .window-content .tradegrid .inventory-list {
+  display: flex;
+  gap: 0.35em;
+  padding: 0.6em;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  flex-wrap: wrap;
+  height: 40vh;
+  align-content: flex-start;
+}
+.app.actor.lsnpc .window-content .tradegrid .inventory-list .item {
+  cursor: pointer;
+  height: var(--iconwidth);
+  width: var(--iconwidth);
+  background-color: var(--primary-background);
+  background-size: contain;
+  position: relative;
+  box-shadow: inset 0 0 2px 0.05em var(--current-rarity);
+}
+.app.actor.lsnpc .window-content .tradegrid .inventory-condensed {
+  background: var(--header-background);
+  max-height: 18vh;
+}
+.app.actor.lsnpc .window-content .tradegrid .inventory-wrapper {
+  background: url(../icons/backgrounds/leather.webp);
+  height: 100%;
+  box-shadow: inset 0px 0px 0.6em 0.2em var(--avatartint);
+  background-blend-mode: difference;
+  background-size: auto;
+}
+.app.actor.lsnpc .window-content .tradegrid .token-inventory {
+  grid-area: TOKENINVENTORY;
+  height: 100%;
+  box-shadow: inset 1px 1px 3px 3px rgba(0, 0, 0, 0.5);
+}
+.app.actor.lsnpc .window-content .tradegrid .player-inventory {
+  grid-area: PLAYERINVENTORY;
+  height: 100%;
+  box-shadow: inset 1px 1px 3px 3px rgba(0, 0, 0, 0.5);
+}
+.app.actor.lsnpc .window-content .tradegrid .flairbox {
+  padding: 0.5em;
+  border-radius: 0.8em;
+  margin-bottom: 0.3em;
+}
+.app.actor.lsnpc .window-content .tradegrid .token-info {
+  grid-area: TINFO;
+  align-self: self-start;
+}
+.app.actor.lsnpc .window-content .tradegrid .player-info {
+  grid-area: PINFO;
+  align-self: self-start;
+}
+.app.actor.lsnpc .window-content .tradegrid .stage {
+  background: unset;
+  grid-area: STAGE;
+  display: grid;
+  grid-auto-rows: auto;
+  background: linear-gradient(180deg, var(--header-background) 29%, transparent), linear-gradient(-180deg, var(--header-background) 22%, transparent);
+}
+.app.actor.lsnpc .window-content .tradegrid .stage main {
+  background: var(--header-background);
+  grid-area: unset;
+}
+.app.actor.lsnpc .window-content .tradegrid .stage main[data-group-target="sell"] {
+  background: linear-gradient(-90deg, var(--header-background) 29%, transparent);
+}
+.app.actor.lsnpc .window-content .tradegrid .stage main[data-group-target="buy"] {
+  background: linear-gradient(90deg, var(--header-background) 29%, transparent);
+}
+.app.actor.lsnpc .window-content .tradegrid .actions {
+  grid-area: ACTIONS;
+  padding: 0.6em;
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='common'] {
+  --current-rarity: var(--rarity-common);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='common'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-common);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='common'] .item-name {
+  color: var(--rarity-common);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='uncommon'] {
+  --current-rarity: var(--rarity-uncommon);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='uncommon'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-uncommon);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='uncommon'] .item-name {
+  color: var(--rarity-uncommon);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='rare'] {
+  --current-rarity: var(--rarity-rare);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='rare'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-rare);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='rare'] .item-name {
+  color: var(--rarity-rare);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='veryRare'] {
+  --current-rarity: var(--rarity-veryRare);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='veryRare'] .item-image {
+  box-shadow: 0 0 0.4em 0.2em inset var(--rarity-veryRare);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='veryRare'] .item-name {
+  color: var(--rarity-veryRare);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='legendary'] {
+  --current-rarity: var(--rarity-legendary);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='legendary'] .item-image {
+  box-shadow: 0 0 0.4em 0.3em inset var(--rarity-legendary);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='legendary'] .item-name {
+  color: var(--rarity-legendary);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='artifact'] {
+  --current-rarity: var(--rarity-artifact);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='artifact'] .item-image {
+  box-shadow: 0 0 0.4em 0.3em inset var(--rarity-artifact);
+}
+.app.actor.lsnpc .window-content .tradegrid .item [class*='rarity'][class*='artifact'] .item-name {
+  color: var(--rarity-artifact);
+}
+.app.actor.lsnpc .window-content .tradegrid .item:after,
+.app.actor.lsnpc .window-content .tradegrid .item:before {
+  font-size: 0.9em;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.app.actor.lsnpc .window-content .tradegrid .item[data-quantity]:before {
+  content: attr(data-quantity);
+  display: block;
+  position: absolute;
+  color: #fff;
+  margin-left: calc(var(--iconwidth) / 2 + 2px);
+}
+.app.actor.lsnpc .window-content .tradegrid .item[data-price-label]:after {
+  content: attr(data-price-label);
+  display: block;
+  position: absolute;
+  color: gold;
+  bottom: 0;
+}
+.lsnpc.dialog-price-modifier {
+  border: 2px solid #ff6400;
+}
+.lsnpc.dialog-price-modifier .window-header {
+  line-height: 1.4em;
+  flex: 0 0 1.4em;
+  border-bottom: 1px solid var(--color-border-highlight);
+}
+.lsnpc.dialog-price-modifier .window-header a {
+  display: inline-block;
+  font-size: 0em;
+  border: 1px solid var(--sheettint);
+}
+.lsnpc.dialog-price-modifier .window-header a i {
+  font-size: initial;
+}
+.lsnpc.dialog-price-modifier .window-content {
+  padding: 0;
+}
+.lsnpc.dialog-price-modifier form {
+  padding: 0.5rem;
+}
+.lsnpc.dialog-price-modifier form #priceModifierDisplay {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--avatartint);
+  box-shadow: 2px 2px 2px 2px var(--sheettint);
+}
+.lsnpc .currency-grid {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  grid-template-rows: 30px;
+}
+.lsnpc .currency-grid .currency-line {
+  gap: 0.4em;
+}
+.lsnpc .currency-grid .currency-line .currency-list {
+  display: flex;
+  padding: 0;
+  margin: 0.5em;
+  gap: 0.5em;
+  flex: 3;
+}
+.lsnpc .currency-grid .currency-split .splittext {
+  flex: 3;
+}
+.lsnpc .currency-grid li.coin {
+  text-shadow: 1px 1px var(--color-border-dark);
+  color: var(--sheettint);
+  display: flex;
+  border-radius: 0.4em;
+}
+.lsnpc .currency-grid li.coin.coin-cp {
+  background: rgba(223, 182, 103, 0.8);
+}
+.lsnpc .currency-grid li.coin.coin-sp {
+  background: rgba(160, 160, 160, 0.8);
+}
+.lsnpc .currency-grid li.coin.coin-ep {
+  background: rgba(108, 118, 119, 0.8);
+}
+.lsnpc .currency-grid li.coin.coin-gp {
+  background: rgba(242, 215, 50, 0.8);
+}
+.lsnpc .currency-grid li.coin.coin-pp {
+  background: rgba(160, 160, 160, 0.8);
+}
+.lsnpc .currency-grid li.coin input {
+  height: initial;
+  border: none;
+  text-align: right;
+}
+.lsnpc .currency-grid li.coin span {
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
+.lsnpc .currency-grid .button-xs {
+  line-height: initial;
+}
+.lsnpc .currency-grid .button-xs .buttontext {
+  display: none;
+}
+.lsnpc .trade {
+  --currencysize: 32px;
+  --currency-font-size: 1.4em;
+}
+.lsnpc .trade .coin {
+  flex: 0 var(--currencysize);
+  height: var(--currencysize);
+  border-radius: 50%;
+  z-index: 211;
+}
+.lsnpc .trade .coin span {
+  text-align: center;
+}
+.lsnpc .coin {
+  background: none;
+  content: "";
+  display: inline-block;
+  position: relative;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.81);
+}
+.lsnpc .coin span {
+  font-style: italic;
+  position: absolute;
+  text-shadow: 1px 1px var(--color-border-dark);
+  color: var(--sheettint);
+  right: auto;
+  width: var(--currencysize);
+  height: var(--currencysize);
+  z-index: 212;
+  display: block;
+  line-height: var(--currencysize);
+  text-align: center;
+}
+.lsnpc .coin :after {
+  content: "";
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  width: var(--currencysize);
+  height: var(--currencysize);
+  display: block;
+  top: 0;
+  left: 0;
+  position: absolute;
+  border-radius: 50px;
+  z-index: -1;
+}
+.lsnpc .coin.coin-cp {
+  color: #dfb667;
+}
+.lsnpc .coin.coin-sp {
+  color: #a0a0a0;
+}
+.lsnpc .coin.coin-ep {
+  color: #6c7677;
+}
+.lsnpc .coin.coin-gp {
+  color: #f2d732;
+}
+.lsnpc .coin.coin-pp {
+  color: #a0a0a0;
+}
+.lsnpc .coin.coin-sp :after,
+.lsnpc .coin.coin-ep :after,
+.lsnpc .coin.coin-pp :after {
+  background: linear-gradient(45deg, #dfb667 0%, #f9f3e8 56%, #e7c074 96%);
+  border-bottom: 1px solid rgba(209, 156, 53, 0.3);
+  border-right: 1px solid rgba(209, 156, 53, 0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, 0.05);
+}
+.lsnpc .coin.coin-sp :after,
+.lsnpc .coin.coin-ep :after,
+.lsnpc .coin.coin-pp :after {
+  background: linear-gradient(45deg, #b5b5b5 0%, #fcfcfc 56%, #e8e8e8 96%);
+  border-bottom: 1px solid rgba(160, 160, 160, 0.3);
+  border-right: 1px solid rgba(160, 160, 160, 0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
+.lsnpc .coin.coin-cp :after {
+  background: linear-gradient(45deg, #dfb667 0%, #ffffff 56%, #772a0c 96%);
+  border-bottom: 1px solid rgba(242, 215, 12, 0.3);
+  border-right: 1px solid rgba(242, 215, 12, 0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
+.lsnpc .coin.coin-gp :after {
+  background: linear-gradient(45deg, #f2d70c 0%, #ffffff 56%, #dfb667 96%);
+  border-bottom: 1px solid rgba(242, 215, 12, 0.3);
+  border-right: 1px solid rgba(242, 215, 12, 0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
+.lsnpc.loot-item-card .loot-info {
+  background: linear-gradient(270deg, var(--sheettint), transparent);
+  margin-bottom: 0.1em;
+}
+.lsnpc.loot-item-card .loot-info .action-message {
+  text-align: center;
+}
+.lsnpc.loot-item-card .loot-info .lsnpc-document-link {
+  flex: 0 0 22px;
+  padding: 0;
+  height: 22px;
+}
+.lsnpc.loot-item-card .loot-info .lsnpc-document-link .looter-icon {
+  width: 100%;
+  height: 100%;
+}
+.lsnpc.loot-item-card .loot-info .lsnpc-document-link .npc-icon img {
+  box-shadow: 0 0 2px 1px var(--avatartint);
+}
+.lsnpc.loot-item-card .card-header {
+  cursor: pointer;
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='common'] {
+  --current-rarity: var(--rarity-common);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='common'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-common);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='common'] .item-name {
+  color: var(--rarity-common);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='uncommon'] {
+  --current-rarity: var(--rarity-uncommon);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='uncommon'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-uncommon);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='uncommon'] .item-name {
+  color: var(--rarity-uncommon);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='rare'] {
+  --current-rarity: var(--rarity-rare);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='rare'] .item-image {
+  box-shadow: 0 0 0.4em 0 inset var(--rarity-rare);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='rare'] .item-name {
+  color: var(--rarity-rare);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='veryRare'] {
+  --current-rarity: var(--rarity-veryRare);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='veryRare'] .item-image {
+  box-shadow: 0 0 0.4em 0.2em inset var(--rarity-veryRare);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='veryRare'] .item-name {
+  color: var(--rarity-veryRare);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='legendary'] {
+  --current-rarity: var(--rarity-legendary);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='legendary'] .item-image {
+  box-shadow: 0 0 0.4em 0.3em inset var(--rarity-legendary);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='legendary'] .item-name {
+  color: var(--rarity-legendary);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='artifact'] {
+  --current-rarity: var(--rarity-artifact);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='artifact'] .item-image {
+  box-shadow: 0 0 0.4em 0.3em inset var(--rarity-artifact);
+}
+.lsnpc.loot-item-card .item [class*='rarity'][class*='artifact'] .item-name {
+  color: var(--rarity-artifact);
+}
+.lsnpc.loot-item-card .item .item-quantity {
+  flex: 0 0 22px;
+  font-size: 0.8em;
+  line-height: 22px;
+}
+.lsnpc.loot-item-card .item .item-amount {
+  flex: 0 0 22px;
+}
+.lsnpc.loot-item-card .item .item-link {
+  flex: 0 0 22px;
+}
+.lsnpc.loot-item-card .item .item-image {
+  width: 22px;
+  height: 22px;
+}
+.lsnpc.loot-item-card .item .item-name {
+  font-family: var(--modesto);
+  padding-left: 0.1em;
+  line-height: fit-content;
+}
+.lsnpc.loot-item-card .item .item-name a {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+}
+.lsnpc.loot-item-card .item .item-name a:first-line {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+.lsnpc.loot-item-card .item .item-price {
+  cursor: help;
+}
+.lsnpc.loot-item-card .item span {
+  line-height: 2em;
+  padding: 0.1em;
+}
+*[id^=lootsheetnpc5e] {
+  --settingsColor: #ff6400;
+  border: 2px solid var(--settingsColor);
+  border-radius: 5px;
+  overflow-x: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+  max-height: 80vh;
+  min-height: 40vh;
+  font-size: 0.9rem;
+  font-family: "Open Sans", sans-serif;
+}
+*[id^=lootsheetnpc5e] .tabs {
+  flex: none;
+}
+*[id^=lootsheetnpc5e] .tabs > .item {
+  padding: 0.2em;
+  border-bottom: 1px solid var(--settingsColor);
+}
+*[id^=lootsheetnpc5e] .tabs > .item.active {
+  padding-top: 0.3em;
+  border: 1px solid var(--settingsColor);
+  border-bottom: none;
+}
+*[id^=lootsheetnpc5e] table {
+  text-align: center;
+}
+*[id^=lootsheetnpc5e] table thead {
+  font-family: 'system-ui';
+  border: none;
+  font-weight: lighter;
+}
+*[id^=lootsheetnpc5e] footer {
+  flex: none;
+}
+*[id^=lootsheetnpc5e] form .form-group {
+  margin: 0;
+  height: fit-content;
+}
+*[id^=lootsheetnpc5e] form .form-group .form-fields > * {
+  height: fit-content;
+}
+*[id^=lootsheetnpc5e] form .form-group .form-fields > *:last-child {
+  width: calc(100% - 2px);
+}
+*[id^=lootsheetnpc5e] form .form-group.spaced {
+  gap: 0.5em;
+  justify-content: space-evenly;
+  text-align: end;
+}
+*[id^=lootsheetnpc5e] form .form-group .data-path-input {
+  text-align: left;
+}
+*[id^=lootsheetnpc5e] form #filters {
+  max-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: scroll;
+}
+*[id^=lootsheetnpc5e] form #filters .form-group {
+  margin: 0;
+  font-size: 0.8rem;
+  padding: 0;
+}
+*[id^=lootsheetnpc5e] form #filters .form-group > * {
+  height: fit-content;
+}
+*[id^=lootsheetnpc5e] form #config-tabs fieldset .form-group > input {
+  font-size: 0.8em;
+  max-width: 25%;
+  font-family: system-ui, monospace;
+}
+*[id^=lootsheetnpc5e] form #config-tabs fieldset .form-group > select {
+  font-size: 0.8em;
+  max-width: 25%;
+  font-family: system-ui, monospace;
+}
+*[id^=lootsheetnpc5e] form #config-tabs fieldset select {
+  max-width: fit-content;
+}
+*[id^=lootsheetnpc5e] .actions button {
+  width: var(--iconwidth);
+  height: unset;
+  line-height: initial;
+  padding: 0.1em;
+}
+*[id^=lootsheetnpc5e] .dropzone {
+  border-radius: 1em;
+  background: url(../icons/svg/cowled.svg) var(--avatar-tint);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-blend-mode: color-dodge;
+  background-position: center;
+  border: 4px dashed var(--color-bg-btn-minor-inactive);
+  border-style: dashed;
+}
+.lsnpc.styled {
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled .window-header {
+  background-blend-mode: darken;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0.5em 0.5em 0 0;
+}
+.lsnpc.styled .window-header.lsnpc-dialog-header {
+  font-family: var(--modesto);
+  color: var(--sheettint);
+}
+.lsnpc.styled .window-content {
+  background: none;
+}
+.lsnpc.styled .window-content button {
+  border-radius: 0.5em;
+  border-color: rgba(0, 0, 0, 0.5);
+  background: var(--background);
+}
+.lsnpc.styled form.custom {
+  background: var(--custom-background);
+  background-blend-mode: var(--blendmode);
+  background-size: cover;
+}
+.lsnpc.styled form.checks {
+  background: var(--sheettint);
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI5MCI+CjxnIHRyYW5zZm9ybT0ic2NhbGUoMSAxLjUpIj4KPHJlY3Qgd2lkdGg9Ijk5IiBoZWlnaHQ9Ijk5IiBmaWxsPSIjNmQ2OTVjIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSI0Mi40MiIgaGVpZ2h0PSI0Mi40MiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAgMCkgcm90YXRlKDQ1KSIgZmlsbD0iIzYyNWY1MyI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iOTkiIGhlaWdodD0iMSIgdHJhbnNmb3JtPSJyb3RhdGUoNDUpIiBmaWxsPSIjNzE2ZjY0Ij48L3JlY3Q+CjxyZWN0IHdpZHRoPSI5OSIgaGVpZ2h0PSIxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDYwKSByb3RhdGUoLTQ1KSIgZmlsbD0iIzcxNmY2NCI+PC9yZWN0Pgo8L2c+Cjwvc3ZnPg==");
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled form.parchment {
+  background: url(/ui/parchment.jpg);
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled form.circles {
+  background: var(--sheettint);
+  opacity: 0.8;
+  background-image: radial-gradient(circle at center center, var(--sheettint), var(--avatartint)), repeating-radial-gradient(circle at center center, var(--sheettint), var(--sheettint), 11px, transparent 22px, transparent 11px);
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled form.rose-petals {
+  background: var(--sheettint);
+  background-image: url("../icons/backgrounds/rose-petals.svg");
+  background-size: cover;
+  backdrop-filter: blur(130px);
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled form.squares {
+  background: var(--sheettint);
+  opacity: 0.8;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, var(--sheettint) 1px, var(--avatartint) 2px), repeating-linear-gradient(135deg, transparent, transparent 1px, var(--sheettint) 1px, var(--avatartint) 2px);
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled form.polka {
+  background-color: var(--avatartint);
+  opacity: 1;
+  background-image: radial-gradient(var(--sheettint) 0.75px, var(--avatartint) 0.75px);
+  background-size: 15px 15px;
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled form.endless {
+  background: var(--sheettint);
+  background-image: url("../icons/backgrounds/endless.svg");
+  background-blend-mode: var(--blendmode);
+}
+.lsnpc.styled form.triangles {
+  background: var(--sheettint);
+  background-image: url("../icons/backgrounds/large-triangles.svg");
+}
+.app.lsnpc.lsnpc-condensed {
+  background: none;
+  box-shadow: none;
+  min-width: 20vw;
+  max-width: 25vw;
+  --iconwidth: 52px;
+  /**
+    * Style ALL the coins
+    */
+}
+.app.lsnpc.lsnpc-condensed.actor.npc {
+  min-width: 22vw;
+}
+.app.lsnpc.lsnpc-condensed .window-header {
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  z-index: 200;
+  height: 48px;
+  width: 100%;
+  border: none;
+  margin-bottom: -1em;
+}
+.app.lsnpc.lsnpc-condensed .window-header:hover {
+  border-radius: 0.5em;
+  background: var(--header-background);
+}
+.app.lsnpc.lsnpc-condensed .window-header > * {
+  display: none;
+}
+.app.lsnpc.lsnpc-condensed .window-header .close {
+  display: block;
+  font-size: 0;
+  border-radius: 50%;
+  background: var(--exhaustion-lvl3);
+}
+.app.lsnpc.lsnpc-condensed .window-header .close i {
+  font-size: 32px;
+}
+.app.lsnpc.lsnpc-condensed .window-content {
+  background: url(/ui/parchment.jpg) repeat, rgba(77, 49, 20, 0.85);
+  background-blend-mode: color-burn;
+  border-radius: 0.8em;
+  box-shadow: 3px 3px 4px var(--iconshadow);
+}
+.app.lsnpc.lsnpc-condensed .window-content form {
+  background: none;
+  padding-top: 3.5em;
+  width: 100%;
+  border: 1em solid var(--header-background);
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header {
+  display: grid;
+  grid-template-columns: 110px;
+  grid-template-rows: 0.8fr 0.2fr;
+  background: none;
+  grid-template-areas: "Portrait" "Name";
+  align-items: center;
+  position: absolute;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -8.5em;
+  width: 100%;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-profile-img {
+  grid-area: Portrait;
+  width: 11em;
+  height: 11em;
+  position: relative;
+  z-index: 220;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-profile-img img {
+  width: 95px;
+  height: 95px;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-buttons {
+  grid-area: Portrait;
+  background-size: cover;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "PTL PTC PTR" "PCL PCC PCR" "PBL PBC PBR";
+  width: 110px;
+  height: 110px;
+  position: relative;
+  z-index: 220;
+  overflow: visible;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-buttons button {
+  width: 20px;
+  height: 20px;
+  background: var(--header-background);
+  border: none;
+  margin: none;
+  padding: none;
+  z-index: 221;
+  border-radius: 25%;
+  cursor: pointer;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-buttons button .fa-stack {
+  font-size: 0.5em;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-buttons button i {
+  vertical-align: unset;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-buttons .split-currency {
+  grid-area: PCR;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-buttons .loot-currency {
+  grid-area: PBR;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .sheet-buttons .loot-all {
+  grid-area: PBL;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .charname {
+  text-align: center;
+  margin-top: -0.6em;
+  z-index: 221;
+}
+.app.lsnpc.lsnpc-condensed header.sheet-header .charname .name {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.app.lsnpc.lsnpc-condensed .sheet-navigation {
+  margin-top: 1em;
+}
+.app.lsnpc.lsnpc-condensed .inventory-filters .currency li {
+  background: none;
+  margin: none;
+  padding: none;
+}
+.app.lsnpc.lsnpc-condensed .inventory-filters .currency input[type=text] {
+  height: auto;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: inherit;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.app.lsnpc.lsnpc-condensed .items-list {
+  display: grid;
+  gap: 1em 1em;
+  grid-template-columns: repeat(5, var(--iconwidth));
+  grid-auto-rows: var(--iconwidth);
+}
+.app.lsnpc.lsnpc-condensed .items-list .item {
+  border-radius: 0.5em;
+  color: #fff;
+  cursor: pointer;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item.rarity-rare .image {
+  box-shadow: inset 0 0 0.8em #0070dd;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item.rarity-veryRare .image {
+  box-shadow: inset 0 0 0.8em #a335ee;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item.rarity-legendary .image {
+  box-shadow: inset 0 0 0.8em #a335ee;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item.rarity-legendary .image {
+  box-shadow: inset 0 0 0.8em #e6cc80;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item.rarity-heirloom .image {
+  box-shadow: inset 0 0 0.8em #00ccff;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item .quantity {
+  font-family: var(--modesto);
+  font-size: 1.8em;
+  padding: 0.5em;
+  line-height: 0.9em;
+  display: block;
+  margin-top: auto;
+  margin-left: auto;
+  align-self: flex-end;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item .image {
+  display: flex;
+  height: var(--iconwidth);
+  width: var(--iconwidth);
+  background-position: center;
+  background-size: contain;
+  box-shadow: inset 0 0 0.8em rgba(0, 0, 0, 0.8);
+  padding: 0.3em;
+}
+.app.lsnpc.lsnpc-condensed .items-list .item .image:hover {
+  box-shadow: inset 0 0 0.8em rgba(243, 242, 242, 0.91);
+}
+.app.lsnpc.lsnpc-condensed .coin input {
+  font-style: italic;
+  position: relative;
+  font-size: 16px;
+  z-index: 221;
+  top: 30%;
+  left: 18%;
+  text-shadow: 2px 2px var(--iconshadow);
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-cp input {
+  color: #dfb667;
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-sp input {
+  color: #a0a0a0;
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-ep input {
+  color: #6c7677;
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-gp input {
+  color: #f2d732;
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-pp input {
+  color: #a0a0a0;
+}
+.app.lsnpc.lsnpc-condensed .coin {
+  background: none;
+  content: "";
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+  border-radius: 50%;
+  z-index: 220;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
+.app.lsnpc.lsnpc-condensed .coin:after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  display: block;
+  top: 4px;
+  left: 4px;
+  position: absolute;
+  border-radius: 50px;
+  z-index: 210;
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-sp:after,
+.app.lsnpc.lsnpc-condensed .coin.coin-ep:after,
+.app.lsnpc.lsnpc-condensed .coin.coin-pp:after {
+  background: linear-gradient(45deg, #dfb667 0%, #f9f3e8 56%, #e7c074 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(209, 156, 53, 0.3);
+  border-right: 1px solid rgba(209, 156, 53, 0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, 0.05);
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-sp:after,
+.app.lsnpc.lsnpc-condensed .coin.coin-ep:after,
+.app.lsnpc.lsnpc-condensed .coin.coin-pp:after {
+  background: linear-gradient(45deg, #b5b5b5 0%, #fcfcfc 56%, #e8e8e8 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(160, 160, 160, 0.3);
+  border-right: 1px solid rgba(160, 160, 160, 0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-cp:after {
+  background: linear-gradient(45deg, #dfb667 0%, #ffffff 56%, #772a0c 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(242, 215, 12, 0.3);
+  border-right: 1px solid rgba(242, 215, 12, 0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
+.app.lsnpc.lsnpc-condensed .coin.coin-gp:after {
+  background: linear-gradient(45deg, #f2d70c 0%, #ffffff 56%, #dfb667 96%);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(242, 215, 12, 0.3);
+  border-right: 1px solid rgba(242, 215, 12, 0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, 0.05);
+}
