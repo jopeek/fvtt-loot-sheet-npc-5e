@@ -339,10 +339,10 @@ export class LootProcessor {
         let matches
 
         while ((matches = regex.exec(tableText)) != null) {
-            this._addCurrency(await this._generateCurrency(matches[1]))
+            this._addCurrency(await CurrencyHelper.generateCurrency(matches[1]));
         }
 
-        return tableText.replace(regex, '')
+        return tableText.replace(regex, '');
     }
 
     /**
