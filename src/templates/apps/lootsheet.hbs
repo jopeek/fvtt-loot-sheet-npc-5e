@@ -1,16 +1,16 @@
 <form
-    class="{{cssClass}} sheetgrid {{#if data.flags.lootsheetnpc5e.sheettint.style}}styled {{data.flags.lootsheetnpc5e.sheettint.style}}{{/if}} {{#if data.flags.lootsheetnpc5e.darkMode}}darkMode{{/if}}"
-    autocomplete="off" data-sheettint-value="{{data.flags.lootsheetnpc5e.sheettint.value}}"
-    data-sheettint-alpha="{{data.flags.lootsheetnpc5e.sheettint.alpha}}"
-    {{#if data.flags.lootsheetnpc5e.sheettint.value}}
+    class="{{cssClass}} sheetgrid {{#if actor.flags.lootsheetnpc5e.sheettint.style}}styled {{actor.flags.lootsheetnpc5e.sheettint.style}}{{/if}} {{#if actor.flags.lootsheetnpc5e.darkMode}}darkMode{{/if}}"
+    autocomplete="off" data-sheettint-value="{{actor.flags.lootsheetnpc5e.sheettint.value}}"
+    data-sheettint-alpha="{{actor.flags.lootsheetnpc5e.sheettint.alpha}}"
+    {{#if actor.flags.lootsheetnpc5e.sheettint.value}}
         style="
-        --sheettint: {{hexToRGB data.flags.lootsheetnpc5e.sheettint.value data.flags.lootsheetnpc5e.sheettint.alpha}};
-        --avatartint: {{hexToRGB data.flags.lootsheetnpc5e.avatartint.value data.flags.lootsheetnpc5e.avatartint.alpha}};
-        --blendmode: {{data.flags.lootsheetnpc5e.sheettint.blendmode}};
-        {{#ifeq data.flags.lootsheetnpc5e.sheettint.style 'custom'}}
-        --custom-background: url(/{{data.flags.lootsheetnpc5e.custom.background}});
+        --sheettint: {{hexToRGB actor.flags.lootsheetnpc5e.sheettint.value actor.flags.lootsheetnpc5e.sheettint.alpha}};
+        --avatartint: {{hexToRGB actor.flags.lootsheetnpc5e.avatartint.value actor.flags.lootsheetnpc5e.avatartint.alpha}};
+        --blendmode: {{actor.flags.lootsheetnpc5e.sheettint.blendmode}};
+        {{#ifeq actor.flags.lootsheetnpc5e.sheettint.style 'custom'}}
+        --custom-background: url(/{{actor.flags.lootsheetnpc5e.custom.background}});
         {{/ifeq}}
-        --style: {{data.flags.lootsheetnpc5e.sheettint.style}};
+        --style: {{actor.flags.lootsheetnpc5e.sheettint.style}};
     {{/if}}">
     <!-- <section class="sheet-upper"> -->
 

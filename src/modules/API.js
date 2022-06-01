@@ -209,16 +209,13 @@ class API {
 
         const tokenstack = (tokens) ? (tokens.length > 0) ? tokens : [tokens] : canvas.tokens.controlled;
 
-        let permissions = false,
-            response = API._response(200, 'success'),
-            responseData = {},
-            tokenData = { actorData: { permission: {} } };
+        let response = API._response(200, 'success'),
+            responseData = {};
 
         for (let token of tokenstack) {
-            let permissions = PermissionHelper._updatedUserPermissions(token, CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER, players);
-            tokenData.actorData.permission = permissions,
-                responseData[token.uuid] = tokenData.actorData.permission;
-            await token.document.update(tokenData);
+            if (!token.actor || token.actor.hasPlayerOwner) continue;      
+            token.actor.data.permission = PermissionHelper._updatedUserPermissions(token, CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER, players);  
+            await token.document.update({actor: {data: {permission: token.actor.data.permission}}});
         }
 
         response.data = responseData;

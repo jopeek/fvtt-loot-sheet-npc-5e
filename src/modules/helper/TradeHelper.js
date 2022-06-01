@@ -464,11 +464,13 @@ export class TradeHelper {
     static _getFundsAsPlatinum(funds, rates) {
         let fundsAsPlatinum = funds.pp;
 
-        fundsAsPlatinum += funds.gp / rates.pp;
-        fundsAsPlatinum += (funds.ep / rates.gp) / rates.pp;
-        fundsAsPlatinum += (funds.sp / rates.gp) / rates.pp;
-        fundsAsPlatinum += (funds.cp / rates.gp) / rates.pp;
-
+        fundsAsPlatinum += funds.gp * rates.pp;
+        fundsAsPlatinum += (funds.ep / rates.gp) * rates.pp;
+        fundsAsPlatinum += (funds.sp / rates.gp) * rates.pp;
+        fundsAsPlatinum += (funds.cp / rates.gp) * rates.pp;
+        
+        console.log(`${MODULE.ns} | _getFundsAsPlatinum | funds: `, funds);
+        console.log(`${MODULE.ns} | _getFundsAsPlatinum | fundsAsPlatinum: `, fundsAsPlatinum);
         return fundsAsPlatinum;
     }
 

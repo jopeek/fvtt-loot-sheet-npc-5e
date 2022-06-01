@@ -72,7 +72,7 @@ class LootSheetNPC5eHelper {
         let quantity = (dataSet?.getAll === 'true') ? maxQuantity : 1,
             stagedItems = (event.currentTarget.closest('.tradegrid')) ? this._handleTradeStage(trades) : null;
 
-        if (!game.user?.character?.id && action != 'sheetUpdate') {
+        if (!game.user?.character?.id && action != 'sheetUpdate' && !game.user.isGM) {
             return ui.notifications.info("You need to assign an actor to your user before you can do this.");
         }
 

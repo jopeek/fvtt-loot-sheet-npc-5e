@@ -54,10 +54,10 @@ export class PriceModifierDialog extends FormApplication {
 
         //nasty hack
         const app = document.querySelector('.lsnpc.dialog-price-modifier');
-        app.classList.add(this.actor.data.flags.lootsheetnpc5e.sheettint.style);
-        let sheetTint = Handlebars.helpers.hexToRGB(this.actor.data.flags.lootsheetnpc5e.sheettint.value, this.actor.data.flags.lootsheetnpc5e.sheettint.alpha),
-            avatarTint = Handlebars.helpers.hexToRGB(this.actor.data.flags.lootsheetnpc5e.sheettint.value, this.actor.data.flags.lootsheetnpc5e.sheettint.alpha),
-            blendmode = this.actor.data.flags.lootsheetnpc5e.sheettint.blendmode,
+        app.classList.add(this.actor.flags.lootsheetnpc5e.sheettint.style);
+        let sheetTint = Handlebars.helpers.hexToRGB(this.actor.flags.lootsheetnpc5e.sheettint.value, this.actor.flags.lootsheetnpc5e.sheettint.alpha),
+            avatarTint = Handlebars.helpers.hexToRGB(this.actor.flags.lootsheetnpc5e.sheettint.value, this.actor.flags.lootsheetnpc5e.sheettint.alpha),
+            blendmode = this.actor.flags.lootsheetnpc5e.sheettint.blendmode,
             styleTag = `--sheettint: ${sheetTint}; --avatartint: ${avatarTint}; --blendmode: ${blendmode};`;
 
         app.querySelector('header').setAttribute('style', styleTag);
@@ -78,6 +78,6 @@ export class PriceModifierDialog extends FormApplication {
         event.preventDefault();
         const app = document.querySelector('.lsnpc.dialog-price-modifier');
         await this.actor.setFlag(MODULE.ns, "priceModifier", app.querySelector('#priceModifierPercent').value / 100);
-        super.close(event)
+        super.close(event);
     }
 }

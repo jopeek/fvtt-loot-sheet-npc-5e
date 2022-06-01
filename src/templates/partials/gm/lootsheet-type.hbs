@@ -9,7 +9,7 @@
     </h3>
     <select class="sheet-type{{#if this.token}} lsnpc-action-link{{/if}}" name="flags.lootsheetnpc5e.lootsheettype"
         data-event-type="change" data-action="sheetUpdate">
-        {{#select data.flags.lootsheetnpc5e.lootsheettype}}
+        {{#select actor.flags.lootsheetnpc5e.lootsheettype}}        
             <option value="Loot">{{localize "lsnpc.sheettypes.loot"}}</option>
             <option value="Merchant">{{localize "lsnpc.sheettypes.merchant"}}</option>
             <!--option value="Object" title="e.g. a chest, a box, any object that can contain something">{{localize "lsnpc.sheettypes.object"}}</option>

@@ -206,7 +206,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      * @returns
      */
     async _prepareSheetType(typeKey) {
-        let type = this.actor.getFlag(MODULE.ns, typeKey)
+        let type = this.actor.getFlag(MODULE.ns, typeKey);
         if (!type) {
             type = "Loot";
             await this.actor.setFlag(MODULE.ns, typeKey, type);
@@ -227,11 +227,11 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      *
      * @override
      */
-    activateListeners(html) {
-        super.activateListeners(html);
-
+    async activateListeners(html) {
+        super.activateListeners(html);        
         const listener = new SheetListener(this.id, this.token, this.actor, this.options);
-        listener.activateListeners();
+        await listener.activateListeners();
+        
     }
 
     /* -------------------------------------------- */
@@ -318,8 +318,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         loot.playersPermissionDescription = PermissionHelper.getPermissionInfo(permissions.playersPermission)?.description;
 
         sheetData.rolltables = gameWorldTables;
-        sheetData.actor.flags.lootsheetnpc5e = loot;
-
+        sheetData.actor.flags.lootsheetnpc5e = {...this.actor.data.flags?.lootsheetnpc5e, ...loot};
         return sheetData;
     }
 
