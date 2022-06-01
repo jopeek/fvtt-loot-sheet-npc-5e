@@ -9,7 +9,6 @@
     </h3>
     <select class="sheet-type{{#if this.token}} lsnpc-action-link{{/if}}" name="flags.lootsheetnpc5e.lootsheettype"
         data-event-type="change" data-action="sheetUpdate">
-        {{log '---sheet type---'}}
         {{#select actor.flags.lootsheetnpc5e.lootsheettype}}        
             <option value="Loot">{{localize "lsnpc.sheettypes.loot"}}</option>
             <option value="Merchant">{{localize "lsnpc.sheettypes.merchant"}}</option>
