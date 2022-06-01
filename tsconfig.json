@@ -32,5 +32,6 @@
                 "rollup.config.js",
                 "test/**/*",
                 "dist/**.*",
+                "coverage"
         ],
 }
