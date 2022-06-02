@@ -39,7 +39,7 @@ export class SocketListener {
         let triggeringActor = game.actors.get(packet.triggerActorId),
             action = packet.action || packet;
 
-        console.log(`${MODULE.ns} | {this.name} | data`, packet);
+        console.log(`${MODULE.ns} | handleRequest | data`, packet);
 
         if (game.user.isGM && !triggeringActor) {
             triggeringActor = {
