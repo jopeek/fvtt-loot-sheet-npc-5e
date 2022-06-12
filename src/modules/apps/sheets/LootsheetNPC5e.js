@@ -97,6 +97,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         let totals = this._getTotals(sheetDataActorItems, context.priceModifier);
 
         context.isGM = (game.user.isGM) ? true : false;
+        context.isToken = (this?.token) ? true : false;
         context.items = sheetDataActorItems;
         context.interactingActor = game.user?.character?.name || "No Character selected";
         if (game.user?.character?.data?.data?.currency) {

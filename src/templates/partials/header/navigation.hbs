@@ -3,10 +3,14 @@
         <a class="item" data-tab="gm-settings"><i class="fas fa-cog" title="{{localize " GM"}}"></i></a>
     {{/if}}
     <a class="item active" data-tab="inventory">{{localize "DND5E.Inventory"}}</a>
-    <a class="item" data-tab="trade">
-        <i class="lsn trade"></i>
-        {{#ifeq lootsheettype "Merchant"}}{{localize "Trade"}}{{else}}{{localize "Loot"}}{{/ifeq}}
-    </a>
+
+    {{#if isToken}}
+        <a class="item" data-tab="trade">
+            <i class="lsn trade"></i>
+            {{#ifeq lootsheettype "Merchant"}}{{localize "Trade"}}{{else}}{{localize "Loot"}}{{/ifeq}}
+        </a>
+    {{/if}}
+    
     {{#if isGM}}
         <a class="item" data-tab="actions">{{localize "DND5E.ActionPl"}}</a>
     {{/if}}

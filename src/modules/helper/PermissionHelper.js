@@ -214,7 +214,7 @@ export class PermissionHelper {
      */
     static filterByTokenInScene(eligables) {
         return Array.from(canvas.tokens.placeables.reduce((acc, curr) => {
-            if (!curr.actor.hasPlayerOwner) return acc
+            if (!curr.actor.hasPlayerOwner) return acc;
             for (const id of Object.keys(curr.actor.data.permission)) {
               if (eligables.includes(id)) acc.add(id);
             }

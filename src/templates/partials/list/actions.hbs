@@ -1,16 +1,16 @@
 <div class="header-details flexrow">
-    <ul class="items-list inventory-list">
+    <ul class="items-list inventory-list">        
         {{#each actor.actions as |section sid|}}
             {{#if section.items}}
                 <li class="items-header flexrow inventory-header">
-                    <h3 class="item-name">{{section.label}}</h3>
-                    {{#if ../isOwner}}
-                        <div class="item-controls">
-                            <a class="item-control item-create" title="Create Item" data-type="{{section.type}}">
-                                <i class="fas fa-plus"></i> Add
-                            </a>
-                        </div>
-                    {{/if}}
+                    <h3 class="item-name">{{section.label}}</h3>                                        
+                        {{#if ../owner}}
+                            <div class="item-controls">
+                                <a class="item-control item-create" title="Create Item" data-type="{{section.type}}">
+                                    <i class="fas fa-plus"></i> Add
+                                </a>
+                            </div>
+                        {{/if}}
                 </li>
 
                 <ol class="item-list">
