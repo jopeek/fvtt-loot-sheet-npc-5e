@@ -533,13 +533,7 @@ export class TradeHelper {
                 currentPart = parseFloat((current % 1).toFixed(5)),
                 currentInt = ~~(Math.abs(current));
 
-                console.warn(`${MODULE.ns} | _smoothenFunds | current: `, current);
-                console.warn(`${MODULE.ns} | _smoothenFunds | currentPart: `, currentPart);
-                console.warn(`${MODULE.ns} | _smoothenFunds | currentInt: `, currentInt);
-
             funds[currency] = (currentInt > 0) ? currentInt : 0;
-
-                console.warn(`${MODULE.ns} | _smoothenFunds | funds[currency]: `, funds[currency]);
 
             if (currency != "cp") {
                 // We calculate the amount of lower currency we get for the fraction of higher currency we have
