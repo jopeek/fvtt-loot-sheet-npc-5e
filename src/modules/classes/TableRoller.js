@@ -45,7 +45,9 @@ export class TableRoller {
 			throw new Error(MODULE.ns + " | " + msg);
 		}
 
-		if (!table.data.formula) return console.log(MODULE.ns + ` | tableRoller | Error: No Forumla found for table: ${table.name}`);
+		if (!table.data.formula) {
+			table.data.formula = amountToRoll+'d'+this.table.results.size;
+		}		
 
 		while (amountToRoll > 0) {
 			const resultsLeft = await this.checkResultsLeft(table, amountToRoll);
@@ -57,7 +59,7 @@ export class TableRoller {
 				drawnResults = await this._updateDrawnResults(drawResult, drawnResults, depth, options);
 				amountToRoll -= resultToDraw;
 		}
-
+		console.warn(	MODULE.ns + ` | tableRoller | drawn results: `,drawnResults);
 		return drawnResults;
 	}
 
