@@ -232,10 +232,8 @@ export class SheetListener {
 
         if (!targetExtra) {
             const value = event.target.checked === undefined ? event.target.value : event.target.checked;
-            console.log(MODULE.ns + " | " + targetKey + " set to " + value);
             await actor.setFlag(MODULE.ns, targetKey, value);
         } else {
-            console.log(MODULE.ns + " | " + targetKey + '.' + targetExtra + " set to " + event.target.value);
             await actor.setFlag(MODULE.ns, targetKey + '.' + targetExtra, event.target.value);
         }
 

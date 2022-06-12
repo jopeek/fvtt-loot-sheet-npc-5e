@@ -139,7 +139,7 @@ export class LootsheetNPC5eHooks {
         if (!token.actor || token.data.actorLink) return; // ignore linked tokens
         const actor = token.actor;
 
-        if(ActorHelper.skipByCreatureType(actor)) return;
+        if (ActorHelper.skipByCreatureType(actor)) return;
         await LootSeeder.seedItemsToActors([actor]);
     }
 
@@ -240,10 +240,10 @@ export class LootsheetNPC5eHooks {
      *
      */
     static _skipTokenByType(token) {
-        if(!game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.useSkiplist)) return false;
+        if (!game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.useSkiplist)) return false;
 
         const creatureType = token.actor.data.data.details.type.value;
-        if(!Object.keys(CONFIG.DND5E.creatureTypes).includes(creatureType)) return false;
+        if (!Object.keys(CONFIG.DND5E.creatureTypes).includes(creatureType)) return false;
 
         return game.settings.get(MODULE.ns, "skiplist_" + creatureType);
     }

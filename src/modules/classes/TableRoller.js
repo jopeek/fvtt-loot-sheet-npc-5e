@@ -59,7 +59,7 @@ export class TableRoller {
 				drawnResults = await this._updateDrawnResults(drawResult, drawnResults, depth, options);
 				amountToRoll -= resultToDraw;
 		}
-		console.warn(	MODULE.ns + ` | tableRoller | drawn results: `,drawnResults);
+		
 		return drawnResults;
 	}
 

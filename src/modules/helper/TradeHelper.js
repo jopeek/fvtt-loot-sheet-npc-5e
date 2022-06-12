@@ -131,8 +131,6 @@ export class TradeHelper {
         options.priceModifier = (options.type === 'buy') ? priceModifier.buy : priceModifier.sell;
 
         if (!soldItem) return ItemHelper.errorMessageToActor(seller, `${seller.name} doesn't posses this item anymore.`);
-        console.warn(`${seller.name} is selling ${soldItem.name} for ${this._getItemPriceInGold(soldItem.data.data.price, options.priceModifier, quantity)} gold`);
-        console.warn(`trade type: ${options.type}`);
         
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
@@ -140,8 +138,6 @@ export class TradeHelper {
         let originalItemPrice = soldItem.data.data.price,
             itemCostInGold = this._getItemPriceInGold(originalItemPrice, options.priceModifier, quantity),
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
-
-        console.warn(`transaction |${originalItemPrice} | ${itemCostInGold} | ${options.priceModifier}`);
 
         if (!successfullTransaction) return false;
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
@@ -326,7 +322,6 @@ export class TradeHelper {
      * @author Daniel Böttner <@DanielBoettner>
      */
     static _prepareTrade(source, items, options = {}) {
-        console.warn(options);
         const priceModifier = options.priceModifier || 100;
         let tradeSum = 0;
         for (const [key, item] of items.entries()) {
@@ -408,7 +403,6 @@ export class TradeHelper {
                 "cp": itemCostInGold * rates.cp
             };
 
-            console.warn('updateFund itemCos', buyer.name, itemCost.gp);
         let buyerFunds = CurrencyHelper.handleActorCurrency(buyer.data.data.currency),
             sellerFunds = CurrencyHelper.handleActorCurrency(seller.data.data.currency),
             fundsAsPlatinum = {
