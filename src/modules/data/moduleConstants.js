@@ -25,6 +25,29 @@ export const MODULE = {
         itemQtyLimit: 'itemQtyLimit',
         clearInventory: 'clearInventory',
         priceModifier: 'priceModifier',
+        default:{
+            lootsheetnpc5e: {
+                lootsheettype: "Loot",
+                rolltable: "",
+                shopQty: "",
+                itemQty: "",
+                itemQtyLimit: "",
+                currencyFormula: "",
+                clearInventory: false,
+                permissionsFilter: false,
+                darkMode: true,
+                sheettint: {
+                    value: "#000000",
+                    alpha: 0.5,
+                    style: "none",
+                    blendmode: "difference"
+                },
+                avatartint: {
+                    value: "#000000",
+                    alpha: 0.5
+                }
+            }
+        }
     },
     ns: 'lootsheetnpc5e',
     path: 'modules/lootsheetnpc5e',
@@ -113,7 +136,6 @@ export const MODULE = {
                 fallbackShopQty: 'fallbackShopQty',
                 fallbackItemQty: 'fallbackItemQty',
                 fallbackItemQtyLimit: 'fallbackItemQtyLimit',
-                fallbackCurrencyFormula: 'fallbackCurrencyFormula',
                 generateCurrency: 'generateCurrency',
                 lootCurrencyDefault: 'lootCurrencyDefault',
                 useRulesets: 'useRulesets',

@@ -10,7 +10,7 @@
         {{#ifeq actor.flags.lootsheetnpc5e.sheettint.style 'custom'}}
         --custom-background: url(/{{actor.flags.lootsheetnpc5e.custom.background}});
         {{/ifeq}}
-        --style: {{actor.flags.lootsheetnpc5e.sheettint.style}};
+        --style: {{#if actor.flags.lootsheetnpc5e.sheettint.style}}{{actor.flags.lootsheetnpc5e.sheettint.style}} ohh{{else}}none{{/if}};
     {{/if}}">
     <!-- <section class="sheet-upper"> -->
 

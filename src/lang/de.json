@@ -86,6 +86,122 @@
                 "skiplist": "Ignorierliste",
                 "info": "?",
                 "rulesets": "Filterregeln"
+            },
+            "sheet": {
+                "buyItem": {
+                    "name": "Gegenstand Kaufen",
+                    "hint": "Spielern erlauben vom Händler Sheet zu kaufen?"
+                },
+                "chatGracePeriod": {
+                    "name": "Chat Wartezeit (in Sekunden)",
+                    "hint": "Zeit in der eine vorhanden Chat Karte aktualisiert wird anstatt eine neue zu erstellen."
+                },
+                "colorRarity": {
+                    "name": "Seltenheit einfärben?",
+                    "hint": "Farbakzente nutzen um Seltenheit einzufärben. (Könnte Farbenblinde Spieler beeinträchtigen)"
+                },
+                "convertCurrency": {
+                    "name": "Währung konvertieren",
+                    "hint": "Währung ,nach dem Kauf, auf höchstmögliche Währunge konvertieren? (z.B. gp zu pp)"
+                },
+                "filterNaturalWeapons": {
+                    "name": "Natürliche Waffen filtern",
+                    "hint": "Filtert `natural weapons` beim erbeuten/handeln."
+                },
+                "distributeCurrency": {
+                    "name": "Währung aufteilen",
+                    "hint": "Erlaubt Spielern die Schätze untereinander zu teilen?"
+                },
+                "generateChatMessages" : {
+                    "name": "Chat Nachrichten generieren",
+                    "hint": "Generiert Chat Nachrichten wenn Spieler mit dem Charaktersheet interagieren (erbeuten/handeln)"
+                },
+                "lootAll": {
+                    "name": "Alles nehmen",
+                    "hint": "Allow a player to take all items from a sheet at once?"
+                },
+                "includeCurrencyWeight": {
+                    "name": "Include currency weight",
+                    "hint": "Include the weight of currency in a sheet's total weight calculations?"
+                },
+                "lootCurrency": {
+                    "name": "Loot currency",
+                    "hint": "Allow a player to take all currency from a sheet at once?"
+                },
+                "lootItem": {
+                    "name": "Looting",
+                    "hint": "Allow players to loot items from a sheet?"
+                },
+                "maxPriceIncrease": {
+                    "name": "Maximum price increase",
+                    "hint": "Maximum price increase for the merchant sheet. (e.g. 200% = 100gp -> 200gp)"
+                },
+                "reduceUpdateVerbosity": {
+                    "name": "Reduce update verbosity",
+                    "hint": "No notifications will be created every time an item is added to the inventory."
+                },
+                "showStackWeight": {
+                    "name": "Zeige Stapelgewicht",
+                    "hint": "Zeige Stapelgewicht neben dem Einzelgewicht?"
+                },
+                "stackBuyConfirm": {
+                    "name": "Kaufen von Stapeln bestätigen",
+                    "hint": "Vor dem Kaufen von Stapeln um bestätigung fragen?"
+                },
+                "sheetUpdate": {
+                    "name": "Force sheet update",
+                    "hint": "This setting will try to send a signal to players when something changes in the sheet. Telling their FoundryVTT client to rerender the sheet."
+                },
+                "tradeItems": {
+                    "name": "Handeln",
+                    "hint": "Erlaubt Spielern mit dem Charaktersheet zu handeln?"
+                }
+            },
+            "seeder": {
+                "autoSeedTokens": {
+                    "name": "Automatisch befüllen",
+                    "hint": "Automatisch befüllen wenn ein NPC Token (nicht verlinked) auf die Spielfäche gelegt wird. Setzt eine, in den Einstellungen oder am Akteur, eine Würfeltabelle vorraus."
+                },
+                "adjustCurrencyWithCR": {
+                    "name": "Generierte Währung via CR anpassen",
+                    "hint": "Generierte Währung wird durch den CR beeinflusst. (Würfelformel + (CR * X))."
+                },
+                "creatureTypeFallbacks": {
+                    "name": "Standards für Kreaturtypen",
+                    "hint": "Standard Würfeltabellen wenn am Akteur keine Würfeltabelle festgelegt ist, Akteur aber vom jeweiligen Kreaturentyp ist."
+                },
+                "lootCurrencyDefault": {
+                    "name": "Währungs Standardformel",
+                    "hint": "Formel für Beutewährungs generierung. (e.g. 1d4[gp], 1d20[sp], 1d50[cp])"
+                },
+                "fallbackRolltable": {
+                    "name": "Seeder default rolltable",
+                    "label": "A default rolltable used by the seeder for (not skipped) tokens if no rolltable is found on/for the actor."
+                },
+                "fallbackShopQty": {
+                    "name": "Default shop quantity",
+                    "hint": "Default shop quantity to use if no shop quantity is assigned to the actor. (e.g. 1d6)"
+                },
+                "fallbackItemQty": {
+                    "name": "Default item quantity",
+                    "hint": "Default item quantity to use if no quantity is assigned to the actor. (e.g. 1d6)"
+                },
+                "fallbackItemQtyLimit": {
+                    "name": "Default item quantity maximum",
+                    "hint": "Default item quantity maxmimum to use if no maxmimum quantity is assigned to the actor. (e.g. 2d20 || 10)"
+                },
+                "generateCurrency": {
+                    "name": "Generate currency",
+                    "hint": "Generate currency during automatic item seeding."
+                },
+                "useRulesets": {
+                    "name": "Use filter rulesets",
+                    "hint": "Custom rules to test against a token actor. E.g. if tokens actor matches the rules, a rolltable will be used instead of non or a default rolltable."
+                },
+                "useSkiplist": {
+                    "name": "Use skiplist",
+                    "hint": "Use the skiplist to ignore tokens with certain types during auto seeding."
+                }
             }
         }
     }

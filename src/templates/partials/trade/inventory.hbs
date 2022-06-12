@@ -12,11 +12,11 @@
                 data-id="{{item._id}}"
                 data-quantity="{{item.data.quantity}}"
                 {{#ifeq ../../mode "npc" }}
-                    data-price="{{lootsheetprice item.data.price ../../priceModifier}}"
-                    data-price-label="{{approximateNumber (lootsheetprice item.data.price ../../priceModifier false) 2}}"
+                    data-price="{{lootsheetprice item.data.price ../../priceModifier.sell}}"
+                    data-price-label="{{approximateNumber (lootsheetprice item.data.price ../../priceModifier.sell false) 2}}"
                 {{else}}
-                    data-price="{{lootsheetprice item.data.price 1}}"
-                    data-price-label="{{approximateNumber item.data.price 2}}"
+                    data-price="{{lootsheetprice item.data.price ../../priceModifier.buy}}"
+                    data-price-label="{{approximateNumber (lootsheetprice item.data.price ../../priceModifier.buy false) 2}}"
                 {{/ifeq}}
                 data-weight="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"
                 data-weight-hanging="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"

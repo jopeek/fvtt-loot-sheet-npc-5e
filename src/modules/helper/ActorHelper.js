@@ -17,7 +17,7 @@ export class ActorHelper {
             rolltableFromActor = this.getLinkedRolltable(actor),
             rolltableByCreature = this.getLinkedRolltableByCreatureType(creatureType),
             rolltableByFilters = this.getLinkedRolltableByFilters(actor),
-            rolltableDefault = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackRolltable) || [];
+            rolltableDefault = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackRolltable) || false;
         let rolltables = [];
 
         if (rolltableFromActor) {
@@ -26,7 +26,7 @@ export class ActorHelper {
             rolltables = rolltables.concat(...rolltableByFilters);
         } else if (rolltableByCreature) {
             rolltables.push(rolltableByCreature);
-        } else {
+        } else if (rolltableDefault) {
             rolltables.push(rolltableDefault);
         }
 

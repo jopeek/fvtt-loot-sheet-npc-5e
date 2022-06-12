@@ -14,7 +14,7 @@ class ItemHelper {
             chanceOfDamagedItems: options?.chanceOfDamagedItems || 0,
             damagedItemsMultiplier: options?.damagedItemsMultiplier || 0,
             removeDamagedItems: options?.removeDamagedItems || false,
-            filterNaturalWeapons: game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.filterNaturalWeapons) || true,
+            filterNaturalWeapons: game.settings.get(MODULE.ns, MODULE.settings.keys.sheet.filterNaturalWeapons),
             rarityPath: options?.rarityPath || 'data.rarity'
         };
     }
@@ -118,11 +118,11 @@ class ItemHelper {
     }
 
     /**
-     * @param {Array<object>} items
-     * @param {number} chanceOfDamagedItems
-     * @param {number} damagedItemsMultiplier
+     * @param {Array<object>} items items to be filtered for lootable items 
+     * @param {number} chanceOfDamagedItems between 0 and 1
+     * @param {number} damagedItemsMultiplier between 0 and 1
      *
-     * @returns {Array<Items>} items Filtered lootable items
+     * @returns {Array<Items>} all lootable items of the given items
      */
     static getLootableItems(
         items,
@@ -135,9 +135,15 @@ class ItemHelper {
                 return item.toObject();
             })*/
             .filter((item) => {
+                if(item.documentName){
+                    item = item.data; // we only need the item data
+                }
+
                 if (options?.filterNaturalWeapons) {
-                    if (item.type == 'weapon') {
-                        return item.data.weaponType != 'natural';
+                    if (item.type == 'weapon') {  
+                        const filteredWeaponTypes = ['natural'];  
+
+                        return !filteredWeaponTypes.includes(item.data.weaponType);
                     }
                 }
 

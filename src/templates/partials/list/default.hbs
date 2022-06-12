@@ -49,25 +49,32 @@
                                    data-content="{{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}"></i>
                             </div>
                             <div class="item-price">
-                                {{lootsheetprice item.data.price ../../priceModifier }}
+                                {{lootsheetprice item.data.price ../../priceModifier.sell }}
                                 <i class="fas fa-coins" title="Price (in gp)"></i>
                             </div>
 
                             <div class="item-controls">
-                                {{#ifeq ../../lootsheettype "Loot"}}
-                                    <a class="item-control lsnpc-action-link" title="Loot Stack" data-action="lootItem" data-get-all="true"><i class="fas fa-boxes"></i></a>
-                                    <a class="item-control lsnpc-action-link" title="Loot Item" data-action="lootItem" data-get-all="false"><i class="ra ra-hand"></i></a>
-                                {{/ifeq}}
+                                {{#if ../../isToken}}
+                                    {{#ifeq ../../lootsheettype "Loot"}}
+                                        <a class="item-control lsnpc-action-link" title="Loot Stack" data-action="lootItem" data-get-all="true"><i class="fas fa-boxes"></i></a>
+                                        <a class="item-control lsnpc-action-link" title="Loot Item" data-action="lootItem" data-get-all="false"><i class="ra ra-hand"></i></a>
+                                    {{/ifeq}}
 
-                                {{#ifeq ../../lootsheettype "Merchant"}}
-                                    <a class="item-control lsnpc-action-link" title="Buy Stack" data-action="buyItem" data-get-all="true"><i class="fas fa-coins"></i></a>
-                                    <a class="item-control lsnpc-action-link" title="Buy Item" data-action="buyItem" data-get-all="false"><i class="fas fa-dollar-sign"></i></a>
-                                {{/ifeq}}
-
-                                {{#if ../../owner}}
-                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                                    {{#ifeq ../../lootsheettype "Merchant"}}
+                                        <a class="item-control lsnpc-action-link" title="Buy Stack" data-action="buyItem" data-get-all="true"><i class="fas fa-coins"></i></a>
+                                        <a class="item-control lsnpc-action-link" title="Buy Item" data-action="buyItem" data-get-all="false"><i class="fas fa-dollar-sign"></i></a>
+                                    {{/ifeq}}
+                                {{else}}
+                                    <span>
+                                        <i class="fas fa-ban" data-tooltip-content="This is not a token sheet."></i>
+                                        <i class="fas fa-info-circle" data-tooltip-content="Place a token for this actor on the map to interact(buy/sell)."></i>
+                                    </span>
                                 {{/if}}
+                                
+                                {{#if ../../owner}}
+                                    <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                                {{/if}}                                
                             </div>
                         </li>
                     {{/each}}
