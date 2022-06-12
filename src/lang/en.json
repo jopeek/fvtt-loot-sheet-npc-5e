@@ -127,10 +127,6 @@
                     "name": "Convert currency",
                     "hint": "Convert currency to the highest denomination possible after a purchase. (e.g. gp to pp)"
                 },
-                "fallbackCurrencyFormula":{
-                    "name": "Default currency formula",
-                    "hint": "Formula to calculate the currency if no other formula was picked up from the actor or seeder settings. (e.g. '1d6[gp], 2d6[sp], 3d6[cp]')"
-                },
                 "filterNaturalWeapons": {
                     "name": "Filter natural weapons",
                     "hint": "Filter natural weapons from the inventory?"

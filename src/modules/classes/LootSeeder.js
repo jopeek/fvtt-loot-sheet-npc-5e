@@ -92,11 +92,11 @@ export class LootSeeder {
 		const shopQtyFormula = actor.getFlag(MODULE.ns, MODULE.flags.shopQty) || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
 			itemQtyFormula = actor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, "fallbackItemQty") || "1",
 			itemQtyLimitFormula = actor.getFlag(MODULE.ns, MODULE.flags.itemQtyLimit) || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
-			currencyFormula = actor.getFlag(MODULE.ns, MODULE.flags.currencyFormula) || game.settings.get(MODULE.ns, "fallbackCurrencyFormula") || "1d3[gp]",
+			currencyFormula = actor.getFlag(MODULE.ns, MODULE.flags.currencyFormula) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.lootCurrencyDefault) || "2d3[sp]",
 
-			formulas = { itemQtyFormula: itemQtyFormula, itemQtyLimitFormula: itemQtyLimitFormula, shopQtyFormula: shopQtyFormula, currencyFormula: currencyFormula };
+		formulas = { itemQtyFormula: itemQtyFormula, itemQtyLimitFormula: itemQtyLimitFormula, shopQtyFormula: shopQtyFormula, currencyFormula: currencyFormula };
 
-			return formulas;
+		return formulas;
 	}
 
 }

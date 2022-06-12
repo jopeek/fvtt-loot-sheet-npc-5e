@@ -113,7 +113,6 @@ export const MODULE = {
                 fallbackShopQty: 'fallbackShopQty',
                 fallbackItemQty: 'fallbackItemQty',
                 fallbackItemQtyLimit: 'fallbackItemQtyLimit',
-                fallbackCurrencyFormula: 'fallbackCurrencyFormula',
                 generateCurrency: 'generateCurrency',
                 lootCurrencyDefault: 'lootCurrencyDefault',
                 useRulesets: 'useRulesets',

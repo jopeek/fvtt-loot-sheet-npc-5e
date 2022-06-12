@@ -99,7 +99,7 @@ export class TokenHelper {
 				shopQtyFormula: actor.getFlag(MODULE.ns, "shopQty") || game.settings.get(MODULE.ns, "fallbackShopQty") || "1",
 				itemQtyFormula: actor.getFlag(MODULE.ns, MODULE.flags.itemQty) || game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackItemQty) || 1,
 				itemQtyLimitFormula: actor.getFlag(MODULE.ns, "itemQtyLimit") || game.settings.get(MODULE.ns, "fallbackItemQtyLimit") || "0",
-				currencyFormula: actor.getFlag(MODULE.ns, "currencyFormula") || game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.fallbackCurrencyFormula) || "",
+				currencyFormula: actor.getFlag(MODULE.ns, "currencyFormula") || game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.lootCurrencyDefault) || "",
 			},
 			itemOnlyOnce: actor.getFlag(MODULE.ns, "itemOnlyOnce") || false,
 			tokenUuid: target.uuid,
