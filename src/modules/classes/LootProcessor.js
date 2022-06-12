@@ -40,11 +40,13 @@ export class LootProcessor {
         const currencyString = options?.customRoll.currencyFormula ?? '';
         this._setCurrencyData(await CurrencyHelper.generateCurrency(currencyString));
 
-        for (const result of this.rawResults) {
-            const betterResults = await this._parseResult(result, options);
+        if(this.rawResults && Symbol.iterator in Object(this.rawResults)){
+            for (const result of this.rawResults) {
+                const betterResults = await this._parseResult(result, options);
 
-            for (const r of betterResults) {
-                this.lootResults.push(r);
+                for (const r of betterResults) {
+                    this.lootResults.push(r);
+                }
             }
         }
 
