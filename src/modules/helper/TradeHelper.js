@@ -37,6 +37,7 @@ export class TradeHelper {
         for (let type in trades) {
             if (!trades[type].length > 0) continue;
             options.type = type;
+            options.priceModifier = npcActor.getFlag(MODULE.ns, MODULE.flags.priceModifier) || { buy: 100, sell: 100 };
             this._handleTradyByType(trades, playerCharacter, npcActor, options);
         }
     }
@@ -125,19 +126,27 @@ export class TradeHelper {
     static async transaction(seller, buyer, itemId, quantity, options = { chatOutPut: true }) {
         // On 0 quantity skip everything to avoid error down the line
         const soldItem = seller.getEmbeddedDocument("Item", itemId),
-            priceModifier = parseFloat(seller.getFlag(MODULE.ns, MODULE.flags.priceModifier)) || 1;
+            priceModifier = seller.getFlag(MODULE.ns, MODULE.flags.priceModifier) || { buy: 100, sell: 100 };
+        
+        options.priceModifier = (options.type === 'buy') ? priceModifier.buy : priceModifier.sell;
 
         if (!soldItem) return ItemHelper.errorMessageToActor(seller, `${seller.name} doesn't posses this item anymore.`);
-
+        console.warn(`${seller.name} is selling ${soldItem.name} for ${this._getItemPriceInGold(soldItem.data.data.price, options.priceModifier, quantity)} gold`);
+        console.warn(`trade type: ${options.type}`);
+        
         let moved = false;
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
-
-        let itemCostInGold = this._getItemPriceInGold(soldItem, priceModifier, quantity),
+        
+        let originalItemPrice = soldItem.data.data.price,
+            itemCostInGold = this._getItemPriceInGold(originalItemPrice, options.priceModifier, quantity),
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
+
+        console.warn(`transaction |${originalItemPrice} | ${itemCostInGold} | ${options.priceModifier}`);
+
         if (!successfullTransaction) return false;
         moved = await ItemHelper.moveItemsToDestination(seller, buyer, [{ id: itemId, data: { data: { quantity: quantity } } }]);
+        
         options.type = "buy";
-        options.priceModifier = priceModifier;
         ChatHelper.tradeChatMessage(seller, buyer, moved, options);
     }
 
@@ -265,9 +274,14 @@ export class TradeHelper {
 
         const tradeType = options.type,
             playerActions = ['sell', 'give'],
-            source = playerActions.includes(tradeType) ? playerCharacter : npcActor,
-            destination = playerActions.includes(tradeType) ? npcActor : playerCharacter,
-            preparedTrade = this._prepareTrade(source, trades[tradeType], options),
+            playerToNPC = playerActions.includes(tradeType),
+            source = playerToNPC ? playerCharacter : npcActor,
+            destination = playerToNPC ? npcActor : playerCharacter,
+            tradeTypePriceModifier = options.priceModifier[tradeType=== 'sell' ? 'buy' : 'sell'];
+            
+        options.priceModifier = tradeTypePriceModifier;
+
+        const preparedTrade = this._prepareTrade(source, trades[tradeType], options),
             successfullTransaction = await this.moneyExchange(source, destination, tradeType, preparedTrade.tradeSum, options);
 
         if (!successfullTransaction) return false;
@@ -305,7 +319,6 @@ export class TradeHelper {
      *
      * @param {Actor} source
      * @param {Collection} items
-     * @param {number} tradeSum
      * @param {object} options
      *
      * @returns {Array} [items, tradeSum]
@@ -313,7 +326,8 @@ export class TradeHelper {
      * @author Daniel Böttner <@DanielBoettner>
      */
     static _prepareTrade(source, items, options = {}) {
-        const priceModifier = this._getPriceModifier(source);
+        console.warn(options);
+        const priceModifier = options.priceModifier || 100;
         let tradeSum = 0;
         for (const [key, item] of items.entries()) {
             if (!source.items.find(i => i.id == item.id)) {
@@ -323,8 +337,9 @@ export class TradeHelper {
                 continue;
             }
             // Add item price to the total sum of the trade
-            tradeSum += this._getItemPriceInGold(item, priceModifier, item.data.data.quantity);
-            if (options?.verbose) console.log(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
+            const originalItemPrice = item.data.data.price;
+            tradeSum += this._getItemPriceInGold(originalItemPrice, 100, item.data.data.quantity);
+            if (options?.verbose) console.info(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
         }
 
         return { items: items, tradeSum: tradeSum };
@@ -333,14 +348,14 @@ export class TradeHelper {
     /**
      * @summary Get the items price in gold
      *
-     * @param {Item} item
+     * @param {number} price
      * @param {number} priceModifier
      * @param {number} quantity - defaults to 1
 
      * @returns {number} price - a float with 5 decimals
      */
-    static _getItemPriceInGold(item, priceModifier, quantity = 1) {
-        return parseFloat(((item.data.data.price * priceModifier * 1000) / 1000 * quantity).toFixed(5));
+    static _getItemPriceInGold(price, priceModifier, quantity = 1) {
+        return parseFloat(((price * priceModifier / 100) * quantity).toFixed(5));
     }
 
     /**
@@ -351,8 +366,20 @@ export class TradeHelper {
      *
      */
     static _getPriceModifier(actor) {
-        let priceModifier = actor.getFlag(MODULE.ns, MODULE.flags.priceModifier) || 1;
-        return parseFloat(priceModifier).toPrecision(2) || 1;
+        let priceModifier = { buy: 1, sell: 1, give: 1, loot: 1 },
+            flagIsObject = (typeof actor.getFlag(MODULE.ns, MODULE.flags.priceModifier) === 'object');
+
+        if (flagIsObject) {
+            priceModifier = actor.getFlag(MODULE.ns, MODULE.flags.priceModifier);
+        } else {
+            priceModifier.sell = actor.getFlag(MODULE.ns, MODULE.flags.priceModifier) || 1;
+        }
+        
+        for (let p in priceModifier) {
+            priceModifier[p] = parseFloat(priceModifier[p]).toPrecision(2);
+        }
+
+        return priceModifier;
     }
 
     /**
@@ -371,7 +398,7 @@ export class TradeHelper {
      *
      * @returns {boolean} true if the transaction was successful
      */
-    static async _updateFunds(seller, buyer, itemCostInGold) {
+    static async _updateFunds(seller, buyer, itemCostInGold, options = {}) {
         const rates = CurrencyHelper.getRates(),
             itemCost = {
                 "pp": itemCostInGold * rates.pp,
@@ -381,6 +408,7 @@ export class TradeHelper {
                 "cp": itemCostInGold * rates.cp
             };
 
+            console.warn('updateFund itemCos', buyer.name, itemCost.gp);
         let buyerFunds = CurrencyHelper.handleActorCurrency(buyer.data.data.currency),
             sellerFunds = CurrencyHelper.handleActorCurrency(seller.data.data.currency),
             fundsAsPlatinum = {
@@ -505,7 +533,13 @@ export class TradeHelper {
                 currentPart = parseFloat((current % 1).toFixed(5)),
                 currentInt = ~~(Math.abs(current));
 
+                console.warn(`${MODULE.ns} | _smoothenFunds | current: `, current);
+                console.warn(`${MODULE.ns} | _smoothenFunds | currentPart: `, currentPart);
+                console.warn(`${MODULE.ns} | _smoothenFunds | currentInt: `, currentInt);
+
             funds[currency] = (currentInt > 0) ? currentInt : 0;
+
+                console.warn(`${MODULE.ns} | _smoothenFunds | funds[currency]: `, funds[currency]);
 
             if (currency != "cp") {
                 // We calculate the amount of lower currency we get for the fraction of higher currency we have

@@ -186,8 +186,8 @@ export class HandlebarsHelper {
      *
      * @return {number}
      */
-    static lootsheetPrice(basePrice, priceModifier = 1, currency = true) {
-        const price = parseFloat(((basePrice * priceModifier * 1000) / 1000).toFixed(5)),
+    static lootsheetPrice(basePrice, priceModifier = 100, currency = true) {
+        const price = parseFloat(((basePrice * priceModifier) / 100).toFixed(5)),
             suffix = currency ? " GP" : "";
 
         return price + suffix;

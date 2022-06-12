@@ -1,21 +1,39 @@
 <form class="lsn-dialog-form {{flags.lootsheetnpc5e.sheettint.style}}">
     <main>
-        <div class="flexrow">
-            <div class="form-input">
-                <input id="priceModifierDisplay"
-                    type="number" name="price-modifier-display" min="0"
-                    max="{{this.maxModifier}}" step="1" value="{{this.currentModifier}}"
-                    oninput="priceModifierPercent.value=priceModifierDisplay.value"
-                    style="width: 100px; border-radius: 0.5em; border: 1px solid black; text-align: center; padding: 0.5em; color: #eee; background-color: #333;"
-                    required>
+        <section class="flexcol" data-modifier-type="sell">
+            <header>
+                <h3>Sell Modifier <small> applied when player buys from NPC.</small></h3>                
+            </header>            
+            <div class="flexrow">
+                <div class="form-input">
+                    <input type="number" name="flags.lootsheetnpc5e.priceModifier.sell"
+                        min="100"
+                        max="{{this.maxModifier}}" step="5" value="{{this.flags.lootsheetnpc5e.priceModifier.sell}}"
+                        style="width: 100px; border-radius: 0.5em; border: 1px solid black; text-align: center; padding: 0.5em; color: #eee; background-color: #333;"
+                        required> %
+                    </div>
+                    <div class="form-input">
+                        <input class="form-control" name="flags.lootsheetnpc5e.priceModifier.sell" type="range" min="100" step="5" max="{{this.maxModifier}}" value="{{this.flags.lootsheetnpc5e.priceModifier.sell}}" class="slider" required>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="flexrow">
-            <input class="form-control"
-                name="priceModifierPercent" id="priceModifierPercent" type="range" min="0"
-                oninput="priceModifierDisplay.value=priceModifierPercent.value"
-                max="{{this.maxModifier}}" step="1" value="{{this.currentModifier}}" class="slider" required>
-        </div>
+        </section>
+        <section class="flexcol" data-modifier-type="buy">
+            <label>Buy Modifier <small> applied when NPCs buy from players.</small></label>
+            <div class="flexrow">
+                <div class="form-input">
+                    <input type="number" name="flags.lootsheetnpc5e.priceModifier.buy" min="1" max="100" step="1" value="{{this.flags.lootsheetnpc5e.priceModifier.buy}}"
+                            style="width: 100px; border-radius: 0.5em; border: 1px solid black; text-align: center; padding: 0.5em; color: #eee; background-color: #333;"
+                        required> %
+                </div>
+                <div class="form-input"></div>
+                    <input 
+                        class="form-control"
+                        name="flags.lootsheetnpc5e.priceModifier.buy"
+                        type="range" min="1" max="120" step="1" value="{{this.flags.lootsheetnpc5e.priceModifier.buy}}" class="slider" required>
+                </div>
+            </div>
+        </section>
     </main>
     <footer class="flexrow">
         <button type="submit" name="submit" class="btn btn-primary">{{localize 'Update'}}</button>

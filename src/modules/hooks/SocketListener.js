@@ -84,13 +84,14 @@ export class SocketListener {
             // check the action type and call the apprpriate function
             switch (action) {
                 case "buyItem":
+                    options.type = 'sell';
                     await TradeHelper.transaction(targetToken.actor, triggeringActor, packet.targetItemId, packet.quantity, options);
                     break;
                 case "tradeItems":
-                    await TradeHelper.tradeItems(targetToken.actor, triggeringActor, packet.trades, options);
-                    //return this._handleRerender(packet.tokenUuid);
+                    await TradeHelper.tradeItems(targetToken.actor, triggeringActor, packet.trades, options);                    
                     break;
                 case "lootAll":
+                    options.type = 'loot';
                     await TradeHelper.lootAllItems(targetToken.actor, triggeringActor);
                     break;
                 case "lootItem":
@@ -109,7 +110,7 @@ export class SocketListener {
                 case 'sheetUpdate':                //re render the sheet for the token.
                     return this._handleRerender(packet.tokenUuid);
                 default:
-                    console.log(`${MODULE.ns} | socketListener | Info | listend to an unhandled action: ${action}`);
+                    console.warn(`${MODULE.ns} | socketListener | Info | listend to an unhandled action: ${action}`);
             }
         }
     }

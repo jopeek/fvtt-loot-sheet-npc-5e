@@ -94,11 +94,11 @@ export class ChatHelper {
      * @returns {Array}
      */
     static _parseMovedItems(movedItems, options = {}) {
-        const mod = options?.priceModifier || 1;
+        const mod = options?.priceModifier || 100;
 
         return movedItems.map((el) => {
             const rawprice = el.item.data.data?.price || el.item.data?.price || 0,
-                price = rawprice * mod,
+                price = (rawprice * mod) / 100,
                 totalPrice = price * el.quantity;
 
             return {

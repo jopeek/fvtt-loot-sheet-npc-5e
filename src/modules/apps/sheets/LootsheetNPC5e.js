@@ -146,11 +146,12 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      * @returns
      */
     async _enrichByType(sheetData, sheetType) {
+        const priceModifier = { buy: 1, sell: 1 };
         //enricht sheetData with type specific data
         switch (sheetType) {
             case "Merchant":
                 sheetData.priceModifier = await this.actor.getFlag(MODULE.ns, MODULE.flags.priceModifier);
-                if (typeof sheetData.priceModifier !== 'number') await this.actor.setFlag(MODULE.ns, MODULE.flags.priceModifier, 1.0);
+                if (typeof sheetData.priceModifier !== 'object') await this.actor.setFlag(MODULE.ns, MODULE.flags.priceModifier, priceModifier);
                 sheetData.priceModifier = await this.actor.getFlag(MODULE.ns, MODULE.flags.priceModifier);
                 break;
             default:
