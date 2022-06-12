@@ -76,7 +76,11 @@ export class CurrencyHelper {
      * @param {Array} lootCurrency
      * @param {boolean} adjutsByCR
      */
-    static async addCurrenciesToActor(actor, lootCurrency, adjutsByCR = false) {
+    static async addCurrenciesToActor(
+        actor,
+        lootCurrency,
+        adjutsByCR = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.adjustCurrencyWithCR)
+    ) {
         const currencyDataInitial = { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 };
         let currencyData = currencyDataInitial;
 
@@ -89,7 +93,7 @@ export class CurrencyHelper {
         for (let key in lootCurrency) {
             if (currencyData.hasOwnProperty(key)) {
                 if (adjutsByCR) {
-                    let cr = game.actors.find(a => a._id === actor.data.actorId).data.data.details.cr || 0;
+                    let cr = game.actors.find(a => a._id === actor.data.actorId).data.data.details.cr || 1;
                     currencyData[key] = Number(currencyData[key] || 0) + Number(Math.ceil(cr * lootCurrency[key]));
                 } else {
                     currencyData[key] = Number(currencyData[key] || 0) + Number(lootCurrency[key]);
