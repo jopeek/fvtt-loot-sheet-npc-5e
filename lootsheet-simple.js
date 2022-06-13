@@ -283,11 +283,11 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         const reducedVerbosity = game.settings.get("lootsheet-simple", "reduceUpdateVerbosity");
 
         let shopQtyRoll = new Roll(shopQtyFormula);
+        
         shopQtyRoll.roll();
-
+        console.log(shopQtyRoll.total);
         let rolltable = game.tables.getName(rolltableName);
         if (!rolltable) {
-            // console.log(`Loot Sheet | No Rollable Table found with name "${rolltableName}".`);
             return ui.notifications.error(`No Rollable Table found with name "${rolltableName}".`);
         }
 
@@ -297,19 +297,17 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             }
         }
 
-        // console.log(rolltable);
-
         if (clearInventory) {
-
-            let currentItems = this.actor.data.items.map(i => i._id);
+            console.log("clearinventory", this.actor.data.items);
+console.log("clearinventory", this.actor.data.items.map(i => i.id));
+            let currentItems = this.actor.data.items.map(i => i.id);
+            console.log("currentitems", currentItems);
             await this.actor.deleteEmbeddedDocuments("Item", currentItems);
-            // console.log(currentItems);
         }
 
         console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
 
-        //if (!itemOnlyOnce) {
-        for (let i = 0; i < shopQtyRoll.total; i++) {
+        for (let i = 0; i < shopQtyRoll.result; i++) {
             const rollResult = await rolltable.roll();
             console.log(rollResult.results[0]);
             let newItem = null;
@@ -319,14 +317,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             } else {
                 // Try to find it in the compendium
                 const items = game.packs.get(rollResult.results[0].data.collection);
-                // console.log(items);
-                // dnd5eitems.getIndex().then(index => console.log(index));
-                // let newItem = dnd5eitems.index.find(e => e.id === rollResult.results[0].resultId);
-                // items.getEntity(rollResult.results[0].resultId).then(i => console.log(i));
-                newItem = await items.getEntity(rollResult.results[0].data.resultId);
+                newItem = await items.getDocument(rollResult.results[0].data.resultId);
             }
             if (!newItem || newItem === null) {
-                // console.log(`Loot Sheet | No item found "${rollResult.results[0].resultId}".`);
                 return ui.notifications.error(`No item found "${rollResult.results[0].resultId}".`);
             }
 
@@ -336,9 +329,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
             let itemQtyRoll = new Roll(itemQtyFormula);
             itemQtyRoll.roll();
-            console.log(`Loot Sheet | Adding ${itemQtyRoll.total} x ${newItem.name}`)
-
-            // newItem.data.quantity = itemQtyRoll.result;
+            console.log(`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`)
 
             let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
 
@@ -380,96 +371,6 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
                 }
             }
         }
-        // }
-        // else {
-        //     // Get a list which contains indexes of all possible results
-
-        //     const rolltableIndexes = []
-
-        //     // Add one entry for each weight an item has
-        //     for (let index in [...Array(rolltable.results.length).keys()]) {
-
-
-        //         let numberOfEntries = rolltable.data.results[index].weight
-        //         for (let i = 0; i < numberOfEntries; i++) {
-        //             rolltableIndexes.push(index);
-        //         }     
-        //     }
-
-        //     // Shuffle the list of indexes
-        //     var currentIndex = rolltableIndexes.length, temporaryValue, randomIndex;
-
-        //     // While there remain elements to shuffle...
-        //     while (0 !== currentIndex) {
-
-        //         // Pick a remaining element...
-        //         randomIndex = Math.floor(Math.random() * currentIndex);
-        //         currentIndex -= 1;
-
-        //         // And swap it with the current element.
-        //         temporaryValue = rolltableIndexes[currentIndex];
-        //         rolltableIndexes[currentIndex] = rolltableIndexes[randomIndex];
-        //         rolltableIndexes[randomIndex] = temporaryValue;
-        //     }
-
-        //     // console.log(`Rollables: ${rolltableIndexes}`)
-
-        //     let indexesToUse = [];
-        //     let numberOfAdditionalItems = 0;
-        //     // Get the first N entries from our shuffled list. Those are the indexes of the items in the roll table we want to add
-        //     // But because we added multiple entries per index to account for weighting, we need to increase our list length until we got enough unique items
-        //     while (true)
-        //     {
-        //         let usedEntries = rolltableIndexes.slice(0, shopQtyRoll.total + numberOfAdditionalItems);
-        //         // console.log(`Distinct: ${usedEntries}`);
-        //         let distinctEntris = [...new Set(usedEntries)];
-
-        //         if (distinctEntris.length < shopQtyRoll.total) {
-        //             numberOfAdditionalItems++;
-        //             // console.log(`numberOfAdditionalItems: ${numberOfAdditionalItems}`);
-        //             continue;
-        //         }
-
-        //         indexesToUse = distinctEntris
-        //         // console.log(`indexesToUse: ${indexesToUse}`)
-        //         break;
-        //     }
-
-        //     for (const index of indexesToUse)
-        //     {
-        //         let itemQtyRoll = new Roll(itemQtyFormula);
-        //         itemQtyRoll.roll();
-
-        //         let newItem = null
-
-        //         if (rolltable.results[index].collection === "Item") {
-        //             newItem = game.items.get(rolltable.results[index].resultId);
-        //         }
-        //         else {
-        //             //Try to find it in the compendium
-        //             const items = game.packs.get(rolltable.results[index].collection);
-        //             newItem = await items.getEntity(rolltable.results[index].resultId);
-        //         }
-        //         if (!newItem || newItem === null) {
-        //             return ui.notifications.error(`No item found "${rolltable.results[index].resultId}".`);
-        //         }
-
-        //         if (newItem.type === "spell") {
-        //             newItem = await Item5e.createScrollFromSpell(newItem)
-        //         }
-
-        //         await this.actor.createEmbeddedDocument("Item", newItem);
-        //         let existingItem = this.actor.items.find(item => item.data.name == newItem.name);
-
-        //         if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(itemQtyRoll.total)) {
-        //             await existingItem.update({ "data.quantity": itemQtyLimit });
-        //             if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyLimit} x ${newItem.name}.`);
-        //         } else {
-        //             await existingItem.update({ "data.quantity": itemQtyRoll.total });
-        //             if (!reducedVerbosity) ui.notifications.info(`Added new ${itemQtyRoll.total} x ${newItem.name}.`);
-        //         }
-        //     }
-        // }
     }
 
     _createRollTable() {
@@ -486,13 +387,10 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         pack.getIndex().then(index => index.forEach(function (arrayItem) {
             var x = arrayItem._id;
-            //console.log(arrayItem);
             i++;
             pack.getEntity(arrayItem._id).then(packItem => {
 
                 if (packItem.type === type) {
-
-                    //console.log(packItem);
 
                     let newItem = {
                         "_id": packItem._id,
