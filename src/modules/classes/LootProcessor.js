@@ -32,7 +32,6 @@ export class LootProcessor {
             stackSame: true,
             tokenUuid: null,
         };
-
         return this;
     }
 
@@ -429,7 +428,7 @@ export class LootProcessor {
      * @returns
      */
     async preItemCreationDataManipulation(itemData, originalItem = null) {
-        itemData = await this.createScrollFromSpell(itemData);
+        itemData = this.createScrollFromSpell(itemData);
 
         if (originalItem && originalItem.documentName) {
             itemData = await ItemHelper.applyItemConversions(itemData, originalItem.documentName);
@@ -445,9 +444,11 @@ export class LootProcessor {
      * @returns {Item}
      */
     async _getRandomSpell(level) {
-        const spells = this.getSpellCache().filter(spell => getProperty(spell, 'data.level') === level),
-            spell = spells[Math.floor(Math.random() * spells.length)]
-        return Utils.findInCompendiumById(spell.collection, spell._id)
+        await this.updateSpellCache();
+        const spellList = this.getSpellCache();
+        const spells = spellList.filter(spell => getProperty(spell, 'data.level') === level);
+        const spell = spells[Math.floor(Math.random() * spells.length)]
+        return await Utils.findInCompendiumById(spell.collection, spell._id)
     }
 
     /**
@@ -457,8 +458,9 @@ export class LootProcessor {
    */
     async updateSpellCache(pack) {
         if (game.user.isGM) {
-            const defaultPack = game.settings.get(MODULE.ns, 'dnd5e.spells'),
-                spellCompendium = game.packs.get(defaultPack);
+            const defaultPack = 'dnd5e.spells';
+            // const defaultPack = game.settings.get(MODULE.ns,'dnd5e.spells');
+            const spellCompendium = game.packs.get(defaultPack);
 
             if (!pack && spellCompendium || pack === defaultPack) {
                 const spellCompendiumIndex = await spellCompendium.getIndex({ fields: ['data.level', 'img'] })
@@ -509,5 +511,9 @@ export class LootProcessor {
         itemData.name = itemData.name.replace(/(Cantrip\sLevel)/, 'Cantrip')
         itemData.name += ` (${item.data.name})`
         itemData.data.description.value = '<blockquote>' + itemLink + '<br />' + item.data.data.description.value + '<hr />' + itemData.data.description.value + '</blockquote>'
+        itemData.type = 'spell';
+        itemData.data.level = level;
+
+        return itemData;
     }
 }
