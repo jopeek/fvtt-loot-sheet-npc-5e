@@ -136,7 +136,7 @@ export class TradeHelper {
         quantity = (soldItem.data.data.quantity < quantity) ? parseInt(soldItem.data.data.quantity) : parseInt(quantity);
         
         let originalItemPrice = soldItem.data.data.price,
-            itemCostInGold = this._getItemPriceInGold(originalItemPrice, options.priceModifier, quantity),
+            itemCostInGold = this._getItemPriceInGold(originalItemPrice, priceModifier.sell, quantity),
             successfullTransaction = await this._updateFunds(seller, buyer, itemCostInGold);
 
         if (!successfullTransaction) return false;
@@ -322,19 +322,18 @@ export class TradeHelper {
      * @author Daniel Böttner <@DanielBoettner>
      */
     static _prepareTrade(source, items, options = {}) {
-        const priceModifier = options.priceModifier || 100;
+        const priceModifier = this._getPriceModifier(source) || 100;
         let tradeSum = 0;
         for (const [key, item] of items.entries()) {
             if (!source.items.find(i => i.id == item.id)) {
-                if (options?.verbose)
-                    console.log(`${MODULE.ns} | _prepareTrade | Removed item "${item.name}" (id: ${item.id}) from trade. Item not found in inventory of the source actor.`);
+                console.log(`${MODULE.ns} | _prepareTrade | Removed item "${item.name}" (id: ${item.id}) from trade. Item not found in inventory of the source actor.`);
                 delete items[key];
                 continue;
             }
             // Add item price to the total sum of the trade
             const originalItemPrice = item.data.data.price;
-            tradeSum += this._getItemPriceInGold(originalItemPrice, 100, item.data.data.quantity);
-            if (options?.verbose) console.info(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
+            tradeSum += this._getItemPriceInGold(originalItemPrice, priceModifier, item.data.data.quantity);
+            console.info(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
         }
 
         return { items: items, tradeSum: tradeSum };
@@ -343,13 +342,14 @@ export class TradeHelper {
     /**
      * @summary Get the items price in gold
      *
-     * @param {number} price
-     * @param {number} priceModifier
+     * @param {number} price number
+     * @param {number} priceModifier number
      * @param {number} quantity - defaults to 1
 
      * @returns {number} price - a float with 5 decimals
      */
     static _getItemPriceInGold(price, priceModifier, quantity = 1) {
+        console.warn(`${MODULE.ns} | 'getItemPriceInGold' | priceModifier: ${priceModifier}`);
         return parseFloat(((price * priceModifier / 100) * quantity).toFixed(5));
     }
 
@@ -361,13 +361,13 @@ export class TradeHelper {
      *
      */
     static _getPriceModifier(actor) {
-        let priceModifier = { buy: 1, sell: 1, give: 1, loot: 1 },
+        let priceModifier = { buy: 100, sell: 100, give: 100, loot: 100 },
             flagIsObject = (typeof actor.getFlag(MODULE.ns, MODULE.flags.priceModifier) === 'object');
 
         if (flagIsObject) {
             priceModifier = actor.getFlag(MODULE.ns, MODULE.flags.priceModifier);
         } else {
-            priceModifier.sell = actor.getFlag(MODULE.ns, MODULE.flags.priceModifier) || 1;
+            priceModifier.sell = actor.getFlag(MODULE.ns, MODULE.flags.priceModifier) || 100;
         }
         
         for (let p in priceModifier) {
@@ -410,6 +410,7 @@ export class TradeHelper {
                 "seller": this._getFundsAsPlatinum(sellerFunds, rates)
             };
 
+            console.warn(MODULE.ns, itemCostInGold, itemCost, fundsAsPlatinum.buyer);
         if (itemCost.pp > fundsAsPlatinum.buyer) {
             ItemHelper.errorMessageToActor(buyer, buyer.name + ` doesn't have enough funds to purchase an item for ${itemCost.gp}gp.`);
             return false;
@@ -487,13 +488,13 @@ export class TradeHelper {
         let fundsAsPlatinum = funds.pp;
 
         fundsAsPlatinum += funds.gp * rates.pp;
-        fundsAsPlatinum += (funds.ep / rates.gp) * rates.pp;
-        fundsAsPlatinum += (funds.sp / rates.gp) * rates.pp;
-        fundsAsPlatinum += (funds.cp / rates.gp) * rates.pp;
+        fundsAsPlatinum += (funds.ep / rates.ep) * rates.pp;
+        fundsAsPlatinum += (funds.sp / rates.sp / rates.ep) * rates.pp;
+        fundsAsPlatinum += (funds.cp / rates.cp / rates.sp / rates.ep) * rates.pp;
         
-        console.log(`${MODULE.ns} | _getFundsAsPlatinum | funds: `, funds);
+        //console.log(`${MODULE.ns} | _getFundsAsPlatinum | funds: `, funds, rates);
         console.log(`${MODULE.ns} | _getFundsAsPlatinum | fundsAsPlatinum: `, fundsAsPlatinum);
-        return fundsAsPlatinum;
+        return fundsAsPlatinum || 0;
     }
 
     /**
@@ -532,6 +533,7 @@ export class TradeHelper {
             if (currency != "cp") {
                 // We calculate the amount of lower currency we get for the fraction of higher currency we have
                 let change = (currency === 'pp') ? currentPart / rates[currency] : currentPart * rates[compensation[currency]];
+                console.warn(compensation[currency], change);
                 funds[compensation[currency]] += change;
             }
         }
