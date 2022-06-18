@@ -147,7 +147,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
      * @returns
      */
     async _enrichByType(sheetData, sheetType) {
-        const priceModifier = { buy: 1, sell: 1 };
+        const priceModifier = { buy: 100, sell: 100 };
         //enricht sheetData with type specific data
         switch (sheetType) {
             case "Merchant":
