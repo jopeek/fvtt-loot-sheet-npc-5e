@@ -299,6 +299,7 @@ export class TradeHelper {
         let successfullTransaction = true;
 
         if (!freeTradeTypes.includes(tradeType)) {
+            console.warn(MODULE.ns, tradeSum, options.priceModifier);
             successfullTransaction = await this._updateFunds(source, destination, tradeSum, options);
         }
 
@@ -322,7 +323,7 @@ export class TradeHelper {
      * @author Daniel Böttner <@DanielBoettner>
      */
     static _prepareTrade(source, items, options = {}) {
-        const priceModifier = this._getPriceModifier(source) || 100;
+        const priceModifier = options.priceModifier.sell || 100;
         let tradeSum = 0;
         for (const [key, item] of items.entries()) {
             if (!source.items.find(i => i.id == item.id)) {
@@ -333,7 +334,7 @@ export class TradeHelper {
             // Add item price to the total sum of the trade
             const originalItemPrice = item.data.data.price;
             tradeSum += this._getItemPriceInGold(originalItemPrice, priceModifier, item.data.data.quantity);
-            console.info(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `);
+            console.info(`${MODULE.ns} | ${this._prepareTrade.name} | tradeSum updated to: `, tradeSum);
         }
 
         return { items: items, tradeSum: tradeSum };
