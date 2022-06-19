@@ -18,7 +18,9 @@
                 "strictNullChecks": true,
                 "esModuleInterop": false,
                 "types": [
-                        "@league-of-foundry-developers/foundry-vtt-types",
+                        "./types",
+                        "@league-of-foundry-developers/foundry-vtt-types/index-lenient",
+                        "@league-of-foundry-developers/foundry-vtt-dnd5e-types",
                         "node",
                 ],
                 "resolveJsonModule": true

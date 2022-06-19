@@ -3,6 +3,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import sourcemaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
 import replace from 'rollup-plugin-replace';
+import typescript from "@rollup/plugin-typescript";
 
 const staticFiles = ["templates", "libs", "fonts", "styles", "icons", "lang", "packs", "module.json"].map((file) => `src/${file}`);
 
@@ -19,6 +20,7 @@ const config = {
         assetFileNames: "[name].[ext]",
     },
     plugins: [
+        typescript(),
         replace({
             // If you would like DEV messages, specify 'development'
             // Otherwise use 'production'
