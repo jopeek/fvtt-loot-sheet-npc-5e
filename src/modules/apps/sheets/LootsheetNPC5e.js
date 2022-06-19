@@ -85,7 +85,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
 
         context.lootsheettype = sheetType;
         context.priceModifier = 1;
-        context.currency = CurrencyHelper.handleActorCurrency(context.data.currency);
+        context.currency = CurrencyHelper.cleanCurrency(context.data.currency);
 
         if (game.user.isGM) {
             context = await this._prepareGMSettings(context);
@@ -101,7 +101,7 @@ export class LootSheetNPC5e extends ActorSheet5eNPC {
         context.items = sheetDataActorItems;
         context.interactingActor = game.user?.character?.name || "No Character selected";
         if (game.user?.character?.data?.data?.currency) {
-            context.interactingActorFunds = {currency: CurrencyHelper.handleActorCurrency(game.user?.character?.data?.data?.currency)};
+            context.interactingActorFunds = {currency: CurrencyHelper.cleanCurrency(game.user?.character?.data?.data?.currency)};
         } else {
             context.interactingActorFunds = {currency: [] };
         }
