@@ -1,6 +1,6 @@
 {
   "name": "fvtt-loot-sheet-npc-5e",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "A javascript FoundryVTT module. Adding an additional NPC sheet for Loot/Containers/Merchant",
   "main": "lootsheetnpc5e.js",
   "scripts": {
