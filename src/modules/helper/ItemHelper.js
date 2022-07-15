@@ -211,7 +211,7 @@ class ItemHelper {
     static errorMessageToActor(token, message) {
         const packet = {
             action: "error",
-            triggerActorId: game.user.character?.id || null,
+            triggerActorId: game.user.character?.id ||null,
             tokenUuid: token.uuid,
             message: message
         };
