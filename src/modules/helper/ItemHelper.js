@@ -1,4 +1,4 @@
-import Item5e from "/systems/dnd5e/module/item/entity.js";
+import Item5e from "../../../../systems/dnd5e/module/item/entity.js";
 import { MODULE } from '../data/moduleConstants.js';
 
 class ItemHelper {
