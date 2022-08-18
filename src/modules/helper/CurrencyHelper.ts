@@ -1,16 +1,18 @@
-import { MODULE as TempModule} from "../data/moduleConstants.js";
-import { CurrencyObject, CurrencyRates} from "../../../types";
-interface IModule{
+import {MODULE as TempModule} from "../data/moduleConstants.js";
+import {CurrencyObject, CurrencyRates} from "../../../types";
+
+interface IModule {
     ns: string,
     settings: any
 }
+
 const MODULE = TempModule as IModule;
 
 export class CurrencyHelper {
 
     /**
      * @summary Returns a zeroed CurrencyObject
-     * 
+     *
      * @uses CurrencyRates object to create the keys.
      * @returns zeroed CurrencyObject
      */
@@ -41,7 +43,7 @@ export class CurrencyHelper {
      * @since 3.4.5.2
      *
      * @version 2.0.0
-     * 
+     *
      * @inheritdoc
      * @function
      */
@@ -52,10 +54,13 @@ export class CurrencyHelper {
             const currenciesPieces = currencyString.split(",");
 
             for (const currencyPiece of currenciesPieces) {
-                const match = /(.*)\[(.*?)]/g.exec(currencyPiece); //capturing 2 groups, the formula and then the currency symbol in brakets []
+                //capturing 2 groups, the formula and then the currency symbol in brackets []
+                const match = /(.*)\[(.*?)]/g.exec(currencyPiece);
 
                 if (!match || match.length < 3) {
-                    ui.notifications.warn(MODULE.ns + ` | Currency loot field contain wrong formatting, currencies need to be define as "diceFormula[currencyType]" => "1d100[gp]" but was ${currencyPiece}`);
+                    ui.notifications.warn(MODULE.ns
+                        + ` | Currency loot field contain wrong formatting, currencies need to be define as `
+                        + `"diceFormula[currencyType]" => "1d100[gp]" but was ${currencyPiece}`);
                     continue;
                 }
 
@@ -70,7 +75,7 @@ export class CurrencyHelper {
     }
 
     /**
-     * Expects and actor and an an array with currency types and values
+     * Expects and actor and an array with currency types and values
      *
      * @param {Actor} actor
      * @param {Array} lootCurrency
@@ -79,7 +84,7 @@ export class CurrencyHelper {
         actor: Actor,
         lootCurrency: CurrencyObject
     ) {
-        const adjutsByCR: boolean =
+        const adjustByCR: boolean =
             game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.adjustCurrencyWithCR) as boolean;
         let currency = this.blankCurrency();
 
@@ -91,7 +96,7 @@ export class CurrencyHelper {
 
         for (let key in lootCurrency) {
             if (currency.hasOwnProperty(key)) {
-                if (adjutsByCR) {
+                if (adjustByCR) {
                     // @ts-ignore
                     let cr = game.actors.find(a => a._id === actor.data.actorId).data.data.details.cr || 0.25;
                     currency[key] = Number(currency[key] || 0) + Number(Math.ceil(cr * lootCurrency[key]));
@@ -101,17 +106,17 @@ export class CurrencyHelper {
             }
         }
 
-        await actor.update({ 'data.currency': currency });
+        await actor.update({'data.currency': currency});
     }
 
     /**
-       *
-       * @param {string} rollFormula
-       * @returns
-       */
+     *
+     * @param {string} rollFormula
+     * @returns
+     */
     static async tryRoll(rollFormula: string) {
         try {
-            return (await (new Roll(rollFormula)).roll({ async: true })).total || 1;
+            return (await (new Roll(rollFormula)).roll({async: true})).total || 1;
         } catch (error) {
             console.error(MODULE.ns + ' | currencyHelper :', error);
             return 1;
@@ -138,7 +143,7 @@ export class CurrencyHelper {
             } else {
                 fundsAsPlatinum += funds[type];
             }
-        }   
+        }
         return fundsAsPlatinum;
         // console.log(`${MODULE.ns} | _getFundsAsPlatinum | funds: `, funds, rates);
         // console.log(`${MODULE.ns} | _getFundsAsPlatinum | fundsAsPlatinum: `, fundsAsPlatinum);
@@ -146,13 +151,13 @@ export class CurrencyHelper {
     }
 
     /**
-     * 
-     * @param amount coin value to convert 
+     *
+     * @param amount coin value to convert
      * @param sourceType source currency type
-     * @param currencyObject 
-     * @param desiredCoins 
+     * @param currencyObject
+     * @param desiredCoins
      * @returns void
-     */       
+     */
     public static exchange(
         amount: number,
         sourceType: string,
@@ -200,14 +205,14 @@ export class CurrencyHelper {
             remainder[type] = shares[type] % splitBy;
         }
 
-        return { currencyShares: shares, remainder: remainder };
+        return {currencyShares: shares, remainder: remainder};
     }
 
     /**
      * @summary Get the split by observers for the given currency
      *
      * @description
-     * Get the actors funds. Devide each type of currency by the number of observers.
+     * Get the actors funds. Divide each type of currency by the number of observers.
      * If the number of observers is 1 (length o observers array is 0), the currency is not split.
      *
      * @param currencies
@@ -231,15 +236,15 @@ export class CurrencyHelper {
     }
 
     /**
-    * @description
-    * This is backwords support for currency.TYPE.value.
-    *
-    * @return {object} currency
-    *
-    * @version 1.0.2
-    *
-    * @author Jan Ole Peek <@jopeek>
-    */
+     * @description
+     * This is backwards support for currency.TYPE.value.
+     *
+     * @return {object} currency
+     *
+     * @version 1.0.2
+     *
+     * @author Jan Ole Peek <@jopeek>
+     */
     static cleanCurrency(originalCurrency: CurrencyObject): CurrencyObject {
         let cleaned: CurrencyObject = {};
 
@@ -273,12 +278,12 @@ export class CurrencyHelper {
 
     /**
      * @summary Get the value of currency in another currency
-     * 
-     * @param value the 
-     * @param value  
-     * @param targetCurrency 
-     * @param sourceCurrency 
-     * @returns 
+     *
+     * @param value the
+     * @param value
+     * @param targetCurrency
+     * @param sourceCurrency
+     * @returns
      */
     public static _calculateCoin(
         value: number,
@@ -289,12 +294,13 @@ export class CurrencyHelper {
             coinRate = rates[sourceCurrency][targetCurrency].rate;
         return (value * coinRate);
     }
+
     /**
      * @summary Calculates the remainder of a coin after it has been divided by a number of coins.
      * @param amount The amount of coins to divide.
      * @param targetCurrency The currency type to divide the amount into.
      * @param sourceCurrency The currency type to divide the amount from.
-     * 
+     *
      * @returns The remainder of the coin after it has been divided.
      */
     public static _calculateModCoin(
@@ -310,10 +316,10 @@ export class CurrencyHelper {
 
     /**
      * Returns the denominator if the rate label has a denominator.
-     * 
-     * @param { string } label 
-     * 
-     * @returns denominator { number | 1 } 
+     *
+     * @param { string } label
+     *
+     * @returns denominator { number | 1 }
      */
     public static getDenominatorFromRate(
         label: string
