@@ -12,7 +12,10 @@ const staticFiles = ["templates", "libs", "fonts", "styles", "icons", "lang", "p
  */
 const config = {
     input: "src/lootsheetnpc5e.js",
-    external: ["../../../../../systems/dnd5e/module/actor/sheets/npc.js"],
+    external: [
+        "../../../../../systems/dnd5e/module/actor/sheets/npc.js",
+        "../../../../systems/dnd5e/module/item/entity.js",
+    ],
     output: {
         dir: "dist/",
         format: "es",
