@@ -1,6 +1,10 @@
-import { MODULE } from "../data/moduleConstants.js";
-import { Converter } from "../data/dnd/currency";
-import { Currencies, CurrencyObject, CurrencyRates, LootSheetActorFlags } from "../../../types/index.js";
+import { MODULE as TempModule} from "../data/moduleConstants.js";
+import { CurrencyObject, CurrencyRates} from "../../../types";
+interface IModule{
+    ns: string,
+    settings: any
+}
+const MODULE = TempModule as IModule;
 
 export class CurrencyHelper {
 
@@ -48,7 +52,7 @@ export class CurrencyHelper {
             const currenciesPieces = currencyString.split(",");
 
             for (const currencyPiece of currenciesPieces) {
-                const match = /(.*)\[(.*?)\]/g.exec(currencyPiece); //capturing 2 groups, the formula and then the currency symbol in brakets []
+                const match = /(.*)\[(.*?)]/g.exec(currencyPiece); //capturing 2 groups, the formula and then the currency symbol in brakets []
 
                 if (!match || match.length < 3) {
                     ui.notifications.warn(MODULE.ns + ` | Currency loot field contain wrong formatting, currencies need to be define as "diceFormula[currencyType]" => "1d100[gp]" but was ${currencyPiece}`);
@@ -75,9 +79,8 @@ export class CurrencyHelper {
         actor: Actor,
         lootCurrency: CurrencyObject
     ) {
-        // @ts-ignore
-        const adjutsByCR: boolean = game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.adjustCurrencyWithCR),
-            currencyDataInitial: CurrencyObject = { cp: 0, ep: 0, gp: 0, pp: 0, sp: 0 };
+        const adjutsByCR: boolean =
+            game.settings.get(MODULE.ns, MODULE.settings.keys.lootseeder.adjustCurrencyWithCR) as boolean;
         let currency = this.blankCurrency();
 
         lootCurrency = lootCurrency || game.settings.get(MODULE.ns, 'lootCurrencyDefault');
@@ -137,9 +140,9 @@ export class CurrencyHelper {
             }
         }   
         return fundsAsPlatinum;
-        //console.log(`${MODULE.ns} | _getFundsAsPlatinum | funds: `, funds, rates);
-        console.log(`${MODULE.ns} | _getFundsAsPlatinum | fundsAsPlatinum: `, fundsAsPlatinum);
-        return fundsAsPlatinum || 0;
+        // console.log(`${MODULE.ns} | _getFundsAsPlatinum | funds: `, funds, rates);
+        // console.log(`${MODULE.ns} | _getFundsAsPlatinum | fundsAsPlatinum: `, fundsAsPlatinum);
+        // return fundsAsPlatinum || 0;
     }
 
     /**
@@ -207,6 +210,7 @@ export class CurrencyHelper {
      * Get the actors funds. Devide each type of currency by the number of observers.
      * If the number of observers is 1 (length o observers array is 0), the currency is not split.
      *
+     * @param currencies
      * @param {number} observers
      *
      * @returns {Array}
@@ -230,7 +234,6 @@ export class CurrencyHelper {
     * @description
     * This is backwords support for currency.TYPE.value.
     *
-    * @param {object} currency
     * @return {object} currency
     *
     * @version 1.0.2
