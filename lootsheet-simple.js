@@ -361,7 +361,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     let shopQtyRoll = new Roll(shopQtyFormula);
 
     shopQtyRoll.roll();
-    console.log(shopQtyRoll.total);
+    console.log("Adding ${shopQtyRoll.result} items.");
     let rolltable = game.tables.getName(rolltableName);
     if (!rolltable) {
       return ui.notifications.error(
@@ -370,9 +370,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     }
 
     if (itemOnlyOnce) {
-      if (rolltable.results.length < shopQtyRoll.total) {
+      if (rolltable.results.length < shopQtyRoll.result) {
         return ui.notifications.error(
-          `Cannot create a merchant with ${shopQtyRoll.total} unqiue entries if the rolltable only contains ${rolltable.results.length} items`
+          `Cannot create a merchant with ${shopQtyRoll.result} unqiue entries if the rolltable only contains ${rolltable.results.length} items`
         );
       }
     }
@@ -425,7 +425,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
 
         if (
           itemQtyLimit > 0 &&
-          Number(itemQtyLimit) < Number(itemQtyRoll.total)
+          Number(itemQtyLimit) < Number(itemQtyRoll.result)
         ) {
           await existingItem.update({
             "data.quantity": itemQtyLimit,
@@ -436,18 +436,19 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
             );
         } else {
           await existingItem.update({
-            "data.quantity": itemQtyRoll.total,
+            "data.quantity": itemQtyRoll.result,
           });
           if (!reducedVerbosity)
             ui.notifications.info(
-              `Added new ${itemQtyRoll.total} x ${newItem.name}.`
+              `Added new ${itemQtyRoll.result} x ${newItem.name}.`
             );
         }
       } else {
         console.log(`Loot Sheet | Item ${newItem.name} exists.`, existingItem);
 
         let newQty =
-          Number(existingItem.data.data.quantity) + Number(itemQtyRoll.total);
+          Number(existingItem.data.data.quantity) + Number(itemQtyRoll.result);
+          console.log("newqty", newQty);
 
         if (
           itemQtyLimit > 0 &&
@@ -458,20 +459,30 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
               `${newItem.name} already at maximum quantity (${itemQtyLimit}).`
             );
         } else if (itemQtyLimit > 0 && Number(itemQtyLimit) < Number(newQty)) {
-          await existingItem.update({
-            "data.quantity": itemQtyLimit,
-          });
+          let updateItem = {
+              _id: existingItem.id,
+              data: {
+                  quantity: itemQtyLimit
+              }
+          };
+          await this.actor.updateEmbeddedDocuments('Item', [updateItem]);
           if (!reducedVerbosity)
             ui.notifications.info(
               `Added additional quantity to ${newItem.name} to the specified maximum of ${itemQtyLimit}.`
             );
         } else {
-          await existingItem.update({
-            "data.quantity": newQty,
-          });
+          let updateItem = {
+            _id: existingItem.id,
+            data: {
+                quantity: newQty
+            }
+          };
+          console.log(updateItem);
+          await this.actor.updateEmbeddedDocuments('Item', [updateItem]);
+          
           if (!reducedVerbosity)
             ui.notifications.info(
-              `Added additional ${itemQtyRoll.total} quantity to ${newItem.name}.`
+              `Added additional ${itemQtyRoll.result} quantity to ${newItem.name}.`
             );
         }
       }
