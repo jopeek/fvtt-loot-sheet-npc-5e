@@ -45,8 +45,8 @@
                     <div class="flexrow">
                         <div class="flexcol"><h4 class="sheet-name">Type of sheet: </h4></div>
                         <div class="flexcol">
-                            <select class="sheet-type" name="data.flags.lootsheetnpc5e.lootsheettype">
-                                {{#select data.flags.lootsheetnpc5e.lootsheettype}}
+                            <select class="sheet-type" name="system.flags.lootsheetnpc5e.lootsheettype">
+                                {{#select system.flags.lootsheetnpc5e.lootsheettype}}
                                     <option value="Loot">Loot</option>
                                     <option value="Merchant">Merchant</option>
                                 {{/select}}
@@ -62,9 +62,9 @@
                         <div class="flexrow">
                             <div class="flexcol"><h4>Rollable Table: </h4></div>
                             <div class="flexcol">
-                                <select class="sheet-rolltable" name="data.flags.lootsheetnpc5e.rolltable">
+                                <select class="sheet-rolltable" name="system.flags.lootsheetnpc5e.rolltable">
                                     
-                                    {{#select data.flags.lootsheetnpc5e.rolltable}}
+                                    {{#select system.flags.lootsheetnpc5e.rolltable}}
                                     <option value=""></option>
                                         {{#each rolltables as |table i|}}
                                             <option value="{{table.name}}">{{table.name}}</option>
@@ -75,23 +75,23 @@
                         </div>
                         <div class="flexrow">
                             <div class="flexcol"><h4>Shop Qty Formula: </h4></div>
-                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{data.flags.lootsheetnpc5e.shopQty}}"/></div>
+                            <div class="flexcol"><input name="system.flags.lootsheetnpc5e.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{system.flags.lootsheetnpc5e.shopQty}}"/></div>
                         </div>
                         <div class="flexrow">
                             <div class="flexcol"><h4>Item Qty Formula: </h4></div>
-                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{data.flags.lootsheetnpc5e.itemQty}}"/></div>
+                            <div class="flexcol"><input name="system.flags.lootsheetnpc5e.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{system.flags.lootsheetnpc5e.itemQty}}"/></div>
                         </div>
 						<div class="flexrow">
                             <div class="flexcol"><h4>Limit Qty: </h4></div>
-                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10" value="{{data.flags.lootsheetnpc5e.itemQtyLimit}}"/></div>
+                            <div class="flexcol"><input name="system.flags.lootsheetnpc5e.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10" value="{{system.flags.lootsheetnpc5e.itemQtyLimit}}"/></div>
                         </div>
 						<div class="flexrow">
                             <div class="flexcol"><h4>Clear Inventory: </h4></div>
-                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.clearInventory" type="checkbox" data-dtype="boolean" {{#if data.flags.lootsheetnpc5e.clearInventory}}checked{{/if}}/></div>
+                            <div class="flexcol"><input name="system.flags.lootsheetnpc5e.clearInventory" type="checkbox" data-dtype="boolean" {{#if system.flags.lootsheetnpc5e.clearInventory}}checked{{/if}}/></div>
                         </div>
                         <!-- <div class="flexrow">
                             <div class="flexcol"><h4>Items Only Once:</h4></div>
-                            <div class="flexcol"><input name="data.flags.lootsheetnpc5e.itemOnlyOnce" type="checkbox" data-dtype="boolean" {{#if data.flags.lootsheetnpc5e.itemOnlyOnce}}checked{{/if}}/></div>
+                            <div class="flexcol"><input name="system.flags.lootsheetnpc5e.itemOnlyOnce" type="checkbox" data-dtype="boolean" {{#if system.flags.lootsheetnpc5e.itemOnlyOnce}}checked{{/if}}/></div>
                         </div> -->
                     </div>
                     <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
@@ -117,7 +117,7 @@
 
             <h3 class="gm-section">{{ localize "DND5E.Biography" }}</h3>
             <div class="sidebar-bio" data-group="sidebar" data-tab="sidebar-bio">
-                {{editor content=data.details.biography.value target="data.details.biography.value" button=true owner=owner editable=editable rollData=rollData}}
+                {{editor content=system.details.biography.value target="system.details.biography.value" button=true owner=owner editable=editable rollData=rollData}}
             </div>
 
             {{/if}}
@@ -148,7 +148,7 @@
 
             <section class="sheet-body">
                 <div class="tab" data-tab="biography" data-group="primary">
-                    {{editor content=data.details.biography.value target="data.details.biography.value" button=true owner=owner editable=editable}}
+                    {{editor content=system.details.biography.value target="system.details.biography.value" button=true owner=owner editable=editable}}
                 </div>
     
                 <div class="tab" data-tab="inventory" data-group="primary">
@@ -159,10 +159,10 @@
                                 <span style="flex: 0 0 60px;"><h3>
                                     Currency
                                 </h3></span>
-                                {{#each data.currency as |c i|}}
+                                {{#each system.currency as |c i|}}
                                 <span>
                                     <label class="denomination {{i}}">{{lookup (lookup ../config.currencies i) "label"}}</label>
-                                    <input type="number" name="data.currency.{{i}}" value="{{c}}" min="0" placeholder="0" data-dtype="number"/>
+                                    <input type="number" name="system.currency.{{i}}" value="{{c}}" min="0" placeholder="0" data-dtype="number"/>
                                 </span>
                                 {{/each}}
                                 {{#ifeq lootsheettype "Loot"}}
@@ -211,13 +211,13 @@
                                             </h4>
                                         </div>
                                         <div class="item-quantity">
-                                            <i class="fas fa-box" title="Quantity"></i> {{item.data.quantity}}
+                                            <i class="fas fa-box" title="Quantity"></i> {{item.system.quantity}}
                                         </div>
                                         <div class="item-weight">
-                                            <i class="fas fa-weight-hanging" title="Weight"></i> {{lootsheetweight item.data.weight}}{{lootsheetstackweight item.data.weight item.data.quantity}}
+                                            <i class="fas fa-weight-hanging" title="Weight"></i> {{lootsheetweight item.system.weight}}{{lootsheetstackweight item.system.weight item.system.quantity}}
                                         </div>
                                         <div class="item-price">
-                                            <i class="fas fa-coins" title="Price (in gp)"></i> {{ lootsheetprice item.data.price ../../priceModifier }}
+                                            <i class="fas fa-coins" title="Price (in gp)"></i> {{ lootsheetprice item.system.price ../../priceModifier }}
                                         </div>
                                         
                                         <div class="item-controls">

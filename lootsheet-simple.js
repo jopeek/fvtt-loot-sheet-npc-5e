@@ -1,6 +1,3 @@
-import ActorSheet5eNPC from "../../systems/dnd5e/module/actor/sheets/npc.js";
-import Item5e from "../../systems/dnd5e/module/item/entity.js";
-
 class LootSheet5eNPCHelper {
   /**
    * Retrieve the loot permission for a player, given the current actor data.
@@ -31,51 +28,51 @@ class LootSheet5eNPCHelper {
   }
 }
 
-class QuantityDialog extends Dialog {
-  constructor(callback, options) {
-    if (typeof options !== "object") {
-      options = {};
-    }
+// class QuantityDialog extends dnd5e.applications.actor.Dialog {
+//   constructor(callback, options) {
+//     if (typeof options !== "object") {
+//       options = {};
+//     }
 
-    let applyChanges = false;
-    super({
-      title: "Quantity",
-      content: `
-            <form>
-                <div class="form-group">
-                    <label>Quantity:</label>
-                    <input type=number min="1" id="quantity" name="quantity" value="1">
-                </div>
-            </form>`,
-      buttons: {
-        yes: {
-          icon: "<i class='fas fa-check'></i>",
-          label: options.acceptLabel ? options.acceptLabel : "Accept",
-          callback: () => (applyChanges = true),
-        },
-        no: {
-          icon: "<i class='fas fa-times'></i>",
-          label: "Cancel",
-        },
-      },
-      default: "yes",
-      close: () => {
-        if (applyChanges) {
-          var quantity = document.getElementById("quantity").value;
+//     let applyChanges = false;
+//     super({
+//       title: "Quantity",
+//       content: `
+//             <form>
+//                 <div class="form-group">
+//                     <label>Quantity:</label>
+//                     <input type=number min="1" id="quantity" name="quantity" value="1">
+//                 </div>
+//             </form>`,
+//       buttons: {
+//         yes: {
+//           icon: "<i class='fas fa-check'></i>",
+//           label: options.acceptLabel ? options.acceptLabel : "Accept",
+//           callback: () => (applyChanges = true),
+//         },
+//         no: {
+//           icon: "<i class='fas fa-times'></i>",
+//           label: "Cancel",
+//         },
+//       },
+//       default: "yes",
+//       close: () => {
+//         if (applyChanges) {
+//           var quantity = document.getElementById("quantity").value;
 
-          if (isNaN(quantity)) {
-            console.log("Loot Sheet | Item quantity invalid");
-            return ui.notifications.error(`Item quantity invalid.`);
-          }
+//           if (isNaN(quantity)) {
+//             console.log("Loot Sheet | Item quantity invalid");
+//             return ui.notifications.error(`Item quantity invalid.`);
+//           }
 
-          callback(quantity);
-        }
-      },
-    });
-  }
-}
+//           callback(quantity);
+//         }
+//       },
+//     });
+//   }
+// }
 
-class LootSheet5eNPC extends ActorSheet5eNPC {
+class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
   static SOCKET = "module.lootsheet-simple";
 
   get template() {
@@ -129,7 +126,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
   }
 
   async getData() {
-    const sheetData = super.getData();
+    const sheetData = await super.getData();
 
     // Prepare GM Settings
     this._prepareGMSettings(sheetData.actor);
@@ -212,8 +209,8 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
       "lootCurrency"
     );
     sheetData.lootAll = game.settings.get("lootsheet-simple", "lootAll");
-    sheetData.data.currency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-      sheetData.data.currency
+    sheetData.system.currency = LootSheet5eNPCHelper.convertCurrencyFromObject(
+      sheetData.system.currency
     );
 
     // Return data for rendering
@@ -1203,7 +1200,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
    * Prepares GM settings to be rendered by the loot sheet.
    * @private
    */
-  _prepareGMSettings(actorData) {
+  _prepareGMSettings(context) {
     const playerData = [],
       observers = [];
 
@@ -1220,7 +1217,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
         player.playerId = player.data._id;
 
         player.lootPermission = LootSheet5eNPCHelper.getLootPermissionForPlayer(
-          actorData,
+          context,
           player
         );
 
@@ -1244,8 +1241,9 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     }
 
     // calculate the split of coins between all observers of the sheet.
+    console.log(context);
     let currencySplit = duplicate(
-      LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency)
+      LootSheet5eNPCHelper.convertCurrencyFromObject(context.data.currency)
     );
     for (let c in currencySplit) {
       if (observers.length)
@@ -1265,7 +1263,7 @@ class LootSheet5eNPC extends ActorSheet5eNPC {
     loot.playersPermissionDescription = this._getPermissionDescription(
       commonPlayersPermission
     );
-    actorData.flags.loot = loot;
+    context.flags.loot = loot;
   }
 }
 
