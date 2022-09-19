@@ -15,12 +15,12 @@
   "id": "lootsheet-simple",
   "authors": [
     {
-      "name": "Jan Ole Peek (ChalkOne), Charles Miller (Kage), NonstickPanda, Kevin Brammer (Striky)",
-      "flags": {}
+      "name": "Jan Ole Peek (ChalkOne)"
     }
   ],
   "compatibility": {
-    "minimum": "10",
-    "verified": "10"
-  }
+    "minimum": "10.285",
+    "verified": "10.285",
+    "maximum": 10
+  },
 }
