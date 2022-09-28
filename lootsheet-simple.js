@@ -386,15 +386,15 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       let newItem = null;
 
       if (rollResult.results[0].data.collection === "Item") {
-        newItem = game.items.get(rollResult.results[0].data.resultId);
+        newItem = game.items.get(rollResult.results[0].documentId);
       } else {
         // Try to find it in the compendium
-        const items = game.packs.get(rollResult.results[0].data.collection);
-        newItem = await items.getDocument(rollResult.results[0].data.resultId);
+        const items = game.packs.get(rollResult.results[0].documentCollection);
+        newItem = await items.getDocument(rollResult.results[0].documentId);
       }
       if (!newItem || newItem === null) {
         return ui.notifications.error(
-          `No item found "${rollResult.results[0].resultId}".`
+          `No item found "${rollResult.results[0].documentId}".`
         );
       }
 
@@ -574,6 +574,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must purchase items from a token.`);
     }
+    console.log(game.user);
     if (!game.user.actorId) {
       console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
