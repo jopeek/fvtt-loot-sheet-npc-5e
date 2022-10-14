@@ -5,7 +5,7 @@ import { PermissionHelper } from '../src/modules/helper/PermissionHelper.js';
 
 describe('Check module structure', function(){
   it('Helpers exist', function(done) {
-    let directory = './modules/helper';
+    let directory = './src/modules/helper';
     let dirs= fs.readdirSync(directory);
 
     dirs.map(function (filename) {
