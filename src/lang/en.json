@@ -159,6 +159,10 @@
                     "name": "Maximum price increase",
                     "hint": "Maximum price increase for the merchant sheet. (e.g. 200% = 100gp -> 200gp)"
                 },
+                "minPriceIncrease": {
+                    "name": "Minimum price decrease",
+                    "hint": "Minimum price increase for the merchant sheet. (e.g. 10% = 100gp -> 10gp)"
+                },
                 "reduceUpdateVerbosity": {
                     "name": "Reduce update verbosity",
                     "hint": "No notifications will be created every time an item is added to the inventory."

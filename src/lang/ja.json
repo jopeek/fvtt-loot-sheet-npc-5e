@@ -141,6 +141,10 @@
                     "name": "最大金額",
                     "hint": "商人シートの最大倍率(例： 200% = 100gp -> 200gp)"
                 },
+                "minPriceIncrease": {
+                    "name": "最小金額",
+                    "hint": "商人シートの最小倍率(例： 10% = 100gp -> 10gp)"
+                },
                 "reduceUpdateVerbosity": {
                     "name": "通知抑制",
                     "hint": "所持品にアイテムが追加される度に発生する通知を抑制します。"

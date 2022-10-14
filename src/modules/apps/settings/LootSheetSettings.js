@@ -222,6 +222,16 @@ export class LootSheetSettings {
             type: Number
         });
 
+        game.settings.register(MODULE.ns, MODULE.settings.keys.sheet.minPriceIncrease, {
+            name: game.i18n.localize('lsnpc.settings.sheet.minPriceIncrease.name'),
+            hint: game.i18n.localize('lsnpc.settings.sheet.minPriceIncrease.hint'),
+            scope: MODULE.settings.scopes.world,
+            group: MODULE.settings.groups.sheet.merchant,
+            config: false,
+            default: 0,
+            type: Number
+        });
+
         /**
          * UI and Themes
          */

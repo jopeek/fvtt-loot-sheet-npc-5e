@@ -141,6 +141,10 @@
                     "name": "Massimo aumento di prezzo",
                     "hint": "Aumento di prezzo massimo per la scheda mercante (es. 200%=100mo ->200mo)"
                 },
+                "minPriceIncrease": {
+                    "name": "Minimo aumento di prezzo",
+                    "hint": "Aumento di prezzo minimo per la scheda mercante (es. 10%=100mo ->10mo)"
+                },
                 "reduceUpdateVerbosity": {
                     "name": "Riduce la verbosità degli aggiornamenti",
                     "hint": "Nessuna notifica verrà creata ogni volta che un oggetto è aggiunto all'inventario"

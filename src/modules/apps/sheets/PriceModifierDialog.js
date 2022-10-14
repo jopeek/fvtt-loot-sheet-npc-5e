@@ -18,7 +18,8 @@ export class PriceModifierDialog extends FormApplication {
         this.actor = data.actor;
         this.data = {
             currentModifier: data.currentModifier,
-            maxModifier: data.maxModifier
+            maxModifier: data.maxModifier,
+            minModifier: data.minModifier
         };
 
         loadTemplates([
@@ -46,7 +47,8 @@ export class PriceModifierDialog extends FormApplication {
         return {
             flags: this.actor.data.flags,
             currentModifier: this.data.currentModifier,
-            maxModifier: this.data.maxModifier
+            maxModifier: this.data.maxModifier,
+            minModifier: this.data.minModifier
         };
     }
 

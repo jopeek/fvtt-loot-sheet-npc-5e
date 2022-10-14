@@ -55,13 +55,13 @@
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-styles": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.8.4",
     "unit.js": "^2.1.1"
   },
   "type": "module",
   "dependencies": {
     "babel": "^6.23.0",
-    "tippy.js": "^6.3.7",
-    "typescript": "^4.7.4"
+    "tippy.js": "^6.3.7"
   },
   "bundleDependencies": [
     "tippy.js"

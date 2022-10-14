@@ -14,6 +14,7 @@ export class SheetHelper {
         event.preventDefault();
 
         const maxModifier = game.settings.get(MODULE.ns, "maxPriceIncrease");
+        const minModifier = game.settings.get(MODULE.ns, "minPriceIncrease");
         let priceModifier = await actor.getFlag(MODULE.ns, "priceModifier");
 
         priceModifier = (typeof priceModifier !== 'number') ? 1 : priceModifier;
@@ -23,7 +24,8 @@ export class SheetHelper {
             {
                 actor: actor,
                 currentModifier: priceModifier,
-                maxModifier: maxModifier
+                maxModifier: maxModifier,
+                minModifier: minModifier
             });
 
         d.render(true);

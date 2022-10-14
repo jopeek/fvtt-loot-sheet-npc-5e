@@ -119,6 +119,7 @@ export const MODULE = {
                 lootItem: 'lootItem',
                 sheetUpdate: 'sheetUpdate',
                 maxPriceIncrease: 'maxPriceIncrease',
+                minPriceIncrease: 'minPriceIncrease',
                 reduceUpdateVerbosity: 'reduceUpdateVerbosity',
                 stackBuyConfirm: 'stackBuyConfirm',
                 showStackWeight: 'showStackWeight',
