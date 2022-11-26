@@ -28,49 +28,49 @@ class LootSheet5eNPCHelper {
   }
 }
 
-// class QuantityDialog extends dnd5e.applications.actor.Dialog {
-//   constructor(callback, options) {
-//     if (typeof options !== "object") {
-//       options = {};
-//     }
+class QuantityDialog extends Dialog {
+  constructor(callback, options) {
+    if (typeof options !== "object") {
+      options = {};
+    }
 
-//     let applyChanges = false;
-//     super({
-//       title: "Quantity",
-//       content: `
-//             <form>
-//                 <div class="form-group">
-//                     <label>Quantity:</label>
-//                     <input type=number min="1" id="quantity" name="quantity" value="1">
-//                 </div>
-//             </form>`,
-//       buttons: {
-//         yes: {
-//           icon: "<i class='fas fa-check'></i>",
-//           label: options.acceptLabel ? options.acceptLabel : "Accept",
-//           callback: () => (applyChanges = true),
-//         },
-//         no: {
-//           icon: "<i class='fas fa-times'></i>",
-//           label: "Cancel",
-//         },
-//       },
-//       default: "yes",
-//       close: () => {
-//         if (applyChanges) {
-//           var quantity = document.getElementById("quantity").value;
+    let applyChanges = false;
+    super({
+      title: "Quantity",
+      content: `
+            <form>
+                <div class="form-group">
+                    <label>Quantity:</label>
+                    <input type=number min="1" id="quantity" name="quantity" value="1">
+                </div>
+            </form>`,
+      buttons: {
+        yes: {
+          icon: "<i class='fas fa-check'></i>",
+          label: options.acceptLabel ? options.acceptLabel : "Accept",
+          callback: () => (applyChanges = true),
+        },
+        no: {
+          icon: "<i class='fas fa-times'></i>",
+          label: "Cancel",
+        },
+      },
+      default: "yes",
+      close: () => {
+        if (applyChanges) {
+          var quantity = document.getElementById("quantity").value;
 
-//           if (isNaN(quantity)) {
-//             console.log("Loot Sheet | Item quantity invalid");
-//             return ui.notifications.error(`Item quantity invalid.`);
-//           }
+          if (isNaN(quantity)) {
+            console.log("Loot Sheet | Item quantity invalid");
+            return ui.notifications.error(`Item quantity invalid.`);
+          }
 
-//           callback(quantity);
-//         }
-//       },
-//     });
-//   }
-// }
+          callback(quantity);
+        }
+      },
+    });
+  }
+}
 
 class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
   static SOCKET = "module.lootsheet-simple";
@@ -574,8 +574,8 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must purchase items from a token.`);
     }
-    console.log(game.user);
-    if (!game.user.actorId) {
+    console.log(game.user.character);
+    if (!game.user.character._id) {
       console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
@@ -593,7 +593,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     const packet = {
       type: "buy",
-      buyerId: game.user.actorId,
+      buyerId: game.user.character._id,
       tokenId: this.token.id,
       itemId: itemId,
       quantity: 1,
@@ -652,7 +652,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must loot items from a token.`);
     }
-    if (!game.user.actorId) {
+    if (!game.user.character._id) {
       console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
@@ -670,7 +670,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     const packet = {
       type: "loot",
-      looterId: game.user.actorId,
+      looterId: game.user.character._id,
       tokenId: this.token.id,
       items: [item],
       processorId: targetGm.id,
@@ -732,14 +732,14 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must loot coins from a token.`);
     }
-    if (!game.user.actorId) {
+    if (!game.user.character._id) {
       console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
 
     const packet = {
       type: "lootCoins",
-      looterId: game.user.actorId,
+      looterId: game.user.character._id,
       tokenId: this.token.id,
       processorId: targetGm.id,
     };
@@ -778,7 +778,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must loot items from a token.`);
     }
-    if (!game.user.actorId) {
+    if (!game.user.character._id) {
       console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
@@ -803,7 +803,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     const packet = {
       type: "loot",
-      looterId: game.user.actorId,
+      looterId: game.user.character._id,
       tokenId: this.token.id,
       items: items,
       processorId: targetGm.id,
@@ -917,7 +917,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     const packet = {
       type: "distributeCoins",
-      looterId: game.user.actorId,
+      looterId: game.user.character._id,
       tokenId: this.token.id,
       processorId: targetGm.id,
     };
@@ -1434,7 +1434,7 @@ Hooks.once("init", () => {
         updates.push(update);
       }
 
-      newItem.data.quantity = quantity;
+      newItem.system.quantity = quantity;
       console.log("NEWITEM2: \n");
       console.log(newItem);
 
@@ -1956,7 +1956,7 @@ Hooks.once("init", () => {
         lootCoins(container.actor, looter);
       }
     }
-    if (data.type === "error" && data.targetId === game.user.actorId) {
+    if (data.type === "error" && data.targetId === game.user.character._id) {
       console.log("Loot Sheet | Transaction Error: ", data.message);
       return ui.notifications.error(data.message);
     }
