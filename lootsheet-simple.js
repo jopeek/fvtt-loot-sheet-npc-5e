@@ -21,9 +21,9 @@ class LootSheet5eNPCHelper {
    * @param {string} folderPath - The directory to loop through
    */
   static convertCurrencyFromObject(currency) {
-    Object.entries(currency).map(([key, value]) => {
-      currency[key] = value?.value ?? value ?? 0;
-    });
+    // Object.entries(currency).map(([key, value]) => {
+    //   currency[key] = value?.value ?? value ?? 0;
+    // });
     return currency;
   }
 }
@@ -87,8 +87,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     Handlebars.registerHelper("lootsheetprice", function (basePrice, modifier) {
       return (
-        (Math.round(basePrice * modifier * 100) / 100).toLocaleString("en") +
-        " gp"
+        (Math.round(basePrice * modifier * 100) / 100).toLocaleString("en")
       );
     });
 
@@ -194,6 +193,10 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     this.actor.data.items.contents.forEach(
       (item) =>
         (totalQuantity += Math.round((item.data.data.quantity * 100) / 100))
+    );
+    this.actor.data.items.contents.forEach(
+      (item) =>
+      (console.log(item))
     );
 
     sheetData.lootsheettype = lootsheettype;
@@ -1244,7 +1247,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     // calculate the split of coins between all observers of the sheet.
     console.log(context);
     let currencySplit = duplicate(
-      LootSheet5eNPCHelper.convertCurrencyFromObject(context.data.currency)
+      LootSheet5eNPCHelper.convertCurrencyFromObject(context.system.currency)
     );
     for (let c in currencySplit) {
       if (observers.length)
