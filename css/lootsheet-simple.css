@@ -164,6 +164,43 @@ img.sheet-profile {
 
 .loot-sheet-npc.sheet.actor .inventory-filters .currency label {
 	white-space: nowrap;
+	padding-bottom: 0;
+}
+
+.loot-sheet-npc.sheet.actor .inventory-filters .currency input {
+	vertical-align: bottom;
+}
+
+.loot-sheet-npc.sheet.actor label.denomination {
+	display: inline-block;
+	padding-left: 24px;
+	padding-bottom: 10px;
+	vertical-align: super;
+}
+
+.loot-sheet-npc.sheet.actor label.denomination.gp {
+	background: url(../images/gp.png) no-repeat;
+	background-size: auto 20px;
+}
+
+.loot-sheet-npc.sheet.actor label.denomination.pp {
+	background: url(../images/pp.png) no-repeat;
+	background-size: auto 20px;
+}
+
+.loot-sheet-npc.sheet.actor label.denomination.ep {
+	background: url(../images/ep.png) no-repeat;
+	background-size: auto 20px;
+}
+
+.loot-sheet-npc.sheet.actor label.denomination.sp {
+	background: url(../images/sp.png) no-repeat;
+	background-size: auto 20px;
+}
+
+.loot-sheet-npc.sheet.actor label.denomination.cp {
+	background: url(../images/cp.png) no-repeat;
+	background-size: auto 20px;
 }
 
 section.sheet-sidebar.sidebar {

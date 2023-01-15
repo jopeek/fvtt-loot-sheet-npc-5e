@@ -21,9 +21,9 @@ class LootSheet5eNPCHelper {
    * @param {string} folderPath - The directory to loop through
    */
   static convertCurrencyFromObject(currency) {
-    // Object.entries(currency).map(([key, value]) => {
-    //   currency[key] = value?.value ?? value ?? 0;
-    // });
+    Object.entries(currency).map(([key, value]) => {
+      currency[key] = value?.value ?? value ?? 0;
+    });
     return currency;
   }
 }
@@ -179,14 +179,34 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     let totalPrice = 0;
     this.actor.data.items.contents.forEach(
-      (item) =>
-        (totalPrice += Math.round(
+      (item) => {
+        let priceInGp = item.data.data.price.value;
+        switch(item.data.data.price.denomination) {
+          case 'pp':
+            priceInGp = item.data.data.price.value * 10;
+            break;
+          case 'ep':
+            priceInGp = item.data.data.price.value / 5;
+            break;
+          case 'sp':
+            priceInGp = item.data.data.price.value / 10;
+            break;
+          case 'cp':
+            priceInGp = item.data.data.price.value / 100;
+            break;
+          default:
+            //this is gp, no conversion
+            break;
+        }
+        totalPrice += Math.round(
           (item.data.data.quantity *
-            item.data.data.price *
+            priceInGp *
             priceModifier *
             100) /
             100
-        ))
+        );
+      }
+        
     );
 
     let totalQuantity = 0;
@@ -202,7 +222,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     sheetData.lootsheettype = lootsheettype;
     sheetData.totalItems = this.actor.data.items.contents.length;
     sheetData.totalWeight = totalWeight.toLocaleString("en");
-    sheetData.totalPrice = totalPrice.toLocaleString("en") + " gp";
+    sheetData.totalPrice = totalPrice.toLocaleString("en");
     sheetData.totalQuantity = totalQuantity;
     sheetData.priceModifier = priceModifier;
     sheetData.rolltables = game.tables.contents;
@@ -1514,33 +1534,31 @@ Hooks.once("init", () => {
     let sellerModifier = seller.getFlag("lootsheet-simple", "priceModifier");
     if (typeof sellerModifier !== "number") sellerModifier = 1.0;
 
-    let itemCostInGold =
-      Math.round(sellItem.data.data.price * sellerModifier * 100) / 100;
+    let itemCostRaw =
+      Math.round(sellItem.data.data.price.value * sellerModifier * 100) / 100;
+    let itemCostDenomination = sellItem.data.data.price.denomination;
 
-    itemCostInGold *= quantity;
+    itemCostRaw *= quantity;
+
+    console.log("itemCostRaw", itemCostRaw);
+
     let buyerFunds = duplicate(
       LootSheet5eNPCHelper.convertCurrencyFromObject(buyer.data.data.currency)
     );
+
     let sellerFunds = duplicate(
       LootSheet5eNPCHelper.convertCurrencyFromObject(seller.data.data.currency)
     );
+
     console.log("sellerFunds before", sellerFunds);
-
-    console.log("itemCostInGold", itemCostInGold);
-
-    if (itemCostInGold >= 1) {
-      // just add the gp to the merchant
-      //sellerFunds["gp"] += itemCostInGold;
-    }
-
-    console.log("sellerFunds after", sellerFunds);
+    console.log("buyerFunds before", buyerFunds);
 
     const conversionRates = {
       pp: 1,
-      gp: CONFIG.DND5E.currencies.gp.conversion.each,
-      ep: CONFIG.DND5E.currencies.ep.conversion.each,
-      sp: CONFIG.DND5E.currencies.sp.conversion.each,
-      cp: CONFIG.DND5E.currencies.cp.conversion.each,
+      gp: 10,
+      ep: 50,
+      sp: 100,
+      cp: 1000,
     };
 
     const compensationCurrency = {
@@ -1550,46 +1568,23 @@ Hooks.once("init", () => {
       sp: "cp",
     };
 
-    let itemCostInPlatinum = itemCostInGold / conversionRates["gp"];
-    // console.log(`itemCostInGold : ${itemCostInGold}`);
-    // console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
-    // console.log(`conversionRates["gp"] : ${conversionRates["gp"]}`);
-    // console.log(`conversionRates["ep"] : ${conversionRates["ep"]}`);
+    let itemCostInPlatinum = itemCostRaw / conversionRates[itemCostDenomination];
+     console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
 
     let buyerFundsAsPlatinum = buyerFunds["pp"];
     buyerFundsAsPlatinum += buyerFunds["gp"] / conversionRates["gp"];
-    buyerFundsAsPlatinum +=
-      buyerFunds["ep"] / conversionRates["gp"] / conversionRates["ep"];
-    buyerFundsAsPlatinum +=
-      buyerFunds["sp"] /
-      conversionRates["gp"] /
-      conversionRates["ep"] /
-      conversionRates["sp"];
-    buyerFundsAsPlatinum +=
-      buyerFunds["cp"] /
-      conversionRates["gp"] /
-      conversionRates["ep"] /
-      conversionRates["sp"] /
-      conversionRates["cp"];
+    buyerFundsAsPlatinum += buyerFunds["ep"] / conversionRates["ep"];
+    buyerFundsAsPlatinum += buyerFunds["sp"] / conversionRates["sp"];
+    buyerFundsAsPlatinum += buyerFunds["cp"] / conversionRates["cp"];
 
     let sellerFundsAsPlatinum = sellerFunds["pp"];
     sellerFundsAsPlatinum += sellerFunds["gp"] / conversionRates["gp"];
-    sellerFundsAsPlatinum +=
-      sellerFunds["ep"] / conversionRates["gp"] / conversionRates["ep"];
-    sellerFundsAsPlatinum +=
-      sellerFunds["sp"] /
-      conversionRates["gp"] /
-      conversionRates["ep"] /
-      conversionRates["sp"];
-    sellerFundsAsPlatinum +=
-      sellerFunds["cp"] /
-      conversionRates["gp"] /
-      conversionRates["ep"] /
-      conversionRates["sp"] /
-      conversionRates["cp"];
+    sellerFundsAsPlatinum += sellerFunds["ep"] / conversionRates["ep"];
+    sellerFundsAsPlatinum += sellerFunds["sp"] / conversionRates["sp"];
+    sellerFundsAsPlatinum += sellerFunds["cp"] / conversionRates["cp"];
 
-    // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
-
+    console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
+    
     if (itemCostInPlatinum > buyerFundsAsPlatinum) {
       errorMessageToActor(buyer, `Not enough funds to purchase item.`);
       return;
@@ -1616,16 +1611,19 @@ Hooks.once("init", () => {
       buyerFunds["pp"] = buyerFundsAsPlatinum;
       sellerFunds["pp"] = sellerFundsAsPlatinum;
     } else {
+      
+      // just add the value to the merchant
+      sellerFunds[itemCostDenomination] += itemCostRaw;
+      console.log("sellerFunds after", sellerFunds);
+
       // We just pay in partial platinum.
       // We dont care if we get partial coins or negative once because we compensate later
       buyerFunds["pp"] -= itemCostInPlatinum;
-      sellerFunds["pp"] += itemCostInPlatinum;
-
       // Now we exchange all negative funds with coins of lower value
       // We dont need to care about running out of money because we checked that earlier
       for (let currency in buyerFunds) {
         let amount = buyerFunds[currency];
-        // console.log(`${currency} : ${amount}`);
+         console.log(`${currency} : ${amount}`);
         if (amount >= 0) continue;
 
         // If we have ever so slightly negative cp, it is likely due to floating point error
@@ -1641,28 +1639,32 @@ Hooks.once("init", () => {
         buyerFunds[compCurrency] += amount * conversionRates[compCurrency]; // amount is a negative value so we add it
         // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
       }
-      for (let currency in sellerFunds) {
-        let amount = sellerFunds[currency];
-        // console.log(`${currency} : ${amount}`);
-        if (amount >= 0) continue;
-
-        // If we have ever so slightly negative cp, it is likely due to floating point error
-        // We dont care and just give it to the player
-        if (currency == "cp") {
-          sellerFunds["cp"] = 0;
-          continue;
-        }
-
-        let compCurrency = compensationCurrency[currency];
-
-        sellerFunds[currency] = 0;
-        sellerFunds[compCurrency] += amount * conversionRates[compCurrency]; // amount is a negative value so we add it
-        // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
-      }
+      
     }
 
-    // console.log(`Smoothing out`);
+    console.log(`Smoothing out`);
+    console.log("sellerFunds", sellerFunds);
     // Finally we exchange partial coins with as little change as possible
+    for (let currency in sellerFunds) {
+      let amount = sellerFunds[currency];
+
+      // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
+      // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
+      // If we would floor 15.99999999999918 everything explodes
+      let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
+      sellerFunds[currency] = newFund;
+
+      let compCurrency = compensationCurrency[currency];
+
+      // We dont care about fractions of CP
+      if (currency != "cp") {
+        // We calculate the amount of lower currency we get for the fraction of higher currency we have
+        let toAdd =
+          (Math.round((amount - newFund) * 1e5) / 1e5) *
+          conversionRates[compCurrency];
+          sellerFunds[compCurrency] += toAdd;
+      }
+    }
     for (let currency in buyerFunds) {
       let amount = buyerFunds[currency];
 
@@ -1681,26 +1683,6 @@ Hooks.once("init", () => {
           (Math.round((amount - newFund) * 1e5) / 1e5) *
           conversionRates[compCurrency];
         buyerFunds[compCurrency] += toAdd;
-      }
-    }
-    for (let currency in sellerFunds) {
-      let amount = sellerFunds[currency];
-
-      // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
-      // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
-      // If we would floor 15.99999999999918 everything explodes
-      let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
-      sellerFunds[currency] = newFund;
-
-      let compCurrency = compensationCurrency[currency];
-
-      // We dont care about fractions of CP
-      if (currency != "cp") {
-        // We calculate the amount of lower currency we get for the fraction of higher currency we have
-        let toAdd =
-          (Math.round((amount - newFund) * 1e5) / 1e5) *
-          conversionRates[compCurrency];
-        sellerFunds[compCurrency] += toAdd;
       }
     }
 
@@ -1725,7 +1707,7 @@ Hooks.once("init", () => {
       chatMessage(
         seller,
         buyer,
-        `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCostInGold}gp.`,
+        `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCostRaw}${itemCostDenomination}.`,
         m.item
       );
     }

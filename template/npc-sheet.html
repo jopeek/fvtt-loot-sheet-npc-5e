@@ -47,8 +47,16 @@
                         <div class="flexcol">
                             <select class="sheet-type" name="system.flags.lootsheetnpc5e.lootsheettype">
                                 {{#select system.flags.lootsheetnpc5e.lootsheettype}}
-                                    <option value="Loot">Loot</option>
-                                    <option value="Merchant">Merchant</option>
+                                    {{#ifeq lootsheettype "Merchant"}}
+                                        <option value="Loot" selected>Loot</option>
+                                    {{else}}
+                                        <option value="Loot">Loot</option>
+                                    {{/ifeq}}
+                                    {{#ifeq lootsheettype "Merchant"}}
+                                        <option value="Merchant" selected>Merchant</option>
+                                    {{else}}
+                                        <option value="Merchant">Merchant</option>
+                                    {{/ifeq}}
                                 {{/select}}
                             </select>
                         </div>
@@ -89,26 +97,9 @@
                             <div class="flexcol"><h4>Clear Inventory: </h4></div>
                             <div class="flexcol"><input name="system.flags.lootsheetnpc5e.clearInventory" type="checkbox" data-dtype="boolean" {{#if system.flags.lootsheetnpc5e.clearInventory}}checked{{/if}}/></div>
                         </div>
-                        <!-- <div class="flexrow">
-                            <div class="flexcol"><h4>Items Only Once:</h4></div>
-                            <div class="flexcol"><input name="system.flags.lootsheetnpc5e.itemOnlyOnce" type="checkbox" data-dtype="boolean" {{#if system.flags.lootsheetnpc5e.itemOnlyOnce}}checked{{/if}}/></div>
-                        </div> -->
                     </div>
                     <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
                 {{/ifeq}}
-                
-                <!-- <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
-                <input type="hidden" name="actor.flags.loot.playersPermission" value="{{actor.flags.loot.playersPermission}}" data-dtype="Number"/>
-                <div class="permission-info">Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.</div>
-                <ol class="permissions-list">
-                    {{#each actor.flags.loot.players as |player p|}}
-                        <li class="permission" data-skill="{{p}}">
-                            <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}" data-dtype="Number" actor="{{player.actorId}}"/>
-                            <a class="permission-proficiency" title="{{player.lootPermissionDescription}}">{{{player.icon}}}</a>
-                            <h4 class="permission-name">{{player.actor}} ({{player.name}})</h4>
-                        </li>
-                    {{/each}}
-                </ol> -->
 
                 
             </div>
@@ -121,19 +112,6 @@
             </div>
 
             {{/if}}
-
-            {{#ifeq lootsheettype "Loot"}}
-                <h3 class="gm-header"><i class="fas fa-coins"></i> Coin Distribution</h3>
-                <ol class="coins-list">
-                    {{#each actor.flags.loot.currency as |c i|}}
-                        <li class="denomination {{i}}">
-                            <label>{{lookup (lookup ../config.currencies i) "label"}}:</label>
-                            <span class="denomination-value">{{c}} each</span>
-                        </li>
-                    {{/each}}
-                </ol>
-                <button type="button" class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> Split {{actor.flags.loot.observerCount}} Ways</button>
-            {{/ifeq}}
 
         </section>
 		
@@ -161,7 +139,7 @@
                                 </h3></span>
                                 {{#each system.currency as |c i|}}
                                 <span>
-                                    <label class="denomination {{i}}">{{lookup (lookup ../config.currencies i) "label"}}</label>
+                                    <label class="denomination {{i}}">{{i}}</label>
                                     <input type="number" name="system.currency.{{i}}" value="{{c}}" min="0" placeholder="0" data-dtype="number"/>
                                 </span>
                                 {{/each}}
@@ -178,7 +156,7 @@
                                 <span><label>Items</label> <span>{{totalItems}}</span></span>
                                 <span><label>Quantity</label> <span>{{totalQuantity}}</span></span>
                                 <span><label>Weight</label> <span>{{totalWeight}}</span></span>
-                                <span><label>Value</label> <span>{{totalPrice}}</span></span>
+                                <span><label>Value</label> <span>{{totalPrice}} <label class="denomination gp" style="vertical-align: baseline;">gp</label></span></span>
                             </ol>
                         </div>
 
@@ -217,7 +195,7 @@
                                             <i class="fas fa-weight-hanging" title="Weight"></i> {{lootsheetweight item.system.weight}}{{lootsheetstackweight item.system.weight item.system.quantity}}
                                         </div>
                                         <div class="item-price">
-                                            <i class="fas fa-coins" title="Price (in gp)"></i> {{ lootsheetprice item.system.price.value ../../priceModifier }} {{ item.system.price.denomination }}
+                                            <span class="item-price-label"><i class="fas fa-coins" title="Price (in gp)"></i> {{ lootsheetprice item.system.price.value ../../priceModifier }} </span><label class="denomination {{ item.system.price.denomination }}">&nbsp;</label>
                                         </div>
                                         
                                         <div class="item-controls">
