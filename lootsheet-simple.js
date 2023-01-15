@@ -138,6 +138,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       "lootsheet-simple",
       "lootsheettype"
     );
+
     if (!lootsheettype)
       await this.actor.setFlag("lootsheet-simple", "lootsheettype", "Loot");
     lootsheettype = await this.actor.getFlag(
@@ -215,9 +216,39 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
         (totalQuantity += Math.round((item.data.data.quantity * 100) / 100))
     );
 
+    let selectedRollTable = await this.actor.getFlag(
+      "lootsheet-simple",
+      "rolltable"
+    );
+
+    let clearInventory = await this.actor.getFlag(
+      "lootsheet-simple",
+      "clearInventory"
+    );
+
+    let itemQty = await this.actor.getFlag(
+      "lootsheet-simple",
+      "itemQty"
+    );
+
+    let itemQtyLimit = await this.actor.getFlag(
+      "lootsheet-simple",
+      "itemQtyLimit"
+    );
+
+    let shopQty = await this.actor.getFlag(
+      "lootsheet-simple",
+      "shopQty"
+    );
+
     console.log('lootsheet', this.actor);
 
     sheetData.lootsheettype = lootsheettype;
+    sheetData.selectedRollTable = selectedRollTable;
+    sheetData.itemQty = itemQty;
+    sheetData.itemQtyLimit = itemQtyLimit;
+    sheetData.shopQty = shopQty;
+    sheetData.clearInventory = clearInventory;
     sheetData.totalItems = this.actor.data.items.contents.length;
     sheetData.totalWeight = totalWeight.toLocaleString("en");
     sheetData.totalPrice = totalPrice.toLocaleString("en");
@@ -1221,69 +1252,69 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
    * @private
    */
   _prepareGMSettings(context) {
-    const playerData = [],
-      observers = [];
+    // const playerData = [],
+    //   observers = [];
 
-    let players = game.users.players;
-    let commonPlayersPermission = -1;
+    // let players = game.users.players;
+    // let commonPlayersPermission = -1;
 
-    for (let player of players) {
-      // get the name of the primary actor for a player
-      const actor = game.actors.get(player.data.character);
+    // for (let player of players) {
+    //   // get the name of the primary actor for a player
+    //   const actor = game.actors.get(player.data.character);
 
-      if (actor) {
-        player.actor = actor.data.name;
-        player.actorId = actor.data._id;
-        player.playerId = player.data._id;
+    //   if (actor) {
+    //     player.actor = actor.data.name;
+    //     player.actorId = actor.data._id;
+    //     player.playerId = player.data._id;
 
-        player.lootPermission = LootSheet5eNPCHelper.getLootPermissionForPlayer(
-          context,
-          player
-        );
+    //     player.lootPermission = LootSheet5eNPCHelper.getLootPermissionForPlayer(
+    //       context,
+    //       player
+    //     );
 
-        if (player.lootPermission >= 2 && !observers.includes(actor.data._id)) {
-          observers.push(actor.data._id);
-        }
+    //     if (player.lootPermission >= 2 && !observers.includes(actor.data._id)) {
+    //       observers.push(actor.data._id);
+    //     }
 
-        //Set icons and permission texts for html
-        if (commonPlayersPermission < 0) {
-          commonPlayersPermission = player.lootPermission;
-        } else if (commonPlayersPermission !== player.lootPermission) {
-          commonPlayersPermission = 999;
-        }
+    //     //Set icons and permission texts for html
+    //     if (commonPlayersPermission < 0) {
+    //       commonPlayersPermission = player.lootPermission;
+    //     } else if (commonPlayersPermission !== player.lootPermission) {
+    //       commonPlayersPermission = 999;
+    //     }
 
-        player.icon = this._getPermissionIcon(player.lootPermission);
-        player.lootPermissionDescription = this._getPermissionDescription(
-          player.lootPermission
-        );
-        playerData.push(player);
-      }
-    }
+    //     player.icon = this._getPermissionIcon(player.lootPermission);
+    //     player.lootPermissionDescription = this._getPermissionDescription(
+    //       player.lootPermission
+    //     );
+    //     playerData.push(player);
+    //   }
+    // }
 
-    // calculate the split of coins between all observers of the sheet.
-    // console.log(context);
-    let currencySplit = duplicate(
-      LootSheet5eNPCHelper.convertCurrencyFromObject(context.system.currency)
-    );
-    for (let c in currencySplit) {
-      if (observers.length)
-        if (currencySplit[c] != null)
-          currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
-        else currencySplit[c] = 0;
-    }
+    // // calculate the split of coins between all observers of the sheet.
+    // // console.log(context);
+    // let currencySplit = duplicate(
+    //   LootSheet5eNPCHelper.convertCurrencyFromObject(context.system.currency)
+    // );
+    // for (let c in currencySplit) {
+    //   if (observers.length)
+    //     if (currencySplit[c] != null)
+    //       currencySplit[c] = Math.floor(currencySplit[c] / observers.length);
+    //     else currencySplit[c] = 0;
+    // }
 
-    let loot = {};
-    loot.players = playerData;
-    loot.observerCount = observers.length;
-    loot.currency = currencySplit;
-    loot.playersPermission = commonPlayersPermission;
-    loot.playersPermissionIcon = this._getPermissionIcon(
-      commonPlayersPermission
-    );
-    loot.playersPermissionDescription = this._getPermissionDescription(
-      commonPlayersPermission
-    );
-    context.flags.loot = loot;
+    // let loot = {};
+    // loot.players = playerData;
+    // loot.observerCount = observers.length;
+    // loot.currency = currencySplit;
+    // loot.playersPermission = commonPlayersPermission;
+    // loot.playersPermissionIcon = this._getPermissionIcon(
+    //   commonPlayersPermission
+    // );
+    // loot.playersPermissionDescription = this._getPermissionDescription(
+    //   commonPlayersPermission
+    // );
+    // context.flags.loot = loot;
   }
 }
 
