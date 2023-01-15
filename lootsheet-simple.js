@@ -61,7 +61,7 @@ class QuantityDialog extends Dialog {
           var quantity = document.getElementById("quantity").value;
 
           if (isNaN(quantity)) {
-            console.log("Loot Sheet | Item quantity invalid");
+            // console.log("Loot Sheet | Item quantity invalid");
             return ui.notifications.error(`Item quantity invalid.`);
           }
 
@@ -226,7 +226,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     sheetData.totalQuantity = totalQuantity;
     sheetData.priceModifier = priceModifier;
     sheetData.rolltables = game.tables.contents;
-    console.log(game.tables);
+    // console.log(game.tables);
     sheetData.lootCurrency = game.settings.get(
       "lootsheet-simple",
       "lootCurrency"
@@ -308,7 +308,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
    */
   async _merchantSettingChange(event, html) {
     event.preventDefault();
-    console.log("Loot Sheet | Merchant settings changed");
+    // console.log("Loot Sheet | Merchant settings changed");
 
     const moduleNamespace = "lootsheet-simple";
     const expectedKeys = [
@@ -323,26 +323,26 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     let targetKey = event.target.name.split(".")[3];
 
     if (expectedKeys.indexOf(targetKey) === -1) {
-      console.log(`Loot Sheet | Error changing stettings for "${targetKey}".`);
+      // console.log(`Loot Sheet | Error changing stettings for "${targetKey}".`);
       return ui.notifications.error(
         `Error changing stettings for "${targetKey}".`
       );
     }
 
     if (targetKey == "clearInventory" || targetKey == "itemOnlyOnce") {
-      console.log(targetKey + " set to " + event.target.checked);
+      // console.log(targetKey + " set to " + event.target.checked);
       await this.actor.setFlag(
         moduleNamespace,
         targetKey,
         event.target.checked
       );
     } else if (event.target.value) {
-      console.log(targetKey + " set to " + event.target.value);
-      console.log("A");
+      // console.log(targetKey + " set to " + event.target.value);
+      // console.log("A");
       await this.actor.setFlag(moduleNamespace, targetKey, event.target.value);
     } else {
-      console.log(targetKey + " set to " + event.target.value);
-      console.log("B");
+      // console.log(targetKey + " set to " + event.target.value);
+      // console.log("B");
       await this.actor.unsetFlag(
         moduleNamespace,
         targetKey,
@@ -381,7 +381,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     let shopQtyRoll = new Roll(shopQtyFormula);
 
     shopQtyRoll.roll();
-    console.log("Adding ${shopQtyRoll.result} items.");
+    // console.log("Adding ${shopQtyRoll.result} items.");
     let rolltable = game.tables.getName(rolltableName);
     if (!rolltable) {
       return ui.notifications.error(
@@ -402,7 +402,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       await this.actor.deleteEmbeddedDocuments("Item", currentItems);
     }
 
-    console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
+    // console.log(`Loot Sheet | Adding ${shopQtyRoll.result} new items`);
 
     for (let i = 0; i < shopQtyRoll.result; i++) {
       const rollResult = await rolltable.roll();
@@ -427,16 +427,14 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
       let itemQtyRoll = new Roll(itemQtyFormula);
       itemQtyRoll.roll();
-      console.log(
-        `Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`
-      );
+      // console.log`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`);
 
       let existingItem = this.actor.items.find(
         (item) => item.data.name == newItem.name
       );
 
       if (existingItem === undefined) {
-        console.log(`Loot Sheet | ${newItem.name} does not exist.`);
+        // console.log(`Loot Sheet | ${newItem.name} does not exist.`);
 
         const createdItems = await this.actor.createEmbeddedDocuments("Item", [
           newItem.toObject(),
@@ -464,11 +462,11 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
             );
         }
       } else {
-        console.log(`Loot Sheet | Item ${newItem.name} exists.`, existingItem);
+        // console.log(`Loot Sheet | Item ${newItem.name} exists.`, existingItem);
 
         let newQty =
           Number(existingItem.data.data.quantity) + Number(itemQtyRoll.result);
-          console.log("newqty", newQty);
+          // console.log("newqty", newQty);
 
         if (
           itemQtyLimit > 0 &&
@@ -497,7 +495,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
                 quantity: newQty
             }
           };
-          console.log(updateItem);
+          // console.log(updateItem);
           await this.actor.updateEmbeddedDocuments('Item', [updateItem]);
           
           if (!reducedVerbosity)
@@ -556,7 +554,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
    */
   async _changeSheetType(event, html) {
     event.preventDefault();
-    console.log("Loot Sheet | Sheet Type changed", event);
+    // console.log("Loot Sheet | Sheet Type changed", event);
 
     let currentActor = this.actor;
 
@@ -579,7 +577,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
    */
   _buyItem(event, all = 0) {
     event.preventDefault();
-    console.log("Loot Sheet | Buy Item clicked");
+    // console.log("Loot Sheet | Buy Item clicked");
 
     let targetGm = null;
     game.users.forEach((u) => {
@@ -597,9 +595,9 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must purchase items from a token.`);
     }
-    console.log(game.user.character);
+    // console.log(game.user.character);
     if (!game.user.character._id) {
-      console.log("Loot Sheet | No active character for user");
+      // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
 
@@ -657,7 +655,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
    */
   _lootItem(event, all = 0) {
     event.preventDefault();
-    console.log("Loot Sheet | Loot Item clicked");
+    // console.log("Loot Sheet | Loot Item clicked");
 
     let targetGm = null;
     game.users.forEach((u) => {
@@ -676,7 +674,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       return ui.notifications.error(`You must loot items from a token.`);
     }
     if (!game.user.character._id) {
-      console.log("Loot Sheet | No active character for user");
+      // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
 
@@ -737,7 +735,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (!game.settings.get("lootsheet-simple", "lootCurrency")) {
       return;
     }
-    console.log("Loot Sheet | Loot Coins clicked");
+    // console.log("Loot Sheet | Loot Coins clicked");
 
     let targetGm = null;
     game.users.forEach((u) => {
@@ -756,7 +754,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       return ui.notifications.error(`You must loot coins from a token.`);
     }
     if (!game.user.character._id) {
-      console.log("Loot Sheet | No active character for user");
+      // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
 
@@ -782,7 +780,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
    */
   _lootAll(event, html) {
     event.preventDefault();
-    console.log("Loot Sheet | Loot All clicked");
+    // console.log("Loot Sheet | Loot All clicked");
     this._lootCoins(event);
 
     let targetGm = null;
@@ -802,7 +800,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       return ui.notifications.error(`You must loot items from a token.`);
     }
     if (!game.user.character._id) {
-      console.log("Loot Sheet | No active character for user");
+      // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
 
@@ -1265,7 +1263,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     }
 
     // calculate the split of coins between all observers of the sheet.
-    console.log(context);
+    // console.log(context);
     let currencySplit = duplicate(
       LootSheet5eNPCHelper.convertCurrencyFromObject(context.system.currency)
     );
@@ -1298,22 +1296,13 @@ Actors.registerSheet("dnd5e", LootSheet5eNPC, {
 });
 
 Hooks.once("init", () => {
-  console.log("Lootsheet: Test2");
+  // console.log("Lootsheet: Test2");
 
   Handlebars.registerHelper("ifeq", function (a, b, options) {
     if (a == b) {
       return options.fn(this);
     }
     return options.inverse(this);
-  });
-
-  game.settings.register("lootsheet-simple", "convertCurrency", {
-    name: "Convert currency after purchases?",
-    hint: "If enabled, all currency will be converted to the highest denomination possible after a purchase. If disabled, currency will subtracted simply.",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean,
   });
 
   game.settings.register("lootsheet-simple", "buyChat", {
@@ -1416,9 +1405,9 @@ Hooks.once("init", () => {
   }
 
   async function moveItems(source, destination, items) {
-    console.log(source);
-    console.log(destination);
-    console.log(items);
+    // console.log(source);
+    // console.log(destination);
+    // console.log(items);
 
     const updates = [];
     const deletes = [];
@@ -1430,8 +1419,8 @@ Hooks.once("init", () => {
       let quantity = i.quantity;
       let item = source.getEmbeddedDocument("Item", itemId);
 
-      console.log("ITEM: \n");
-      console.log(item);
+      // console.log("ITEM: \n");
+      // console.log(item);
 
       // Move all items if we select more than the quantity.
       if (item.data.data.quantity < quantity) {
@@ -1440,16 +1429,16 @@ Hooks.once("init", () => {
 
       //let newItem = duplicate(item);
       let newItem = duplicate(item);
-      console.log("NEWITEM: \n");
-      console.log(newItem);
+      // console.log("NEWITEM: \n");
+      // console.log(newItem);
 
       const update = {
         _id: itemId,
         "data.quantity": item.data.data.quantity - quantity,
       };
 
-      console.log("UPDATE: \n");
-      console.log(update);
+      // console.log("UPDATE: \n");
+      // console.log(update);
 
       if (update["data.quantity"] === 0) {
         deletes.push(itemId);
@@ -1458,21 +1447,21 @@ Hooks.once("init", () => {
       }
 
       newItem.system.quantity = quantity;
-      console.log("NEWITEM2: \n");
-      console.log(newItem);
+      // console.log("NEWITEM2: \n");
+      // console.log(newItem);
 
       results.push({
         item: newItem,
         quantity: quantity,
       });
       /* let destItem = destination.data.items.find(i => i.name == newItem.name);
-			console.log("DESTITEM: \n"); 
-			console.log(destItem); */
+			// console.log("DESTITEM: \n"); 
+			// console.log(destItem); */
       additions.push(newItem);
       /* if (destItem === undefined) {
                 additions.push(newItem);
             } else {
-                console.log("Existing Item");
+                // console.log("Existing Item");
 				newItem.data.quantity = Number(destItem.data.data.quantity) + Number(newItem.data.quantity);
 				additions.push(newItem);
 				
@@ -1540,7 +1529,8 @@ Hooks.once("init", () => {
 
     itemCostRaw *= quantity;
 
-    console.log("itemCostRaw", itemCostRaw);
+    // console.log("itemCostRaw", itemCostRaw);
+    // console.log("itemCostDenomination", itemCostDenomination);
 
     let buyerFunds = duplicate(
       LootSheet5eNPCHelper.convertCurrencyFromObject(buyer.data.data.currency)
@@ -1550,8 +1540,8 @@ Hooks.once("init", () => {
       LootSheet5eNPCHelper.convertCurrencyFromObject(seller.data.data.currency)
     );
 
-    console.log("sellerFunds before", sellerFunds);
-    console.log("buyerFunds before", buyerFunds);
+    // console.log("sellerFunds before", sellerFunds);
+    // console.log("buyerFunds before purchase", buyerFunds);
 
     const conversionRates = {
       pp: 1,
@@ -1563,13 +1553,13 @@ Hooks.once("init", () => {
 
     const compensationCurrency = {
       pp: "gp",
-      gp: "ep",
+      gp: "sp",
       ep: "sp",
       sp: "cp",
     };
 
     let itemCostInPlatinum = itemCostRaw / conversionRates[itemCostDenomination];
-     console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
+     // console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
 
     let buyerFundsAsPlatinum = buyerFunds["pp"];
     buyerFundsAsPlatinum += buyerFunds["gp"] / conversionRates["gp"];
@@ -1583,75 +1573,49 @@ Hooks.once("init", () => {
     sellerFundsAsPlatinum += sellerFunds["sp"] / conversionRates["sp"];
     sellerFundsAsPlatinum += sellerFunds["cp"] / conversionRates["cp"];
 
-    console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
+    // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
     
     if (itemCostInPlatinum > buyerFundsAsPlatinum) {
       errorMessageToActor(buyer, `Not enough funds to purchase item.`);
       return;
     }
 
-    let convertCurrency = game.settings.get(
-      "lootsheet-simple",
-      "convertCurrency"
-    );
+    buyerFundsAsPlatinum -= itemCostInPlatinum;
+    sellerFundsAsPlatinum += itemCostInPlatinum;
 
-    if (convertCurrency) {
-      buyerFundsAsPlatinum -= itemCostInPlatinum;
-      sellerFundsAsPlatinum += itemCostInPlatinum;
-
-      // Remove every coin we have
-      for (let currency in buyerFunds) {
-        buyerFunds[currency] = 0;
-      }
-      for (let currency in sellerFunds) {
-        sellerFunds[currency] = 0;
-      }
-
-      // Give us fractions of platinum coins, which will be smoothed out below
-      buyerFunds["pp"] = buyerFundsAsPlatinum;
-      sellerFunds["pp"] = sellerFundsAsPlatinum;
-    } else {
-      
-      // just add the value to the merchant
-      sellerFunds[itemCostDenomination] += itemCostRaw;
-      console.log("sellerFunds after", sellerFunds);
-
-      // We just pay in partial platinum.
-      // We dont care if we get partial coins or negative once because we compensate later
-      buyerFunds["pp"] -= itemCostInPlatinum;
-      // Now we exchange all negative funds with coins of lower value
-      // We dont need to care about running out of money because we checked that earlier
-      for (let currency in buyerFunds) {
-        let amount = buyerFunds[currency];
-         console.log(`${currency} : ${amount}`);
-        if (amount >= 0) continue;
-
-        // If we have ever so slightly negative cp, it is likely due to floating point error
-        // We dont care and just give it to the player
-        if (currency == "cp") {
-          buyerFunds["cp"] = 0;
-          continue;
-        }
-
-        let compCurrency = compensationCurrency[currency];
-
-        buyerFunds[currency] = 0;
-        buyerFunds[compCurrency] += amount * conversionRates[compCurrency]; // amount is a negative value so we add it
-        // console.log(`Substracted: ${amount * conversionRates[compCurrency]} ${compCurrency}`);
-      }
-      
+    // Remove every coin we have
+    for (let currency in buyerFunds) {
+      buyerFunds[currency] = 0;
+    }
+    for (let currency in sellerFunds) {
+      sellerFunds[currency] = 0;
     }
 
-    console.log(`Smoothing out`);
-    console.log("sellerFunds", sellerFunds);
+    // Give us fractions of platinum coins, which will be smoothed out below
+    buyerFunds["pp"] = buyerFundsAsPlatinum;
+    sellerFunds["pp"] = sellerFundsAsPlatinum;
+
+    // console.log("buyerFunds after purchase", buyerFunds);
+    // console.log(`Smoothing out`);
+
     // Finally we exchange partial coins with as little change as possible
     for (let currency in sellerFunds) {
+      //fuck EP
+      if (currency == "ep") continue;
+      // console.log("----------------");
       let amount = sellerFunds[currency];
-
+      // console.log("smoothing " + currency);
+      // console.log("fractional value", amount);
       // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
       // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
       // If we would floor 15.99999999999918 everything explodes
       let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
+      // if (currency == "sp") {
+      //   // console.log("adjusting for sp");
+      //   newFund = newFund / 10;
+      // }
+
+      // console.log("rounded value", newFund);
       sellerFunds[currency] = newFund;
 
       let compCurrency = compensationCurrency[currency];
@@ -1659,19 +1623,31 @@ Hooks.once("init", () => {
       // We dont care about fractions of CP
       if (currency != "cp") {
         // We calculate the amount of lower currency we get for the fraction of higher currency we have
-        let toAdd =
-          (Math.round((amount - newFund) * 1e5) / 1e5) *
-          conversionRates[compCurrency];
-          sellerFunds[compCurrency] += toAdd;
+        let toAdd = (Math.round((amount - newFund) * 1e5) / 1e5) * 10;
+
+        // console.log("value to add to lower currency of " + compCurrency, toAdd);
+        sellerFunds[compCurrency] += toAdd;
+        // console.log("new value of " + compCurrency, buyerFunds[compCurrency]);
       }
     }
-    for (let currency in buyerFunds) {
-      let amount = buyerFunds[currency];
 
+    for (let currency in buyerFunds) {
+      //fuck EP
+      if (currency == "ep") continue;
+      // console.log("----------------");
+      let amount = buyerFunds[currency];
+      // console.log("smoothing " + currency);
+      // console.log("fractional value", amount);
       // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
       // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
       // If we would floor 15.99999999999918 everything explodes
       let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
+      // if (currency == "sp") {
+      //   // console.log("adjusting for sp");
+      //   newFund = newFund / 10;
+      // }
+
+      // console.log("rounded value", newFund);
       buyerFunds[currency] = newFund;
 
       let compCurrency = compensationCurrency[currency];
@@ -1679,10 +1655,11 @@ Hooks.once("init", () => {
       // We dont care about fractions of CP
       if (currency != "cp") {
         // We calculate the amount of lower currency we get for the fraction of higher currency we have
-        let toAdd =
-          (Math.round((amount - newFund) * 1e5) / 1e5) *
-          conversionRates[compCurrency];
+        let toAdd = (Math.round((amount - newFund) * 1e5) / 1e5) * 10;
+
+        // console.log("value to add to lower currency of " + compCurrency, toAdd);
         buyerFunds[compCurrency] += toAdd;
+        // console.log("new value of " + compCurrency, buyerFunds[compCurrency]);
       }
     }
 
@@ -1876,7 +1853,7 @@ Hooks.once("init", () => {
   }
 
   game.socket.on(LootSheet5eNPC.SOCKET, (data) => {
-    console.log("Loot Sheet | Socket Message: ", data);
+    // console.log("Loot Sheet | Socket Message: ", data);
     if (game.user.isGM && data.processorId === game.user.id) {
       if (data.type === "buy") {
         let buyer = game.actors.get(data.buyerId);
@@ -1942,7 +1919,7 @@ Hooks.once("init", () => {
       }
     }
     if (data.type === "error" && data.targetId === game.user.character._id) {
-      console.log("Loot Sheet | Transaction Error: ", data.message);
+      // console.log("Loot Sheet | Transaction Error: ", data.message);
       return ui.notifications.error(data.message);
     }
   });
