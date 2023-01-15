@@ -171,6 +171,11 @@ img.sheet-profile {
 	vertical-align: bottom;
 }
 
+.loot-sheet-npc .inventory-filters .item-controls a.currency-loot {
+	display: inline-block;
+    padding-top: 4px;
+}
+
 .loot-sheet-npc.sheet.actor label.denomination {
 	display: inline-block;
 	padding-left: 24px;

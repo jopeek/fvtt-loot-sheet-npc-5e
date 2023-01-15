@@ -11,9 +11,9 @@
             </h1>
             {{#ifeq lootsheettype "Loot"}}
                 {{#if lootAll}}
-                    <div class="charbutton">
+                    <!-- <div class="charbutton">
                         <button type="button" class="loot-all" name="loot-all" value="1"><i class="fas fa-gem"></i> Loot All</button>
-                    </div>
+                    </div> -->
                 {{/if}}
             {{/ifeq}}
             {{#if isGM}}
@@ -100,6 +100,19 @@
                     </div>
                     <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
                 {{/ifeq}}
+
+                <!-- <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
+                <input type="hidden" name="actor.flags.loot.playersPermission" value="{{actor.flags.loot.playersPermission}}" data-dtype="Number"/>
+                <div class="permission-info">Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.</div>
+                <ol class="permissions-list">
+                    {{#each actor.flags.loot.players as |player p|}}
+                        <li class="permission" data-skill="{{p}}">
+                            <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}" data-dtype="Number" actor="{{player.actorId}}"/>
+                            <a class="permission-proficiency" title="{{player.lootPermissionDescription}}">{{{player.icon}}}</a>
+                            <h4 class="permission-name">{{player.actor}} ({{player.name}})</h4>
+                        </li>
+                    {{/each}}
+                </ol> -->
 
                 
             </div>

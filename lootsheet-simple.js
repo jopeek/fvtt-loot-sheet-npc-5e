@@ -214,10 +214,8 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       (item) =>
         (totalQuantity += Math.round((item.data.data.quantity * 100) / 100))
     );
-    this.actor.data.items.contents.forEach(
-      (item) =>
-      (console.log(item))
-    );
+
+    console.log('lootsheet', this.actor);
 
     sheetData.lootsheettype = lootsheettype;
     sheetData.totalItems = this.actor.data.items.contents.length;
@@ -1825,18 +1823,14 @@ Hooks.once("init", () => {
         containerActor.data.data.currency
       ),
       zeroCurrency = {};
-
+    // console.log("lootCurrency", lootCurrency);
     for (let c in lootCurrency) {
-      zeroCurrency[c] = {
-        type: sheetCurrency[c].type,
-        label: sheetCurrency[c].type,
-        value: 0,
-      };
+      zeroCurrency[c] = 0;
       containerActor.update({
-        "data.currency": zeroCurrency,
+         "data.currency": zeroCurrency,
       });
     }
-
+    // console.log("zeroCurrency", zeroCurrency);
     // Create chat message for coins received
     if (msg.length != 0) {
       let message = `${looter.data.name} receives: `;
