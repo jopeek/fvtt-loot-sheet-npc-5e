@@ -160,8 +160,10 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       );
     }
 
+    let featsAndAbilities = function(item) { return item.type !== 'feat' && item.system.weaponType !== 'natural' }
+
     let totalWeight = 0;
-    this.actor.data.items.contents.forEach(
+    this.actor.data.items.contents.filter(featsAndAbilities).forEach(
       (item) =>
         (totalWeight += Math.round(
           (item.data.data.quantity * item.data.data.weight * 100) / 100
@@ -179,7 +181,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       ).toNearest(0.01);
 
     let totalPrice = 0;
-    this.actor.data.items.contents.forEach(
+    this.actor.data.items.contents.filter(featsAndAbilities).forEach(
       (item) => {
         let priceInGp = item.data.data.price.value;
         switch(item.data.data.price.denomination) {
@@ -211,7 +213,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     );
 
     let totalQuantity = 0;
-    this.actor.data.items.contents.forEach(
+    this.actor.data.items.contents.filter(featsAndAbilities).forEach(
       (item) =>
         (totalQuantity += Math.round((item.data.data.quantity * 100) / 100))
     );
@@ -249,7 +251,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     sheetData.itemQtyLimit = itemQtyLimit;
     sheetData.shopQty = shopQty;
     sheetData.clearInventory = clearInventory;
-    sheetData.totalItems = this.actor.data.items.contents.length;
+    sheetData.totalItems = this.actor.data.items.contents.filter(featsAndAbilities).length;
     sheetData.totalWeight = totalWeight.toLocaleString("en");
     sheetData.totalPrice = totalPrice.toLocaleString("en");
     sheetData.totalQuantity = totalQuantity;
@@ -1197,6 +1199,10 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     });
     for (let i of items) {
       i.img = i.img || DEFAULT_TOKEN;
+
+      if (i.type === 'feat' || i.system.weaponType === 'natural') {
+        continue;
+      }
 
       // Features
       if (i.type === "weapon") features.weapons.items.push(i);
