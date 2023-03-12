@@ -160,18 +160,16 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       );
     }
 
-    let featsAndAbilities = function(item) { return item.type !== 'feat' && item.system.weaponType !== 'natural' }
-
     let totalWeight = 0;
-    this.actor.data.items.contents.filter(featsAndAbilities).forEach(
+    this.actor.items.contents.forEach(
       (item) =>
         (totalWeight += Math.round(
-          (item.data.data.quantity * item.data.data.weight * 100) / 100
+          (item.system.quantity * item.system.weight * 100) / 100
         ))
     );
     if (game.settings.get("lootsheet-simple", "includeCurrencyWeight"))
       totalWeight += (
-        Object.values(this.actor.data.data.currency).reduce(function (
+        Object.values(this.actor.system.currency).reduce(function (
           accumVariable,
           curValue
         ) {
@@ -181,28 +179,28 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       ).toNearest(0.01);
 
     let totalPrice = 0;
-    this.actor.data.items.contents.filter(featsAndAbilities).forEach(
+    this.actor.items.contents.forEach(
       (item) => {
-        let priceInGp = item.data.data.price.value;
-        switch(item.data.data.price.denomination) {
+        let priceInGp = item.system.price.value;
+        switch(item.system.price.denomination) {
           case 'pp':
-            priceInGp = item.data.data.price.value * 10;
+            priceInGp = item.system.price.value * 10;
             break;
           case 'ep':
-            priceInGp = item.data.data.price.value / 5;
+            priceInGp = item.system.price.value / 5;
             break;
           case 'sp':
-            priceInGp = item.data.data.price.value / 10;
+            priceInGp = item.system.price.value / 10;
             break;
           case 'cp':
-            priceInGp = item.data.data.price.value / 100;
+            priceInGp = item.system.price.value / 100;
             break;
           default:
             //this is gp, no conversion
             break;
         }
         totalPrice += Math.round(
-          (item.data.data.quantity *
+          (item.system.quantity *
             priceInGp *
             priceModifier *
             100) /
@@ -213,9 +211,9 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     );
 
     let totalQuantity = 0;
-    this.actor.data.items.contents.filter(featsAndAbilities).forEach(
+    this.actor.items.contents.forEach(
       (item) =>
-        (totalQuantity += Math.round((item.data.data.quantity * 100) / 100))
+        (totalQuantity += Math.round((item.system.quantity * 100) / 100))
     );
 
     let selectedRollTable = await this.actor.getFlag(
@@ -243,15 +241,13 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       "shopQty"
     );
 
-    console.log('lootsheet', this.actor);
-
     sheetData.lootsheettype = lootsheettype;
     sheetData.selectedRollTable = selectedRollTable;
     sheetData.itemQty = itemQty;
     sheetData.itemQtyLimit = itemQtyLimit;
     sheetData.shopQty = shopQty;
     sheetData.clearInventory = clearInventory;
-    sheetData.totalItems = this.actor.data.items.contents.filter(featsAndAbilities).length;
+    sheetData.totalItems = this.actor.items.contents.length;
     sheetData.totalWeight = totalWeight.toLocaleString("en");
     sheetData.totalPrice = totalPrice.toLocaleString("en");
     sheetData.totalQuantity = totalQuantity;
@@ -496,12 +492,12 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
         // console.log(`Loot Sheet | Item ${newItem.name} exists.`, existingItem);
 
         let newQty =
-          Number(existingItem.data.data.quantity) + Number(itemQtyRoll.result);
+          Number(existingitem.system.quantity) + Number(itemQtyRoll.result);
           // console.log("newqty", newQty);
 
         if (
           itemQtyLimit > 0 &&
-          Number(itemQtyLimit) === Number(existingItem.data.data.quantity)
+          Number(itemQtyLimit) === Number(existingitem.system.quantity)
         ) {
           if (!reducedVerbosity)
             ui.notifications.info(
@@ -640,7 +636,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       quantity: 1,
     };
     if (all || event.shiftKey) {
-      item.quantity = targetItem.data.data.quantity;
+      item.quantity = targetitem.system.quantity;
     }
 
     const packet = {
@@ -652,7 +648,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       processorId: targetGm.id,
     };
 
-    if (targetItem.data.data.quantity === item.quantity) {
+    if (targetitem.system.quantity === item.quantity) {
       console.log(
         "LootSheet5e",
         "Sending buy request to " + targetGm.name,
@@ -717,7 +713,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       quantity: 1,
     };
     if (all || event.shiftKey) {
-      item.quantity = targetItem.data.data.quantity;
+      item.quantity = targetitem.system.quantity;
     }
 
     const packet = {
@@ -728,7 +724,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       processorId: targetGm.id,
     };
 
-    if (targetItem.data.data.quantity === item.quantity) {
+    if (targetitem.system.quantity === item.quantity) {
       console.log(
         "LootSheet5e",
         "Sending loot request to " + targetGm.name,
@@ -846,7 +842,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       const item = this.actor.getEmbeddedDocument("Item", itemId);
       items.push({
         itemId: itemId,
-        quantity: item.data.data.quantity,
+        quantity: item.system.quantity,
       });
     }
     if (items.length === 0) {
@@ -1047,7 +1043,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
       // Remove currency from loot actor.
       let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-          containerActor.data.data.currency
+          containeractor.system.currency
         ),
         zeroCurrency = {};
 
@@ -1199,10 +1195,6 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     });
     for (let i of items) {
       i.img = i.img || DEFAULT_TOKEN;
-
-      if (i.type === 'feat' || i.system.weaponType === 'natural') {
-        continue;
-      }
 
       // Features
       if (i.type === "weapon") features.weapons.items.push(i);
@@ -1458,8 +1450,8 @@ Hooks.once("init", () => {
       // console.log(item);
 
       // Move all items if we select more than the quantity.
-      if (item.data.data.quantity < quantity) {
-        quantity = item.data.data.quantity;
+      if (item.system.quantity < quantity) {
+        quantity = item.system.quantity;
       }
 
       //let newItem = duplicate(item);
@@ -1469,7 +1461,7 @@ Hooks.once("init", () => {
 
       const update = {
         _id: itemId,
-        "data.quantity": item.data.data.quantity - quantity,
+        "data.quantity": item.system.quantity - quantity,
       };
 
       // console.log("UPDATE: \n");
@@ -1497,7 +1489,7 @@ Hooks.once("init", () => {
                 additions.push(newItem);
             } else {
                 // console.log("Existing Item");
-				newItem.data.quantity = Number(destItem.data.data.quantity) + Number(newItem.data.quantity);
+				newItem.data.quantity = Number(destitem.system.quantity) + Number(newItem.data.quantity);
 				additions.push(newItem);
 				
             } */
@@ -1539,8 +1531,8 @@ Hooks.once("init", () => {
     let sellItem = seller.getEmbeddedDocument("Item", itemId);
 
     // If the buyer attempts to buy more then what's in stock, buy all the stock.
-    if (sellItem.data.data.quantity < quantity) {
-      quantity = sellItem.data.data.quantity;
+    if (sellitem.system.quantity < quantity) {
+      quantity = sellitem.system.quantity;
     }
 
     // On negative quantity we show an error
@@ -1559,8 +1551,8 @@ Hooks.once("init", () => {
     if (typeof sellerModifier !== "number") sellerModifier = 1.0;
 
     let itemCostRaw =
-      Math.round(sellItem.data.data.price.value * sellerModifier * 100) / 100;
-    let itemCostDenomination = sellItem.data.data.price.denomination;
+      Math.round(sellitem.system.price.value * sellerModifier * 100) / 100;
+    let itemCostDenomination = sellitem.system.price.denomination;
 
     itemCostRaw *= quantity;
 
@@ -1791,7 +1783,7 @@ Hooks.once("init", () => {
 
       // Remove currency from loot actor.
       let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-          containerActor.data.data.currency
+          containeractor.system.currency
         ),
         zeroCurrency = {};
 
@@ -1857,7 +1849,7 @@ Hooks.once("init", () => {
 
     // Remove currency from loot actor.
     let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-        containerActor.data.data.currency
+        containeractor.system.currency
       ),
       zeroCurrency = {};
     // console.log("lootCurrency", lootCurrency);
