@@ -492,12 +492,12 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
         // console.log(`Loot Sheet | Item ${newItem.name} exists.`, existingItem);
 
         let newQty =
-          Number(existingitem.system.quantity) + Number(itemQtyRoll.result);
+          Number(existingItem.system.quantity) + Number(itemQtyRoll.result);
           // console.log("newqty", newQty);
 
         if (
           itemQtyLimit > 0 &&
-          Number(itemQtyLimit) === Number(existingitem.system.quantity)
+          Number(itemQtyLimit) === Number(existingItem.system.quantity)
         ) {
           if (!reducedVerbosity)
             ui.notifications.info(
@@ -636,7 +636,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       quantity: 1,
     };
     if (all || event.shiftKey) {
-      item.quantity = targetitem.system.quantity;
+      item.quantity = targetItem.system.quantity;
     }
 
     const packet = {
@@ -648,7 +648,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       processorId: targetGm.id,
     };
 
-    if (targetitem.system.quantity === item.quantity) {
+    if (targetItem.system.quantity === item.quantity) {
       console.log(
         "LootSheet5e",
         "Sending buy request to " + targetGm.name,
@@ -713,7 +713,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       quantity: 1,
     };
     if (all || event.shiftKey) {
-      item.quantity = targetitem.system.quantity;
+      item.quantity = targetItem.system.quantity;
     }
 
     const packet = {
@@ -724,7 +724,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       processorId: targetGm.id,
     };
 
-    if (targetitem.system.quantity === item.quantity) {
+    if (targetItem.system.quantity === item.quantity) {
       console.log(
         "LootSheet5e",
         "Sending loot request to " + targetGm.name,
@@ -1043,7 +1043,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
       // Remove currency from loot actor.
       let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-          containeractor.system.currency
+          containerActor.system.currency
         ),
         zeroCurrency = {};
 
@@ -1531,8 +1531,8 @@ Hooks.once("init", () => {
     let sellItem = seller.getEmbeddedDocument("Item", itemId);
 
     // If the buyer attempts to buy more then what's in stock, buy all the stock.
-    if (sellitem.system.quantity < quantity) {
-      quantity = sellitem.system.quantity;
+    if (sellItem.system.quantity < quantity) {
+      quantity = sellItem.system.quantity;
     }
 
     // On negative quantity we show an error
@@ -1551,8 +1551,8 @@ Hooks.once("init", () => {
     if (typeof sellerModifier !== "number") sellerModifier = 1.0;
 
     let itemCostRaw =
-      Math.round(sellitem.system.price.value * sellerModifier * 100) / 100;
-    let itemCostDenomination = sellitem.system.price.denomination;
+      Math.round(sellItem.system.price.value * sellerModifier * 100) / 100;
+    let itemCostDenomination = sellItem.system.price.denomination;
 
     itemCostRaw *= quantity;
 
@@ -1783,7 +1783,7 @@ Hooks.once("init", () => {
 
       // Remove currency from loot actor.
       let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-          containeractor.system.currency
+          containerActor.system.currency
         ),
         zeroCurrency = {};
 
@@ -1849,7 +1849,7 @@ Hooks.once("init", () => {
 
     // Remove currency from loot actor.
     let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-        containeractor.system.currency
+        containerActor.system.currency
       ),
       zeroCurrency = {};
     // console.log("lootCurrency", lootCurrency);
@@ -1942,7 +1942,7 @@ Hooks.once("init", () => {
       }
     }
     if (data.type === "error" && data.targetId === game.user.character._id) {
-      // console.log("Loot Sheet | Transaction Error: ", data.message);
+       console.log("Loot Sheet | Transaction Error: ", data.message);
       return ui.notifications.error(data.message);
     }
   });
