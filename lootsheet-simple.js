@@ -181,31 +181,33 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     let totalPrice = 0;
     this.actor.items.contents.forEach(
       (item) => {
-        let priceInGp = item.system.price.value;
-        switch(item.system.price.denomination) {
-          case 'pp':
-            priceInGp = item.system.price.value * 10;
-            break;
-          case 'ep':
-            priceInGp = item.system.price.value / 5;
-            break;
-          case 'sp':
-            priceInGp = item.system.price.value / 10;
-            break;
-          case 'cp':
-            priceInGp = item.system.price.value / 100;
-            break;
-          default:
-            //this is gp, no conversion
-            break;
+        if (item.system.price) {
+          let priceInGp = item.system.price.value;
+          switch(item.system.price.denomination) {
+            case 'pp':
+              priceInGp = item.system.price.value * 10;
+              break;
+            case 'ep':
+              priceInGp = item.system.price.value / 5;
+              break;
+            case 'sp':
+              priceInGp = item.system.price.value / 10;
+              break;
+            case 'cp':
+              priceInGp = item.system.price.value / 100;
+              break;
+            default:
+              //this is gp, no conversion
+              break;
+          }
+          totalPrice += Math.round(
+            (item.system.quantity *
+              priceInGp *
+              priceModifier *
+              100) /
+              100
+          );
         }
-        totalPrice += Math.round(
-          (item.system.quantity *
-            priceInGp *
-            priceModifier *
-            100) /
-            100
-        );
       }
         
     );
@@ -1190,21 +1192,21 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     // Iterate through items, allocating to containers
     let items = actorData.items;
-    items = items.sort(function (a, b) {
-      return a.name.localeCompare(b.name);
-    });
-    for (let i of items) {
-      i.img = i.img || DEFAULT_TOKEN;
-
-      // Features
-      if (i.type === "weapon") features.weapons.items.push(i);
-      else if (i.type === "equipment") features.equipment.items.push(i);
-      else if (i.type === "consumable") features.consumables.items.push(i);
-      else if (i.type === "tool") features.tools.items.push(i);
-      else if (["container", "backpack"].includes(i.type))
-        features.containers.items.push(i);
-      else if (i.type === "loot") features.loot.items.push(i);
-      else features.loot.items.push(i);
+    if (items) {
+      items = items.sort(function (a, b) {
+        return a.name.localeCompare(b.name);
+      });
+      for (let i of items) {
+        // Features
+        if (i.type === "weapon") features.weapons.items.push(i);
+        else if (i.type === "equipment") features.equipment.items.push(i);
+        else if (i.type === "consumable") features.consumables.items.push(i);
+        else if (i.type === "tool") features.tools.items.push(i);
+        else if (["container", "backpack"].includes(i.type))
+          features.containers.items.push(i);
+        else if (i.type === "loot") features.loot.items.push(i);
+        //else features.loot.items.push(i);
+      }
     }
 
     // Assign and return
