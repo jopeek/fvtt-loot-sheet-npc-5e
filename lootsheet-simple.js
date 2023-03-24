@@ -702,7 +702,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must loot items from a token.`);
     }
-    if (!game.user.character._id) {
+    if (!game.user.character) {
       // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
@@ -782,7 +782,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must loot coins from a token.`);
     }
-    if (!game.user.character._id) {
+    if (!game.user.character) {
       // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
@@ -828,7 +828,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     if (this.token === null) {
       return ui.notifications.error(`You must loot items from a token.`);
     }
-    if (!game.user.character._id) {
+    if (!game.user.character) {
       // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
