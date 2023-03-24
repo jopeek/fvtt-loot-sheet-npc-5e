@@ -625,7 +625,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       return ui.notifications.error(`You must purchase items from a token.`);
     }
     // console.log(game.user.character);
-    if (!game.user.character._id) {
+    if (!game.user.character) {
       // console.log("Loot Sheet | No active character for user");
       return ui.notifications.error(`No active character for user.`);
     }
