@@ -1,6 +1,6 @@
 [![Github All Releases](https://img.shields.io/github/downloads/jopeek/fvtt-loot-sheet-npc-5e/total.svg)]() [![Donate](https://img.shields.io/badge/Donate-BuyMeACoffee-green.svg)](https://www.buymeacoffee.com/ChalkOne)
 # NOTE 
-The permissions scetion seen I’m screenshots below was removed with Foundry V10.
+The permissions scetion seen in screenshots below was removed with Foundry V10.
 
 # Loot Sheet NPC 5E
 
