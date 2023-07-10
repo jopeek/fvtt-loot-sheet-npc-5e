@@ -265,8 +265,8 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       sheetData.system.currency
     );
 
-    console.log("sheetdata", sheetData);
-    console.log("this actor", this.actor);
+    // console.log("sheetdata", sheetData);
+    // console.log("this actor", this.actor);
 
     // Return data for rendering
     return sheetData;
