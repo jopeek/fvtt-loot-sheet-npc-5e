@@ -1,7 +1,7 @@
 {
   "title": "Loot Sheet NPC 5e (Simple Version)",
   "description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
-  "version": "5.0.6",
+  "version": "11.222.1",
   "esmodules": [
     "/lootsheet-simple.js"
   ],
@@ -13,7 +13,11 @@
       {
         "id": "dnd5e",
         "type": "system",
-        "compatibility": {}
+        "compatibility": {
+          "minimum": "2.2.2",
+          "verified": "2.2.2",
+          "maximum": "2.2.2"
+        }
       }
     ]
   },
@@ -29,8 +33,8 @@
     }
   ],
   "compatibility": {
-    "minimum": "10",
-    "verified": "10.291",
-    "maximum": "10"
+    "minimum": "11",
+    "verified": "11.305",
+    "maximum": "11"
   }
 }

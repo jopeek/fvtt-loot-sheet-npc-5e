@@ -1001,7 +1001,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
     // Calculate split of currency
     let currencySplit = duplicate(
-      LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency)
+      LootSheet5eNPCHelper.convertCurrencyFromObject(containerActor.system.currency)
     );
 
     // keep track of the remainder
@@ -1023,10 +1023,10 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
       msg = [];
       let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-          u.data.data.currency
+          u.system.currency
         ),
         newCurrency = duplicate(
-          LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency)
+          LootSheet5eNPCHelper.convertCurrencyFromObject(u.system.currency)
         );
 
       for (let c in currency) {
@@ -1562,11 +1562,11 @@ Hooks.once("init", () => {
     // console.log("itemCostDenomination", itemCostDenomination);
 
     let buyerFunds = duplicate(
-      LootSheet5eNPCHelper.convertCurrencyFromObject(buyer.data.data.currency)
+      LootSheet5eNPCHelper.convertCurrencyFromObject(buyer.system.currency)
     );
 
     let sellerFunds = duplicate(
-      LootSheet5eNPCHelper.convertCurrencyFromObject(seller.data.data.currency)
+      LootSheet5eNPCHelper.convertCurrencyFromObject(seller.system.currency)
     );
 
     // console.log("sellerFunds before", sellerFunds);
@@ -1741,7 +1741,7 @@ Hooks.once("init", () => {
 
     // Calculate split of currency
     let currencySplit = duplicate(
-      LootSheet5eNPCHelper.convertCurrencyFromObject(actorData.data.currency)
+      LootSheet5eNPCHelper.convertCurrencyFromObject(containerActor.system.currency)
     );
 
     // keep track of the remainder
@@ -1763,10 +1763,10 @@ Hooks.once("init", () => {
 
       msg = [];
       let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-          u.data.data.currency
+          u.system.currency
         ),
         newCurrency = duplicate(
-          LootSheet5eNPCHelper.convertCurrencyFromObject(u.data.data.currency)
+          LootSheet5eNPCHelper.convertCurrencyFromObject(u.system.currency)
         );
 
       for (let c in currency) {
@@ -1817,20 +1817,19 @@ Hooks.once("init", () => {
   }
 
   function lootCoins(containerActor, looter) {
-    let actorData = containerActor.data;
 
     let sheetCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-      actorData.data.currency
+      containerActor.system.currency
     );
 
     // add currency to actors existing coins
     let msg = [];
     let currency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-        looter.data.data.currency
+        looter.system.currency
       ),
       newCurrency = duplicate(
         LootSheet5eNPCHelper.convertCurrencyFromObject(
-          looter.data.data.currency
+          looter.system.currency
         )
       );
 

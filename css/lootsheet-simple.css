@@ -128,6 +128,19 @@
 	flex: 0 0 24px;
 }
 
+.loot-sheet-npc.sheet .sheet-header {
+    flex: 0 0 60px;
+}
+
+.loot-sheet-npc.sheet section.sheet-lower.flexrow {
+    flex-grow: 1;
+}
+
+.loot-sheet-npc.sheet section.sheet-content.content {
+	display: flex;
+    flex-direction: column;
+}
+
 .loot-sheet-npc .gm-settings .permission .permission-proficiency i.fa-circle {
 	font-size: 10px;
 }
@@ -138,6 +151,8 @@
 
 .loot-sheet-npc.sheet .window-content form {
 	overflow-y: auto !important;
+	display: flex;
+	flex-direction: column;
 }
 
 img.sheet-profile {
@@ -215,10 +230,6 @@ section.sheet-sidebar.sidebar {
 
 .sheet-profile-img {
 	text-align: center;
-}
-
-.loot-sheet-npc.sheet.actor .editor {
-	height: 300px;
 }
 
 .loot-sheet-npc.sheet.actor .inventory-list .item .item-price,
