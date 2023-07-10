@@ -40,7 +40,7 @@
             <!-- GM SETTINGS -->
             <div class="gm-settings" data-group="sidebar" data-tab="gm-settings">
                 <h3 class="gm-header"><i class="fas fa-id-card"></i> Type <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
-                <div class="sheet-type-info">Loot: allows for distribution of coins across players<br>Merchant: allows players to purchase items directly from the sheet.</div>
+                <div class="sheet-type-info">Loot: allows for looting of items and coins.<br>Merchant: allows players to purchase items directly from the sheet.</div>
                 <div class="sheet-types">
                     <div class="flexrow">
                         <div class="flexcol"><h4 class="sheet-name">Type of sheet: </h4></div>
@@ -100,7 +100,7 @@
                     <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
                 {{/ifeq}}
 
-                <!-- <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
+                <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
                 <input type="hidden" name="actor.flags.loot.playersPermission" value="{{actor.flags.loot.playersPermission}}" data-dtype="Number"/>
                 <div class="permission-info">Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.</div>
                 <ol class="permissions-list">
@@ -111,7 +111,7 @@
                             <h4 class="permission-name">{{player.actor}} ({{player.name}})</h4>
                         </li>
                     {{/each}}
-                </ol> -->
+                </ol>
 
                 
             </div>
@@ -139,7 +139,8 @@
 
             <section class="sheet-body">
                 <div class="tab" data-tab="biography" data-group="primary">
-                    {{editor content=system.details.biography.value target="system.details.biography.value" button=true owner=owner editable=editable}}
+                    {{editor biographyHTML target="system.details.biography.value" button=true editable=editable
+                     engine="prosemirror" collaborate=false}}
                 </div>
     
                 <div class="tab" data-tab="inventory" data-group="primary">
