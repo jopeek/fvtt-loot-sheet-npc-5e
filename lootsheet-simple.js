@@ -1239,8 +1239,8 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
   _getPermissionDescription(level) {
     const description = {
       0: "None (cannot access sheet)",
-      2: "Observer (access to sheet but can only purchase items if merchant sheet type)",
-      3: "Owner (can access items and share coins)",
+      2: "Observer (access to sheet but can only loot or purchase items)",
+      3: "Owner (full access)",
       999: "Change all permissions",
     };
     return description[level];
