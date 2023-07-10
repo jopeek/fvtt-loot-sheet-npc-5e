@@ -33,7 +33,7 @@
     }
   ],
   "compatibility": {
-    "minimum": "11",
+    "minimum": "10",
     "verified": "11.305",
     "maximum": "11"
   }
