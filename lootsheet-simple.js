@@ -439,8 +439,8 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
     for (let i = 0; i < shopQtyRoll.result; i++) {
       const rollResult = await rolltable.roll();
       let newItem = null;
-
-      if (rollResult.results[0].data.collection === "Item") {
+      
+      if (rollResult.results[0].documentCollection === "Item") {
         newItem = game.items.get(rollResult.results[0].documentId);
       } else {
         // Try to find it in the compendium
@@ -462,7 +462,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       // console.log`Loot Sheet | Adding ${itemQtyRoll.result} x ${newItem.name}`);
 
       let existingItem = this.actor.items.find(
-        (item) => item.data.name == newItem.name
+        (item) => item.name == newItem.name
       );
 
       if (existingItem === undefined) {
@@ -1065,7 +1065,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
       // Create chat message for coins received
       if (msg.length != 0) {
-        let message = `${u.data.name} receives: `;
+        let message = `${u.name} receives: `;
         message += msg.join(",");
         ChatMessage.create({
           user: game.user._id,
@@ -1144,6 +1144,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
   _updatePermissions(actorData, playerId, newLevel, event) {
     // Read player permission on this actor and adjust to new level
     let currentPermissions = duplicate(actorData.ownership);
+    console.log(currentPermissions);
     currentPermissions[playerId] = newLevel;
     // Save updated player permissions
     const lootPermissions = new DocumentOwnershipConfig(this.actor);
@@ -1775,7 +1776,7 @@ Hooks.once("init", () => {
 
       // Create chat message for coins received
       if (msg.length != 0) {
-        let message = `${u.data.name} receives: `;
+        let message = `${u.name} receives: `;
         message += msg.join(",");
         ChatMessage.create({
           user: game.user._id,
@@ -1836,7 +1837,7 @@ Hooks.once("init", () => {
     // console.log("zeroCurrency", zeroCurrency);
     // Create chat message for coins received
     if (msg.length != 0) {
-      let message = `${looter.data.name} receives: `;
+      let message = `${looter.name} receives: `;
       message += msg.join(",");
       ChatMessage.create({
         user: game.user._id,
