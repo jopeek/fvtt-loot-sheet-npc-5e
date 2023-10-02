@@ -1591,8 +1591,8 @@ Hooks.once("init", () => {
       sellerFunds[itemCostDenomination] += itemCostRaw;
     }else{
     let payCoinCount = (coin,coinCost) => {
-      let payedThisCoins = (itemCostInbronze < coinCost)?
-          coinCost - (coinCost - Math.abs(itemCostInbronze)): coinCost;
+      let payedThisCoins = (itemCostInBronze < coinCost)?
+          coinCost - (coinCost - Math.abs(itemCostInBronze)): coinCost;
       return payedThisCoins/conversionRates[coin]
     }
     //we go through all the coins and try to pay off using them
@@ -1606,26 +1606,26 @@ Hooks.once("init", () => {
         if (amountCoin == 0) continue;
         let coinCost = amountCoin * conversionRates[coin]
         let payedCoin = Math.floor(payCoinCount(coin,coinCost))
-        itemCostInbronze -= payedCoin  * conversionRates[coin]
+        itemCostInBronze -= payedCoin  * conversionRates[coin]
         
         //Subtract from the buyer and add to the seller
         buyerFunds[coin] -= payedCoin;
         sellerFunds[coin] += payedCoin;
-        if (itemCostInbronze == 0) break;
+        if (itemCostInBronze == 0) break;
     }
     //if we have any left over
 
-    if (itemCostInbronze !== 0) {
+    if (itemCostInBronze !== 0) {
       let iteration = 0
       let _oldItemCostInbronze
-      let _sortStop = (itemCostInbronze < 0)? true : false;
+      let _sortStop = (itemCostInBronze < 0)? true : false;
       trychange:
-      while (itemCostInbronze != 0){
+      while (itemCostInBronze != 0){
 
-        if (_sortStop && itemCostInbronze < 0) {
+        if (_sortStop && itemCostInBronze < 0) {
           ratesLikeArray.sort((a,b) => b[1] - a[1])
           _sortStop = !_sortStop
-        }else if (!_sortStop && itemCostInbronze > 0){
+        }else if (!_sortStop && itemCostInBronze > 0){
           ratesLikeArray.sort((a,b) => a[1] - b[1])
           _sortStop = !_sortStop
         }
@@ -1638,23 +1638,23 @@ Hooks.once("init", () => {
           let ByerCoinCost = amountCoinOnByer * conversionRates[coin]
           let SellerCoinCost = amountCoinOnSeller * conversionRates[coin]
 
-          if (itemCostInbronze > 0) {
+          if (itemCostInBronze > 0) {
             if (amountCoinOnByer == 0) continue ;
             
             let payedCoin = Math.ceil(payCoinCount(coin,ByerCoinCost))
-            itemCostInbronze -= payedCoin * conversionRates[coin]
+            itemCostInBronze -= payedCoin * conversionRates[coin]
             
             buyerFunds[coin] -= payedCoin;
             sellerFunds[coin] += payedCoin;
 
-          }else if (itemCostInbronze == 0) {
+          }else if (itemCostInBronze == 0) {
             //Need to write a message, how much cp shop did not give
             break trychange;
           }else{
             if (amountCoinOnSeller == 0) continue ;
             let payedCoin = Math.floor(payCoinCount(coin,SellerCoinCost))
-            itemCostInbronze += payedCoin * conversionRates[coin]
-            if (_oldItemCostInbronze == itemCostInbronze){
+            itemCostInBronze += payedCoin * conversionRates[coin]
+            if (_oldItemCostInbronze == itemCostInBronze){
               if (!GoToAnotherShopToExchange) {
                 let gamemaster = 
                 game.users.forEach((u) => {
@@ -1666,12 +1666,12 @@ Hooks.once("init", () => {
                 break trychange;
               }else if (iteration > 3){
                 _oldItemCostInbronze = 0
-                sellerFunds["cp"] += Math.abs(itemCostInbronze)
+                sellerFunds["cp"] += Math.abs(itemCostInBronze)
               }
             }
             buyerFunds[coin] += payedCoin;
             sellerFunds[coin] -= payedCoin;
-            console.log(itemCostInbronze);
+            console.log(itemCostInBronze);
           } 
           if (iteration > 6){
             break trychange;
@@ -1679,7 +1679,7 @@ Hooks.once("init", () => {
             iteration++
           }
         } 
-        _oldItemCostInbronze = itemCostInbronze
+        _oldItemCostInbronze = itemCostInBronze
       }
     }
     }
