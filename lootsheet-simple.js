@@ -1573,13 +1573,13 @@ Hooks.once("init", () => {
     //why bronze? because there will be no float
     let buyerFundsAsBronze = convert(buyerFunds)
 
-    let itemCostInPlatinum = itemCostRaw / conversionRates[itemCostDenomination];
+    let itemCostInBronze = itemCostRaw * conversionRates[itemCostDenomination];
     // console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
 
 
     // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
     
-    if (itemCostInPlatinum > buyerFundsAsPlatinum) {
+    if (itemCostInBronze >= buyerFundsAsBronze) {
       errorMessageToActor(buyer, `Not enough funds to purchase item.`);
       return;
     }
