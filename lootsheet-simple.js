@@ -1294,13 +1294,13 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
 //Register the loot sheet
 Actors.registerSheet("dnd5e", LootSheet5eNPC, {
+  label: "LOOTSHEET:SheetName",
   types: ["npc"],
   makeDefault: false,
 });
 
 Hooks.once("init", () => {
   // console.log("Lootsheet: Test2");
-
   Handlebars.registerHelper("ifeq", function (a, b, options) {
     if (a == b) {
       return options.fn(this);
