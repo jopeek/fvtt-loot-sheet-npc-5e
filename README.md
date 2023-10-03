@@ -64,15 +64,15 @@ If you want to contribute to the translation of this module into any language.
 > Shortname languages can see this  [i18n](https://www.w3.org/International/O-charset-lang.html)  
 ``` 
 "languages": [{
-"lang": "en",
-    "name": "English",
-    "path": "/lang/en.json"
-},
-{
-    "lang": "Shortname",
-    "name": "Language name",
-    "path": "/lang/<sub>Shortname</sub>.json"
-},
+    "lang": "en",
+        "name": "English",
+        "path": "/lang/en.json"
+    },
+    {
+        "lang": "Shortname",
+        "name": "Language name",
+        "path": "/lang/<sub>Shortname</sub>.json"
+    },
 ]
 ```
 2. then in the lang\ folder copy and rename **en.json** like **it.json** 
