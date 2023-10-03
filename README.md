@@ -58,25 +58,27 @@ To install a module, follow these instructions:
 3. Click Install and wait for installation to complete 
 
 # Translation
-    If you want to contribute to the translation of this module into any language, you need to add new language the module.json file like this
+If you want to contribute to the translation of this module into any language.
+1. You need to add new language the module.json file like this
     
-    > Shortname languages can see this[i18n](https://www.w3.org/International/O-charset-lang.html)  
-    ``` 
-        "languages": [{
-        "lang": "en",
-            "name": "English",
-            "path": "/lang/en.json"
-    },
-    {
-        "lang": "Shortname",
-        "name": "Language name",
-        "path": "/lang/<sub>Shortname</sub>.json"
-    },
-    ]
-    ```
-    then in the lang\ folder copy and rename **en.json** like **it.json** 
-    Now you can make translations!)
-    
+> Shortname languages can see this[i18n](https://www.w3.org/International/O-charset-lang.html)  
+``` 
+    "languages": [{
+    "lang": "en",
+        "name": "English",
+        "path": "/lang/en.json"
+},
+{
+    "lang": "Shortname",
+    "name": "Language name",
+    "path": "/lang/<sub>Shortname</sub>.json"
+},
+]
+```
+2. then in the lang\ folder copy and rename **en.json** like **it.json** 
+3. Now you can make translations!)
+4. Poll to github, or create issue your result, and thanks you!
+
 ## Translation completed
 ```
     en [**********************************************] 100%
