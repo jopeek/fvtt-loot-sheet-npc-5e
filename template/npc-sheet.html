@@ -213,7 +213,9 @@
                                         <div class="item-detail item-weight">
                                             {{lootsheetweight item.system.weight}}{{lootsheetstackweight item.system.weight item.system.quantity}}
                                         </div>
-                                        
+                                        <div class="item-detail item-quantity"> 
+                                            <input type="text" value="{{item.system.quantity}}" placeholder="0" data-dtype="Number" data-name="system.quantity">
+                                        </div>
                                         <div class="item-detail item-price">
                                             <span class="item-price-label"></i> {{ lootsheetprice item.system.price.value ../../priceModifier }} </span>
                                             <label class="denomination {{ item.system.price.denomination }}">&nbsp;</label>
