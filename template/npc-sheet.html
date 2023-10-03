@@ -183,16 +183,13 @@
                                     <li class="items-header flexrow inventory-header">
                                                     
                                         <h3 class="item-name flexrow">{{localize section.label}}</h3>
-                                        
+                    
                                         <h3 class="item-name">{{section.label}}</h3>
                                         <div class="item-detail item-quantity-sheet">{{localize "DND5E.QuantityAbbr"}}<i class="fas fa-box" title="{{localize "DND5E.QuantityAbbr"}}"></i></div>
                                         <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}<i class="fas fa-coins" title="Price (in gp)"></i></div>
-                                        
-
-                                        
                                         {{#if ../owner}}
                                             <div class="item-controls-empty flexrow">
-                                                <a class="item-control  item-create create-button" title="Create Item" data-type="{{localize section.type}}">
+                                                <a class="item-control  item-create create-button" title="Create Item" data-type="{{section.type}}">
                                                     <i class="fas fa-plus"></i> {{localize "DND5E.Add"}}
                                                 </a>
                                             </div>
@@ -216,9 +213,7 @@
                                         <div class="item-detail item-weight">
                                             {{lootsheetweight item.system.weight}}{{lootsheetstackweight item.system.weight item.system.quantity}}
                                         </div>
-                                        <div class="item-detail item-quantity" style=""> 
-                                            <input type="text" value="{{item.system.quantity}}" placeholder="0" data-dtype="Number" data-name="system.quantity">
-                                        </div>
+                                        
                                         <div class="item-detail item-price">
                                             <span class="item-price-label"></i> {{ lootsheetprice item.system.price.value ../../priceModifier }} </span>
                                             <label class="denomination {{ item.system.price.denomination }}">&nbsp;</label>
