@@ -49,7 +49,7 @@ Dragging of spells into the sheet will automatically turn them into scrolls.
 ### Compatibility:
 - Tested with FVTT v0.7.9 and the DND5E system only.
 
-### Installation Instructions
+# Installation Instructions
 
 To install a module, follow these instructions:
 
@@ -57,22 +57,23 @@ To install a module, follow these instructions:
 2. Select the Install Module button and enter the following URL: https://raw.githubusercontent.com/jopeek/fvtt-loot-sheet-npc-5e/master/module.json
 3. Click Install and wait for installation to complete 
 
-### Translation
+# Translation
     If you want to contribute to the translation of this module into any language, you need to add new language the module.json file like this
-    >Shortname languages can see this[i18n](https://www.w3.org/International/O-charset-lang.html)  
-``` 
-    "languages": [{
-    "lang": "en",
-		"name": "English",
-		"path": "/lang/en.json"
-  },
-  {
-    "lang": "Shortname",
-    "name": "Language name",
-    "path": "/lang/<sub>Shortname</sub>.json"
-  },
-  ]
-```
+    
+    > Shortname languages can see this[i18n](https://www.w3.org/International/O-charset-lang.html)  
+    ``` 
+        "languages": [{
+        "lang": "en",
+            "name": "English",
+            "path": "/lang/en.json"
+    },
+    {
+        "lang": "Shortname",
+        "name": "Language name",
+        "path": "/lang/<sub>Shortname</sub>.json"
+    },
+    ]
+    ```
     then in the lang\ folder copy and rename **en.json** like **it.json** 
     Now you can make translations!)
     
@@ -81,6 +82,6 @@ To install a module, follow these instructions:
     en [**********************************************] 100%
     ru [*****-----------------------------------------] 15%
 ```
-### Feedback
+# Feedback
 
 If you have any suggestions or feedback, please submit an issue on GitHub or contact me on Discord (ChalkOne#0156).
