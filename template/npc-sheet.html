@@ -194,8 +194,10 @@
                                     <li class="items-header flexrow inventory-header">
                                                     
                                         <h3 class="item-name flexrow">{{localize section.label}}</h3>
-                                        
-                                        <h3 class="item-name">{{section.label}}</h3>
+
+                                        <div class="item-quantity">
+                                            <i class="fas fa-box" title="Quantity"></i> {{item.system.quantity}}
+                                        </div>
                                         <div class="item-detail item-quantity-sheet">{{localize "DND5E.QuantityAbbr"}}<i class="fas fa-box" title="{{localize "DND5E.QuantityAbbr"}}"></i></div>
                                         <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}<i class="fas fa-coins" title="Price (in gp)"></i></div>
                                         
@@ -252,8 +254,7 @@
                                                 <a class="item-control item-delete" title="{{localize "LOOTSHEET.DeleteItem"}}"><i class="fas fa-trash"></i></a>
                                             {{/if}}
                                         </div>
-                                    </li>
-                                
+                                    </li>    
                                 {{/each}}
                             </ol>
                             {{/each}}
@@ -261,7 +262,6 @@
                         </div>
                     </div>
                 </div>
-
             </section>
         </section>
     </section>
