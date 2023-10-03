@@ -61,7 +61,7 @@ To install a module, follow these instructions:
 If you want to contribute to the translation of this module into any language.
 1. You need to add new language the module.json file like this
     
-> Shortname languages can see this  **[i18n]**(https://www.w3.org/International/O-charset-lang.html)  
+> Shortname languages can see this  [i18n](https://www.w3.org/International/O-charset-lang.html)  
 ``` 
 "languages": [{
 "lang": "en",
