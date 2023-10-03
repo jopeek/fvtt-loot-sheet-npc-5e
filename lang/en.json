@@ -2,5 +2,35 @@
     "LOOTSHEET.SheetName": "MerchantLootSheet",
     "LOOTSHEET.Merchant":"Merchant",
     "LOOTSHEET.Buy":"Buy item",
-    "LOOTSHEET.BuyStack":"Buy stack"
+    "LOOTSHEET.BuyStack":"Buy Stack",
+    "LOOTSHEET.LootStack":"Loot Stack",
+    "LOOTSHEET.Loot":"Loot Item",
+    "LOOTSHEET.EditItem":"Edit Item",
+    "LOOTSHEET.DeleteItem":"Delete Item",
+    "LOOTSHEET.TypeOfSheetName":"Type",
+    "LOOTSHEET.TypeOfSheet":"Type of sheet:",
+    "LOOTSHEET.PriceModifier":"Price Modifier",
+    "LOOTSHEET.GMSettings":"GM Settings",
+    "LOOTSHEET.TypeOfSheetHelp":"Loot: allows for looting of items and coins.\nMerchant: allows players to purchase items directly from the sheet.",
+    "LOOTSHEET.MerchantSettings":"Merchant Settings",
+    "LOOTSHEET.MerchantSettingsInfo":"Replace this merchant's inventory with a random number of items from a Rollable Table. Specify the Rollable Table's name, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).",
+    "LOOTSHEET.RollableTable":"Rollable Table:",
+    "LOOTSHEET.ShopFormula":"Shop Qty Formula:",
+    "LOOTSHEET.ItemFormula":"Item Qty Formula:",
+    "LOOTSHEET.LimitQty":"Limit Qty:",
+    "LOOTSHEET.ClearInventory":"Clear Inventory:",
+    "LOOTSHEET.UpdateShop":"Update Shop Inventory",
+    "LOOTSHEET.Permissions":"Permissions",
+    "LOOTSHEET.PermissionInfo":"Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.",
+    "LOOTSHEET.Currency":"Currency"
 }
+
+
+
+
+
+
+
+
+
+
