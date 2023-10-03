@@ -71,7 +71,7 @@ If you want to contribute to the translation of this module into any language.
     {
         "lang": "Shortname",
         "name": "Language name",
-        "path": "/lang/<sub>Shortname</sub>.json"
+        "path": "/lang/Shortname.json"
     },
 ]
 ```
