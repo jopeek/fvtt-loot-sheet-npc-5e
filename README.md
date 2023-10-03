@@ -63,10 +63,10 @@ If you want to contribute to the translation of this module into any language.
     
 > Shortname languages can see this  **[i18n]**(https://www.w3.org/International/O-charset-lang.html)  
 ``` 
-    "languages": [{
-    "lang": "en",
-        "name": "English",
-        "path": "/lang/en.json"
+"languages": [{
+"lang": "en",
+    "name": "English",
+    "path": "/lang/en.json"
 },
 {
     "lang": "Shortname",
