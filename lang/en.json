@@ -22,7 +22,9 @@
     "LOOTSHEET.UpdateShop":"Update Shop Inventory",
     "LOOTSHEET.Permissions":"Permissions",
     "LOOTSHEET.PermissionInfo":"Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.",
-    "LOOTSHEET.Currency":"Currency"
+    "LOOTSHEET.Currency":"Currency",
+    "LOOTSHEET.QuantityWindow": "Quantity",
+    "LOOTSHEET.Quantity":"Quantity"
 }
 
 

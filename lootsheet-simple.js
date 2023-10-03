@@ -36,11 +36,11 @@ class QuantityDialog extends Dialog {
 
     let applyChanges = false;
     super({
-      title: "Quantity",
+      title: game.i18n.localize("LOOTSHEET.QuantityWindow"),
       content: `
             <form>
                 <div class="form-group">
-                    <label>Quantity:</label>
+                    <label>${game.i18n.localize("LOOTSHEET.Quantity")}:</label>
                     <input type=number min="1" id="quantity" name="quantity" value="1">
                 </div>
             </form>`,

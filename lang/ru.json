@@ -2,5 +2,6 @@
     "LOOTSHEET:SheetName": "Лист торговца и сундука",
     "LOOTSHEET.Merchant":"Торговец",
     "LOOTSHEET.Buy":"Купить",
-    "LOOTSHEET.BuyStack":"Купить несколько"
+    "LOOTSHEET.BuyStack":"Купить несколько",
+    "LOOTSHEET.Quantity":"Количество"
 }
