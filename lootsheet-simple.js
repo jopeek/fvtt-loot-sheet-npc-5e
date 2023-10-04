@@ -36,11 +36,11 @@ class QuantityDialog extends Dialog {
 
     let applyChanges = false;
     super({
-      title: "Quantity",
+      title: game.i18n.localize("LOOTSHEET.QuantityWindow"),
       content: `
             <form>
                 <div class="form-group">
-                    <label>Quantity:</label>
+                    <label>${game.i18n.localize("LOOTSHEET.Quantity")}:</label>
                     <input type=number min="1" id="quantity" name="quantity" value="1">
                 </div>
             </form>`,
@@ -1294,13 +1294,13 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
 
 //Register the loot sheet
 Actors.registerSheet("dnd5e", LootSheet5eNPC, {
+  label: "LOOTSHEET:SheetName",
   types: ["npc"],
   makeDefault: false,
 });
 
 Hooks.once("init", () => {
   // console.log("Lootsheet: Test2");
-
   Handlebars.registerHelper("ifeq", function (a, b, options) {
     if (a == b) {
       return options.fn(this);
