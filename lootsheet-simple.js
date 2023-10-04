@@ -641,9 +641,8 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       itemId: itemId,
       quantity: 1,
     };
-    if (all || event.shiftKey) {
-      item.quantity = targetItem.system.quantity;
-    }
+
+
 
     const packet = {
       type: "buy",
@@ -664,21 +663,26 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       return;
     }
 
-    const d = new QuantityDialog(
-      (quantity) => {
-        packet.quantity = quantity;
-        console.log(
-          "LootSheet5e",
-          "Sending buy request to " + targetGm.name,
-          packet
-        );
-        game.socket.emit(LootSheet5eNPC.SOCKET, packet);
-      },
-      {
-        acceptLabel: "Purchase",
-      }
-    );
-    d.render(true);
+    if (all || event.shiftKey) {
+      const d = new QuantityDialog(
+        (quantity) => {
+          packet.quantity = quantity;
+          console.log(
+            "LootSheet5e",
+            "Sending buy request to " + targetGm.name,
+            packet
+          );
+          game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+        },
+        {
+          acceptLabel: "Purchase",
+        }
+      );
+      d.render(true);
+    }else{
+      game.socket.emit(LootSheet5eNPC.SOCKET, packet);
+    }
+    
   }
 
   /* -------------------------------------------- */
