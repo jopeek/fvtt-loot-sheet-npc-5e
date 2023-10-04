@@ -160,15 +160,13 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
       );
     }
 
-    let totalWeight = 0;
-    this.actor.items.contents.forEach(
-      (item) =>
-        (totalWeight += Math.round(
-          (item.system.quantity * item.system.weight * 100) / 100
-        ))
-    );
-    if (game.settings.get("lootsheet-simple", "includeCurrencyWeight"))
-      totalWeight += (
+    this.actor.items.contents.forEach((item) => {
+      let weight = Math.round((item.system.quantity * item.system.weight * 100) / 100);
+      totalWeight += (isNaN(weight))? 0: weight;
+    })
+    
+    if (game.settings.get("lootsheet-simple", "includeCurrencyWeight")) {
+      let weight = (
         Object.values(this.actor.system.currency).reduce(function (
           accumVariable,
           curValue
@@ -176,7 +174,9 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
           return accumVariable + curValue;
         },
         0) / 50
-      ).toNearest(0.01);
+      ).toNearest(0.01);  
+      totalWeight += (isNaN(weight))? 0: weight;
+    }
 
     let totalPrice = 0;
     this.actor.items.contents.forEach(
@@ -212,11 +212,11 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
         
     );
 
-    let totalQuantity = 0;
-    this.actor.items.contents.forEach(
-      (item) =>
-        (totalQuantity += Math.round((item.system.quantity * 100) / 100))
-    );
+  let totalQuantity = 0;
+  this.actor.items.contents.forEach((item) => {
+    let addQuantity = Math.round((item.system.quantity * 100) / 100);
+    totalQuantity += (isNaN(addQuantity))? 0 : addQuantity
+  });
 
     let selectedRollTable = await this.actor.getFlag(
       "lootsheet-simple",
