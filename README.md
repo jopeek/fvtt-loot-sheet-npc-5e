@@ -79,11 +79,15 @@ If you want to contribute to the translation of this module into any language.
 3. Now you can make translations!)
 4. Poll to github, or create issue your result, and thanks you!
 
-## Translation completed
-```
-    en [**********************************************] 100%
-    ru [*****-----------------------------------------] 15%
-```
+## Translation Status
+
+The following is the current status of translation. Some features have arrived, introducing new strings, since translations were last done.
+| Language | Completion | Contributors |
+| -------- | ---------- | ------------ |
+| en    | `[######################]` 25/25 (100%) | jopeek, Xeonis |
+| ru    | `[####------------------]` 4/25 (100%) | Xeonis |
+
+
 # Feedback
 
 If you have any suggestions or feedback, please submit an issue on GitHub or contact me on Discord (ChalkOne#0156).
