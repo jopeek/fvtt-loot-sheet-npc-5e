@@ -18,9 +18,9 @@
             {{/ifeq}}
             {{#if isGM}}
                 {{#ifeq lootsheettype "Merchant"}}
-                    <div class="charbutton">
-                        <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value=""><i class="fa fa-balance-scale"></i>{{localize "LOOTSHEET.PriceModifier"}}</button>
-                    </div>
+                <div class="charbutton">
+                    <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value=""><i class="fa fa-balance-scale"></i>{{localize "LOOTSHEET.PriceModifier"}}</button>
+                </div>
                 {{/ifeq}}
             {{/if}}
         </header>
@@ -39,7 +39,7 @@
 
             <!-- GM SETTINGS -->
             <div class="gm-settings" data-group="sidebar" data-tab="gm-settings">
-                <h3 class="gm-header"><i class="fas fa-id-card"></i>{{localize "LOOTSHEET.TypeOfSheetName"}}<i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
+                <h3 class="gm-header"><i class="fas fa-id-card"></i> {{localize "LOOTSHEET.TypeOfSheetName"}} <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
                 <div class="sheet-type-info">{{localize "LOOTSHEET.TypeOfSheetHelp"}}</div>
                 <div class="sheet-types">
                     <div class="flexrow">
@@ -64,11 +64,11 @@
                 </div>
 
                 {{#ifeq lootsheettype "Merchant"}}
-                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i>{{localize "LOOTSHEET.MerchantSettings"}}<i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
+                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> {{localize "LOOTSHEET.MerchantSettings"}} <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
                     <div class="merchant-settings-info">{{localize "LOOTSHEET.MerchantSettingsInfo"}}</div>
                     <div class="merchant-settings">
                         <div class="flexrow">
-                            <div class="flexcol"><h4>{{localize "LOOTSHEET.RollableTable"}}</h4></div>
+                            <div class="flexcol"><h4>{{localize "LOOTSHEET.RollableTable"}} </h4></div>
                             <div class="flexcol">
                                 <select class="sheet-rolltable" name="system.flags.lootsheet-simple.rolltable">
                                     <option value="{{selectedRollTable}}">{{selectedRollTable}}</option>
@@ -89,17 +89,15 @@
                             <div class="flexcol"><input name="system.flags.lootsheet-simple.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{itemQty}}"/></div>
                         </div>
 						<div class="flexrow">
-                            <div class="flexcol"><h4>{{localize "LOOTSHEET.LimitQty"}}</h4></div>
+                            <div class="flexcol"><h4>{{localize "LOOTSHEET.LimitQty"}} </h4></div>
                             <div class="flexcol"><input name="system.flags.lootsheet-simple.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10" value="{{itemQtyLimit}}"/></div>
                         </div>
 						<div class="flexrow">
                             <div class="flexcol"><h4>{{localize "LOOTSHEET.ClearInventory"}} </h4></div>
-                            <div class="flexcol">
-                                <input name="system.flags.lootsheet-simple.clearInventory" type="checkbox" data-dtype="boolean" {{#if clearInventory}}checked{{/if}}/>
-                            </div>
+                            <div class="flexcol"><input name="system.flags.lootsheet-simple.clearInventory" type="checkbox" data-dtype="boolean" {{#if clearInventory}}checked{{/if}}/></div>
                         </div>
                     </div>
-                    <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i>{{localize "LOOTSHEET.UpdateShop"}}</button>
+                    <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> {{localize "LOOTSHEET.UpdateShop"}}</button>
                 {{/ifeq}}
 
                 <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> {{localize "LOOTSHEET.Permissions"}} <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
@@ -168,20 +166,17 @@
                                 {{/ifeq}}
                             </ol>
                             <ol class="currency inventory flexrow">
-                                <span>
-                                    <label>{{localize "DND5E.ItemContainerCapacityItems"}}</label>
-                                    <span>{{totalItems}}</span></span>
-                                <span>
-                                    <label>{{localize "DND5E.QuantityAbbr"}}</label>
-                                    <span>{{totalQuantity}}</span></span>
-                                <span>
-                                    <label>{{localize "DND5E.Weight"}}</label>
-                                    <span>{{totalWeight}}</span>
-                                </span>
-                                <span>
-                                    <label>{{localize "DND5E.Price"}}</label>
-                                    <span>{{totalPrice}}<label class="denomination gp" style="vertical-align: baseline;">gp</label></span>
-                                </span>
+                                <span style="flex: 0 0 60px;"><h3>Totals</h3></span>
+                                <span><label>{{localize "DND5E.ItemContainerCapacityItems"}}</label> <span>{{totalItems}}</span></span>
+                                <span><label>{{localize "DND5E.QuantityAbbr"}}</label> <span>{{totalQuantity}}</span></span>
+                                <span><label>{{localize "DND5E.Weight"}}</label> <span>{{totalWeight}}</span></span>
+                                {{#ifeq lootsheettype "Merchant"}}
+                                    <span><label>{{localize "DND5E.Price"}}</label>     
+                                {{/ifeq}}
+                                {{#ifeq lootsheettype "Loot"}}
+                                    <span><label>{{localize "LOOTSHEET.Value"}}</label></span>
+                                {{/ifeq}}
+                                 <span>{{totalPrice}} <label class="denomination gp" style="vertical-align: baseline;">gp</label></span></span>
                             </ol>
                         </div>
 
@@ -194,14 +189,16 @@
                                     <li class="items-header flexrow inventory-header">
                                                     
                                         <h3 class="item-name flexrow">{{localize section.label}}</h3>
-
-                                        <div class="item-quantity">
-                                            <i class="fas fa-box" title="Quantity"></i> {{item.system.quantity}}
-                                        </div>
-                                        <div class="item-detail item-quantity-sheet">{{localize "DND5E.QuantityAbbr"}}<i class="fas fa-box" title="{{localize "DND5E.QuantityAbbr"}}"></i></div>
-                                        <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}<i class="fas fa-coins" title="Price (in gp)"></i></div>
+                                        <div class="item-controls-empty"> </div>
+                                        <div class="item-detail item-weight-sheet">{{localize "DND5E.Weight"}}</div>
+                                        <div class="item-detail item-quantity-sheet">{{localize "DND5E.QuantityAbbr"}}</div>
                                         
-
+                                        {{#ifeq ../lootsheettype "Merchant"}}
+                                            <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}</div>
+                                        {{/ifeq}}
+                                        {{#ifeq ../lootsheettype "Loot"}}
+                                            <div class="item-detail item-price-sheet">{{localize "LOOTSHEET.Value"}}</div>
+                                        {{/ifeq}}
                                         
                                         {{#if ../owner}}
                                             <div class="item-controls-empty flexrow">
@@ -229,7 +226,7 @@
                                         <div class="item-detail item-weight">
                                             {{lootsheetweight item.system.weight}}{{lootsheetstackweight item.system.weight item.system.quantity}}
                                         </div>
-                                        <div class="item-detail item-quantity" style=""> 
+                                        <div class="item-detail item-quantity"> 
                                             <input type="text" value="{{item.system.quantity}}" placeholder="0" data-dtype="Number" data-name="system.quantity">
                                         </div>
                                         <div class="item-detail item-price">
@@ -254,7 +251,8 @@
                                                 <a class="item-control item-delete" title="{{localize "LOOTSHEET.DeleteItem"}}"><i class="fas fa-trash"></i></a>
                                             {{/if}}
                                         </div>
-                                    </li>    
+                                    </li>
+                                
                                 {{/each}}
                             </ol>
                             {{/each}}
@@ -262,7 +260,14 @@
                         </div>
                     </div>
                 </div>
+
             </section>
+            
+            
+
+
         </section>
+
+        
     </section>
 </form>
