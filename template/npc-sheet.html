@@ -197,12 +197,12 @@
                                             <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}</div>
                                         {{/ifeq}}
                                         {{#ifeq ../lootsheettype "Loot"}}
-                                            <div class="item-detail item-price-sheet">{{localize "LOOTSHEET.Value"}}</div>
+                                            <div class="item-detail item-price-sheet">Value</div>
                                         {{/ifeq}}
                                         
                                         {{#if ../owner}}
                                             <div class="item-controls-empty flexrow">
-                                                <a class="item-control  item-create create-button" title="Create Item" data-type="{{localize section.type}}">
+                                                <a class="item-control  item-create create-button" title="Create Item" data-type="{{section.type}}">
                                                     <i class="fas fa-plus"></i> {{localize "DND5E.Add"}}
                                                 </a>
                                             </div>
