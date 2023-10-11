@@ -1545,13 +1545,15 @@ Hooks.once("init", () => {
 
     // console.log("sellerFunds before", sellerFunds);
     // console.log("buyerFunds before purchase", buyerFunds);
-
+    //maybe realize later
+    let blockCurencies = ["ep"]
+    
     const conversionRates = {
-      pp: 1,
-      gp: 10,
+      pp: 1000,
+      gp: 100,
       ep: 50,
-      sp: 100,
-      cp: 1000,
+      sp: 10,
+      cp: 1,
     };
 
     const compensationCurrency = {
@@ -1560,111 +1562,128 @@ Hooks.once("init", () => {
       ep: "sp",
       sp: "cp",
     };
+    
+    let convert = (funds) => {
+      let wallet = 0
+      for (const coin in conversionRates) {
+        wallet += funds[coin] * conversionRates[coin]
+      }
+      return wallet
+    }
+    //why bronze? because there will be no float
+    let buyerFundsAsBronze = convert(buyerFunds)
 
-    let itemCostInPlatinum = itemCostRaw / conversionRates[itemCostDenomination];
-     // console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
+    let itemCostInBronze = itemCostRaw * conversionRates[itemCostDenomination];
+    // console.log(`itemCostInPlatinum : ${itemCostInPlatinum}`);
 
-    let buyerFundsAsPlatinum = buyerFunds["pp"];
-    buyerFundsAsPlatinum += buyerFunds["gp"] / conversionRates["gp"];
-    buyerFundsAsPlatinum += buyerFunds["ep"] / conversionRates["ep"];
-    buyerFundsAsPlatinum += buyerFunds["sp"] / conversionRates["sp"];
-    buyerFundsAsPlatinum += buyerFunds["cp"] / conversionRates["cp"];
-
-    let sellerFundsAsPlatinum = sellerFunds["pp"];
-    sellerFundsAsPlatinum += sellerFunds["gp"] / conversionRates["gp"];
-    sellerFundsAsPlatinum += sellerFunds["ep"] / conversionRates["ep"];
-    sellerFundsAsPlatinum += sellerFunds["sp"] / conversionRates["sp"];
-    sellerFundsAsPlatinum += sellerFunds["cp"] / conversionRates["cp"];
 
     // console.log(`buyerFundsAsPlatinum : ${buyerFundsAsPlatinum}`);
     
-    if (itemCostInPlatinum > buyerFundsAsPlatinum) {
+    if (itemCostInBronze >= buyerFundsAsBronze) {
       errorMessageToActor(buyer, `Not enough funds to purchase item.`);
       return;
     }
+    //maybe realize later
+    const GoToAnotherShopToExchange = true;
 
-    buyerFundsAsPlatinum -= itemCostInPlatinum;
-    sellerFundsAsPlatinum += itemCostInPlatinum;
-
-    // Remove every coin we have
-    for (let currency in buyerFunds) {
-      buyerFunds[currency] = 0;
+    if (buyerFunds[itemCostDenomination] >= itemCostRaw){
+      buyerFunds[itemCostDenomination] -= itemCostRaw;
+      sellerFunds[itemCostDenomination] += itemCostRaw;
+    }else{
+    let payCoinCount = (coin,coinCost) => {
+      let payedThisCoins = (itemCostInBronze < coinCost)?
+          coinCost - (coinCost - Math.abs(itemCostInBronze)): coinCost;
+      return payedThisCoins/conversionRates[coin]
     }
-    for (let currency in sellerFunds) {
-      sellerFunds[currency] = 0;
+    //we go through all the coins and try to pay off using them
+    //a little magic with data types
+    let ratesLikeArray = Object.entries(conversionRates)
+    ratesLikeArray.sort((a,b) => b[1] - a[1])
+    for (const i in ratesLikeArray) {
+        let coin = ratesLikeArray[i][0]
+        //calculating how many coins of this type I owe
+        const amountCoin = buyerFunds[coin]
+        if (amountCoin == 0) continue;
+        let coinCost = amountCoin * conversionRates[coin]
+        let payedCoin = Math.floor(payCoinCount(coin,coinCost))
+        itemCostInBronze -= payedCoin  * conversionRates[coin]
+        
+        //Subtract from the buyer and add to the seller
+        buyerFunds[coin] -= payedCoin;
+        sellerFunds[coin] += payedCoin;
+        if (itemCostInBronze == 0) break;
     }
+    //if we have any left over
 
-    // Give us fractions of platinum coins, which will be smoothed out below
-    buyerFunds["pp"] = buyerFundsAsPlatinum;
-    sellerFunds["pp"] = sellerFundsAsPlatinum;
+    if (itemCostInBronze !== 0) {
+      let iteration = 0
+      let _oldItemCostInbronze
+      let _sortStop = (itemCostInBronze < 0)? true : false;
+      trychange:
+      while (itemCostInBronze != 0){
 
-    // console.log("buyerFunds after purchase", buyerFunds);
-    // console.log(`Smoothing out`);
+        if (_sortStop && itemCostInBronze < 0) {
+          ratesLikeArray.sort((a,b) => b[1] - a[1])
+          _sortStop = !_sortStop
+        }else if (!_sortStop && itemCostInBronze > 0){
+          ratesLikeArray.sort((a,b) => a[1] - b[1])
+          _sortStop = !_sortStop
+        }
 
-    // Finally we exchange partial coins with as little change as possible
-    for (let currency in sellerFunds) {
-      //fuck EP
-      if (currency == "ep") continue;
-      // console.log("----------------");
-      let amount = sellerFunds[currency];
-      // console.log("smoothing " + currency);
-      // console.log("fractional value", amount);
-      // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
-      // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
-      // If we would floor 15.99999999999918 everything explodes
-      let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
-      // if (currency == "sp") {
-      //   // console.log("adjusting for sp");
-      //   newFund = newFund / 10;
-      // }
+        
+        for (const i in ratesLikeArray) {
+          let coin = ratesLikeArray[i][0]
+          let amountCoinOnByer = buyerFunds[coin]
+          let amountCoinOnSeller = sellerFunds[coin]
+          let ByerCoinCost = amountCoinOnByer * conversionRates[coin]
+          let SellerCoinCost = amountCoinOnSeller * conversionRates[coin]
 
-      // console.log("rounded value", newFund);
-      sellerFunds[currency] = newFund;
+          if (itemCostInBronze > 0) {
+            if (amountCoinOnByer == 0) continue ;
+            
+            let payedCoin = Math.ceil(payCoinCount(coin,ByerCoinCost))
+            itemCostInBronze -= payedCoin * conversionRates[coin]
+            
+            buyerFunds[coin] -= payedCoin;
+            sellerFunds[coin] += payedCoin;
 
-      let compCurrency = compensationCurrency[currency];
-
-      // We dont care about fractions of CP
-      if (currency != "cp") {
-        // We calculate the amount of lower currency we get for the fraction of higher currency we have
-        let toAdd = (Math.round((amount - newFund) * 1e5) / 1e5) * 10;
-
-        // console.log("value to add to lower currency of " + compCurrency, toAdd);
-        sellerFunds[compCurrency] += toAdd;
-        // console.log("new value of " + compCurrency, buyerFunds[compCurrency]);
+          }else if (itemCostInBronze == 0) {
+            //Need to write a message, how much cp shop did not give
+            break trychange;
+          }else{
+            if (amountCoinOnSeller == 0) continue ;
+            let payedCoin = Math.floor(payCoinCount(coin,SellerCoinCost))
+            itemCostInBronze += payedCoin * conversionRates[coin]
+            if (_oldItemCostInbronze == itemCostInBronze){
+              if (!GoToAnotherShopToExchange) {
+                let gamemaster = 
+                game.users.forEach((u) => {
+                  if (u.isGM) {
+                    gamemaster = u;
+                  }
+                  
+                });
+                break trychange;
+              }else if (iteration > 3){
+                _oldItemCostInbronze = 0
+                sellerFunds["cp"] += Math.abs(itemCostInBronze)
+              }
+            }
+            buyerFunds[coin] += payedCoin;
+            sellerFunds[coin] -= payedCoin;
+            console.log(itemCostInBronze);
+          } 
+          if (iteration > 6){
+            break trychange;
+          }else{
+            iteration++
+          }
+        } 
+        _oldItemCostInbronze = itemCostInBronze
       }
     }
-
-    for (let currency in buyerFunds) {
-      //fuck EP
-      if (currency == "ep") continue;
-      // console.log("----------------");
-      let amount = buyerFunds[currency];
-      // console.log("smoothing " + currency);
-      // console.log("fractional value", amount);
-      // We round to 5 decimals. 1 pp is 1000cp, so 5 decimals always rounds good enough
-      // We need to round because otherwise we get 15.99999999999918 instead of 16 due to floating point precision
-      // If we would floor 15.99999999999918 everything explodes
-      let newFund = Math.floor(Math.round(amount * 1e5) / 1e5);
-      // if (currency == "sp") {
-      //   // console.log("adjusting for sp");
-      //   newFund = newFund / 10;
-      // }
-
-      // console.log("rounded value", newFund);
-      buyerFunds[currency] = newFund;
-
-      let compCurrency = compensationCurrency[currency];
-
-      // We dont care about fractions of CP
-      if (currency != "cp") {
-        // We calculate the amount of lower currency we get for the fraction of higher currency we have
-        let toAdd = (Math.round((amount - newFund) * 1e5) / 1e5) * 10;
-
-        // console.log("value to add to lower currency of " + compCurrency, toAdd);
-        buyerFunds[compCurrency] += toAdd;
-        // console.log("new value of " + compCurrency, buyerFunds[compCurrency]);
-      }
     }
+
 
     // Update buyer's funds
     buyer.update({
