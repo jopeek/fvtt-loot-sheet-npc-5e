@@ -18,9 +18,9 @@
             {{/ifeq}}
             {{#if isGM}}
                 {{#ifeq lootsheettype "Merchant"}}
-                    <div class="charbutton">
-                        <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value=""><i class="fa fa-balance-scale"></i> Price Modifier</button>
-                    </div>
+                <div class="charbutton">
+                    <button type="button" class="price-modifier" type="price-modifier" name="price-modifier" value=""><i class="fa fa-balance-scale"></i>{{localize "LOOTSHEET.PriceModifier"}}</button>
+                </div>
                 {{/ifeq}}
             {{/if}}
         </header>
@@ -35,27 +35,27 @@
 
             {{#if isGM}}
             
-            <h3 class="gm-section">GM Settings</h3>
+            <h3 class="gm-section">{{localize "LOOTSHEET.GMSettings"}}</h3>
 
             <!-- GM SETTINGS -->
             <div class="gm-settings" data-group="sidebar" data-tab="gm-settings">
-                <h3 class="gm-header"><i class="fas fa-id-card"></i> Type <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
-                <div class="sheet-type-info">Loot: allows for looting of items and coins.<br>Merchant: allows players to purchase items directly from the sheet.</div>
+                <h3 class="gm-header"><i class="fas fa-id-card"></i> {{localize "LOOTSHEET.TypeOfSheetName"}} <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
+                <div class="sheet-type-info">{{localize "LOOTSHEET.TypeOfSheetHelp"}}</div>
                 <div class="sheet-types">
                     <div class="flexrow">
-                        <div class="flexcol"><h4 class="sheet-name">Type of sheet: </h4></div>
+                        <div class="flexcol"><h4 class="sheet-name">{{localize "LOOTSHEET.TypeOfSheet"}} </h4></div>
                         <div class="flexcol">
                             <select class="sheet-type" name="system.flags.lootsheet-simple.lootsheettype">
                                 {{#select system.flags.lootsheet-simple.lootsheettype}}
                                     {{#ifeq lootsheettype "Merchant"}}
-                                        <option value="Loot" selected>Loot</option>
+                                        <option value="Loot" selected>{{localize "ITEM.TypeLoot"}}</option>
                                     {{else}}
-                                        <option value="Loot">Loot</option>
+                                        <option value="Loot">{{localize "ITEM.TypeLoot"}}</option>
                                     {{/ifeq}}
                                     {{#ifeq lootsheettype "Merchant"}}
-                                        <option value="Merchant" selected>Merchant</option>
+                                        <option value="Merchant" selected>{{localize "LOOTSHEET.Merchant"}}</option>
                                     {{else}}
-                                        <option value="Merchant">Merchant</option>
+                                        <option value="Merchant">{{localize "LOOTSHEET.Merchant"}}</option>
                                     {{/ifeq}}
                                 {{/select}}
                             </select>
@@ -64,11 +64,11 @@
                 </div>
 
                 {{#ifeq lootsheettype "Merchant"}}
-                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> Merchant Settings <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
-                    <div class="merchant-settings-info">Replace this merchant's inventory with a random number of items from a Rollable Table. Specify the Rollable Table's name, along with how a formula for how many different items to add (Shop Qty Formula), and a formula for determining how many of each item to add (Item Qty Formula).</div>
+                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> {{localize "LOOTSHEET.MerchantSettings"}} <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
+                    <div class="merchant-settings-info">{{localize "LOOTSHEET.MerchantSettingsInfo"}}</div>
                     <div class="merchant-settings">
                         <div class="flexrow">
-                            <div class="flexcol"><h4>Rollable Table: </h4></div>
+                            <div class="flexcol"><h4>{{localize "LOOTSHEET.RollableTable"}} </h4></div>
                             <div class="flexcol">
                                 <select class="sheet-rolltable" name="system.flags.lootsheet-simple.rolltable">
                                     <option value="{{selectedRollTable}}">{{selectedRollTable}}</option>
@@ -81,28 +81,28 @@
                             </div>
                         </div>
                         <div class="flexrow">
-                            <div class="flexcol"><h4>Shop Qty Formula: </h4></div>
+                            <div class="flexcol"><h4>{{localize "LOOTSHEET.ShopFormula"}} </h4></div>
                             <div class="flexcol"><input name="system.flags.lootsheet-simple.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{shopQty}}"/></div>
                         </div>
                         <div class="flexrow">
-                            <div class="flexcol"><h4>Item Qty Formula: </h4></div>
+                            <div class="flexcol"><h4>{{localize "LOOTSHEET.ItemFormula"}} </h4></div>
                             <div class="flexcol"><input name="system.flags.lootsheet-simple.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{itemQty}}"/></div>
                         </div>
 						<div class="flexrow">
-                            <div class="flexcol"><h4>Limit Qty: </h4></div>
+                            <div class="flexcol"><h4>{{localize "LOOTSHEET.LimitQty"}} </h4></div>
                             <div class="flexcol"><input name="system.flags.lootsheet-simple.itemQtyLimit" type="text" data-dtype="String" placeholder="e.g. 10" value="{{itemQtyLimit}}"/></div>
                         </div>
 						<div class="flexrow">
-                            <div class="flexcol"><h4>Clear Inventory: </h4></div>
+                            <div class="flexcol"><h4>{{localize "LOOTSHEET.ClearInventory"}} </h4></div>
                             <div class="flexcol"><input name="system.flags.lootsheet-simple.clearInventory" type="checkbox" data-dtype="boolean" {{#if clearInventory}}checked{{/if}}/></div>
                         </div>
                     </div>
-                    <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> Update Shop Inventory</button>
+                    <button type="button" class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> {{localize "LOOTSHEET.UpdateShop"}}</button>
                 {{/ifeq}}
 
-                <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> Permissions <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
+                <h3 class="gm-header"><a class="permission-proficiency-bulk" title="{{actor.flags.loot.playersPermissionDescription}}">{{{actor.flags.loot.playersPermissionIcon}}}</a> {{localize "LOOTSHEET.Permissions"}} <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
                 <input type="hidden" name="actor.flags.loot.playersPermission" value="{{actor.flags.loot.playersPermission}}" data-dtype="Number"/>
-                <div class="permission-info">Ensure players have selected a character via the Player Configuration (right-click player in bottom left) menu.</div>
+                <div class="permission-info">{{localize "LOOTSHEET.PermissionInfo"}}</div>
                 <ol class="permissions-list">
                     {{#each actor.flags.loot.players as |player p|}}
                         <li class="permission" data-skill="{{p}}">
@@ -131,9 +131,9 @@
         <!-- BODY -->
         <section class="sheet-content content">
             <nav class="sheet-navigation tabs" data-group="primary">
-                <a class="item active" data-tab="inventory">Inventory</a>
+                <a class="item active" data-tab="inventory">{{localize "DND5E.Inventory"}}</a>
                 {{#if isGM}}
-                    <a class="item" data-tab="biography">Biography</a>
+                    <a class="item" data-tab="biography">{{localize "DND5E.Biography"}}</a>
                 {{/if}}
             </nav>
 
@@ -167,10 +167,16 @@
                             </ol>
                             <ol class="currency inventory flexrow">
                                 <span style="flex: 0 0 60px;"><h3>Totals</h3></span>
-                                <span><label>Items</label> <span>{{totalItems}}</span></span>
-                                <span><label>Quantity</label> <span>{{totalQuantity}}</span></span>
-                                <span><label>Weight</label> <span>{{totalWeight}}</span></span>
-                                <span><label>Value</label> <span>{{totalPrice}} <label class="denomination gp" style="vertical-align: baseline;">gp</label></span></span>
+                                <span><label>{{localize "DND5E.ItemContainerCapacityItems"}}</label> <span>{{totalItems}}</span></span>
+                                <span><label>{{localize "DND5E.QuantityAbbr"}}</label> <span>{{totalQuantity}}</span></span>
+                                <span><label>{{localize "DND5E.Weight"}}</label> <span>{{totalWeight}}</span></span>
+                                {{#ifeq lootsheettype "Merchant"}}
+                                    <span><label>{{localize "DND5E.Price"}}</label>     
+                                {{/ifeq}}
+                                {{#ifeq lootsheettype "Loot"}}
+                                    <span><label>{{localize "LOOTSHEET.Value"}}</label></span>
+                                {{/ifeq}}
+                                 <span>{{totalPrice}} <label class="denomination gp" style="vertical-align: baseline;">gp</label></span></span>
                             </ol>
                         </div>
 
@@ -181,13 +187,29 @@
                             {{#each actor.features as |section sid|}}
                                 {{#if section.items}}
                                     <li class="items-header flexrow inventory-header">
-                                        <h3 class="item-name">{{section.label}}</h3>
+                                                    
+                                        <h3 class="item-name flexrow">{{localize section.label}}</h3>
+                                        <div class="item-controls-empty"> </div>
+                                        <div class="item-detail item-weight-sheet">{{localize "DND5E.Weight"}}</div>
+                                        <div class="item-detail item-quantity-sheet">{{localize "DND5E.QuantityAbbr"}}</div>
+                                        
+                                        {{#ifeq ../lootsheettype "Merchant"}}
+                                            <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}</div>
+
+                                        {{/ifeq}}
+                                        {{#ifeq ../lootsheettype "Loot"}}
+                                            <div class="item-detail item-price-sheet">Value</div>
+
+                                        {{/ifeq}}
+                                        
                                         {{#if ../owner}}
-                                            <div class="item-controls">
-                                                <a class="item-control item-create" title="Create Item" data-type="{{section.type}}">
-                                                    <i class="fas fa-plus"></i> Add
+                                            <div class="item-controls-empty flexrow">
+                                                <a class="item-control  item-create create-button" title="Create Item" data-type="{{section.type}}">
+                                                    <i class="fas fa-plus"></i> {{localize "DND5E.Add"}}
                                                 </a>
                                             </div>
+                                        {{else}}
+                                            <div class="item-controls-empty"> </div>
                                         {{/if}}
                                     </li>
                                     <ol class="item-list"> 
@@ -202,30 +224,33 @@
                                                 {{item.name}}
                                             </h4>
                                         </div>
-                                        <div class="item-quantity">
-                                            <i class="fas fa-box" title="Quantity"></i> {{item.system.quantity}}
-                                        </div>
-                                        <div class="item-weight">
-                                            <i class="fas fa-weight-hanging" title="Weight"></i> {{lootsheetweight item.system.weight}}{{lootsheetstackweight item.system.weight item.system.quantity}}
-                                        </div>
-                                        <div class="item-price">
-                                            <span class="item-price-label"><i class="fas fa-coins" title="Price (in gp)"></i> {{ lootsheetprice item.system.price.value ../../priceModifier }} </span><label class="denomination {{ item.system.price.denomination }}">&nbsp;</label>
-                                        </div>
                                         
-                                        <div class="item-controls">
+                                        <div class="item-detail item-weight">
+                                            {{lootsheetweight item.system.weight}}{{lootsheetstackweight item.system.weight item.system.quantity}}
+                                        </div>
+                                        <div class="item-detail item-quantity"> 
+                                            <input type="text" value="{{item.system.quantity}}" placeholder="0" data-dtype="Number" data-name="system.quantity">
+                                        </div>
+                                        <div class="item-detail item-price">
+                                            <span class="item-price-label"></i> {{ lootsheetprice item.system.price.value ../../priceModifier }} </span>
+                                            <label class="denomination {{ item.system.price.denomination }}">&nbsp;</label>
+                                        </div>
+
+                                        
+                                        <div class="item-controls flexrow">
                                             {{#ifeq ../../lootsheettype "Loot"}}
-												<a class="item-control item-lootall" title="Loot Stack"><i class="far fa-gem"></i></a>
-                                                <a class="item-control item-loot" title="Loot Item"><i class="fas fa-gem"></i></a>
+												<a class="item-control item-lootall" title="{{localize "LOOTSHEET.LootStack"}}"><i class="far fa-gem"></i></a>
+                                                <a class="item-control item-loot" title="{{localize "LOOTSHEET.Loot"}}"><i class="fas fa-gem"></i></a>
                                             {{/ifeq}}
 
                                             {{#ifeq ../../lootsheettype "Merchant"}}
-												<a class="item-control item-buyall" title="Buy Stack"><i class="fas fa-coins"></i></a>
-                                                <a class="item-control item-buy" title="Buy Item"><i class="fas fa-dollar-sign"></i></a>
+												<a class="item-control item-buyall" title="{{localize "LOOTSHEET.BuyStack"}}"><i class="fas fa-coins"></i></a>
+                                                <a class="item-control item-buy" title="{{localize "LOOTSHEET.Buy"}}"><i class="fas fa-dollar-sign"></i></a>
                                             {{/ifeq}}
 
                                             {{#if ../../owner}}
-                                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                                                <a class="item-control item-edit" title="{{localize "LOOTSHEET.EditItem"}}"><i class="fas fa-edit"></i></a>
+                                                <a class="item-control item-delete" title="{{localize "LOOTSHEET.DeleteItem"}}"><i class="fas fa-trash"></i></a>
                                             {{/if}}
                                         </div>
                                     </li>
