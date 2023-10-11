@@ -159,11 +159,11 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC {
         "priceModifier"
       );
     }
-    let totalWeight = 0
+    let totalWeight = 0;
     this.actor.items.contents.forEach((item) => {
       let weight = Math.round((item.system.quantity * item.system.weight * 100) / 100);
       totalWeight += (isNaN(weight))? 0: weight;
-    })
+    });
     
     if (game.settings.get("lootsheet-simple", "includeCurrencyWeight")) {
       let weight = (
