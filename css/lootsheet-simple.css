@@ -321,7 +321,7 @@ input#quantity:focus {
     max-width: 3rem;
 }
 
-.loot-sheet-npc.sheet.actor .item-buyall,
+
 .loot-sheet-npc.sheet.actor .item-lootall {
 	display: none !important;
 }
