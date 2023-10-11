@@ -183,10 +183,19 @@
                                     <li class="items-header flexrow inventory-header">
                                                     
                                         <h3 class="item-name flexrow">{{localize section.label}}</h3>
-                    
-                                        <h3 class="item-name">{{section.label}}</h3>
-                                        <div class="item-detail item-quantity-sheet">{{localize "DND5E.QuantityAbbr"}}<i class="fas fa-box" title="{{localize "DND5E.QuantityAbbr"}}"></i></div>
-                                        <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}<i class="fas fa-coins" title="Price (in gp)"></i></div>
+                                        <div class="item-controls-empty"> </div>
+                                        <div class="item-detail item-weight-sheet">{{localize "DND5E.Weight"}}</div>
+                                        <div class="item-detail item-quantity-sheet">{{localize "DND5E.QuantityAbbr"}}</div>
+                                        
+                                        {{#ifeq ../lootsheettype "Merchant"}}
+                                            <div class="item-detail item-price-sheet">{{localize "DND5E.Price"}}</div>
+                                                
+                                        {{/ifeq}}
+                                        {{#ifeq ../lootsheettype "Loot"}}
+                                            <div class="item-detail item-price-sheet">Value</div>
+                                            
+                                        {{/ifeq}}
+                                        
                                         {{#if ../owner}}
                                             <div class="item-controls-empty flexrow">
                                                 <a class="item-control  item-create create-button" title="Create Item" data-type="{{section.type}}">

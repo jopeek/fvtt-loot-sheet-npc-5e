@@ -234,7 +234,7 @@ section.sheet-sidebar.sidebar {
 
 
 .loot-sheet-npc.sheet.sheet.actor .inventory-list .item-controls-empty {
-    flex: 0 0 110px;
+    flex: 0 0 75px;
 }
 
 .loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity,
@@ -256,7 +256,7 @@ section.sheet-sidebar.sidebar {
 }
 
 .loot-sheet-npc.sheet.actor .inventory-list .item .item-controls {
-	flex: 0 0 45px !important;
+	flex: 0 0 75px !important;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
