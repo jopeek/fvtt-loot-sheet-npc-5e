@@ -195,7 +195,7 @@ img.sheet-profile {
 	display: inline-block;
 	padding-left: 24px;
 	padding-bottom: 10px;
-	vertical-align: super;
+	vertical-align: middle;
 }
 
 .loot-sheet-npc.sheet.actor label.denomination.gp {
@@ -232,16 +232,31 @@ section.sheet-sidebar.sidebar {
 	text-align: center;
 }
 
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-price,
+
+.loot-sheet-npc.sheet.sheet.actor .inventory-list .item-controls-empty {
+    flex: 0 0 75px;
+}
+
 .loot-sheet-npc.sheet.actor .inventory-list .item .item-quantity,
-.loot-sheet-npc.sheet.actor .inventory-list .item .item-weight {
-	flex: 0 0 75px;
-	color: #666;
-	font-size: 10px;
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-weight,
+.loot-sheet-npc.sheet.actor .inventory-list .item .item-price {
+	flex: 0 0 55px;
+	color: #424242;
+	font-size: 12px;
+}
+
+.loot-sheet-npc.sheet.actor .inventory-list .item-detail {
+	flex: 0 0 55px;
+	font-size: 12px;
+	text-align: center;
+	border-right: 1px solid #c9c7b8;
+	word-break: break-word;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .loot-sheet-npc.sheet.actor .inventory-list .item .item-controls {
-	flex: 0 0 100px !important;
+	flex: 0 0 75px !important;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -290,9 +305,16 @@ input#quantity:focus {
 .loot-sheet-npc.sheet.actor .inventory-list .inventory-header .item-controls a.item-create {
     flex: initial;
 }
+.loot-sheet-npc.sheet.actor .inventory-list .inventory-header .item-controls-empty .create-button {
+    text-align: right; 
+	padding: 0 10% 0 0;
+}
+
+
+
 
 .loot-sheet-npc li.item.flexrow.inventory-header {
-    padding: 8px 8px 0 0;
+    padding: 8px 0 0 0;
 }
 
 .loot-sheet-npc .currency input[type="number"] {
