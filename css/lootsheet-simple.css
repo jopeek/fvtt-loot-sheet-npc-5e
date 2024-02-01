@@ -179,7 +179,6 @@ img.sheet-profile {
 
 .loot-sheet-npc.sheet.actor .inventory-filters .currency label {
 	white-space: nowrap;
-	padding-bottom: 0;
 }
 
 .loot-sheet-npc.sheet.actor .inventory-filters .currency input {
@@ -194,7 +193,7 @@ img.sheet-profile {
 .loot-sheet-npc.sheet.actor label.denomination {
 	display: inline-block;
 	padding-left: 24px;
-	padding-bottom: 10px;
+	padding-bottom: 6px;
 	vertical-align: middle;
 }
 
