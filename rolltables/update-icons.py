@@ -37,3 +37,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     update_img_paths(args.target_file, args.mapping_file, args.output)
+
+# Example usage:
+# python update-icons.py rolltables.json img_mapping.json -o updated_rolltables.json
+# This will read rolltables.json, update the img paths according to img_mapping.json, and save the result to updated_rolltables.json.
