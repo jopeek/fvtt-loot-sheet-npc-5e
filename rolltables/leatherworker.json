@@ -1,0 +1,236 @@
+{
+  "name": "Leatherworker",
+  "flags": {},
+  "results": [
+    {
+      "_id": "2aaqZKG4szlcpa1B",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Leather Armor",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.WwdpHLXGX5r8uZu5"
+    },
+    {
+      "_id": "mJNSRX3PvVdabxFy",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Studded Leather Armor",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.TIV3B1vbrVHIhQAm"
+    },
+    {
+      "_id": "OvYbBWPO14G4GRGI",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Hide Armor",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.n1V07puo0RQxPGuF"
+    },
+    {
+      "_id": "pCUqqU13lpRNOqOD",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/shield/oval-wooden-boss-steel.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Shield",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.sSs3hSzkKBMNBgTs"
+    },
+    {
+      "_id": "HlxqrDvCcZYW7oAT",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/slings/slingshot-wood.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Sling",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.3gynWO9sN4OLGMWD"
+    },
+    {
+      "_id": "rVHPIqz42R36xGMt",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/wetskin-leather-purple.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Waterskin",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.Uv0ilmzbWvqmlCVH"
+    },
+    {
+      "_id": "bg0yX4JshNtoDTWJ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/feet/boots-collared-rounded-brown.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Cobbler's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.hM84pZnpCqKfi8XH"
+    },
+    {
+      "_id": "qA4oFpspJp60svo3",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/hand/glove-simple-leather-orange.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Leatherworker's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.PUMfwyVUbtyxgYbD"
+    },
+    {
+      "_id": "Sxq9b0Vs0lyiZ1XE",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Bagpipes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.yxHi57T5mmVt0oDr"
+    },
+    {
+      "_id": "heiX5yyH2IWowhik",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/drum-brown-red.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Drum",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.69Dpr25pf4BjkHKb"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "Things made with leather",
+  "formula": "",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289741228,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.DdJjeGR5tVsXPEbU",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

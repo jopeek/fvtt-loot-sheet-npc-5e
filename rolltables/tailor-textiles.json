@@ -1,0 +1,257 @@
+{
+  "name": "Tailor/Textiles",
+  "flags": {},
+  "results": [
+    {
+      "_id": "J7gMRKIKhS8aKntv",
+      "flags": {},
+      "type": "document",
+      "img": "icons/environment/traps/cage-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Basket",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.Wv7HzD6dv1P0q78N"
+    },
+    {
+      "_id": "uqgGmF8NMLdRXDl3",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/shirt-collared-brown.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Common Clothes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.8RXjiddJ6VGyE7vB"
+    },
+    {
+      "_id": "zFsVxIiE0YuTGRRO",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-hooded-pink.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Costume Clothes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.E2h6sEe6FU2tnU96"
+    },
+    {
+      "_id": "01Qu1oLY7P0Jdmq5",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-heavy-fur-blue.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Fine Clothes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.3OXueEpvDDCVfGFA"
+    },
+    {
+      "_id": "UQHuNDbylOL7DTYf",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/shirt-collared-brown.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Traveler's Clothes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.SsAmWV6YBqeOFihT"
+    },
+    {
+      "_id": "PrLNKciD1BNE7bx2",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather-tan.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Component Pouch",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eZGmdOhaTWMicXPW"
+    },
+    {
+      "_id": "kEalq1kxBiqKapX6",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/coinpouch-simple-tan.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Pouch",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.9bWTRRDym06PzSAf"
+    },
+    {
+      "_id": "FVoYcgwSnLkGLAfY",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/mantle-collared-black.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Robes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.8GCEodUsTEEpBlO6"
+    },
+    {
+      "_id": "iWGJeogQRW4T9bCd",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/sack-simple-leather-tan.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Sack",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.CNdDj8dsXVpRVpXt"
+    },
+    {
+      "_id": "UUqcA06YaDvC3S9I",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/flags/banner-worn-green.webp",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Two-Person Tent",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.PanSr5EbqlfpSvwK"
+    },
+    {
+      "_id": "ntlIyDpGWFgm6p7y",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-hooded-pink.webp",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Weaver's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ap9prThUB2y9lDyj"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "Clothes, cloth, stuff like that",
+  "formula": "1d14",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289764135,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.pa0hp9N6BEWXlcTV",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

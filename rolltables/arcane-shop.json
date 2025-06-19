@@ -1,0 +1,740 @@
+{
+  "name": "Arcane Shop",
+  "flags": {},
+  "results": [
+    {
+      "_id": "lzPUeg9Hib2I0QZY",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/staves/staff-simple-gold.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Quarterstaff",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.g2dWN7PQiMRYWzyk"
+    },
+    {
+      "_id": "69hasVqVc8o6Jvzh",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/treasure/broach-jewel-gold-blue.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Abacus",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ea4xclqsksEQB1QF"
+    },
+    {
+      "_id": "Ox2fc1cNjYk9Ejhv",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/gems/gem-rough-navette-yellow-green.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Crystal",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.uXOT4fYbgPY8DGdd"
+    },
+    {
+      "_id": "iRhzGmVpjMuLRPrF",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/gems/pearl-natural.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Orb",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.tH5Rn0JVRG1zdmPa"
+    },
+    {
+      "_id": "qFvKvLLkdp2LT0mv",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/spear-hooked-blue.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Rod",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.OojyyGfh91iViuMF"
+    },
+    {
+      "_id": "UFANUWIVdiBI3nsP",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/staves/staff-ornate-engraved-blue.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Staff",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.BeKIrNIvNHRPQ4t5"
+    },
+    {
+      "_id": "fphM4R61Klzt74TA",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/staves/staff-simple-green.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Wand",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.KA2P6I48iOWlnboO"
+    },
+    {
+      "_id": "ZnWXRJzcC2ck7E95",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Glass Bottle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.HZp69hhyNZUUCipF"
+    },
+    {
+      "_id": "FoP2xxUCPI41lHqa",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/candle-unlit-white.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Candle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.0NoBBP3MMkvJlwZY"
+    },
+    {
+      "_id": "akppTIXWEgngDZiT",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/case-leather-tan.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Map or Scroll Case",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.5mIeX824uMklU3xq"
+    },
+    {
+      "_id": "AO1XFD64qvRfYqGq",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather-tan.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Component Pouch",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eZGmdOhaTWMicXPW"
+    },
+    {
+      "_id": "y8p18rSgT82ozl4L",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/plants/fern-lady-green.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Sprig of Mistletoe",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.xDK9GQd2iqOGH8Sd"
+    },
+    {
+      "_id": "KAj3czhkqyTlbG8T",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/neck/collar-carved-bone-teeth-ring.webp",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Totem",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.PGL6aaM0wE5h0VN5"
+    },
+    {
+      "_id": "uQ2jK62rd96cup7Y",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/staves/staff-simple-spiral-green.webp",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Wooden Staff",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.FF1ktpb2YSiyv896"
+    },
+    {
+      "_id": "S2UWxlxSx6tWQzX1",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/staves/staff-simple-brown.webp",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Yew Wand",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.t5yP0d7YaKwuKKiH"
+    },
+    {
+      "_id": "gk5p8dpf74EZKpdq",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/navigation/watch-simple-blue.webp",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Hourglass",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.G7LqGzKR5ts0WlJ9"
+    },
+    {
+      "_id": "Zb7YDqq1ucnbqDzk",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Ink Bottle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.dP7jMKyHTTgVb3ii"
+    },
+    {
+      "_id": "pzI7ZQdxtDwSdJ8N",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/materials/feather-red-.webp",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Ink Pen",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.uVm7MiB71QblfnoY"
+    },
+    {
+      "_id": "J2v24MLL7an8Ip35",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/document-bound-white.webp",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Paper",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.fNMkFCOvMiW2Rh3t"
+    },
+    {
+      "_id": "o7WulT6LO1kb8aOZ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Parchment",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.WFQS2vT8ddrFjTJg"
+    },
+    {
+      "_id": "6dqgfZuJFJEdstk2",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/coinpouch-simple-tan.webp",
+      "weight": 1,
+      "range": [
+        21,
+        21
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Pouch",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.9bWTRRDym06PzSAf"
+    },
+    {
+      "_id": "AdEV9K6r45VCevit",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/mantle-collared-black.webp",
+      "weight": 1,
+      "range": [
+        22,
+        22
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Robes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.8GCEodUsTEEpBlO6"
+    },
+    {
+      "_id": "N54HDUHr32DHkq2l",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/books/book-embossed-jewel-gold-purple.webp",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spellbook",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.LBajgahniRJbAgDr"
+    },
+    {
+      "_id": "yZNpKi8IzbZC2GKh",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        24,
+        24
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Vial",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.meJEfX3gZgtMX4x2"
+    },
+    {
+      "_id": "05lVctxqms3rzjf8",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pouch-leather-green.webp",
+      "weight": 1,
+      "range": [
+        25,
+        25
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Alchemist's supplies",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.SztwZhbhZeCqyAes"
+    },
+    {
+      "_id": "X2T8KslY0DZjjXMN",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/envelope-sealed-red-tan.webp",
+      "weight": 1,
+      "range": [
+        26,
+        26
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Calligrapher's Supplies",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.jhjo20QoiD5exf09"
+    },
+    {
+      "_id": "Pdi3spAnxCXBVMou",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        27,
+        27
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Lyre",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.EwG1EtmbgR3bM68U"
+    },
+    {
+      "_id": "541s5T8cgv6GIRKX",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        28,
+        28
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Lute",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.qBydtUUIkv520DT7"
+    },
+    {
+      "_id": "R5KBhZq5Xks6eheh",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/scrolls/scroll-bound-orange-tan.webp",
+      "weight": 1,
+      "range": [
+        29,
+        29
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spell Scroll Cantrip Level",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.rQ6sO7HDWzqMhSI3"
+    },
+    {
+      "_id": "2YmYV13bhCRlDxbp",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/scrolls/scroll-bound-orange-tan.webp",
+      "weight": 1,
+      "range": [
+        30,
+        30
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spell Scroll 1st Level",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.9GSfMg0VOA2b4uFN"
+    },
+    {
+      "_id": "nCqmKeXWbDUtAasW",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/scrolls/scroll-bound-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        31,
+        31
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spell Scroll 2nd Level",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.XdDp6CKh9qEvPTuS"
+    },
+    {
+      "_id": "hZnqBWa1hrBxldq1",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/scrolls/scroll-bound-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        32,
+        32
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spell Scroll 3rd Level",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.hqVKZie7x9w3Kqds"
+    },
+    {
+      "_id": "fCnYFSeQFTYWlVoh",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/scrolls/scroll-plain-red.webp",
+      "weight": 1,
+      "range": [
+        33,
+        33
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spell Scroll 4th Level",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.DM7hzgL836ZyUFB1"
+    },
+    {
+      "_id": "SJmbU7C3dyG4MwCp",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/scrolls/scroll-plain-red.webp",
+      "weight": 1,
+      "range": [
+        34,
+        34
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spell Scroll 5th Level",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.wa1VF8TXHmkrrR35"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "Roll magical stuff here",
+  "formula": "1d34",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289703273,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.jJw4TNiEdHJxzVzP",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

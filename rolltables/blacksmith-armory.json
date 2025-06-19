@@ -1,0 +1,1265 @@
+{
+  "name": "Blacksmith/Armory",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "Things that a blacksmith or armory can have",
+  "results": [
+    {
+      "_id": "ToL7pw2kyasQ04L0",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Studded Leather Armor",
+      "documentUuid": "Compendium.dnd5e.items.Item.TIV3B1vbrVHIhQAm",
+      "description": ""
+    },
+    {
+      "_id": "aTZUlavrFIMq2UC8",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Chain Shirt",
+      "documentUuid": "Compendium.dnd5e.items.Item.p2zChy24ZJdVqMSH",
+      "description": ""
+    },
+    {
+      "_id": "y3j0nlk0B7YAWk5v",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Scale Mail",
+      "documentUuid": "Compendium.dnd5e.items.Item.XmnlF5fgIO3tg6TG",
+      "description": ""
+    },
+    {
+      "_id": "8KXznHCZ3cKMHB10",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-layered-steel-black.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Breastplate",
+      "documentUuid": "Compendium.dnd5e.items.Item.SK2HATQ4abKUlV8i",
+      "description": ""
+    },
+    {
+      "_id": "jzMl4sorCJHP3KqO",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-layered-steel-black.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Half Plate Armor",
+      "documentUuid": "Compendium.dnd5e.items.Item.vsgmACFYINloIdPm",
+      "description": ""
+    },
+    {
+      "_id": "YTLpf4sASPR8j2OH",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Ring Mail",
+      "documentUuid": "Compendium.dnd5e.items.Item.nsXZejlmgalj4he9",
+      "description": ""
+    },
+    {
+      "_id": "n3mlnMhQqgGEcLhM",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Chain Mail",
+      "documentUuid": "Compendium.dnd5e.items.Item.rLMflzmxpe8JGTOA",
+      "description": ""
+    },
+    {
+      "_id": "Wz7N3S3Kmh2BwOqX",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Splint Armor",
+      "documentUuid": "Compendium.dnd5e.items.Item.cKpJmsJmU8YaiuqG",
+      "description": ""
+    },
+    {
+      "_id": "NEenqSXJRtlOYHM0",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Plate Armor",
+      "documentUuid": "Compendium.dnd5e.items.Item.OjkIqlW2UpgFcjZa",
+      "description": ""
+    },
+    {
+      "_id": "hzngnUikU8fUsyWq",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/shield/oval-wooden-boss-steel.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Shield",
+      "documentUuid": "Compendium.dnd5e.items.Item.sSs3hSzkKBMNBgTs",
+      "description": ""
+    },
+    {
+      "_id": "NgZakgHk19Sdmf3y",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/daggers/dagger-jeweled-purple.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Dagger",
+      "documentUuid": "Compendium.dnd5e.items.Item.0E565kQUBmndJ1a2",
+      "description": ""
+    },
+    {
+      "_id": "6nSsweDtzGePQUjS",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/axe-broad-black.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Handaxe",
+      "documentUuid": "Compendium.dnd5e.items.Item.eO7Fbv5WBk5zvGOc",
+      "description": ""
+    },
+    {
+      "_id": "RwfdTdC3xRdWR0eF",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/ammunition/arrows-bodkin-yellow-red.webp",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Javelin",
+      "documentUuid": "Compendium.dnd5e.items.Item.DWLMnODrnHn8IbAG",
+      "description": ""
+    },
+    {
+      "_id": "gOenFVwmnwuSK3jO",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/hammers/hammer-war-spiked.webp",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Light Hammer",
+      "documentUuid": "Compendium.dnd5e.items.Item.XVK6TOL4sGItssAE",
+      "description": ""
+    },
+    {
+      "_id": "9W7t5bfThBrjdSF8",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/maces/mace-round-spiked-black.webp",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Mace",
+      "documentUuid": "Compendium.dnd5e.items.Item.Ajyq6nGwF7FtLhDQ",
+      "description": ""
+    },
+    {
+      "_id": "rI6I3VuJL9IjvnD7",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/sickles/sickle-curved.webp",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Sickle",
+      "documentUuid": "Compendium.dnd5e.items.Item.i4NeNZ30ycwPDHMx",
+      "description": ""
+    },
+    {
+      "_id": "Loujik0X7EvW2KDt",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/spear-flared-worn-grey.webp",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Spear",
+      "documentUuid": "Compendium.dnd5e.items.Item.OG4nBBydvmfWYXIk",
+      "description": ""
+    },
+    {
+      "_id": "DXlfCEWRIMuqtEvc",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/halberd-crescent-engraved-steel.webp",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Battleaxe",
+      "documentUuid": "Compendium.dnd5e.items.Item.I0WocDSuNpGJayPb",
+      "description": ""
+    },
+    {
+      "_id": "heK8h77Wk0sBnjDn",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/maces/mace-round-spiked-black.webp",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Flail",
+      "documentUuid": "Compendium.dnd5e.items.Item.UrH3sMdnUDckIHJ6",
+      "description": ""
+    },
+    {
+      "_id": "k0jJVMwKA1YCPmKp",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/halberd-crescent-glowing.webp",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Glaive",
+      "documentUuid": "Compendium.dnd5e.items.Item.rOG1OM2ihgPjOvFW",
+      "description": ""
+    },
+    {
+      "_id": "1nhaDimiiMJ6lv7D",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/axe-double.webp",
+      "weight": 1,
+      "range": [
+        21,
+        21
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Greataxe",
+      "documentUuid": "Compendium.dnd5e.items.Item.1Lxk6kmoRhG8qQ0u",
+      "description": ""
+    },
+    {
+      "_id": "brImcSTzdUZAtzs0",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/swords/greatsword-guard-gem-blue.webp",
+      "weight": 1,
+      "range": [
+        22,
+        22
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Greatsword",
+      "documentUuid": "Compendium.dnd5e.items.Item.xMkP8BmFzElcsMaR",
+      "description": ""
+    },
+    {
+      "_id": "VFnEafI5NtaHlgOy",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/halberd-crescent-glowing.webp",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Halberd",
+      "documentUuid": "Compendium.dnd5e.items.Item.DMejWAc8r8YvDPP1",
+      "description": ""
+    },
+    {
+      "_id": "cXs5nWBv1nWNGP6B",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/ammunition/arrow-head-war-flight.webp",
+      "weight": 1,
+      "range": [
+        24,
+        24
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Lance",
+      "documentUuid": "Compendium.dnd5e.items.Item.RnuxdHUAIgxccVwj",
+      "description": ""
+    },
+    {
+      "_id": "jee7Dezy89qAGRY3",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/swords/greatsword-crossguard-steel.webp",
+      "weight": 1,
+      "range": [
+        25,
+        25
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Longsword",
+      "documentUuid": "Compendium.dnd5e.items.Item.10ZP2Bu3vnCuYMIB",
+      "description": ""
+    },
+    {
+      "_id": "Xkcne2kPX53dJ2vh",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/maces/mace-spiked-wood-grey.webp",
+      "weight": 1,
+      "range": [
+        26,
+        26
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Maul",
+      "documentUuid": "Compendium.dnd5e.items.Item.DizirD7eqjh8n95A",
+      "description": ""
+    },
+    {
+      "_id": "BoFa7K15DL1VJ8P5",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/maces/mace-round-spiked-black.webp",
+      "weight": 1,
+      "range": [
+        27,
+        27
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Morningstar",
+      "documentUuid": "Compendium.dnd5e.items.Item.dX8AxCh9o0A9CkT3",
+      "description": ""
+    },
+    {
+      "_id": "ywcLhasGALeySHZF",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/halberd-crescent-stone-worn.webp",
+      "weight": 1,
+      "range": [
+        28,
+        28
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Pike",
+      "documentUuid": "Compendium.dnd5e.items.Item.tC0kcqZT9HHAO0PD",
+      "description": ""
+    },
+    {
+      "_id": "WovnNBaH1ezR2fsd",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/swords/sword-guard-brown.webp",
+      "weight": 1,
+      "range": [
+        29,
+        29
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Rapier",
+      "documentUuid": "Compendium.dnd5e.items.Item.Tobce1hexTnDk4sV",
+      "description": ""
+    },
+    {
+      "_id": "JK0Z4OisOZbTFrV1",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/swords/sword-katana.webp",
+      "weight": 1,
+      "range": [
+        30,
+        30
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Scimitar",
+      "documentUuid": "Compendium.dnd5e.items.Item.fbC0Mg1a73wdFbqO",
+      "description": ""
+    },
+    {
+      "_id": "5GPTTl8ZaGLJr1Tl",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/swords/sword-guard-brown.webp",
+      "weight": 1,
+      "range": [
+        31,
+        31
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Shortsword",
+      "documentUuid": "Compendium.dnd5e.items.Item.osLzOwQdPtrK3rQH",
+      "description": ""
+    },
+    {
+      "_id": "LItQchWmKcOqnT4y",
+      "flags": {},
+      "type": "document",
+      "img": "icons/skills/melee/spear-tips-triple-orange.webp",
+      "weight": 1,
+      "range": [
+        32,
+        32
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Trident",
+      "documentUuid": "Compendium.dnd5e.items.Item.F65ANO66ckP8FDMa",
+      "description": ""
+    },
+    {
+      "_id": "5Tpqnk8AMxDc7zks",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/pickaxe-double-brown.webp",
+      "weight": 1,
+      "range": [
+        33,
+        33
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "War Pick",
+      "documentUuid": "Compendium.dnd5e.items.Item.2YdfjN1PIIrSHZii",
+      "description": ""
+    },
+    {
+      "_id": "QuawoIZMIMEfVe8y",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/hammers/hammer-drilling-spiked.webp",
+      "weight": 1,
+      "range": [
+        34,
+        34
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Warhammer",
+      "documentUuid": "Compendium.dnd5e.items.Item.F0Df164Xv1gWcYt0",
+      "description": ""
+    },
+    {
+      "_id": "EaK1AGTkOxYH2UOm",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/gems/pearl-rock.webp",
+      "weight": 1,
+      "range": [
+        35,
+        35
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Ball Bearings",
+      "documentUuid": "Compendium.dnd5e.items.Item.3YSUIp4eFo26YxJr",
+      "description": ""
+    },
+    {
+      "_id": "hxovTqVU6CdCkEXE",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/bell-brass-brown.webp",
+      "weight": 1,
+      "range": [
+        36,
+        36
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Bell",
+      "documentUuid": "Compendium.dnd5e.items.Item.F6GwSqjErX1u35Re",
+      "description": ""
+    },
+    {
+      "_id": "YjlCu3bhh2RtuMTd",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/sickles/sickle-hooked-wood.webp",
+      "weight": 1,
+      "range": [
+        37,
+        37
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Block and Tackle",
+      "documentUuid": "Compendium.dnd5e.items.Item.jlI44g90pp4VazBU",
+      "description": ""
+    },
+    {
+      "_id": "D9pNcS3SKKdpc3qX",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/misc/whip-red-yellow.webp",
+      "weight": 1,
+      "range": [
+        38,
+        38
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Chain (10 feet)",
+      "documentUuid": "Compendium.dnd5e.items.Item.JvoufrTkSDMsS9Sm",
+      "description": ""
+    },
+    {
+      "_id": "kH3ZzvJZlhsRok2o",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/pickaxe-double-brown.webp",
+      "weight": 1,
+      "range": [
+        39,
+        39
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Crowbar",
+      "documentUuid": "Compendium.dnd5e.items.Item.V5UAjT3ed6sDNtgm",
+      "description": ""
+    },
+    {
+      "_id": "WZagg8LJnUlXvXka",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/sickles/sickle-hooked-wood.webp",
+      "weight": 1,
+      "range": [
+        40,
+        40
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Grappling Hook",
+      "documentUuid": "Compendium.dnd5e.items.Item.tfDxZIKDpOkz6pbx",
+      "description": ""
+    },
+    {
+      "_id": "roj2yi4F8ZXKl711",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/smithing/hammer-sledge-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        41,
+        41
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Hammer",
+      "documentUuid": "Compendium.dnd5e.items.Item.14pNRT4sZy9rgvhb",
+      "description": ""
+    },
+    {
+      "_id": "giyhw3nFMEDhqpZQ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/smithing/hammer-sledge-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        42,
+        42
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Sledgehammer",
+      "documentUuid": "Compendium.dnd5e.items.Item.9G9QGSPgpZDSsm37",
+      "description": ""
+    },
+    {
+      "_id": "LHPNoxYpiEdYb98I",
+      "flags": {},
+      "type": "document",
+      "img": "icons/environment/traps/trap-jaw-steel.webp",
+      "weight": 1,
+      "range": [
+        43,
+        43
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Hunting Trap",
+      "documentUuid": "Compendium.dnd5e.items.Item.LiOD83I4MIZlpoQQ",
+      "description": ""
+    },
+    {
+      "_id": "OCqyKZNo8XSV7Izd",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/treasure/lantern-stone-grey.webp",
+      "weight": 1,
+      "range": [
+        44,
+        44
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Lamp",
+      "documentUuid": "Compendium.dnd5e.items.Item.qMzHmlmha8qMDnEF",
+      "description": ""
+    },
+    {
+      "_id": "wp7ipMK5nnWtalxw",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/lantern-iron-yellow.webp",
+      "weight": 1,
+      "range": [
+        45,
+        45
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Bullseye Lantern",
+      "documentUuid": "Compendium.dnd5e.items.Item.UkWdyJYQTfVX2cJW",
+      "description": ""
+    },
+    {
+      "_id": "KgXEwGP7eYg1ImSV",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/lantern-iron-yellow.webp",
+      "weight": 1,
+      "range": [
+        46,
+        46
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Hooded Lantern",
+      "documentUuid": "Compendium.dnd5e.items.Item.trmWAdUoR6Y2B7rA",
+      "description": ""
+    },
+    {
+      "_id": "si4S4sGAUnu90Pqf",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/misc/lock-steel-blue.webp",
+      "weight": 1,
+      "range": [
+        47,
+        47
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Lock",
+      "documentUuid": "Compendium.dnd5e.items.Item.xwUWrV15s9jLnmfZ",
+      "description": ""
+    },
+    {
+      "_id": "YXHKCjzA7wRvjpVX",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/misc/whip-red-yellow.webp",
+      "weight": 1,
+      "range": [
+        48,
+        48
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Manacles",
+      "documentUuid": "Compendium.dnd5e.items.Item.tWJLHIL6ZIZUez9k",
+      "description": ""
+    },
+    {
+      "_id": "so8ceqiYZYGhnEFx",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/currency/coin-engraved-slot-one-copper.webp",
+      "weight": 1,
+      "range": [
+        49,
+        49
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Steel Mirror",
+      "documentUuid": "Compendium.dnd5e.items.Item.HZsvDPmvysQKGzGy",
+      "description": ""
+    },
+    {
+      "_id": "lfTyAcjrmMIfCWvK",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/hand/pickaxe-steel-white.webp",
+      "weight": 1,
+      "range": [
+        50,
+        50
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Miner's Pick",
+      "documentUuid": "Compendium.dnd5e.items.Item.X5knPtrQAT8GePJ4",
+      "description": ""
+    },
+    {
+      "_id": "wQSorRlv77DgYgAn",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/stake-rough-simple-brown.webp",
+      "weight": 1,
+      "range": [
+        51,
+        51
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Piton",
+      "documentUuid": "Compendium.dnd5e.items.Item.TqyvIglHDj5kfohR",
+      "description": ""
+    },
+    {
+      "_id": "Ht7Q5iVdD6asTlym",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/laboratory/cauldron-filled-gold.webp",
+      "weight": 1,
+      "range": [
+        52,
+        52
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Iron Pot",
+      "documentUuid": "Compendium.dnd5e.items.Item.M8xM8BLK4tpUayEE",
+      "description": ""
+    },
+    {
+      "_id": "RVB1xM1a31s7n50g",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/stake-rough-simple-brown.webp",
+      "weight": 1,
+      "range": [
+        53,
+        53
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Iron Spike",
+      "documentUuid": "Compendium.dnd5e.items.Item.RiOeHR2qaYktz5Ys",
+      "description": ""
+    },
+    {
+      "_id": "ZjKDPJ1PCbjKNR58",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/stone/geode-raw-tan.webp",
+      "weight": 1,
+      "range": [
+        54,
+        54
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Whetstone",
+      "documentUuid": "Compendium.dnd5e.items.Item.SuQmsJfxyJl2hPcM",
+      "description": ""
+    },
+    {
+      "_id": "unL4AFzR3VTAYXNa",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/axe-double-chopping-black.webp",
+      "weight": 1,
+      "range": [
+        55,
+        55
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Carpenter's Tools",
+      "documentUuid": "Compendium.dnd5e.items.Item.8NS6MSOdXtUqD7Ib",
+      "description": ""
+    },
+    {
+      "_id": "d0xuVehjGFA8howg",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/smithing/hammer-sledge-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        56,
+        56
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Mason's Tools",
+      "documentUuid": "Compendium.dnd5e.items.Item.skUih6tBvcBbORzA",
+      "description": ""
+    },
+    {
+      "_id": "Dz8kO3SV8V3Vmk1Y",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/smithing/hammer-sledge-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        57,
+        57
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Smith's Tools",
+      "documentUuid": "Compendium.dnd5e.items.Item.KndVe2insuctjIaj",
+      "description": ""
+    },
+    {
+      "_id": "x4nYARd9XrBnatoF",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/tech/cog-bronze.webp",
+      "weight": 1,
+      "range": [
+        58,
+        58
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Tinker's Tools",
+      "documentUuid": "Compendium.dnd5e.items.Item.0d08g1i5WXnNrCNA",
+      "description": ""
+    },
+    {
+      "_id": "YVPrjd0YvUgMyC8v",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        59,
+        59
+      ],
+      "drawn": false,
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "name": "Musical Instrument: Horn",
+      "documentUuid": "Compendium.dnd5e.items.Item.aa9KuBy4dst7WIW9",
+      "description": ""
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "folder": "uoTlT3SP6nBaetis",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289719654,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.9afjTcGaUjQdThdx",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "formula": "1d59"
+}

@@ -1,0 +1,215 @@
+{
+  "name": "Fletcher/Bowyer",
+  "flags": {},
+  "results": [
+    {
+      "_id": "KNZYUD9KhVe401xs",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Light Crossbow",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ddWvQRLmnnIS0eLF"
+    },
+    {
+      "_id": "cVqwu0KkuYjljQZi",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/bows/shortbow-recurve.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Shortbow",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.GJv6WkD7D2J6rP6M"
+    },
+    {
+      "_id": "xSUc466P2Fx2Ypek",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Hand Crossbow",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.qaSro7kFhxD6INbZ"
+    },
+    {
+      "_id": "qvx2MmdRntq0ByXl",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/crossbows/crossbow-blue.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Heavy Crossbow",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.RmP0mYRn2J7K26rX"
+    },
+    {
+      "_id": "5kPbhqttbgFxEJ1C",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/bows/longbow-leather-green.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Longbow",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.3cymOVja8jXbzrdT"
+    },
+    {
+      "_id": "mXDTc1pHTGylXwXo",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/ammunition/arrows-quiver-black.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Arrows",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.3c7JXOzsv55gqJS5"
+    },
+    {
+      "_id": "BKJshLhjBu7Zd7zg",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/ammunition/arrows-bodkin-yellow-red.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Crossbow Bolt",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.SItCnYBqhzqBoaWG"
+    },
+    {
+      "_id": "h6SvpA4kSNqEJUVw",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/ammunition/arrows-quiver-black.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Crossbow Bolt Case",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eJtPBiZtr2pp6ynt"
+    },
+    {
+      "_id": "tt1foujr9BUHaTL0",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/ammunition/arrows-quiver-black.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Quiver",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.4MtQKPn9qMWCFjDA"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "Ranged weapons and stuff",
+  "formula": "1d9",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289729537,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.SqdUjjalBnRiWrTn",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

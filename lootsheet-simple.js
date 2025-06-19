@@ -5,7 +5,12 @@ class LootSheet5eNPCHelper {
    * It first tries to get an entry from the actor's permissions, if none is found it uses default, otherwise returns 0.
    *
    */
-  static getLootPermissionForPlayer(actorData, player) {
+  static getLootPermissionForPlayer(context, player) {
+    //console.log(`LootSheet5eNPCHelper | context:`, context)
+    //console.log(`LootSheet5eNPCHelper | player:`, player)
+    
+    let actorData = context.actor
+
     let defaultPermission = actorData.ownership.default
     if (player.playerId in actorData.ownership) {
       return actorData.ownership[player.playerId]
@@ -30,7 +35,7 @@ class LootSheet5eNPCHelper {
   /**
    * Shared code for distributing coins so it can be called both from socket and as GM
    * @param {Actor5e} containerActor - The actor who is initiating the distribution of coins
-   * @returns 
+   * @returns
    */
   static distributeCoins(containerActor) {
     let observers = []
@@ -80,8 +85,8 @@ class LootSheet5eNPCHelper {
         if (currencySplit[c]) {
           msg.push(` ${currencySplit[c]} ${c} coins`)
         }
-          // Add currency to permitted actor
-          newCurrency[c] = parseInt(currency[c] || 0) + (currencySplit[c] ?? 0)
+        // Add currency to permitted actor
+        newCurrency[c] = parseInt(currency[c] || 0) + (currencySplit[c] ?? 0)
       }
       u.update({
         'system.currency': newCurrency,
@@ -89,7 +94,7 @@ class LootSheet5eNPCHelper {
 
       // Create chat message for coins received
       if (msg.length != 0) {
-        let message = `${u.name} receives: `
+        let message = `<b>${u.name}</b> receives: `
         message += msg.join(',')
         ChatMessage.create({
           user: game.user._id,
@@ -102,7 +107,7 @@ class LootSheet5eNPCHelper {
       }
     }
     // Remove currency from loot actor.
-    containerActor.update({'system.currency': currencyRemainder})
+    containerActor.update({ 'system.currency': currencyRemainder })
   }
 }
 
@@ -150,17 +155,59 @@ class QuantityDialog extends Dialog {
   }
 }
 
-class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
+class LootSheet5eNPC extends dnd5e.applications.actor.NPCActorSheet {
   static SOCKET = 'module.lootsheet-simple'
 
   /** @override */
   static TABS = [
-    { tab: "features", label: "DND5E.Inventory", svg: "backpack" },
-    { tab: "biography", label: "DND5E.Biography", icon: "fas fa-feather" },
-  ];
+    { tab: 'inventory', label: 'DND5E.Inventory', svg: 'systems/dnd5e/icons/svg/backpack.svg' },
+    { tab: 'biography', label: 'DND5E.Biography', icon: 'fas fa-feather' },
+  ]
 
-  get template() {
-    // adding the #equals and #unequals handlebars helper
+  /** @override */
+  tabGroups = {
+    primary: 'inventory',
+  }
+
+  /** @override */
+  static PARTS = {
+    header: {
+      template: 'modules/lootsheet-simple/template/npc-header.hbs',
+    },
+    sidebar: {
+      container: { classes: ['main-content'], id: 'main' },
+      template: 'modules/lootsheet-simple/template/npc-sidebar.hbs',
+    },
+    inventory: {
+      container: { classes: ['tab-body'], id: 'tabs' },
+      template: 'modules/lootsheet-simple/template/actor-inventory.hbs',
+      scrollable: [''],
+    },
+    biography: {
+      container: { classes: ['tab-body'], id: 'tabs' },
+      template: 'modules/lootsheet-simple/template/npc-biography.hbs',
+      scrollable: [''],
+    },
+    tabs: {
+      id: 'tabs',
+      classes: ['tabs-right'],
+      template: 'systems/dnd5e/templates/shared/sidebar-tabs.hbs',
+    },
+  }
+
+  /** @override */
+  static DEFAULT_OPTIONS = {
+    classes: ['npc', 'vertical-tabs', 'loot-sheet-npc'],
+    position: {
+      width: 890,
+      height: 750,
+    },
+  }
+
+  /** @inheritDoc */
+  async _prepareContext(options) {
+    //console.log('LootSheet5eNPC | _prepareContext')
+
     Handlebars.registerHelper('equals', function (arg1, arg2, options) {
       return arg1 == arg2 ? options.fn(this) : options.inverse(this)
     })
@@ -194,49 +241,30 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
       return (Math.round(basePrice * modifier * 100) / 100).toLocaleString('en')
     })
 
-    Handlebars.registerHelper('lootsheetstackweight', function (weight, qty) {
-      let showStackWeight = game.settings.get('lootsheet-simple', 'showStackWeight')
-      if (showStackWeight) {
-        return `/${(weight.value * qty).toLocaleString('en')}`
-      } else {
-        return ''
-      }
-    })
+    options.lootsheetTypes = [
+      { value: 'Loot', label: game.i18n.localize('LOOTSHEET.Loot') },
+      { value: 'Merchant', label: game.i18n.localize('LOOTSHEET.Merchant') },
+    ]
 
-    Handlebars.registerHelper('lootsheetweight', function (weight) {
-      return (Math.round(weight.value * 1e5) / 1e5).toString()
-    })
+    //return await super._prepareContext(options)
+    // Call the base method to get the default context
+    const context = await super._prepareContext(options)
 
-    const path = 'systems/dnd5e/templates/actors/'
-    if (!game.user.isGM && this.actor.limited) return path + 'limited-sheet.hbs'
-    return 'modules/lootsheet-simple/template/npc-sheet.hbs'
-  }
+    // Inject custom data into the context
+    this._prepareGMSettings(context)
 
-  static get defaultOptions() {
-    const options = super.defaultOptions
-
-    foundry.utils.mergeObject(options, {
-      classes: ['dnd5e2 sheet actor npc vertical-tabs loot-sheet-npc'],
-      width: 890,
-      height: 750,
-    })
-    return options
-  }
-
-  async getData() {
-    const sheetData = await super.getData()
-
-    // Prepare GM Settings
-    this._prepareGMSettings(sheetData.actor)
+    //console.log('LootSheet5eNPC | context', context)
 
     // Prepare isGM attribute in sheet Data
-    if (game.user.isGM) sheetData.isGM = true
-    else sheetData.isGM = false
+    if (game.user.isGM) context.isGM = true
+    else context.isGM = false
 
     let lootsheettype = await this.actor.getFlag('lootsheet-simple', 'lootsheettype')
 
     if (!lootsheettype) await this.actor.setFlag('lootsheet-simple', 'lootsheettype', 'Loot')
     lootsheettype = await this.actor.getFlag('lootsheet-simple', 'lootsheettype')
+
+    //console.log('LootSheet5eNPC | lootsheettype', lootsheettype)
 
     let priceModifier = 1.0
     if (lootsheettype === 'Merchant') {
@@ -248,7 +276,9 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
     let totalWeight = 0
     this.actor.items.contents.forEach((item) => {
       try {
-        let weight = Math.round((item.system.quantity * item.system.weight.value * 100) / 100)
+        let weight = Math.round(
+          (item.system.quantity * ((item.system.weight?.value ?? item.system.weight ?? 0)) * 100
+        ) / 100)
         totalWeight += isNaN(weight) ? 0 : weight
       } catch (error) {
         console.error('An error occurred while calculating weight:', error)
@@ -291,7 +321,9 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
     })
 
     let totalQuantity = 0
-    this.actor.items.contents.forEach((item) => {
+    this.actor.items.contents
+      .filter(item => item.type === "equipment" || item.type === "weapon" || item.type === "consumable" || item.type === "tool" || item.type === "loot" || item.type === "container" || item.type === "backpack" || item.type === "armor" || item.type === "gear") // Only inventory items
+      .forEach((item) => {
       let addQuantity = Math.round((item.system.quantity * 100) / 100)
       totalQuantity += isNaN(addQuantity) ? 0 : addQuantity
     })
@@ -306,31 +338,43 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
 
     let shopQty = await this.actor.getFlag('lootsheet-simple', 'shopQty')
 
-    sheetData.lootsheettype = lootsheettype
-    sheetData.selectedRollTable = selectedRollTable
-    sheetData.itemQty = itemQty
-    sheetData.itemQtyLimit = itemQtyLimit
-    sheetData.shopQty = shopQty
-    sheetData.clearInventory = clearInventory
-    sheetData.totalItems = this.actor.items.contents.length
-    sheetData.totalWeight = totalWeight.toLocaleString('en')
-    sheetData.totalPrice = totalPrice.toLocaleString('en')
-    sheetData.totalQuantity = totalQuantity
-    sheetData.priceModifier = priceModifier
-    sheetData.rolltables = game.tables.contents
-    // console.log(game.tables);
-    sheetData.lootCurrency = game.settings.get('lootsheet-simple', 'lootCurrency')
-    sheetData.lootAll = game.settings.get('lootsheet-simple', 'lootAll')
-    sheetData.system.currency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-      sheetData.system.currency,
+    const lootsheetTypes = [
+      { value: 'Loot', label: game.i18n.localize('LOOTSHEET.Loot') },
+      { value: 'Merchant', label: game.i18n.localize('LOOTSHEET.Merchant') },
+    ]
+    context.lootsheetTypes = lootsheetTypes
+    context.lootsheettype = lootsheettype
+    context.selectedRollTable = selectedRollTable
+    context.itemQty = itemQty
+    context.itemQtyLimit = itemQtyLimit
+    context.shopQty = shopQty
+    context.clearInventory = clearInventory
+    //console.log('LootSheet5eNPC | this.actor', this.actor)
+    let totalItems = 0
+    this.actor.items.contents
+      .filter(item => item.type === "equipment" || item.type === "weapon" || item.type === "consumable" || item.type === "tool" || item.type === "loot" || item.type === "container" || item.type === "backpack" || item.type === "armor" || item.type === "gear") // Only inventory items
+      .forEach((item) => {
+        totalItems += 1
+      })
+    context.totalItems = totalItems
+    context.totalWeight = totalWeight.toLocaleString('en')
+    context.totalPrice = totalPrice.toLocaleString('en')
+    context.totalQuantity = totalQuantity
+    context.priceModifier = priceModifier
+    // Only include rolltables from the "Loot Sheet Tables" folder
+    const lootSheetFolder = game.folders.find(f => f.name === "Loot Sheet Tables" && f.type === "RollTable");
+    context.rolltables = lootSheetFolder
+      ? game.tables.contents.filter(t => t.folder?.id === lootSheetFolder.id)
+      : [];
+    context.lootCurrency = game.settings.get('lootsheet-simple', 'lootCurrency')
+    context.lootAll = game.settings.get('lootsheet-simple', 'lootAll')
+    context.system.currency = LootSheet5eNPCHelper.convertCurrencyFromObject(
+      context.system.currency,
     )
 
-    // console.log("sheetdata", sheetData);
-    // console.log("this actor", this.actor);
-
-    // Return data for rendering
-    return sheetData
+    return context
   }
+
 
   /* -------------------------------------------- */
   /*  Event Listeners and Handlers
@@ -340,21 +384,35 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
    * Activate event listeners using the prepared sheet HTML
    * @param html {HTML}   The prepared HTML object ready to be rendered into the DOM
    */
-  activateListeners(html) {
-    super.activateListeners(html)
-    if (this.options.editable) {
+  async activateListeners(html) {
+    //console.log('LootSheet5eNPC | activateListeners', this.actor)
+
+    // Add lootsheettype as a class to the root form
+    const lootsheettype = await this.actor.getFlag('lootsheet-simple', 'lootsheettype');
+    //console.log('LootSheet5eNPC | lootsheettype', lootsheettype)
+
+    const $html = $(html);
+
+    if (lootsheettype) {
+      $html.removeClass("type-Loot");
+      $html.removeClass("type-Merchant");
+      $html.addClass("type-" + lootsheettype);
+    }
+
+    if (this.options.editPermission === 3 || game.user.isGM) {
       // Toggle Permissions
-      html.find('.permission-proficiency').click((ev) => this._onCyclePermissionProficiency(ev))
-      html
+      //console.log('LootSheet5eNPC | permission-proficiency', $html.find('.permission-proficiency'))
+      $html.find('.permission-proficiency').click((ev) => this._onCyclePermissionProficiency(ev))
+      $html
         .find('.permission-proficiency-bulk')
         .click((ev) => this._onCyclePermissionProficiencyBulk(ev))
 
       // Price Modifier
-      html.find('.price-modifier').click((ev) => this._priceModifier(ev))
+      $html.find('.price-modifier').click((ev) => this._priceModifier(ev))
 
-      html.find('.merchant-settings').change((ev) => this._merchantSettingChange(ev))
-      html.find('.update-inventory').click((ev) => this._merchantInventoryUpdate(ev))
-      html.find('.clear-inventory.slide-toggle').click((ev) => this._clearInventoryChange(ev))
+      $html.find('.merchant-settings').change((ev) => this._merchantSettingChange(ev))
+      $html.find('.update-inventory').click((ev) => this._merchantInventoryUpdate(ev))
+      $html.find('.clear-inventory.slide-toggle').click((ev) => this._clearInventoryChange(ev))
 
       const selectRollTable = document.getElementById('lootsheet-rolltable')
       const buttonUpdateInventory = document.getElementById('update-inventory')
@@ -369,36 +427,36 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
     }
 
     // Split Coins
-    html
+    $html
       .find('.split-coins')
       .removeAttr('disabled')
       .click((ev) => this._distributeCoins(ev))
 
     // Buy Item
-    html.find('.item-buy').click((ev) => this._buyItem(ev))
-    html.find('.item-buyall').click((ev) => this._buyItem(ev, 1))
+    $html.find('.item-buy').click((ev) => this._buyItem(ev))
+    $html.find('.item-buyall').click((ev) => this._buyItem(ev, 1))
 
     // Loot Item
-    html.find('.item-loot').click((ev) => this._lootItem(ev))
-    html.find('.item-lootall').click((ev) => this._lootItem(ev, 1))
+    $html.find('.item-loot').click((ev) => this._lootItem(ev))
+    $html.find('.item-lootall').click((ev) => this._lootItem(ev, 1))
 
     // Loot Currency
-    html
+    $html
       .find('.currency-loot')
       .removeAttr('disabled')
       .click((ev) => this._lootCoins(ev))
 
     // Loot All
-    html
+    $html
       .find('.loot-all')
       .removeAttr('disabled')
       .click((ev) => this._lootAll(ev, html))
 
     // Sheet Type
-    html.find('.sheet-type').change((ev) => this._changeSheetType(ev, html))
+    $html.find('.sheet-type').change((ev) => this._changeSheetType(ev, html))
 
     // Roll Table
-    //html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
+    //$html.find('.sheet-type').change(ev => this._changeSheetType(ev, html));
   }
 
   /* -------------------------------------------- */
@@ -517,6 +575,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
       const rollResult = await rolltable.roll()
       let itemToAdd = null
 
+      console.log(`LootSheet5eNPC | rollResult`, rollResult)
       if (rollResult.results[0].documentCollection === 'Item') {
         itemToAdd = game.items.get(rollResult.results[0].documentId)
       } else {
@@ -656,7 +715,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
    */
   async _changeSheetType(event, html) {
     event.preventDefault()
-    // console.log("Loot Sheet | Sheet Type changed", event);
+    //console.log('LootSheet5eNPC | Change Sheet Type', event)
 
     let currentActor = this.actor
 
@@ -859,58 +918,77 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
    */
   _lootAll(event, html) {
     event.preventDefault()
-    // console.log("Loot Sheet | Loot All clicked");
-    this._lootCoins(event)
+    // Add confirmation dialog before proceeding
+    new Dialog({
+      title: "Confirm Loot All",
+      content: "<p>Are you sure you want to loot all items and coins?</p>",
+      buttons: {
+        yes: {
+          icon: '<i class="fas fa-check"></i>',
+          label: "Yes",
+          callback: () => {
+            this._lootCoins(event)
 
-    let targetGm = null
-    game.users.forEach((u) => {
-      if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
-        targetGm = u
-      }
-    })
+            const $html = $(html);
 
-    if (!targetGm) {
-      return ui.notifications.error(
-        'No active GM on your scene, they must be online and on the same scene to purchase an item.',
-      )
-    }
+            let targetGm = null
+            game.users.forEach((u) => {
+              if (u.isGM && u.active && u.viewedScene === game.user.viewedScene) {
+                targetGm = u
+              }
+            })
 
-    if (this.token === null) {
-      return ui.notifications.error(`You must loot items from a token.`)
-    }
-    if (!game.user.character) {
-      // console.log("Loot Sheet | No active character for user");
-      return ui.notifications.error(`No active character for user.`)
-    }
+            if (!targetGm) {
+              return ui.notifications.error(
+                'No active GM on your scene, they must be online and on the same scene to purchase an item.',
+              )
+            }
 
-    const itemTargets = html.find('.item[data-item-id]')
-    if (!itemTargets) {
-      return
-    }
+            if (this.token === null) {
+              return ui.notifications.error(`You must loot items from a token.`)
+            }
+            if (!game.user.character) {
+              // console.log("Loot Sheet | No active character for user");
+              return ui.notifications.error(`No active character for user.`)
+            }
 
-    const items = []
-    for (let i of itemTargets) {
-      const itemId = i.getAttribute('data-item-id')
-      const item = this.actor.getEmbeddedDocument('Item', itemId)
-      items.push({
-        itemId: itemId,
-        quantity: item.system.quantity,
-      })
-    }
-    if (items.length === 0) {
-      return
-    }
+            const itemTargets = $html.find('.item[data-item-id]')
+            if (!itemTargets) {
+              return
+            }
 
-    const packet = {
-      type: 'loot',
-      looterId: game.user.character._id,
-      tokenId: this.token.id,
-      items: items,
-      processorId: targetGm.id,
-    }
+            const items = []
+            for (let i of itemTargets) {
+              const itemId = i.getAttribute('data-item-id')
+              const item = this.actor.getEmbeddedDocument('Item', itemId)
+              items.push({
+                itemId: itemId,
+                quantity: item.system.quantity,
+              })
+            }
+            if (items.length === 0) {
+              return
+            }
 
-    console.log('LootSheet5e', 'Sending loot request to ' + targetGm.name, packet)
-    game.socket.emit(LootSheet5eNPC.SOCKET, packet)
+            const packet = {
+              type: 'loot',
+              looterId: game.user.character._id,
+              tokenId: this.token.id,
+              items: items,
+              processorId: targetGm.id,
+            }
+
+            console.log('LootSheet5e', 'Sending loot request to ' + targetGm.name, packet)
+            game.socket.emit(LootSheet5eNPC.SOCKET, packet)
+          }
+        },
+        no: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "No"
+        }
+      },
+      default: "no"
+    }).render(true)
   }
 
   /* -------------------------------------------- */
@@ -1027,9 +1105,9 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
    * Handle cycling permissions
    * @private
    */
-  _onCyclePermissionProficiency(event) {
+  async _onCyclePermissionProficiency(event) {
     event.preventDefault()
-
+    //console.log('LootSheet5eNPC | _onCyclePermissionProficiency', event)
     let field = $(event.currentTarget).siblings('input[type="hidden"]')
 
     let level = parseFloat(field.val())
@@ -1042,7 +1120,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
 
     let playerId = field[0].name
 
-    this._updatePermissions(this.actor, playerId, newLevel, event)
+    await this._updatePermissions(this.actor, playerId, newLevel, event)
 
     this._onSubmit(event)
   }
@@ -1081,14 +1159,17 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
     this._onSubmit(event)
   }
 
-  _updatePermissions(actorData, playerId, newLevel, event) {
+  async _updatePermissions(actorData, playerId, newLevel, event) {
+    //console.log('LootSheet5eNPC | _updatePermissions', actorData, playerId, newLevel, event)
     // Read player permission on this actor and adjust to new level
     let currentPermissions = foundry.utils.duplicate(actorData.ownership)
 
     currentPermissions[playerId] = newLevel
+    //console.log('LootSheet5eNPC | currentPermissions', currentPermissions)
     // Save updated player permissions
-    const lootPermissions = new DocumentOwnershipConfig(this.actor)
-    lootPermissions._updateObject(event, currentPermissions)
+    await this.actor.update({
+      ownership: currentPermissions
+    });
   }
 
   /* -------------------------------------------- */
@@ -1102,6 +1183,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
   // }
   _prepareItems(context) {
     super._prepareItems(context)
+    //console.log('LootSheet5eNPC | _prepareItems called')
   }
 
   /* -------------------------------------------- */
@@ -1143,15 +1225,16 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
    * @private
    */
   _prepareGMSettings(context) {
+    //console.log('LootSheet5eNPC | _prepareGMSettings called')
     const playerData = [],
       observers = []
-    //console.log(game.users);
+    //console.log('LootSheet5eNPC', game.users);
     //console.log("context", context);
 
     let players = game.users
 
     for (let player of players) {
-      //console.log(player);
+      //console.log('LootSheet5eNPC', player);
 
       if (player.character) {
         player.playerId = player._id
@@ -1160,7 +1243,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
 
         player.lootPermission = LootSheet5eNPCHelper.getLootPermissionForPlayer(context, player)
 
-        //console.log("player", player);
+        console.log("LootSheet5eNPC | player.lootPermission", player.lootPermission);
 
         player.icon = this._getPermissionIcon(player.lootPermission)
         player.lootPermissionDescription = this._getPermissionDescription(player.lootPermission)
@@ -1170,12 +1253,12 @@ class LootSheet5eNPC extends dnd5e.applications.actor.ActorSheet5eNPC2 {
 
     let loot = {}
     loot.players = playerData
-    context.flags.loot = loot
+    context.actor.flags.loot = loot
   }
 }
 
 //Register the loot sheet
-Actors.registerSheet('dnd5e', LootSheet5eNPC, {
+foundry.documents.collections.Actors.registerSheet('dnd5e', LootSheet5eNPC, {
   label: 'LOOTSHEET.SheetName',
   types: ['npc'],
   makeDefault: false,
@@ -1203,7 +1286,7 @@ Hooks.once('init', () => {
 
   game.settings.register('lootsheet-simple', 'lootCurrency', {
     name: 'Loot currency?',
-    hint: 'If enabled, players will have the option to loot all currency to their character, in addition to splitting the currency between players.',
+    hint: 'If enabled, players will have the option to loot all currency to their character.',
     scope: 'world',
     config: true,
     default: true,
@@ -1216,15 +1299,6 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     default: true,
-    type: Boolean,
-  })
-
-  game.settings.register('lootsheet-simple', 'showStackWeight', {
-    name: 'Show Stack Weight?',
-    hint: 'If enabled, shows the weight of the entire stack next to the item weight',
-    scope: 'world',
-    config: true,
-    default: false,
     type: Boolean,
   })
 
@@ -1337,15 +1411,16 @@ Hooks.once('init', () => {
         })
 
         //Check if user has same item already
-        let destItem = destination.items.find(i => i.name == newItem.name);
+        let destItem = destination.items.find((i) => i.name == newItem.name)
 
         //if they don't already have a stack then add it, otherwise update the quantity
         if (destItem === undefined) {
-          additions.push(newItem);
+          additions.push(newItem)
         } else {
-          let updateItem = duplicate(destItem);
-          updateItem.system.quantity = Number(destItem.system.quantity) + Number(newItem.system.quantity);
-          destUpdates.push(updateItem);
+          let updateItem = duplicate(destItem)
+          updateItem.system.quantity =
+            Number(destItem.system.quantity) + Number(newItem.system.quantity)
+          destUpdates.push(updateItem)
         }
       }
     }
@@ -1360,7 +1435,7 @@ Hooks.once('init', () => {
       // Then create a new container and link those items to that
       // We do that by setting the system.container property to the ID of the container on each item that goes into it
 
-      copyAllContainers(containers, destination, source);
+      copyAllContainers(containers, destination, source)
     }
 
     if (additions.length > 0) {
@@ -1428,7 +1503,7 @@ Hooks.once('init', () => {
         }
       }
     } catch (error) {
-      console.log('Failed to process items:', error)
+      console.error('Failed to process items:', error)
     }
   }
 
@@ -1445,7 +1520,7 @@ Hooks.once('init', () => {
       chatMessage(
         container,
         looter,
-        `${looter.name} looted ${m.quantity} x ${m.item.name}.`,
+        `<b>${looter.name}</b> looted ${m.quantity} x ${m.item.name}.`,
         m.item,
       )
     }
@@ -1644,7 +1719,7 @@ Hooks.once('init', () => {
       chatMessage(
         seller,
         buyer,
-        `${buyer.name} purchases ${quantity} x ${m.item.name} for ${itemCostRaw}${itemCostDenomination}.`,
+        `<b>${buyer.name}</b> purchases ${quantity} x ${m.item.name} for ${itemCostRaw}${itemCostDenomination}.`,
         m.item,
       )
     }
@@ -1665,7 +1740,8 @@ Hooks.once('init', () => {
     for (let c in currency) {
       // add msg for chat description
       if (sheetCurrency[c]) {
-        msg.push(` ${sheetCurrency[c]} ${c} coins`)
+        const coinLabel = game.i18n.localize(CONFIG.DND5E.currencies[c]?.label) || c;
+        msg.push(` ${sheetCurrency[c]} ${coinLabel}`)
       }
       if (sheetCurrency[c] != null) {
         // Add currency to permitted actor
@@ -1678,8 +1754,8 @@ Hooks.once('init', () => {
 
     // Remove currency from loot actor.
     let lootCurrency = LootSheet5eNPCHelper.convertCurrencyFromObject(
-      containerActor.system.currency,
-    ),
+        containerActor.system.currency,
+      ),
       zeroCurrency = {}
     // console.log("lootCurrency", lootCurrency);
     for (let c in lootCurrency) {
@@ -1691,7 +1767,7 @@ Hooks.once('init', () => {
     // console.log("zeroCurrency", zeroCurrency);
     // Create chat message for coins received
     if (msg.length != 0) {
-      let message = `${looter.name} receives: `
+      let message = `<b>${looter.name}</b> looted: `
       message += msg.join(',')
       ChatMessage.create({
         user: game.user._id,
@@ -1765,8 +1841,82 @@ Hooks.once('init', () => {
       }
     }
     if (data.type === 'error' && data.targetId === game.user.character._id) {
-      console.log('Loot Sheet | Transaction Error: ', data.message)
+      console.error('Loot Sheet | Transaction Error: ', data.message)
       return ui.notifications.error(data.message)
     }
   })
 })
+
+Hooks.on("renderActorSheetV2", (app, html, data) => {
+  // Only run for your sheet class
+  if (!(app instanceof LootSheet5eNPC)) return;
+
+  //console.log("LootSheet5eNPC | Rendered Actor Sheet", app, html, data);
+
+  app.activateListeners(html);
+});
+
+Hooks.once('ready', async () => {
+  // Name of the folder to use for rolltables
+  const folderName = "Loot Sheet Tables";
+  let folder = game.folders.find(f => f.name === folderName && f.type === "RollTable");
+
+  // Create the folder if it doesn't exist
+  if (!folder) {
+    folder = await Folder.create({
+      name: folderName,
+      type: "RollTable",
+      color: "#b8860b", // Optional: gold-ish color
+      parent: null
+    });
+    console.debug(`Created folder "${folderName}" for Loot Sheet rolltables.`);
+  }
+
+  // List your rolltable JSON files here
+  const tableFiles = [
+    'modules/lootsheet-simple/rolltables/adventuring-supplies.json',
+    'modules/lootsheet-simple/rolltables/arcane-shop.json',
+    'modules/lootsheet-simple/rolltables/art-and-games-theme.json',
+    'modules/lootsheet-simple/rolltables/blacksmith-armory.json',
+    'modules/lootsheet-simple/rolltables/fletcher-bowyer.json',
+    'modules/lootsheet-simple/rolltables/general-store.json',
+    'modules/lootsheet-simple/rolltables/leatherworker.json',
+    'modules/lootsheet-simple/rolltables/magical-theme.json',
+    'modules/lootsheet-simple/rolltables/potion-shop.json',
+    'modules/lootsheet-simple/rolltables/shady-dealer-theme.json',
+    'modules/lootsheet-simple/rolltables/tailor-textiles.json',
+    'modules/lootsheet-simple/rolltables/temple-faith-supplies.json',
+    'modules/lootsheet-simple/rolltables/arcane-shop.json',
+    'modules/lootsheet-simple/rolltables/water-side-theme.json',
+    // Add more as needed
+  ];
+
+
+  for (const filePath of tableFiles) {
+    try {
+      // Fetch the JSON file
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        console.warn(`Could not load rolltable file: ${filePath}`);
+        continue;
+      }
+      const tableData = await response.json();
+
+      // Check if a table with this name already exists
+      const existing = game.tables.getName(tableData.name);
+      if (existing) {
+        console.debug(`RollTable "${tableData.name}" already exists, skipping.`);
+        continue;
+      }
+
+      // Assign the folder to the table
+      tableData.folder = folder.id;
+
+      // Create the RollTable in the folder
+      await RollTable.create(tableData, { renderSheet: false });
+      console.debug(`Created RollTable: ${tableData.name} in folder "${folderName}"`);
+    } catch (err) {
+      console.error(`Error creating RollTable from ${filePath}:`, err);
+    }
+  }
+});
