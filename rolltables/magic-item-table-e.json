@@ -1,0 +1,188 @@
+{
+  "name": "Magic Item Table E",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        30
+      ],
+      "name": "Spell Scroll 8th Level",
+      "img": "icons/sundries/scrolls/scroll-bound-gold.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.aOrinPg7yuDZEuWr",
+      "_id": "Od2dZKG3B0XUZR5M",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450250743,
+        "modifiedTime": 1750450250743,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        31,
+        55
+      ],
+      "name": "Potion of Storm Giant Strength",
+      "img": "icons/consumables/potions/bottle-bulb-corked-labeled-blue.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.1KMSpOSU0EliUBm2",
+      "_id": "QIbCgTo1P2R4bAXX",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450257355,
+        "modifiedTime": 1750450257355,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        56,
+        70
+      ],
+      "name": "Potion of Supreme Healing",
+      "img": "icons/consumables/potions/potion-flask-stopped-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.JFiSlgcm3uSSBM5t",
+      "_id": "PtpZcJPP1kxzSISD",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450261417,
+        "modifiedTime": 1750450261417,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        71,
+        85
+      ],
+      "name": "Spell Scroll 9th Level",
+      "img": "icons/sundries/scrolls/scroll-bound-ruby-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.O4YbkJkLlnsgUszZ",
+      "_id": "6evOUYPKntCrxEF6",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450266262,
+        "modifiedTime": 1750450266262,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        86,
+        93
+      ],
+      "name": "Universal Solvent",
+      "img": "icons/consumables/potions/potion-bottle-corked-white.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgUniversalSolv",
+      "_id": "UDkgasSs3q3PhiEN",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450270548,
+        "modifiedTime": 1750450270548,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        94,
+        98
+      ],
+      "name": "Arrow of Slaying",
+      "img": "icons/weapons/ammunition/arrowhead-glowing-blue.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.aXsfZvDCdpuv3Yvb",
+      "_id": "gBK3RoalZj8ZUBLh",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450276229,
+        "modifiedTime": 1750450276229,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        99,
+        100
+      ],
+      "name": "Sovereign Glue",
+      "img": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgSovereignGlue",
+      "_id": "BUCqmfjgivCO4eyh",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450281899,
+        "modifiedTime": 1750450281899,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "createdTime": 1750450241868,
+    "modifiedTime": 1750450310968,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.7vLx4seo1jdsAaCp",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "formula": "1d100"
+}

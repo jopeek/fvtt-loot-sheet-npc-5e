@@ -440,13 +440,13 @@ class LootSheet5eNPC extends dnd5e.applications.actor.NPCActorSheet {
     );
 
     if (lootsheettype === "Merchant" && merchantFolder) {
-      context.rolltables = game.tables.contents.filter(
-        (t) => t.folder?.id === merchantFolder.id
-      );
+      context.rolltables = game.tables.contents
+        .filter((t) => t.folder?.id === merchantFolder.id)
+        .sort((a, b) => a.name.localeCompare(b.name));
     } else if (lootFolder) {
-      context.rolltables = game.tables.contents.filter(
-        (t) => t.folder?.id === lootFolder.id
-      );
+      context.rolltables = game.tables.contents
+        .filter((t) => t.folder?.id === lootFolder.id)
+        .sort((a, b) => a.name.localeCompare(b.name));
     } else {
       context.rolltables = [];
     }
@@ -578,7 +578,7 @@ class LootSheet5eNPC extends dnd5e.applications.actor.NPCActorSheet {
     ];
 
     let targetKey = event.target.name.split(".")[3];
-    
+
     if (expectedKeys.indexOf(targetKey) === -1) {
       // console.log(`Loot Sheet | Error changing stettings for "${targetKey}".`);
       return ui.notifications.error(
@@ -651,8 +651,9 @@ class LootSheet5eNPC extends dnd5e.applications.actor.NPCActorSheet {
     event.preventDefault();
 
     const moduleNamespace = "lootsheet-simple";
-    const selectRollTable = document.getElementById("lootsheet-rolltable")
-    const rolltableName = selectRollTable.value ?? this.actor.getFlag(moduleNamespace, "rolltable");
+    const selectRollTable = document.getElementById("lootsheet-rolltable");
+    const rolltableName =
+      selectRollTable.value ?? this.actor.getFlag(moduleNamespace, "rolltable");
     const shopQtyFormula =
       this.actor.getFlag(moduleNamespace, "shopQty") || "1";
     const itemQtyFormula =
@@ -2150,6 +2151,12 @@ Hooks.once("ready", async () => {
   // Loot Tables
   const lootTableFiles = [
     "modules/lootsheet-simple/rolltables/common-loot.json",
+    "modules/lootsheet-simple/rolltables/magic-item-table-a.json",
+    "modules/lootsheet-simple/rolltables/magic-item-table-b.json",
+    "modules/lootsheet-simple/rolltables/magic-item-table-c.json",
+    "modules/lootsheet-simple/rolltables/magic-item-table-d.json",
+    "modules/lootsheet-simple/rolltables/magic-item-table-e.json",
+    "modules/lootsheet-simple/rolltables/magic-item-table-f.json",
   ];
 
   for (const filePath of lootTableFiles) {

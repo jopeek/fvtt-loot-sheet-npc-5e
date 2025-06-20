@@ -1,0 +1,395 @@
+{
+  "name": "Magic Item Table D",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        20
+      ],
+      "name": "Potion of Supreme Healing",
+      "img": "icons/consumables/potions/potion-flask-stopped-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.JFiSlgcm3uSSBM5t",
+      "_id": "Da9DmVpNLTRSi0oP",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450033610,
+        "modifiedTime": 1750450033610,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        21,
+        30
+      ],
+      "name": "Potion of Invisibility",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfInvis",
+      "_id": "W2t1vfzKGc1ISlE2",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450039612,
+        "modifiedTime": 1750450039612,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        31,
+        40
+      ],
+      "name": "Potion of Speed",
+      "img": "icons/consumables/potions/potion-bottle-corked-stopper-yellow.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfSpeed",
+      "_id": "W60VGMfPyibjmvK2",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450045899,
+        "modifiedTime": 1750450045899,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        41,
+        50
+      ],
+      "name": "Spell Scroll 6th Level",
+      "img": "icons/sundries/scrolls/scroll-bound-sealed-orange.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.tI3rWx4bxefNCexS",
+      "_id": "3F0t6ujRqyRMse5Q",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450050678,
+        "modifiedTime": 1750450050678,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        51,
+        57
+      ],
+      "name": "Spell Scroll 7th Level",
+      "img": "icons/sundries/scrolls/scroll-bound-sealed-black-orange.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.mtyw4NS1s7j2EJaD",
+      "_id": "qrxuIlLMOwRn2ooH",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450052347,
+        "modifiedTime": 1750450052347,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        58,
+        62
+      ],
+      "name": "Ammunition, +1, +2, or +3",
+      "img": "icons/weapons/ammunition/arrow-head-war-flight.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgAmmunition12o",
+      "_id": "q7CcFpB92Jjm8auV",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450057268,
+        "modifiedTime": 1750450057268,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        63,
+        67
+      ],
+      "name": "Oil of Sharpness",
+      "img": "icons/consumables/potions/vial-ornet-silver-black.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgOilOfSharpnes",
+      "_id": "LBU3moHjD2HeUez1",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450063960,
+        "modifiedTime": 1750450063960,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        68,
+        72
+      ],
+      "name": "Potion of Flying",
+      "img": "icons/consumables/potions/potion-bottle-corked-white.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfFlyin",
+      "_id": "C9CWYeFjWZAfZnwr",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450070551,
+        "modifiedTime": 1750450070551,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        73,
+        77
+      ],
+      "name": "Potion of Cloud Giant Strength",
+      "img": "icons/consumables/potions/bottle-round-corked-blue.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.lAcTZgNtpmks2Mo5",
+      "_id": "EDOGf4lsdcdtFy3W",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450075792,
+        "modifiedTime": 1750450075792,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        78,
+        82
+      ],
+      "name": "Potion of Longevity",
+      "img": "icons/consumables/potions/potion-flask-corked-shiny-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfLonge",
+      "_id": "MjM5o4efD4TMCRaD",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450080375,
+        "modifiedTime": 1750450080375,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        83,
+        87
+      ],
+      "name": "Potion of Vitality",
+      "img": "icons/consumables/potions/potion-flask-corled-pink-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfVital",
+      "_id": "SYIR2KLEvr7DnzRU",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450084276,
+        "modifiedTime": 1750450084276,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        88,
+        92
+      ],
+      "name": "Spell Scroll 8th Level",
+      "img": "icons/sundries/scrolls/scroll-bound-gold.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.aOrinPg7yuDZEuWr",
+      "_id": "BYZcFxsX491ZpZsJ",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450089573,
+        "modifiedTime": 1750450089573,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        93,
+        95
+      ],
+      "name": "Horseshoes of a Zephyr",
+      "img": "icons/tools/smithing/horsehoe-worn-steel-grey.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgHorseshoesOfA",
+      "_id": "3sm9YN49Lil2TKR3",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450094424,
+        "modifiedTime": 1750450094424,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        96,
+        98
+      ],
+      "name": "Marvelous Pigments",
+      "img": "icons/commodities/materials/powder-red-green-yellow.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgNolzursMarvel",
+      "_id": "xAUzGCb1nFgDx9aG",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450105101,
+        "modifiedTime": 1750450105101,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        99,
+        99
+      ],
+      "name": "Bag of Devouring",
+      "img": "icons/containers/bags/pack-engraved-leather-tan.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBagOfDevourin",
+      "_id": "aXg1AX7ciVgGd8FS",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450109379,
+        "modifiedTime": 1750450109379,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        100,
+        100
+      ],
+      "name": "Portable Hole",
+      "img": "icons/creatures/eyes/void-single-black-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPortableHole0",
+      "_id": "xbMVdS8XnWP6zlSG",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450114309,
+        "modifiedTime": 1750450114309,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "createdTime": 1750450020460,
+    "modifiedTime": 1750450186078,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.UyR3kI0dZuFNbnJT",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "formula": "1d100"
+}

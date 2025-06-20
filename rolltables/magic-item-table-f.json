@@ -1,0 +1,1384 @@
+{
+  "name": "Magic Item Table F",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        15
+      ],
+      "name": "Weapon, +1, +2, or +3",
+      "img": "icons/weapons/swords/greatsword-crossguard-engraved-green.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWeapon12or300",
+      "_id": "ajlfWpAQgmFayotY",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450584485,
+        "modifiedTime": 1750450584485,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        16,
+        18
+      ],
+      "name": "Shield +1",
+      "img": "icons/equipment/shield/round-wooden-boss-gold-brown.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.NgwrqNa6kkgoPW2Q",
+      "_id": "S1LlP5KdfoE7AJei",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450590309,
+        "modifiedTime": 1750450590309,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        19,
+        21
+      ],
+      "name": "Sentinel Shield",
+      "img": "icons/equipment/shield/targe-copper-eye.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgSentinelShiel",
+      "_id": "YV8U0qv1rDKAzmYJ",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450595592,
+        "modifiedTime": 1750450595592,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        22,
+        23
+      ],
+      "name": "Amulet of Proof against Detection and Location",
+      "img": "icons/equipment/neck/pendant-faceted-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgAmuletOfProof",
+      "_id": "x5F87kpdmdFER4hP",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450603302,
+        "modifiedTime": 1750450603302,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        24,
+        25
+      ],
+      "name": "Boots of Elvenkind",
+      "img": "icons/equipment/feet/boots-pointed-cloth-green.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBootsOfElvenk",
+      "_id": "gFaDnMjezjzT0vmB",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450610904,
+        "modifiedTime": 1750450610904,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        26,
+        27
+      ],
+      "name": "Boots of Striding and Springing",
+      "img": "icons/equipment/feet/boots-collared-leather-brown.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBootsOfStridi",
+      "_id": "9ay4qMyD7BVWsnmT",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450616276,
+        "modifiedTime": 1750450616276,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        28,
+        29
+      ],
+      "name": "Bracers of Archery",
+      "img": "icons/equipment/wrist/bracer-banded-leather.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBracersOfArch",
+      "_id": "d0R4fx4Bu8SAL0zZ",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450622382,
+        "modifiedTime": 1750450622382,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        30,
+        31
+      ],
+      "name": "Brooch of Shielding",
+      "img": "icons/equipment/neck/pendant-bronze-gem-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBroochOfShiel",
+      "_id": "9OzoDpLMwSgbABnF",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450628482,
+        "modifiedTime": 1750450628482,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        32,
+        33
+      ],
+      "name": "Broom of Flying",
+      "img": "icons/tools/hand/broom-straw-brown.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBroomOfFlying",
+      "_id": "bchErU3FchvERtRk",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450636922,
+        "modifiedTime": 1750450636922,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        34,
+        35
+      ],
+      "name": "Cloak of Elvenkind",
+      "img": "icons/equipment/back/cloak-collared-feathers-green.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgCloakOfElvenk",
+      "_id": "NisSgILuc8CbdL22",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450643517,
+        "modifiedTime": 1750450643517,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        36,
+        37
+      ],
+      "name": "Cloak of Protection",
+      "img": "icons/equipment/back/cloak-heavy-fur-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgCloakOfProtec",
+      "_id": "ROvLeFSuXf3BHVlL",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450651883,
+        "modifiedTime": 1750450651883,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        38,
+        39
+      ],
+      "name": "Gauntlets of Ogre Power",
+      "img": "icons/equipment/hand/gauntlet-armored-steel-grey.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgGauntletsOfOg",
+      "_id": "QOL2ll5ihyIr8KzS",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450658233,
+        "modifiedTime": 1750450658233,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        40,
+        41
+      ],
+      "name": "Hat of Disguise",
+      "img": "icons/equipment/head/hat-belted-simple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgHatOfDisguise",
+      "_id": "lANMLRFL0n6GzcFY",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450724428,
+        "modifiedTime": 1750450724428,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        42,
+        43
+      ],
+      "name": "Javelin of Lightning",
+      "img": "icons/weapons/polearms/spear-barbed-silver.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgJavelinOfLigh",
+      "_id": "z2mjf8Ywwjhg4ik7",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450735040,
+        "modifiedTime": 1750450735040,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        44,
+        45
+      ],
+      "name": "Pearl of Power",
+      "img": "icons/commodities/gems/pearl-blue-gold.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPearlOfPower0",
+      "_id": "NsWKMmxeRHSAHSpP",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450740666,
+        "modifiedTime": 1750450740666,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        46,
+        47
+      ],
+      "name": "Rod of Security",
+      "img": "icons/weapons/maces/mace-round-ornate-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRodOfSecurity",
+      "_id": "feQ9iPQSs12iT7wq",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450758669,
+        "modifiedTime": 1750450758669,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        48,
+        49
+      ],
+      "name": "Slippers of Spider Climbing",
+      "img": "icons/equipment/feet/boots-leather-black.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgSlippersOfSpi",
+      "_id": "nALwtdC2Mtmkt817",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450765892,
+        "modifiedTime": 1750450765892,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        50,
+        51
+      ],
+      "name": "Staff of the Python",
+      "img": "icons/weapons/staves/staff-metal-mask.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgStaffOfThePyt",
+      "_id": "wcrv9K4qKnjLIpUB",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450794147,
+        "modifiedTime": 1750450794147,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        52,
+        53
+      ],
+      "name": "Sword of Wounding",
+      "img": "icons/skills/melee/strike-sword-blood-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgSwordOfWoundi",
+      "_id": "piqN594DFa90Cqow",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450808966,
+        "modifiedTime": 1750450808966,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        54,
+        55
+      ],
+      "name": "Trident of Fish Command",
+      "img": "icons/weapons/polearms/trident-ice-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgTridentOfFish",
+      "_id": "YNROlDIPSAqVQlYW",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450814883,
+        "modifiedTime": 1750450814883,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        56,
+        57
+      ],
+      "name": "Wand of Magic Missiles",
+      "img": "icons/weapons/wands/wand-gem-pink.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWandOfMagicMi",
+      "_id": "B9mSuagKvsKw5F32",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450821353,
+        "modifiedTime": 1750450821353,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        58,
+        59
+      ],
+      "name": "Wand of the War Mage +1",
+      "img": "icons/weapons/wands/wand-gem-blue.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.OPbdSlrhkUDNpgcS",
+      "_id": "YITSMIXjjC1qmWiS",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450832047,
+        "modifiedTime": 1750450832047,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        60,
+        61
+      ],
+      "name": "Wand of Web",
+      "img": "icons/weapons/staves/staff-crescent-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWandOfWeb0000",
+      "_id": "Z6fhiPaH3dXRW6aD",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450837450,
+        "modifiedTime": 1750450837450,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        62,
+        63
+      ],
+      "name": "Weapon of Warning",
+      "img": "icons/weapons/hammers/hammer-double-engraved-ruby.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWeaponOfWarni",
+      "_id": "KB5pHkVT2vpc6DuM",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450842730,
+        "modifiedTime": 1750450842730,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        64,
+        65
+      ],
+      "name": "Adamantine Chain Mail",
+      "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.n7fm71CN7qDIBEKk",
+      "_id": "pJ8r8r7Vrn1Ro1sG",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450855430,
+        "modifiedTime": 1750450855430,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        66,
+        66
+      ],
+      "name": "Adamantine Chain Shirt",
+      "img": "icons/equipment/chest/breastplate-scale-grey.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.kjTPoUeomTPWJ9h3",
+      "_id": "dDWw5WEBdPlFSLoN",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450856658,
+        "modifiedTime": 1750450856658,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        67,
+        67
+      ],
+      "name": "Adamantine Scale Mail",
+      "img": "icons/equipment/chest/breastplate-banded-steel.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.LdAj2ES9EzfnWcA1",
+      "_id": "lbR8ZNw9TzrTRjXm",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450860748,
+        "modifiedTime": 1750450860748,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        68,
+        68
+      ],
+      "name": "Gray Bag of Tricks",
+      "img": "icons/containers/bags/coinpouch-leather-grey.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBagOfTricks00",
+      "_id": "JPVExjJP1MzQUJyT",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450870483,
+        "modifiedTime": 1750450870483,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        69,
+        69
+      ],
+      "name": "Rust Bag of Tricks",
+      "img": "icons/containers/bags/sack-simple-leather-tan.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRustBagofTric",
+      "_id": "84nPAEjCRwYa4dsE",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450872134,
+        "modifiedTime": 1750450872134,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        70,
+        70
+      ],
+      "name": "Tan Bag of Tricks",
+      "img": "icons/containers/bags/sack-twisted-leather-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgTanBagofTrick",
+      "_id": "G6p3VX78J2zry6Vu",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450873699,
+        "modifiedTime": 1750450873699,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        71,
+        71
+      ],
+      "name": "Boots of the Winterlands",
+      "img": "icons/equipment/feet/boots-leather-banded-furred.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgBootsOfTheWin",
+      "_id": "BPJFTgyIzU3rZ7dG",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450878566,
+        "modifiedTime": 1750450878566,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        72,
+        72
+      ],
+      "name": "Circlet of Blasting",
+      "img": "icons/equipment/finger/ring-cabochon-notched-gold-green.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgCircletOfBlas",
+      "_id": "XlKWZZN3eAE0J2Lu",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450885995,
+        "modifiedTime": 1750450885995,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        73,
+        73
+      ],
+      "name": "Deck of Illusions",
+      "img": "icons/sundries/gaming/playing-cards-black.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgDeckOfIllusio",
+      "_id": "0WszNleAHMizKxxL",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450891389,
+        "modifiedTime": 1750450891389,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        74,
+        74
+      ],
+      "name": "Eversmoking Bottle",
+      "img": "icons/commodities/tech/smoke-bomb-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgEversmokingBo",
+      "_id": "0oSIRHfm16B9FK0N",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450908269,
+        "modifiedTime": 1750450908269,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        75,
+        75
+      ],
+      "name": "Eyes of Charming",
+      "img": "icons/tools/scribal/spectacles-glasses.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgEyesOfCharmin",
+      "_id": "tVIrJO4Hk4ENBlAA",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450914266,
+        "modifiedTime": 1750450914266,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        76,
+        76
+      ],
+      "name": "Eyes of the Eagle",
+      "img": "icons/equipment/head/goggles-leather-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgEyesOfTheEagl",
+      "_id": "r7utU2wsjWQlYuEY",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450919639,
+        "modifiedTime": 1750450919639,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        77,
+        77
+      ],
+      "name": "Figurine of Wondrous Power (Silver Raven)",
+      "img": "icons/commodities/materials/feather-blue-grey.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.nMtmxeYrbyFdv0bg",
+      "_id": "g3z0qIpVo6ApbHij",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450930001,
+        "modifiedTime": 1750450930001,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        78,
+        78
+      ],
+      "name": "Gem of Brightness",
+      "img": "icons/commodities/gems/gem-faceted-octagon-yellow.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgGemOfBrightne",
+      "_id": "3iVBeqB66YF8z7yj",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450934910,
+        "modifiedTime": 1750450934910,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        79,
+        79
+      ],
+      "name": "Gloves of Missile Snaring",
+      "img": "icons/equipment/hand/glove-tooled-leather-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgGlovesOfMissi",
+      "_id": "0QAH6hHCkUV0pwQn",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450940459,
+        "modifiedTime": 1750450940459,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        80,
+        80
+      ],
+      "name": "Gloves of Swimming and Climbing",
+      "img": "icons/equipment/hand/glove-cuffed-leather-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgGlovesOfSwimm",
+      "_id": "eTzksxW7fq8Off9b",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450946372,
+        "modifiedTime": 1750450946372,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        81,
+        81
+      ],
+      "name": "Gloves of Thievery",
+      "img": "icons/equipment/hand/glove-tooled-leather-red-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgGlovesOfThiev",
+      "_id": "KOdxYzqcE1tSRhHr",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450952353,
+        "modifiedTime": 1750450952353,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        82,
+        82
+      ],
+      "name": "Headband of Intellect",
+      "img": "icons/equipment/finger/ring-cabochon-silver-gold-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgHeadbandOfInt",
+      "_id": "Rg7c7yiFCPefrM7e",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450962080,
+        "modifiedTime": 1750450962080,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        83,
+        83
+      ],
+      "name": "Helm of Telepathy",
+      "img": "icons/equipment/head/helm-spangen.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgHelmOfTelepat",
+      "_id": "aKYOviQqCHymo2BN",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450969267,
+        "modifiedTime": 1750450969267,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        84,
+        84
+      ],
+      "name": "Lute",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.phbmusLute000000",
+      "_id": "ohSpw2h3xNuQbEWJ",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450984622,
+        "modifiedTime": 1750450984622,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        85,
+        85
+      ],
+      "name": "Arcane Focus (Varies)",
+      "img": "icons/commodities/gems/gem-faceted-large-green.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.phbagArcaneFocus",
+      "_id": "TJbM8VMk93ZNudfK",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450996624,
+        "modifiedTime": 1750450996624,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        86,
+        86
+      ],
+      "name": "Druidic Focus (Varies)",
+      "img": "icons/consumables/plants/fern-lady-green.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.phbagDruidicFocu",
+      "_id": "kRtnMmz14dn13UYf",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750450997906,
+        "modifiedTime": 1750450997906,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        87,
+        87
+      ],
+      "name": "Medallion of Thoughts",
+      "img": "icons/equipment/neck/pendant-bronze-gem-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgMedallionOfTh",
+      "_id": "kEM17Tn2F6hdsO8W",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451002786,
+        "modifiedTime": 1750451002786,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        88,
+        88
+      ],
+      "name": "Necklace of Adaptation",
+      "img": "icons/equipment/neck/amulet-carved-stone-spiral-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgNecklaceOfAda",
+      "_id": "xyrMU2Z4QNiWsi3t",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451007730,
+        "modifiedTime": 1750451007730,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        89,
+        89
+      ],
+      "name": "Periapt of Wound Closure",
+      "img": "icons/equipment/neck/pendant-faceted-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPeriaptOfWoun",
+      "_id": "bHhUEyGh6yEdAwkM",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451013913,
+        "modifiedTime": 1750451013913,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        90,
+        90
+      ],
+      "name": "Pipes of Haunting",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPipesOfHaunti",
+      "_id": "LZ0dNV04tldIaL4X",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451020046,
+        "modifiedTime": 1750451020046,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        91,
+        91
+      ],
+      "name": "Pipes of the Sewers",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPipesOfTheSew",
+      "_id": "1O4Xi77gLzc1dcGa",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451021324,
+        "modifiedTime": 1750451021324,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        92,
+        92
+      ],
+      "name": "Ring of Jumping",
+      "img": "icons/equipment/finger/ring-winged-gold-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRingOfJumping",
+      "_id": "ekMcwlNQ86GRIzcs",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451027710,
+        "modifiedTime": 1750451027710,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        93,
+        93
+      ],
+      "name": "Ring of Mind Shielding",
+      "img": "icons/equipment/finger/ring-cabochon-gold-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRingOfMindShi",
+      "_id": "1eBGiGued5TeTGSo",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451032848,
+        "modifiedTime": 1750451032848,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        94,
+        94
+      ],
+      "name": "Ring of Warmth",
+      "img": "icons/equipment/finger/ring-cabochon-gold-orange.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRingOfWarmth0",
+      "_id": "UznBcJkRbP5VFhEt",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451036462,
+        "modifiedTime": 1750451036462,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        95,
+        95
+      ],
+      "name": "Ring of Water Walking",
+      "img": "icons/equipment/finger/ring-faceted-gold-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRingOfWaterWa",
+      "_id": "HNvLOLD28bPBKDV3",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451040293,
+        "modifiedTime": 1750451040293,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        96,
+        96
+      ],
+      "name": "Efficient Quiver",
+      "img": "icons/containers/ammunition/arrows-quiver-brown-grey.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgQuiverOfEhlon",
+      "_id": "YrzrOxXXxSRzpyvq",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451048361,
+        "modifiedTime": 1750451048361,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        97,
+        97
+      ],
+      "name": "Stone of Good Luck (Luckstone)",
+      "img": "icons/commodities/gems/gem-rough-rectangle-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgStoneOfGoodLu",
+      "_id": "Ug86C01LkTl1L0aD",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451055504,
+        "modifiedTime": 1750451055504,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        98,
+        98
+      ],
+      "name": "Wind Fan",
+      "img": "icons/commodities/treasure/trinket-wing-white.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWindFan000000",
+      "_id": "RXMylTjZDl5GdPSz",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451060017,
+        "modifiedTime": 1750451060017,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        99,
+        100
+      ],
+      "name": "Winged Boots",
+      "img": "icons/skills/movement/feet-winged-boots-brown.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWingedBoots00",
+      "_id": "b0CgUqATuzs1SfWz",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750451064070,
+        "modifiedTime": 1750451064070,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "createdTime": 1750450337607,
+    "modifiedTime": 1750451351034,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.H9J7VcQYJeiC3jPm",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "formula": "1d100"
+}
