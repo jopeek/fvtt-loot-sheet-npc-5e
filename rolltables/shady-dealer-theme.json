@@ -1,0 +1,341 @@
+{
+  "name": "Shady Dealer Theme",
+  "flags": {},
+  "results": [
+    {
+      "_id": "5hEcHK6RtHLQvy23",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-round-corked-green.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Acid (vial)",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.Sx5E6utixHdAbGNb"
+    },
+    {
+      "_id": "fB5EG3TI3YAHtJ8h",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-round-corked-pink.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Antitoxin",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.Fc6UfFNOnW80XMzi"
+    },
+    {
+      "_id": "SIS31Cj0ZwP7Otln",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/thrown/bomb-spiked-purple.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Caltrops",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.8tvhh5wqG5FRh3Sf"
+    },
+    {
+      "_id": "MY0Mhrkc70wFH1bD",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-hooded-pink.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Costume Clothes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.E2h6sEe6FU2tnU96"
+    },
+    {
+      "_id": "QBJPeLtUGa9DOn9S",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/misc/whip-red-yellow.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Manacles",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.tWJLHIL6ZIZUez9k"
+    },
+    {
+      "_id": "nc5L6u6b9MgSv5bY",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Oil Flask",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.psoZaItkOScMVaHL"
+    },
+    {
+      "_id": "hguHZ35ihCrGpdhH",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/wood/bamboo-brown.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Portable Ram",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.srTRzwTfWKO5opOo"
+    },
+    {
+      "_id": "4IK2niTBtNFF48ih",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/stake-rough-simple-brown.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Iron Spike",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.RiOeHR2qaYktz5Ys"
+    },
+    {
+      "_id": "o8MVYFmnaMNXXgOP",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/potion-bottle-skull-label-poison-teal.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Basic Poison",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eVbPkYjpl29RE2uW"
+    },
+    {
+      "_id": "CUWCPg7qvZT0A9s9",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-hooded-blue.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Disguise Kit",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.IBhDAr7WkhWPYLVn"
+    },
+    {
+      "_id": "1LOyiP2gxkLeCWXJ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/envelope-sealed-red-tan.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Forgery Kit",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.cG3m4YlHfbQlLEOx"
+    },
+    {
+      "_id": "UQ3SlTjjwEEIbJ80",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/gaming/dice-runed-brown.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Gaming Set",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.7u31f86h5vm5WOWM"
+    },
+    {
+      "_id": "YVQ29eYd82dxLo9w",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/gaming/dice-runed-brown.webp",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Gaming Set of Dice",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.iBuTM09KD9IoM5L8"
+    },
+    {
+      "_id": "LB2akj9nykWxRPSv",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/misc/admission-ticket-grey.webp",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Gaming Set of Playing Cards",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.YwlHI3BVJapz4a3E"
+    },
+    {
+      "_id": "hH68JTbcgM4CS2n0",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pouch-gold-green.webp",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Poisoner’s Kit",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.il2GNi8C0DvGLL9P"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "Theme for General Store or Adventuring Supplies",
+  "formula": "1d15",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289758040,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.m3p9jkehE2ig0uHD",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

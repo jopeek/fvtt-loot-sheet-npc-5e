@@ -1,0 +1,47 @@
+<section class="tab {{ tab.cssClass }}" data-tab="{{ tab.id }}" data-group="{{ tab.group }}">
+
+    {{#if editingDescription}}
+    <prose-mirror name="{{ editingDescription.target }}" value="{{ editingDescription.value }}"
+                  document-uuid="{{ actor.uuid }}" compact></prose-mirror>
+    {{else}}
+
+    {{!-- Public Information --}}
+    <div class="middle">
+
+        <h3 class="icon">
+            <button type="button" class="control-button editor-edit unbutton" data-action="editDescription"
+                    data-target="system.details.biography.public"
+                    aria-label="{{ localize 'DND5E.BiographyPublicEdit' }}">
+                <i class="fas fa-feather" inert></i>
+            </button>
+            <dnd5e-icon src="systems/dnd5e/icons/svg/ink-pot.svg"></dnd5e-icon>
+            <span class="roboto-upper">{{ localize "DND5E.Public" }}</span>
+        </h3>
+
+        <div class="editor">
+            <div class="editor-content">{{{ enriched.public }}}</div>
+        </div>
+
+    </div>
+
+    {{!-- Details --}}
+    <div class="bottom">
+
+        <h3 class="icon">
+            <button type="button" class="control-button editor-edit unbutton" data-action="editDescription"
+                    data-target="system.details.biography.value" aria-label="{{ localize 'DND5E.DetailsEdit' }}">
+                <i class="fas fa-feather" inert></i>
+            </button>
+            <dnd5e-icon src="systems/dnd5e/icons/svg/ink-pot.svg"></dnd5e-icon>
+            <span class="roboto-upper">{{ localize "DND5E.Details" }}</span>
+        </h3>
+
+        <div class="editor">
+            <div class="editor-content">{{{ enriched.value }}}</div>
+        </div>
+
+    </div>
+
+    {{/if}}
+
+</section>

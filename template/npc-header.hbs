@@ -1,0 +1,125 @@
+<header class="sheet-header">
+    <div class="left">
+      <div class="portrait">
+        {{!-- Portrait --}}
+        {{#if editable}}
+        <label class="slide-toggle">
+          <input
+            type="checkbox"
+            name="flags.dnd5e.showTokenPortrait"
+            {{
+            checked
+            portrait.token
+            }}
+          />
+          {{#if portrait.token}}
+          {{ localize "DOCUMENT.Token" }}
+          <i class="fas fa-toggle-on"></i>
+          {{else}}
+          {{ localize "DND5E.Portrait" }}
+          <i class="fas fa-toggle-off"></i>
+          {{/if}}
+        </label>
+        {{/if}}
+        <img src="{{ portrait.src }}" alt="{{ actor.name }}"
+            {{~#if (and editable portrait.path)}} data-action="editImage" data-edit="{{ portrait.path }}"
+            {{~else}} data-action="showArtwork"{{/if}}>
+      </div>
+    </div>
+
+    <div class="right stats">
+      <div class="top">
+        <div class="left">
+          {{!-- Name --}}
+          {{#if editable}}
+          <input type="text" name="name" class="document-name uninput" value="{{ actor.name }}" />
+          {{else}}
+          <div class="document-name">{{ actor.name }}</div>
+          {{/if}}
+        </div>
+
+        <div class="right">
+          <div class="left">
+            <div class="sheet-header-buttons">
+              {{#if isGM}} {{#ifeq lootsheettype "Merchant"}}
+              <button
+                type="button"
+                class="price-modifier gold-button"
+                name="price-modifier"
+                data-tooltip="{{localize 'LOOTSHEET.PriceModifier'}}"
+                aria-label="{{localize 'LOOTSHEET.PriceModifier'}}"
+              >
+                <i class="fa fa-balance-scale"></i>
+              </button>
+              {{/ifeq}}
+
+              {{/if}}
+
+              {{#ifeq lootsheettype "Loot"}}
+                {{#if lootAll}}
+                    <button
+                        type="button"
+                        class="loot-all gold-button"
+                        name="loot-all"
+                        data-tooltip="{{localize 'LOOTSHEET.LootAll'}}"
+                        aria-label="{{localize 'LOOTSHEET.LootAll'}}"
+                    >
+                        <i class="fas fa-gem"></i>
+                    </button>
+                {{/if}}
+              {{/ifeq}}
+            </div>
+            <div class="proficiency">
+              <span>{{localize lootsheettype}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="middle ability-scores card flexrow">
+        <div class="ability-score">
+          <img
+            src="modules/lootsheet-simple/icons/container.svg"
+            alt="{{localize 'DND5E.ItemContainerCapacityItems'}}"
+          />
+          <a class="label"
+            >{{localize "LOOTSHEET.Total"}}
+            {{localize
+            "Items"}}</a
+          >
+          <div class="score">{{ totalItems }}</div>
+        </div>
+        <div class="ability-score">
+          <img
+            src="modules/lootsheet-simple/icons/item-grant.svg"
+            alt="{{localize 'DND5E.QuantityAbbr'}}"
+          />
+          <a class="label">{{localize "LOOTSHEET.Total"}} {{localize "DND5E.QuantityAbbr"}}</a>
+          <div class="score">{{ totalQuantity }}</div>
+        </div>
+        <div class="ability-score">
+          <img
+            src="modules/lootsheet-simple/icons/consumable.svg"
+            alt="{{localize 'DND5E.Weight'}}"
+          />
+          <a class="label">{{localize "LOOTSHEET.Total"}} {{localize "DND5E.Weight"}}</a>
+          <div class="score">{{ totalWeight }} <i class="fas fa-weight-hanging"></i></div>
+        </div>
+
+        <div class="ability-score">
+          <img src="modules/lootsheet-simple/icons/loot.svg" alt="Loot" />
+          {{#ifeq lootsheettype "Merchant"}}
+          <a class="label">{{localize "LOOTSHEET.Total"}} {{localize "DND5E.Price"}}</a>
+          {{/ifeq}} {{#ifeq lootsheettype "Loot"}}
+          <a class="label">{{localize "LOOTSHEET.Total"}} {{localize "LOOTSHEET.Value"}}</a>
+          {{/ifeq}}
+          <div class="score">
+            {{ totalPrice }}
+            <i class="currency gp" style="vertical-align: bottom" data-tooltip="Gold"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom"></div>
+    </div>
+  </header>

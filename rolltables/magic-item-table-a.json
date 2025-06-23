@@ -1,0 +1,188 @@
+{
+  "name": "Magic Item Table A",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        50
+      ],
+      "name": "Potion of Healing",
+      "img": "icons/consumables/potions/potion-tube-corked-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.ytlsBjYsZ7OBSEBs",
+      "_id": "hIIhxu1tV7Otd0Uo",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448664101,
+        "modifiedTime": 1750448664101,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        51,
+        60
+      ],
+      "name": "Spell Scroll Cantrip",
+      "img": "icons/sundries/scrolls/scroll-bound-white-tan.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.rQ6sO7HDWzqMhSI3",
+      "_id": "Q77c2MK1VBvFJWAy",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448671382,
+        "modifiedTime": 1750448671382,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        61,
+        70
+      ],
+      "name": "Potion of Climbing",
+      "img": "icons/consumables/potions/potion-vial-corked-labeled-purple.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.aMnWi1WXWpxRHq4r",
+      "_id": "S9NUucd0z6hs0D6B",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448677470,
+        "modifiedTime": 1750448677470,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        71,
+        90
+      ],
+      "name": "Spell Scroll 1st Level",
+      "img": "icons/sundries/scrolls/scroll-bound-black-tan.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.9GSfMg0VOA2b4uFN",
+      "_id": "uq4ZyYnCz5pveQwT",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448699710,
+        "modifiedTime": 1750448699710,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        91,
+        94
+      ],
+      "name": "Spell Scroll 2nd Level",
+      "img": "icons/sundries/scrolls/scroll-bound-blue-tan.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.XdDp6CKh9qEvPTuS",
+      "_id": "JgzA2CT9bsF0qlDG",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448700773,
+        "modifiedTime": 1750448700773,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        95,
+        98
+      ],
+      "name": "Potion of Greater Healing",
+      "img": "icons/consumables/potions/bottle-bulb-corked-glowing-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.L887NdWEP5NqHCrQ",
+      "_id": "MpjHkOH0UK6H180n",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448704364,
+        "modifiedTime": 1750448704364,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        99,
+        99
+      ],
+      "name": "Bag of Holding",
+      "img": "icons/containers/bags/pack-engraved-leather-tan.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.aDHRuUs29SrumWfq",
+      "_id": "54yX43DSZ5yGTvsc",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448721980,
+        "modifiedTime": 1750448721980,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "createdTime": 1750448639943,
+    "modifiedTime": 1750448869574,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.1EQczIkJPQegd4O8",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "formula": "1d99"
+}

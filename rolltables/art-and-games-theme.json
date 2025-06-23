@@ -1,0 +1,467 @@
+{
+  "name": "Art and Games Theme",
+  "flags": {},
+  "results": [
+    {
+      "_id": "0v2LDA973AL21xc4",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/envelope-sealed-red-tan.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Calligrapher's Supplies",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.jhjo20QoiD5exf09"
+    },
+    {
+      "_id": "XdeypdntqpNzHUBc",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Glassblower's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.rTbVrNcwApnuTz5E"
+    },
+    {
+      "_id": "43XbtloypgIaoGig",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Painter's Supplies",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ccm5xlWhx74d6lsK"
+    },
+    {
+      "_id": "jdnQMtFclUErGvDA",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Potter's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.hJS8yEVkqgJjwfWa"
+    },
+    {
+      "_id": "4Z50FYz9SLqBr4cz",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-hooded-pink.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Weaver's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ap9prThUB2y9lDyj"
+    },
+    {
+      "_id": "kx6ECvbJDyIpxTsD",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/axe-double-chopping-black.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Woodcarver's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.xKErqkLo4ASYr5EP"
+    },
+    {
+      "_id": "O1Fl7XK09U1H7eyS",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-hooded-blue.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Disguise Kit",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.IBhDAr7WkhWPYLVn"
+    },
+    {
+      "_id": "SEf87vkcWFkc3WdB",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/gaming/dice-runed-brown.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Gaming Set of Dice",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.iBuTM09KD9IoM5L8"
+    },
+    {
+      "_id": "472RJFNxEMLtWPrR",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/treasure/statue-carved-figurehead.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Gaming Set of Dragonchess",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.23y8FvWKf9YLcnBL"
+    },
+    {
+      "_id": "vXQAqkwgcRXVdXm9",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/misc/admission-ticket-grey.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Gaming Set of Playing Cards",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.YwlHI3BVJapz4a3E"
+    },
+    {
+      "_id": "ZICQqgfN9Is7ezBJ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/misc/admission-ticket-grey.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Gaming Set of Three-Dragon Ante",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.LuEZnUnuy1mwDlD1"
+    },
+    {
+      "_id": "Z7UJLfb4eSmXuRe6",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/waterskin-leather-brown.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Bagpipes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.yxHi57T5mmVt0oDr"
+    },
+    {
+      "_id": "Pg7zZ0w3mVKwQpqo",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/drum-brown-red.webp",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Drum",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.69Dpr25pf4BjkHKb"
+    },
+    {
+      "_id": "TKjZQdepsBl35fYQ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Dulcimer",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.NtdDkjmpdIMiX7I2"
+    },
+    {
+      "_id": "Yo0xseMVldiplBik",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Flute",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eJOrPcAz9EcquyRQ"
+    },
+    {
+      "_id": "ksFgWfzvVvtMq82E",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Lute",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.qBydtUUIkv520DT7"
+    },
+    {
+      "_id": "5LcNu9pnw18F5vjg",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Lyre",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.EwG1EtmbgR3bM68U"
+    },
+    {
+      "_id": "l0e2z0Z60rCYiVki",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Horn",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.aa9KuBy4dst7WIW9"
+    },
+    {
+      "_id": "B63NVTxUkjGuNEhk",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Pan Flute",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.G5m5gYIx9VAUWC3J"
+    },
+    {
+      "_id": "hudDuTNErNXsQnYX",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Shawm",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.G3cqbejJpfB91VhP"
+    },
+    {
+      "_id": "5PX4dxQDKaRPRsiq",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        21,
+        21
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Viol",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.baoe3U5BfMMMxhCU"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "description": "General Store or Adventuring Supplies applicable",
+  "formula": "1d21",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289713451,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.P1Z9vpfB0p3KaGaE",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

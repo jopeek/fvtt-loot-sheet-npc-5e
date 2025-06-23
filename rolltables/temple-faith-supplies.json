@@ -1,0 +1,719 @@
+{
+  "name": "Temple/Faith Supplies",
+  "flags": {},
+  "results": [
+    {
+      "_id": "GQAyAW7cCMgyZxmM",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/misc/piggybank.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Alms Box",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.g8fQZ1WyTz2bTtvA"
+    },
+    {
+      "_id": "uFVdQs7odPWMtyXK",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/bell-brass-brown.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Bell",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.F6GwSqjErX1u35Re"
+    },
+    {
+      "_id": "pISXx7rjXeVLN5ks",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/flags/banner-worn-green.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Blanket",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.419eNv7xp2p7Xlo5"
+    },
+    {
+      "_id": "i6W0ybv6VcaNqrGY",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/books/book-backed-silver-red.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Prayer Book",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.odV5cq2HSLSCH69k"
+    },
+    {
+      "_id": "KiHQjBAdQrSiCB5L",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/candle-unlit-white.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Candle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.0NoBBP3MMkvJlwZY"
+    },
+    {
+      "_id": "Cre14RzE5HGALgDc",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/case-leather-tan.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Map or Scroll Case",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.5mIeX824uMklU3xq"
+    },
+    {
+      "_id": "NivfhHVG2WXRm0Ro",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/kitchenware/goblet-worn-clay-white.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Censor",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.7ztvHyYJCcOOAWmR"
+    },
+    {
+      "_id": "PPlQMdNu7OKOTYnB",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/bones/bone-fragments-grey.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Chalk",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.5fJn3LQ2eQG7luEO"
+    },
+    {
+      "_id": "o3QAAQiWQ1PTRbjq",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Flask",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.lHS63sC6bypENNlR"
+    },
+    {
+      "_id": "5eNZQAG1jhEpe7Yo",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/sack-simple-green.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Healer's Kit",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.6rocoBx5jdzG1QQH"
+    },
+    {
+      "_id": "3OXWHG4CwYEWxxjZ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/neck/pendant-bronze-gem-blue.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Amulet",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.paqlMjggWkBIAeCe"
+    },
+    {
+      "_id": "Cfg91M1KP4J8nTAC",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/flags/banner-symbol-sun-gold-red.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Emblem",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.laVqttkGMW4B9654"
+    },
+    {
+      "_id": "zXwyWfmGmjZm8Xif",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/chest/chest-reinforced-steel-red.webp",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Reliquary",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.gP1URGq3kVIIFHJ7"
+    },
+    {
+      "_id": "HbRqo2NUwLw01Upd",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-round-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Flask of Holy Water",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.WPWszFTGzmdIuDRJ"
+    },
+    {
+      "_id": "s1FgkoHtz348OZX3",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/stone/rock-chunk-pumice-white.webp",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Block of Incense",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eJY20LOs3pOkRDPl"
+    },
+    {
+      "_id": "dyEJQAQ8uAoxtOtv",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Ink Bottle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.dP7jMKyHTTgVb3ii"
+    },
+    {
+      "_id": "B6vyCXiHPesjNS4n",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/materials/feather-red-.webp",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Ink Pen",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.uVm7MiB71QblfnoY"
+    },
+    {
+      "_id": "EKNBYHo4pWsTMxT7",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/treasure/lantern-stone-grey.webp",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Lamp",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.qMzHmlmha8qMDnEF"
+    },
+    {
+      "_id": "HQB9FrdwdbWC438j",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/lantern-iron-yellow.webp",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Hooded Lantern",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.trmWAdUoR6Y2B7rA"
+    },
+    {
+      "_id": "JkSzHhSI9TbFKb0r",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Oil Flask",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.psoZaItkOScMVaHL"
+    },
+    {
+      "_id": "DpARE2NNUB6uLi9Q",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/document-bound-white.webp",
+      "weight": 1,
+      "range": [
+        21,
+        21
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Paper",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.fNMkFCOvMiW2Rh3t"
+    },
+    {
+      "_id": "6vAXqQP9aUc5DLio",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+      "weight": 1,
+      "range": [
+        22,
+        22
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Parchment",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.WFQS2vT8ddrFjTJg"
+    },
+    {
+      "_id": "DfF1Tlficd8JEdKk",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-corked-purple.webp",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Perfume",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.uuh4UH3Jx5CsFjdA"
+    },
+    {
+      "_id": "6dzjSsPn086mcjMl",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/potion-tube-corked-red.webp",
+      "weight": 1,
+      "range": [
+        24,
+        24
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Potion of Healing",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ytlsBjYsZ7OBSEBs"
+    },
+    {
+      "_id": "pw3QCsucULFEqFr4",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/meat/hock-leg-pink-brown.webp",
+      "weight": 1,
+      "range": [
+        25,
+        25
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Rations",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.f4w4GxBi0nYXmhX4"
+    },
+    {
+      "_id": "3YnJmmLSGlnhmiCA",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/torch-black.webp",
+      "weight": 1,
+      "range": [
+        26,
+        26
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Torch",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.BnOCLuNWhVvzHLjl"
+    },
+    {
+      "_id": "doucPDfeYsno8UHh",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        27,
+        27
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Vial",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.meJEfX3gZgtMX4x2"
+    },
+    {
+      "_id": "UmJgN4PneBJ24ZtN",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/wetskin-leather-purple.webp",
+      "weight": 1,
+      "range": [
+        28,
+        28
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Waterskin",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.Uv0ilmzbWvqmlCVH"
+    },
+    {
+      "_id": "e8luIGvmgk4eN1cS",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/envelope-sealed-red-tan.webp",
+      "weight": 1,
+      "range": [
+        29,
+        29
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Calligrapher's Supplies",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.jhjo20QoiD5exf09"
+    },
+    {
+      "_id": "IDOwm67NDfTc8jUG",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pouch-leather-green.webp",
+      "weight": 1,
+      "range": [
+        30,
+        30
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Herbalism Kit",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.i89okN7GFTWHsvPy"
+    },
+    {
+      "_id": "pyPo2Ss4kgj7jith",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        31,
+        31
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Flute",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eJOrPcAz9EcquyRQ"
+    },
+    {
+      "_id": "nBPUdLjSC2M2PCh0",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/lute-gold-brown.webp",
+      "weight": 1,
+      "range": [
+        32,
+        32
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Lyre",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.EwG1EtmbgR3bM68U"
+    },
+    {
+      "_id": "n6qEPiKQ57IeDn0k",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/instruments/flute-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        33,
+        33
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Musical Instrument: Horn",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.aa9KuBy4dst7WIW9"
+    }
+  ],
+  "replacement": true,
+  "displayRoll": false,
+  "description": "Things a temple or faith supplier would sell",
+  "formula": "1d39",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289770390,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.WwFGbYMGavA5iZyK",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

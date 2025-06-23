@@ -1,0 +1,110 @@
+{
+  "name": "Water-side Theme",
+  "flags": {},
+  "results": [
+    {
+      "_id": "lZZM9Ti1CRzwR2rg",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/spear-flared-worn-grey.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spear",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.OG4nBBydvmfWYXIk"
+    },
+    {
+      "_id": "YMNOOhTz5wihZmKS",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/fishing/net-simple-tan.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Net",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.aEiM49V8vWpWw7rU"
+    },
+    {
+      "_id": "jNlpg6NucdgYrbpI",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/fishing/hook-curved-barbed-steel-white.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Fishing Tackle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.hOzuSDqmOIOx8z3Z"
+    },
+    {
+      "_id": "xbW5qZjIKhMgaK08",
+      "flags": {},
+      "type": "document",
+      "img": "icons/environment/traps/cage-simple-wood.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Folding Boat",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.u4ewpAFZjLrWrmQv"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "Can be applied to either a general store or an Adventuring Supplies shop",
+  "formula": "1d4",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289777254,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.qnedoa9kDLAuePxk",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

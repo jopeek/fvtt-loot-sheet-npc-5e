@@ -1,0 +1,929 @@
+{
+  "name": "General Store",
+  "flags": {},
+  "results": [
+    {
+      "_id": "TvAQKjx7MK0hKUpW",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/treasure/broach-jewel-gold-blue.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Abacus",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ea4xclqsksEQB1QF"
+    },
+    {
+      "_id": "yRU82AMTdNBBkxmL",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/barrels/barrel-walnut-steel-brown.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Barrel",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.7Yqbqg5EtVW16wfT"
+    },
+    {
+      "_id": "vlaLW6lEIZTkOW8b",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/flags/banner-worn-green.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Blanket",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.419eNv7xp2p7Xlo5"
+    },
+    {
+      "_id": "apNYSwoX0BRbxDph",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Glass Bottle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.HZp69hhyNZUUCipF"
+    },
+    {
+      "_id": "h5DTmAu3Xp3PsTWw",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/kitchenware/mug-steel-wood-brown.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Bucket",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.mQVYcHmMSoCUnBnM"
+    },
+    {
+      "_id": "bYIZKfVQCR9EY3a7",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/candle-unlit-white.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Candle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.0NoBBP3MMkvJlwZY"
+    },
+    {
+      "_id": "i30PhAt9jWStfWzZ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/chest/chest-reinforced-steel-walnut-brown.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Chest",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.2YbuclKfhDL0bU4u"
+    },
+    {
+      "_id": "YyEfh8tvAf0yrKc3",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/chest/shirt-collared-brown.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Common Clothes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.8RXjiddJ6VGyE7vB"
+    },
+    {
+      "_id": "GHNxYgkKgZMs7Thc",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-heavy-fur-blue.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Fine Clothes",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.3OXueEpvDDCVfGFA"
+    },
+    {
+      "_id": "c5I1LPYLf37P93sc",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Flask",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.lHS63sC6bypENNlR"
+    },
+    {
+      "_id": "bnjsZSwoi38JeGg8",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Ink Bottle",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.dP7jMKyHTTgVb3ii"
+    },
+    {
+      "_id": "XSsIyoqgJZZkz4Xv",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/materials/feather-red-.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Ink Pen",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.uVm7MiB71QblfnoY"
+    },
+    {
+      "_id": "apI2kVECZKnevfVf",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/books/book-worn-brown.webp",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Book",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.RMi9efrW9ouHVLI2"
+    },
+    {
+      "_id": "uhtbfjkALqEmRPna",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/kitchenware/jug-terracotta-orange.webp",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Jug",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.0ZBWwjFz3nIAXMLW"
+    },
+    {
+      "_id": "V501MWvQGQ7yFyYR",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/wood/log-stack-maple-brown.webp",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Ladder (10-foot)",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eQTKbhnpkrtXUfwN"
+    },
+    {
+      "_id": "2hmQAcVTRUgrNqIQ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/lights/lantern-iron-yellow.webp",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Hooded Lantern",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.trmWAdUoR6Y2B7rA"
+    },
+    {
+      "_id": "nWmEU8Uiy7TNaulY",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/treasure/lantern-stone-grey.webp",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Lamp",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.qMzHmlmha8qMDnEF"
+    },
+    {
+      "_id": "iLb2OWXTswn2YPzS",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/misc/lock-steel-blue.webp",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Lock",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.xwUWrV15s9jLnmfZ"
+    },
+    {
+      "_id": "qGU6QHD8EMHdZArd",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/cooking/fork-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Mess Kit",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.V13fjV5oSmvbRdgP"
+    },
+    {
+      "_id": "q5L9sxa4dAf01k8L",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/currency/coin-engraved-slot-one-copper.webp",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Steel Mirror",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.HZsvDPmvysQKGzGy"
+    },
+    {
+      "_id": "DDPCMpfZfux5su6Q",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/document-bound-white.webp",
+      "weight": 1,
+      "range": [
+        21,
+        21
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Paper",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.fNMkFCOvMiW2Rh3t"
+    },
+    {
+      "_id": "mVqfWtJM2O0tL1fn",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/documents/document-symbol-circle-gold-red.webp",
+      "weight": 1,
+      "range": [
+        22,
+        22
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Parchment",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.WFQS2vT8ddrFjTJg"
+    },
+    {
+      "_id": "ZBywDEQeUjlBzch5",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/hand/pickaxe-steel-white.webp",
+      "weight": 1,
+      "range": [
+        23,
+        23
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Miner's Pick",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.X5knPtrQAT8GePJ4"
+    },
+    {
+      "_id": "nmjpYiXxjVn7CvEX",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/laboratory/cauldron-filled-gold.webp",
+      "weight": 1,
+      "range": [
+        24,
+        24
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Iron Pot",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.M8xM8BLK4tpUayEE"
+    },
+    {
+      "_id": "PPmeuXbueBXSbyF7",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/coinpouch-simple-tan.webp",
+      "weight": 1,
+      "range": [
+        25,
+        25
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Pouch",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.9bWTRRDym06PzSAf"
+    },
+    {
+      "_id": "SvIlHftRCXshNbkb",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/rope-wrapped-brown.webp",
+      "weight": 1,
+      "range": [
+        26,
+        26
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Hempen Rope (50 ft.)",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.QXmaarJ4X8P0C1HV"
+    },
+    {
+      "_id": "uF7guQaDon2HRtwL",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/rope-wrapped-brown.webp",
+      "weight": 1,
+      "range": [
+        27,
+        27
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Silk Rope (50 ft.)",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.oY8KbpGmB5H2Deoy"
+    },
+    {
+      "_id": "69eEtDaJxJBMR7tb",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/sack-simple-leather-tan.webp",
+      "weight": 1,
+      "range": [
+        28,
+        28
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Sack",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.CNdDj8dsXVpRVpXt"
+    },
+    {
+      "_id": "Zk1h0yQDPTpcbwZl",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/currency/coins-assorted-mix-silver.webp",
+      "weight": 1,
+      "range": [
+        29,
+        29
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Merchant's Scale",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.vJvb6fx3JVPmhG8x"
+    },
+    {
+      "_id": "bP798WgMI93VxQ9J",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/hand/pickaxe-steel-white.webp",
+      "weight": 1,
+      "range": [
+        30,
+        30
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Shovel",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.qWlXDEgqdmdZWoab"
+    },
+    {
+      "_id": "DEqYXoZHPcaeCLj2",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/finger/ring-cabochon-gold-orange.webp",
+      "weight": 1,
+      "range": [
+        31,
+        31
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Signet Ring",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.kdkpSZMUHGXGM15H"
+    },
+    {
+      "_id": "LcVDDEeWvzojatUn",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/survival/soap.webp",
+      "weight": 1,
+      "range": [
+        32,
+        32
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Soap",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.REBWkTKe6lJaIkpn"
+    },
+    {
+      "_id": "qTVHFoQ9hXvZ3ywQ",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+      "weight": 1,
+      "range": [
+        33,
+        33
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Vial",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.meJEfX3gZgtMX4x2"
+    },
+    {
+      "_id": "B8wvkW0m2bOvQrpU",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/axe-double-chopping-black.webp",
+      "weight": 1,
+      "range": [
+        34,
+        34
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Carpenter's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.8NS6MSOdXtUqD7Ib"
+    },
+    {
+      "_id": "KwglszUT4ak09Daf",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/feet/boots-collared-rounded-brown.webp",
+      "weight": 1,
+      "range": [
+        35,
+        35
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Cobbler's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.hM84pZnpCqKfi8XH"
+    },
+    {
+      "_id": "H1uK24FaEj3viu4X",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/meat/hock-leg-pink-brown.webp",
+      "weight": 1,
+      "range": [
+        36,
+        36
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Cook's Utensils",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.Gflnp29aEv5Lc1ZM"
+    },
+    {
+      "_id": "lcLHGwJZNs1kTQYm",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather.webp",
+      "weight": 1,
+      "range": [
+        37,
+        37
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Glassblower's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.rTbVrNcwApnuTz5E"
+    },
+    {
+      "_id": "Pw8sJD8RYOni2hey",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/hand/glove-simple-leather-orange.webp",
+      "weight": 1,
+      "range": [
+        38,
+        38
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Leatherworker's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.PUMfwyVUbtyxgYbD"
+    },
+    {
+      "_id": "jwcwAwUF6ZCkxJPk",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/smithing/hammer-sledge-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        39,
+        39
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Mason's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.skUih6tBvcBbORzA"
+    },
+    {
+      "_id": "CL49y0fXs6Qfq83b",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather.webp",
+      "weight": 1,
+      "range": [
+        40,
+        40
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Potter's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.hJS8yEVkqgJjwfWa"
+    },
+    {
+      "_id": "AtTVxDNnV8fcm3wY",
+      "flags": {},
+      "type": "document",
+      "img": "icons/tools/smithing/hammer-sledge-steel-grey.webp",
+      "weight": 1,
+      "range": [
+        41,
+        41
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Smith's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.KndVe2insuctjIaj"
+    },
+    {
+      "_id": "2sIEoiZhQg0E2xEe",
+      "flags": {},
+      "type": "document",
+      "img": "icons/equipment/back/cloak-hooded-pink.webp",
+      "weight": 1,
+      "range": [
+        42,
+        42
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Weaver's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ap9prThUB2y9lDyj"
+    },
+    {
+      "_id": "HO5788SH9qUCYd1V",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/axes/axe-double-chopping-black.webp",
+      "weight": 1,
+      "range": [
+        43,
+        43
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Woodcarver's Tools",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.xKErqkLo4ASYr5EP"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "General goods at the general store",
+  "formula": "1d43",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289735271,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.sblTQR2MCMGcwFsz",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}

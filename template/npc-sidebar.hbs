@@ -1,0 +1,130 @@
+<div class="sidebar" {{#unless @root.editable}}style="display: none;"{{/unless}}>
+    {{#if @root.editable}}
+    <div class="pills-group">
+        <h3 class="icon" data-tooltip="{{localize 'LOOTSHEET.TypeOfSheetHelp'}}">
+        <i class="fas fa-id-card"></i>
+        <span class="roboto-upper">{{localize "LOOTSHEET.TypeOfSheetName"}}</span>
+        </h3>
+        <div class="flexrow">
+        <select class="sheet-type" name="system.flags.lootsheet-simple.lootsheettype">
+            {{selectOptions lootsheetTypes selected=actor.flags.lootsheet-simple.lootsheettype}}
+        </select>
+        </div>
+    </div>
+
+    {{#ifeq lootsheettype "Merchant"}}
+    <div class="pills-group merchant-settings">
+        <h3 class="icon" data-tooltip="{{localize 'LOOTSHEET.MerchantSettingsInfo'}}">
+        <i class="fas fa-balance-scale"></i>
+        <span class="roboto-upper">{{localize 'LOOTSHEET.MerchantSettings'}}</span>
+        </h3>
+        <div>
+        <div class="flexrow">
+            <select
+            class="sheet-rolltable"
+            id="lootsheet-rolltable"
+            name="system.flags.lootsheet-simple.rolltable"
+            >
+            <!-- Placeholder option -->
+            <option value="" disabled>{{localize 'LOOTSHEET.RollableTable'}}</option>
+
+            <!-- Loop through rolltables -->
+            {{#each rolltables as |table|}}
+            <option value="{{
+                table.name
+            }}"
+            {{#if (eq table.name ../selectedRollTable)
+            }}selected{{/if
+            }}>
+            {{
+                table.name
+            }}
+
+            {{/each}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <input name="system.flags.lootsheet-simple.shopQty" type="text" data-dtype="String"
+            placeholder="{{localize "LOOTSHEET.ShopFormula"}} e.g. 1d20" value="{{ shopQty }}" />
+        </div>
+        <div class="flexrow">
+            <input name="system.flags.lootsheet-simple.itemQty" type="text" data-dtype="String"
+            placeholder="{{localize "LOOTSHEET.ItemFormula"}} e.g. 1d4" value="{{ itemQty }}" />
+        </div>
+        <div class="flexrow">
+            <input name="system.flags.lootsheet-simple.itemQtyLimit" type="text" data-dtype="String"
+            placeholder="{{localize "LOOTSHEET.LimitQty"}} e.g. 10" value="{{ itemQtyLimit }}" />
+        </div>
+
+        <div class="flexrow" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+            <label
+            class="clear-inventory slide-toggle"
+            name="system.flags.lootsheet-simple.clearInventory"
+            >
+            <input
+                type="checkbox"
+                name="system.flags.lootsheet-simple.clearInventory"
+                {{
+                checked
+                clearInventory
+                }}
+            />
+            {{#if clearInventory}}
+            {{localize "LOOTSHEET.ClearInventory"}}
+            <i class="fas fa-toggle-on"></i>
+            {{else}}
+            {{localize "LOOTSHEET.ClearInventory"}}
+            <i class="fas fa-toggle-off"></i>
+            {{/if}}
+            </label>
+        </div>
+        </div>
+
+        <div class="flexrow">
+        <button
+            type="button"
+            class="update-inventory"
+            type="update-inventory"
+            name="update-inventory"
+            id="update-inventory"
+            disabled
+        >
+            <i class="fas fa-balance-scale"></i> {{localize "LOOTSHEET.UpdateShop"}}
+        </button>
+        </div>
+    </div>
+    {{/ifeq}}
+
+    <div class="pills-group">
+        <h3 class="icon" data-tooltip="{{localize 'LOOTSHEET.PermissionInfo'}}">
+        <i class="fas fa-lock"></i>
+        <span class="roboto-upper">{{localize "LOOTSHEET.Permissions"}}</span>
+        </h3>
+        <div class="flexrow">
+        <input
+            type="hidden"
+            name="actor.flags.loot.playersPermission"
+            value="{{ actor.flags.loot.playersPermission }}"
+            data-dtype="Number"
+        />
+        <ol class="permissions-list">
+            {{#each actor.flags.loot.players as |player p|}}
+            <li class="permission" data-skill="{{ p }}">
+            <input
+                type="hidden"
+                name="{{ player.playerId }}"
+                value="{{ player.lootPermission }}"
+                data-dtype="Number"
+                actor="{{ player.actorId }}"
+            />
+            <a class="permission-proficiency" title="{{ player.lootPermissionDescription }}"
+                >{{{player.icon}}}</a
+            >
+            <span class="permission-name">{{ player.actor }} ({{ player.name }})</span>
+            </li>
+            {{/each}}
+        </ol>
+        </div>
+    </div>
+    {{/if}}
+</div>

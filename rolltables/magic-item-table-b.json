@@ -1,0 +1,832 @@
+{
+  "name": "Magic Item Table B",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        15
+      ],
+      "name": "Potion of Greater Healing",
+      "img": "icons/consumables/potions/bottle-bulb-corked-glowing-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.L887NdWEP5NqHCrQ",
+      "_id": "Tsp2JxOd6jebuTH5",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750448905549,
+        "modifiedTime": 1750448905549,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        16,
+        22
+      ],
+      "name": "Potion of Fire Resistance",
+      "img": "icons/consumables/potions/bottle-bulb-corked-glowing-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.Jj4iFQQGvckx8Wsj",
+      "_id": "8r7DbPYU2t25WERN",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449044825,
+        "modifiedTime": 1750449044825,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        23,
+        29
+      ],
+      "name": "Potion of Resistance",
+      "img": "icons/consumables/potions/potion-bottle-labeled-medicine-capped-red-black.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfResis",
+      "_id": "IPEpSyfFb4GurOYf",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449051191,
+        "modifiedTime": 1750449051191,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        30,
+        34
+      ],
+      "name": "Ammunition, +1, +2, or +3",
+      "img": "icons/weapons/ammunition/arrow-head-war-flight.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgAmmunition12o",
+      "_id": "Ti3owylzE62kpoeK",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449083580,
+        "modifiedTime": 1750449083580,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        35,
+        39
+      ],
+      "name": "Potion of Animal Friendship",
+      "img": "icons/consumables/potions/potion-bottle-corked-labeled-green.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.nXWevqtV6p484N59",
+      "_id": "nIXKI9mKIl55PGqG",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449110451,
+        "modifiedTime": 1750449110451,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        40,
+        44
+      ],
+      "name": "Potion of Hill Giant Strength",
+      "img": "icons/consumables/potions/bottle-bulb-corked-green.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.mhFBTY0egW8AeCHe",
+      "_id": "v7If8uew84lYn4Yr",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449121249,
+        "modifiedTime": 1750449121249,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        45,
+        49
+      ],
+      "name": "Potion of Growth",
+      "img": "icons/consumables/potions/potion-tube-corked-glowing-red.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.gTRFQLdVD1gsKtPi",
+      "_id": "kjDm130se2jnJeKD",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449127944,
+        "modifiedTime": 1750449127944,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        50,
+        54
+      ],
+      "name": "Potion of Water Breathing",
+      "img": "icons/consumables/potions/potion-bottle-corked-labeled-green.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.CAZMwFBWp9VC0ZCg",
+      "_id": "7fz7xOs5ZSiklMpy",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449134199,
+        "modifiedTime": 1750449134199,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        55,
+        59
+      ],
+      "name": "Spell Scroll 2nd Level",
+      "img": "icons/sundries/scrolls/scroll-bound-blue-tan.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.XdDp6CKh9qEvPTuS",
+      "_id": "xtiSRLaSNKR5pHSR",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449140608,
+        "modifiedTime": 1750449140608,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        60,
+        64
+      ],
+      "name": "Spell Scroll 3rd Level",
+      "img": "icons/sundries/scrolls/scroll-bound-orange-tan.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.hqVKZie7x9w3Kqds",
+      "_id": "yPYaSNvUauAcKPCT",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449142046,
+        "modifiedTime": 1750449142046,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        65,
+        67
+      ],
+      "name": "Bag of Holding",
+      "img": "icons/containers/bags/pack-engraved-leather-tan.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.aDHRuUs29SrumWfq",
+      "_id": "W8613uLnpwtRIbMH",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449147431,
+        "modifiedTime": 1750449147431,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        68,
+        70
+      ],
+      "name": "Restorative Ointment",
+      "img": "icons/commodities/materials/liquid-orange.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.VmcgAIsRCyrjBguC",
+      "_id": "F3pabVe1SmIiFXwn",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449157713,
+        "modifiedTime": 1750449157713,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        71,
+        73
+      ],
+      "name": "Oil of Slipperiness",
+      "img": "icons/consumables/potions/bottle-circular-corked-labeled-green.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.FIDyR0kZnxGy7bj8",
+      "_id": "UO67nXH8FwK7KaCe",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449162669,
+        "modifiedTime": 1750449162669,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        74,
+        75
+      ],
+      "name": "Dust of Disappearance",
+      "img": "icons/magic/water/bubbles-air-water-light.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.cGUPm15mLfhGDz2b",
+      "_id": "2SZWDEKl0rYByiHo",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449167678,
+        "modifiedTime": 1750449167678,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        76,
+        77
+      ],
+      "name": "Dust of Dryness",
+      "img": "icons/magic/air/air-wave-gust-smoke-yellow.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.eMR6B4bIoJPUDJG8",
+      "_id": "wCuptWOGF9xRzohy",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449172876,
+        "modifiedTime": 1750449172876,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        78,
+        79
+      ],
+      "name": "Dust of Sneezing and Choking",
+      "img": "icons/magic/water/bubbles-air-water-light.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.9eyZY9tL3fXD1Mbm",
+      "_id": "2ThUwsjVzRf7U5lc",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449178533,
+        "modifiedTime": 1750449178533,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        80,
+        81
+      ],
+      "name": "Elemental Gem",
+      "img": "icons/commodities/gems/gem-rough-rose-teal.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgElementalGem0",
+      "_id": "Cu671G8FbI3Qfim2",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449187702,
+        "modifiedTime": 1750449187702,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        82,
+        83
+      ],
+      "name": "Philter of Love",
+      "img": "icons/consumables/potions/potion-bottle-corked-labeled-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPhilterOfLove",
+      "_id": "tLdJtM2eYldbaSCZ",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449213631,
+        "modifiedTime": 1750449213631,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        84,
+        84
+      ],
+      "name": "Alchemy Jug",
+      "img": "icons/consumables/drinks/clay-jar-glowing-orange-blue.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.TZggpdbOYqOCG7mY",
+      "_id": "cpwzl0BVkpmAi4kQ",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449221018,
+        "modifiedTime": 1750449221018,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        85,
+        85
+      ],
+      "name": "Potion of Water Breathing",
+      "img": "icons/consumables/potions/potion-bottle-corked-labeled-green.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfWater",
+      "_id": "GoX6V77ETetwtT6Q",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449236423,
+        "modifiedTime": 1750449236423,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        86,
+        86
+      ],
+      "name": "Cloak of the Manta Ray",
+      "img": "icons/equipment/head/hood-cloth-teal-gold.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgCloakOfTheMan",
+      "_id": "ry6JdGhvF9zOU1Yi",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449245771,
+        "modifiedTime": 1750449245771,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        87,
+        87
+      ],
+      "name": "Orb",
+      "img": "icons/commodities/gems/pearl-purple-smooth.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.phbafcOrb0000000",
+      "_id": "ntO2pacHgQQuZuYU",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449261357,
+        "modifiedTime": 1750449261357,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        88,
+        88
+      ],
+      "name": "Goggles of Night",
+      "img": "icons/equipment/head/goggles-leather-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgGogglesOfNigh",
+      "_id": "1UCPL4onl11yfL0d",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449267857,
+        "modifiedTime": 1750449267857,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        89,
+        89
+      ],
+      "name": "Helm of Comprehending Languages",
+      "img": "icons/equipment/head/helm-spangen-ridged.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgHelmOfCompreh",
+      "_id": "Wf8S03CltDxFcx7P",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449274366,
+        "modifiedTime": 1750449274366,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        90,
+        90
+      ],
+      "name": "Immovable Rod",
+      "img": "icons/commodities/tech/pipe-lead-closed.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgImmovableRod0",
+      "_id": "HC4g1U8FRd2BwYRz",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449279881,
+        "modifiedTime": 1750449279881,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        91,
+        91
+      ],
+      "name": "Lantern of Revealing",
+      "img": "icons/sundries/lights/lantern-iron-yellow.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgLanternOfReve",
+      "_id": "hbSAnVkOOdmAbu1J",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449286811,
+        "modifiedTime": 1750449286811,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        92,
+        92
+      ],
+      "name": "Gloves of Swimming and Climbing",
+      "img": "icons/equipment/hand/glove-cuffed-leather-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgGlovesOfSwimm",
+      "_id": "KeyPfM1QUEDCxLBM",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449318635,
+        "modifiedTime": 1750449318635,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        93,
+        93
+      ],
+      "name": "Mithral Armor",
+      "img": "icons/equipment/chest/breastplate-gorget-steel.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgMithralArmor0",
+      "_id": "My5IdxK5FKFWo6xT",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449326346,
+        "modifiedTime": 1750449326346,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        94,
+        94
+      ],
+      "name": "Potion of Poison",
+      "img": "icons/consumables/potions/potion-bottle-skull-label-poison-teal.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgPotionOfPoiso",
+      "_id": "6Hz2hM785dZriZOl",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449334581,
+        "modifiedTime": 1750449334581,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        95,
+        95
+      ],
+      "name": "Ring of Swimming",
+      "img": "icons/equipment/finger/ring-shell-white-blue.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRingOfSwimmin",
+      "_id": "u4eUsZHkMRkdWU8v",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449340603,
+        "modifiedTime": 1750449340603,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        96,
+        96
+      ],
+      "name": "Robe of Useful Items",
+      "img": "icons/equipment/back/cloak-simple-tan.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRobeOfUsefulI",
+      "_id": "jjR6IetJkgBD67yS",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449347688,
+        "modifiedTime": 1750449347688,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        97,
+        97
+      ],
+      "name": "Rope of Climbing",
+      "img": "icons/sundries/survival/rope-wrapped-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgRopeOfClimbin",
+      "_id": "3JZdaI1mXQ1vPp7A",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449354595,
+        "modifiedTime": 1750449354595,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        98,
+        98
+      ],
+      "name": "Military Saddle",
+      "img": "icons/equipment/shoulder/shoulderpad-leather-banded-ring.webp",
+      "documentUuid": "Compendium.dnd5e.items.Item.PLkzJ310FzBnRrI5",
+      "_id": "hxsG4DnvRX4wotKb",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449363938,
+        "modifiedTime": 1750449363938,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        99,
+        99
+      ],
+      "name": "Wand of Magic Detection",
+      "img": "icons/weapons/wands/wand-gem-purple.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWandOfMagicDe",
+      "_id": "62joxgQqLNLvTFFE",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449371347,
+        "modifiedTime": 1750449371347,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        100,
+        100
+      ],
+      "name": "Wand of Secrets",
+      "img": "icons/weapons/staves/staff-ornate-orb-steel-red.webp",
+      "documentUuid": "Compendium.dnd5e.equipment24.Item.dmgWandOfSecrets",
+      "_id": "YNGDe9w6ygwkNUM0",
+      "description": "",
+      "drawn": false,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "createdTime": 1750449376021,
+        "modifiedTime": 1750449376021,
+        "lastModifiedBy": "JpN8m65xAxKf3zzW"
+      }
+    }
+  ],
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "createdTime": 1750448887078,
+    "modifiedTime": 1750449527648,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.NJM36uOE1XzHBLbd",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "formula": "1d100"
+}

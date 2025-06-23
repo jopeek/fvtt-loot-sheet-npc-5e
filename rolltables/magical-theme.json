@@ -1,0 +1,194 @@
+{
+  "name": "Magical Theme",
+  "flags": {},
+  "results": [
+    {
+      "_id": "i3C8JeoFOmodNmrf",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/gems/gem-rough-navette-yellow-green.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Crystal",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.uXOT4fYbgPY8DGdd"
+    },
+    {
+      "_id": "EDDOYRHC8hZ0nMKI",
+      "flags": {},
+      "type": "document",
+      "img": "icons/commodities/gems/pearl-natural.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Orb",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.tH5Rn0JVRG1zdmPa"
+    },
+    {
+      "_id": "6JlsMOnrUSJlzdoN",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/polearms/spear-hooked-blue.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Rod",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.OojyyGfh91iViuMF"
+    },
+    {
+      "_id": "vSN16dUblNRahl1N",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/staves/staff-ornate-engraved-blue.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Staff",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.BeKIrNIvNHRPQ4t5"
+    },
+    {
+      "_id": "7FH7Qwpt4NX8RzNM",
+      "flags": {},
+      "type": "document",
+      "img": "icons/weapons/staves/staff-simple-green.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Wand",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.KA2P6I48iOWlnboO"
+    },
+    {
+      "_id": "XWjpQ6asb0FdRQFr",
+      "flags": {},
+      "type": "document",
+      "img": "icons/containers/bags/pack-simple-leather-tan.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Component Pouch",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.eZGmdOhaTWMicXPW"
+    },
+    {
+      "_id": "ovUQIWEVmhqovl0C",
+      "flags": {},
+      "type": "document",
+      "img": "icons/consumables/potions/potion-tube-corked-red.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Potion of Healing",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.ytlsBjYsZ7OBSEBs"
+    },
+    {
+      "_id": "GmXQpYccO2x56mb3",
+      "flags": {},
+      "type": "document",
+      "img": "icons/sundries/books/book-embossed-jewel-gold-purple.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "description": "",
+      "name": "Spellbook",
+      "_stats": {
+        "coreVersion": "13.345",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "documentUuid": "Compendium.dnd5e.items.Item.LBajgahniRJbAgDr"
+    }
+  ],
+  "replacement": false,
+  "displayRoll": false,
+  "description": "For a General Store of Adventuring Supplies",
+  "formula": "1d8",
+  "folder": "uoTlT3SP6nBaetis",
+  "_stats": {
+    "coreVersion": "13.345",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "modifiedTime": 1750289746912,
+    "lastModifiedBy": "JpN8m65xAxKf3zzW",
+    "exportSource": {
+      "worldId": "clean-test",
+      "uuid": "RollTable.SKArvxfWoa341Gmp",
+      "coreVersion": "13.345",
+      "systemId": "dnd5e",
+      "systemVersion": "5.0.4"
+    }
+  },
+  "img": "icons/svg/d20-grey.svg"
+}
