@@ -14,7 +14,7 @@
 }
 
 .loot-sheet-npc .sheet-header {
-  max-height: 120px;
+  /* max-height: 120px; */
 }
 
 .loot-sheet-npc.sheet.actor.npc .sheet-header > .left {
@@ -25,10 +25,11 @@
 
 .loot-sheet-npc .sheet-header .portrait {
   width: 100%;
+  border: none;
 }
 .loot-sheet-npc .sheet-header .portrait img {
-  width: 100px;
-  height: 100px;
+  /* width: 100px;
+  height: 100px; */
   justify-self: center;
 }
 
